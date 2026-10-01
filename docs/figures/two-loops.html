@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Two Loops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .shadow{fill:var(--surface); stroke:var(--line); stroke-width:1}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .plus{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.3}
+.fig .chipbox{fill:var(--ink); stroke:none}
+.fig .chiptxt{fill:var(--bg); font-family:var(--mono); font-size:13px}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k="frame"]:not(.on),.fig.focus .el[data-k="model"]:not(.on){opacity:.55}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox-hl{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2}
+.fig .el.on .stripe.hl{fill:var(--accent-soft)}
+.fig .el.on .plus{stroke:var(--accent)}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.prompt{font-family:var(--mono); font-size:14.5px; background:var(--surface-2); padding:10px 12px; border-radius:8px; line-height:1.5}
+.prompt .blank{display:inline-block; min-width:5ch; border-bottom:2px solid var(--accent); color:var(--accent-ink); font-weight:500}
+.bars{display:grid; gap:6px}
+.bar{display:grid; grid-template-columns:62px minmax(0,1fr) 52px 34px; gap:10px; align-items:center; font-family:var(--mono); font-size:13.5px}
+.bar .track{height:16px; background:var(--surface-2); border-radius:3px; overflow:hidden}
+.bar .fill{height:100%; background:var(--ink-2); transition:width .25s ease}
+.bar.top .fill{background:var(--accent)}
+.bar .pct,.bar .cnt{text-align:right; font-variant-numeric:tabular-nums}
+.bar .cnt{color:var(--accent-ink)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 160px; accent-color:var(--accent)}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.draws{font-family:var(--mono); font-size:13px; color:var(--ink-2); min-height:1.5em; word-break:break-word}
+svg.cost{width:100%; height:auto; display:block}
+.cost text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.cost .axis{stroke:var(--line)}
+.cost .grid{stroke:var(--line); stroke-dasharray:2 4}
+.cost .new{fill:var(--accent)}
+.cost .cached{fill:var(--ink-2); opacity:.45}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px; white-space:nowrap}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 01</div>
+  <h1>Two Loops</h1>
+  <p class="lede">A language model is a loop inside a loop. The <em>inner loop</em> is the network writing one token per pass. The <em>outer loop</em> is the harness you build: it assembles the context, reads the reply, runs the tool, and decides when to stop. Step through the figure with Next, the dots, or the arrow keys.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 660" role="img" aria-label="A decoder-only language model, drawn as an inner loop that produces one token per pass, nested inside the harness's agent loop that builds the context, parses the reply, gates and runs tools, and feeds results back.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- outer frame -->
+    <g class="el" data-k="frame">
+      <rect class="frame" x="16" y="52" width="1068" height="592" rx="14"/>
+      <text class="lab" x="36" y="632">Harness · the agent loop (outer loop)</text>
+    </g>
+
+    <!-- return route: tool result back to the context -->
+    <g class="el" data-k="route">
+      <path class="flow" d="M933,218 L933,78 L131,78 L131,108"/>
+      <text class="ts" x="532" y="70" text-anchor="middle">appended to the transcript as the next observation</text>
+    </g>
+
+    <!-- context window -->
+    <g class="el" data-k="ctx">
+      <rect class="box" x="36" y="110" width="190" height="382" rx="8"/>
+      <text class="lab" x="50" y="134">Context window</text>
+      <text class="ts" x="50" y="152">rebuilt for every call</text>
+      <rect class="stripe" x="50" y="166" width="162" height="40" rx="4"/><text class="ts" x="131" y="191" text-anchor="middle">System prompt</text>
+      <rect class="stripe" x="50" y="214" width="162" height="40" rx="4"/><text class="ts" x="131" y="239" text-anchor="middle">AGENTS.md · skills</text>
+      <rect class="stripe" x="50" y="262" width="162" height="40" rx="4"/><text class="ts" x="131" y="287" text-anchor="middle">Tool schemas</text>
+      <rect class="stripe" x="50" y="310" width="162" height="40" rx="4"/><text class="ts" x="131" y="335" text-anchor="middle">User message</text>
+      <rect class="stripe" x="50" y="358" width="162" height="40" rx="4"/><text class="ts" x="131" y="383" text-anchor="middle">Earlier replies</text>
+      <rect class="stripe hl" x="50" y="406" width="162" height="40" rx="4"/><text class="ts" x="131" y="431" text-anchor="middle">Tool results</text>
+      <text class="tag" x="50" y="474">E6 · THE BUDGET</text>
+    </g>
+
+    <!-- arrow into model -->
+    <g class="el" data-k="in">
+      <path class="flow" d="M226,140 L348,140"/>
+      <text class="ts" x="272" y="116" text-anchor="middle">whole transcript,</text>
+      <text class="ts" x="272" y="130" text-anchor="middle">every call</text>
+    </g>
+
+    <!-- model region -->
+    <g class="el" data-k="model">
+      <rect class="modelbox" x="320" y="96" width="450" height="484" rx="12"/>
+      <text class="lab" x="336" y="566">Model · one forward pass per token (inner loop)</text>
+    </g>
+
+    <g class="el" data-k="tok">
+      <rect class="box" x="350" y="118" width="240" height="44" rx="6"/>
+      <text class="tt" x="364" y="138">Tokenizer</text>
+      <text class="ts" x="364" y="154">text → token IDs</text>
+    </g>
+    <g class="el" data-k="tok emb"><path class="flow" d="M470,162 L470,176"/></g>
+    <g class="el" data-k="emb">
+      <rect class="box" x="350" y="178" width="240" height="44" rx="6"/>
+      <text class="tt" x="364" y="198">Embedding + position</text>
+      <text class="ts" x="364" y="214">token ID → vector</text>
+    </g>
+
+    <!-- transformer block stack -->
+    <g class="el" data-k="block">
+      <rect class="shadow" x="362" y="252" width="240" height="162" rx="8"/>
+      <rect class="shadow" x="356" y="246" width="240" height="162" rx="8"/>
+      <rect class="box" x="350" y="240" width="240" height="162" rx="8"/>
+      <text class="tt" x="386" y="260">Transformer block</text>
+      <text class="tag" x="578" y="260" text-anchor="end">× N</text>
+    </g>
+    <g class="el" data-k="rail">
+      <path class="flow" d="M372,222 L372,430"/>
+      <text class="ts" x="0" y="0" transform="translate(343,392) rotate(-90)">residual stream</text>
+    </g>
+    <g class="el" data-k="attn">
+      <path class="flow" d="M372,282 L394,282"/>
+      <rect class="box" x="396" y="270" width="182" height="50" rx="5"/>
+      <text class="tt" x="408" y="291">Masked self-attention</text>
+      <text class="ts" x="408" y="309">look back at earlier tokens</text>
+      <path class="flow nohead" d="M396,308 L379,308"/>
+      <circle class="plus" cx="372" cy="308" r="7"/><text class="ts" x="372" y="312.5" text-anchor="middle">+</text>
+    </g>
+    <g class="el" data-k="mlp">
+      <path class="flow" d="M372,346 L394,346"/>
+      <rect class="box" x="396" y="334" width="182" height="50" rx="5"/>
+      <text class="tt" x="408" y="355">MLP</text>
+      <text class="ts" x="408" y="373">transform each position</text>
+      <path class="flow nohead" d="M396,372 L379,372"/>
+      <circle class="plus" cx="372" cy="372" r="7"/><text class="ts" x="372" y="376.5" text-anchor="middle">+</text>
+    </g>
+
+    <!-- KV cache -->
+    <g class="el" data-k="kv">
+      <path class="dash" d="M578,295 L620,295"/>
+      <rect class="kvbox" x="620" y="266" width="112" height="58" rx="6"/>
+      <text class="tt" x="632" y="288">KV cache</text>
+      <text class="ts" x="632" y="304">keys, values of</text>
+      <text class="ts" x="632" y="318">earlier tokens</text>
+    </g>
+
+    <g class="el" data-k="unemb">
+      <rect class="box" x="350" y="432" width="240" height="40" rx="6"/>
+      <text class="tt" x="364" y="450">Unembedding</text>
+      <text class="ts" x="364" y="465">vector → score per vocab entry</text>
+    </g>
+    <g class="el" data-k="unemb samp"><path class="flow" d="M470,472 L470,484"/></g>
+    <g class="el" data-k="samp">
+      <rect class="box" x="350" y="486" width="240" height="44" rx="6"/>
+      <text class="tt" x="364" y="506">Softmax · sample</text>
+      <text class="ts" x="364" y="522">temperature · top-p</text>
+      <path class="flow" d="M590,508 L618,508"/>
+    </g>
+    <g class="el" data-k="chip">
+      <rect class="chipbox" x="620" y="492" width="100" height="32" rx="16"/>
+      <text class="chiptxt" x="670" y="513" text-anchor="middle">" caller"</text>
+    </g>
+
+    <!-- inner loop rail -->
+    <g class="el" data-k="loop">
+      <path class="flow nohead" d="M720,508 L752,508"/>
+      <path class="flow" d="M752,508 L752,140 L592,140"/>
+      <text class="ts" x="0" y="0" transform="translate(744,470) rotate(-90)">append token · repeat until stop</text>
+    </g>
+
+    <!-- exit to harness -->
+    <g class="el" data-k="exit">
+      <path class="flow" d="M752,508 L804,508"/>
+      <text class="ts" x="779" y="500" text-anchor="middle">stop</text>
+    </g>
+
+    <!-- harness column -->
+    <g class="el" data-k="parse">
+      <rect class="box" x="806" y="486" width="254" height="44" rx="6"/>
+      <text class="tt" x="820" y="506">Harness parses the reply</text>
+      <text class="ts" x="820" y="522">tool call, or final answer?</text>
+    </g>
+    <g class="el" data-k="gate">
+      <path class="flow" d="M933,486 L933,440"/>
+      <text class="ts" x="943" y="468">tool call</text>
+      <rect class="box" x="806" y="394" width="254" height="44" rx="6"/>
+      <text class="tt" x="820" y="414">Permission gate</text>
+      <text class="ts" x="820" y="430">check rules, ask the human</text>
+    </g>
+    <g class="el" data-k="tool">
+      <path class="flow" d="M933,394 L933,352"/>
+      <rect class="box" x="806" y="306" width="254" height="44" rx="6"/>
+      <text class="tt" x="820" y="326">Tool runs</text>
+      <text class="ts" x="820" y="342">files · APIs · MCP servers</text>
+    </g>
+    <g class="el" data-k="result">
+      <path class="flow" d="M933,306 L933,264"/>
+      <rect class="box" x="806" y="218" width="254" height="44" rx="6"/>
+      <text class="tt" x="820" y="238">Tool result</text>
+      <text class="ts" x="820" y="254">an observation, untrusted</text>
+    </g>
+    <g class="el" data-k="halt">
+      <path class="flow" d="M933,530 L933,570"/>
+      <text class="ts" x="943" y="554">answer</text>
+      <rect class="box" x="806" y="572" width="254" height="44" rx="6"/>
+      <text class="tt" x="820" y="592">Final answer · halt</text>
+      <text class="ts" x="820" y="608">or a turn / cost budget stops it</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 13</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote" id="vnote">Arrow keys also step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <section class="panel" aria-labelledby="h-samp">
+    <div class="eyebrow">Step 7, up close · E10</div>
+    <h2 id="h-samp">The draw at the end of every pass</h2>
+    <p class="small">The model scores every token in its vocabulary. Softmax turns scores into probabilities and the sampler draws one. The scores here are made up for teaching; a real vocabulary has on the order of a hundred thousand entries.</p>
+    <div class="prompt">A tool is a contract; the model is an untrusted <span class="blank" id="blank">___</span></div>
+    <div class="ctrl"><label for="temp">Temperature</label><input id="temp" type="range" min="0" max="2" step="0.05" value="0.8"><output id="tempout" for="temp">0.80</output></div>
+    <div class="bars" id="bars"></div>
+    <div class="btnrow" style="justify-content:flex-start">
+      <button id="draw1" type="button">Draw once</button>
+      <button id="draw20" type="button" class="primary">Draw 20 times</button>
+      <button id="clear" type="button">Clear</button>
+    </div>
+    <div class="draws" id="draws">No draws yet.</div>
+    <p class="small">At temperature 0 the sampler always takes the top score, so the output repeats. Above 0, the same prompt gives different answers. That is why one run of an eval is an anecdote.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-cost">
+    <div class="eyebrow">Steps 1, 6 and 12, up close · E1 · E6 · E11</div>
+    <h2 id="h-cost">The bill the outer loop runs up</h2>
+    <p class="small">The model keeps nothing between calls, so every turn resends the whole transcript. Each bar is one call. The grey part repeats the previous call exactly and can be served from a prompt cache; the amber part is new. The figures are illustrative; prices and cache rules differ by provider.</p>
+    <div class="ctrl"><label for="add">Tokens added per turn</label><input id="add" type="range" min="500" max="6000" step="250" value="2000"><output id="addout" for="add">2,000</output></div>
+    <div class="ctrl"><label for="turns">Turns before halt</label><input id="turns" type="range" min="2" max="30" step="1" value="12"><output id="turnsout" for="turns">12</output></div>
+    <svg class="cost" id="cost" viewBox="0 0 520 250" role="img" aria-label="Bar chart of input tokens sent per call, growing each turn."></svg>
+    <div class="legend"><span><i class="sw" style="background:var(--ink-2);opacity:.45"></i>repeated prefix (cacheable)</span><span><i class="sw" style="background:var(--accent)"></i>new this turn</span></div>
+    <div class="stat" id="coststat"></div>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">Where the course attaches</div>
+  <h2 id="h-map">Each week works on one part of this figure</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Week</th><th>Part of the figure</th><th>What the mechanism explains</th></tr></thead>
+    <tbody>
+      <tr><td>E1 · Agent loop</td><td>Outer loop; halt box</td><td>Every turn resends a longer transcript. A loop without a halt condition keeps growing the bill.</td></tr>
+      <tr><td>E3 · Tools as contracts</td><td>Parse; permission gate</td><td>A tool call is text the model wrote. Only the harness can run it, so the harness checks it first.</td></tr>
+      <tr><td>E5 · MCP security</td><td>Tool result in the context window</td><td>Tool output sits in the same window as the instructions. Text in a result can pose as an instruction.</td></tr>
+      <tr><td>E6 · Context engineering</td><td>Context window; attention; KV cache</td><td>The budget is counted in tokens. Attention cost grows with length. A stable prefix can be cached.</td></tr>
+      <tr><td>E7 · Memory</td><td>Embedding; fixed weights</td><td>The weights do not change during a session. Memory must be written back into the window, often by retrieval over embeddings.</td></tr>
+      <tr><td>E10 · Evals as gates</td><td>Softmax · sample</td><td>The same input can give different outputs. A score needs several runs.</td></tr>
+      <tr><td>E11 · Observability</td><td>Tokens in and out of each call</td><td>Tokens per call are the unit of cost and latency in a trace.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>Normalization layers inside each block. They keep the numbers in range; they do not change the flow.</li>
+      <li>Mixture-of-experts models replace the one MLP with several expert MLPs and a router that picks a few per token. The loop is the same.</li>
+      <li>The figure in Vaswani et al. (2017) shows an encoder and a decoder (see <a href="transformer-2017.html">Figure 01b</a>). Chat models of the GPT, Claude, and Llama lineage use the decoder side only, which is what this figure draws.</li>
+      <li>Hosted APIs return tool calls as structured blocks, not raw text. The model still produced them token by token; the provider's harness parsed them before yours sees them.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Readings</h2>
+    <ol>
+      <li>Vaswani, A., et al. (2017). Attention is all you need. <em>NeurIPS 30</em>.</li>
+      <li>Radford, A., et al. (2019). <em>Language models are unsupervised multitask learners</em>. OpenAI.</li>
+      <li>Elhage, N., et al. (2021). <em>A mathematical framework for transformer circuits</em>. Transformer Circuits Thread. (The residual-stream view.)</li>
+      <li>Liu, N. F., et al. (2024). Lost in the middle: How language models use long contexts. <em>TACL, 12</em>, 157–173.</li>
+      <li>Yao, S., et al. (2023). ReAct: Synergizing reasoning and acting in language models. <em>ICLR</em>.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 01 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const STEPS = [
+    {k:"*", t:"Two loops, one inside the other", w:["E0","E1"],
+     p:"A language model runs a loop of its own inside the agent loop you build. The inner loop, in the blue box, produces one token per pass through the network. The outer loop, the harness around it, turns a finished reply into a tool call or an answer and feeds the result back. Step through to see what each part does and which week of the course depends on it."},
+    {k:"ctx in", t:"The harness builds the context window", w:["E6"],
+     p:"Before every model call, the harness assembles the whole transcript: the system prompt, AGENTS.md and skills, the tool schemas, the user's message, earlier replies, and every tool result so far. The model keeps nothing between calls. Everything it will know on this call must be in this window, and all of it is sent again each time."},
+    {k:"tok", t:"The tokenizer cuts text into tokens", w:["E6","E11"],
+     p:"The tokenizer splits the text into tokens, which are often pieces of words rather than whole words, and maps each one to an integer from a fixed vocabulary. Tokens are the unit of the context limit, of latency, and of the bill. When the course counts a budget, it counts tokens."},
+    {k:"emb", t:"Each token becomes a vector", w:["E7"],
+     p:"An embedding table turns each token ID into a vector, a list of thousands of numbers. Information about each token's position is mixed in, because the rest of the network would otherwise not know word order. Retrieval in week seven uses the same idea: a separate embedding model turns a passage into a vector, so that passages with similar meaning sit close together."},
+    {k:"block attn rail", t:"Attention looks back at earlier tokens", w:["E6"],
+     p:"In each block, masked self-attention lets every position gather information from the positions before it, weighted by how relevant each one scores. Masked means a position can look back but never ahead. This is the only place where tokens exchange information, so it is where long context costs most: processing a whole prompt grows roughly with the square of its length. Models also tend to use material at the start and end of a long window better than material in the middle."},
+    {k:"block mlp rail", t:"Blocks repeat, adding to a residual stream", w:["E7"],
+     p:"After attention, a feed-forward network, the MLP, transforms each position on its own. Both steps add their output back into a running vector for each position, called the residual stream. A model stacks this block dozens of times. The weights in every block were fixed when training ended. Nothing in this box learns from your session."},
+    {k:"kv attn", t:"The KV cache avoids recomputing the past", w:["E6","E11"],
+     p:"Attention needs a key and a value for every earlier token. The model stores them in a KV cache, so producing the next token does not reprocess the whole prefix. Providers extend the idea across calls with prompt caching: when the start of the transcript is identical to the last call, that part is served from cache at lower cost and latency. That is why stable content belongs at the front of the window."},
+    {k:"unemb samp chip", t:"Scores become probabilities, and one token is drawn", w:["E10"],
+     p:"The unembedding turns the final vector into a score for every entry in the vocabulary. Softmax turns the scores into probabilities, and a sampler draws one token. Temperature and top-p shape that draw. Because the draw is random, the same input can produce a different output. Try it in the sampler below the figure."},
+    {k:"chip loop tok", t:"The inner loop: append and run again", w:["E1"],
+     p:"The chosen token is appended to the sequence, and the pass runs again to produce the next one. The model writes one token per pass until it emits a stop token or reaches its output limit. Thinking tokens, when a model has them, come out of this same loop."},
+    {k:"exit parse", t:"The harness reads the reply", w:["E3"],
+     p:"When the model stops, its reply leaves the inner loop as text. The harness parses it. If the reply matches the tool-call format, it is a request to call a tool. The model has not run anything. It has only written a request, which is why the course treats the model as an untrusted caller."},
+    {k:"gate tool", t:"The gate, then the tool", w:["E3","E4","E5"],
+     p:"The harness checks the request against its permission rules, and asks the human when the rules say to, before anything runs. Only then does it call the tool: a file write, an API, or an MCP server. The side effect happens here, in code you wrote, not in the model."},
+    {k:"result route ctx", t:"The result goes back in as text", w:["E5","E6"],
+     p:"The tool's output is appended to the transcript as the next observation, and the outer loop begins again with a longer window. The model reads that output in the same window as its instructions. Text inside a tool result can pose as an instruction, which is the root of prompt injection and tool poisoning."},
+    {k:"parse halt", t:"The halt check", w:["E1"],
+     p:"If the reply is a final answer, the loop halts. It must also halt when a turn budget, a cost budget, or an error says so. Without a halt condition, every pass through the outer loop resends a longer transcript, and the bill grows with it, as the chart below the figure shows."},
+    {k:"*", t:"What each loop supplies", w:["E0"],
+     p:"The inner loop supplies a reasoner that generalizes from text. It supplies no persistent state, no ground truth, and no accountability. The outer loop, the harness you build, supplies state through the context window and memory, ground truth through tools and evaluators, and a human who answers for the result."}
+  ];
+
+  const fig = document.getElementById("fig");
+  const els = [...fig.querySelectorAll(".el")];
+  const $ = id => document.getElementById(id);
+  let cur = 0;
+
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="dot";
+    b.setAttribute("aria-label","Step "+i+": "+s.t);
+    b.addEventListener("click",()=>{ go(i); });
+    dots.appendChild(b);
+  });
+
+  function render(){
+    const s = STEPS[cur];
+    const keys = s.k==="*" ? null : s.k.split(" ");
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{
+      const ek = (e.dataset.k||"").split(" ");
+      const on = !!keys && ek.some(x=>keys.includes(x));
+      e.classList.toggle("on", on);
+    });
+    $("stepno").textContent = "Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent = s.t;
+    $("captext").textContent = s.p;
+    $("capweeks").innerHTML = s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled = cur===0;
+    $("next").disabled = cur===STEPS.length-1;
+  }
+
+  function go(i){
+    cur = Math.max(0, Math.min(STEPS.length-1, i));
+    render();
+  }
+
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight") { go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft")  { go(cur-1); e.preventDefault(); }
+  });
+
+  render();
+
+  /* ---------- sampler ---------- */
+  const CAND = [["caller",4.2],["client",2.9],["user",2.4],["agent",2.0],["party",1.3],["input",0.9],["actor",0.5]];
+  const tally = Object.fromEntries(CAND.map(c=>[c[0],0]));
+  let history = [];
+  const bars = $("bars");
+  CAND.forEach(([w])=>{
+    const r=document.createElement("div"); r.className="bar"; r.dataset.w=w;
+    r.innerHTML='<span>'+w+'</span><div class="track"><div class="fill"></div></div><span class="pct"></span><span class="cnt"></span>';
+    bars.appendChild(r);
+  });
+  function probs(T){
+    if (T<=0.001){ return CAND.map((c,i)=> i===0?1:0); }
+    const z = CAND.map(c=>c[1]/T); const m=Math.max(...z);
+    const e = z.map(x=>Math.exp(x-m)); const s=e.reduce((a,b)=>a+b,0);
+    return e.map(x=>x/s);
+  }
+  function drawSamp(){
+    const T = +$("temp").value; $("tempout").textContent = T.toFixed(2);
+    const p = probs(T);
+    [...bars.children].forEach((r,i)=>{
+      r.querySelector(".fill").style.width = (p[i]*100).toFixed(1)+"%";
+      r.querySelector(".pct").textContent = (p[i]*100).toFixed(1)+"%";
+      const n = tally[CAND[i][0]]; r.querySelector(".cnt").textContent = n? "×"+n : "";
+      r.classList.toggle("top", i===0);
+    });
+  }
+  function sampleOnce(){
+    const p = probs(+$("temp").value); let r=Math.random(), acc=0, k=p.length-1;
+    for (let i=0;i<p.length;i++){ acc+=p[i]; if (r<acc){ k=i; break; } }
+    const w = CAND[k][0]; tally[w]++; history.push(w); $("blank").textContent = w; return w;
+  }
+  function showDraws(){
+    $("draws").textContent = history.length ? history.slice(-40).join(" · ") : "No draws yet.";
+    drawSamp();
+  }
+  $("temp").addEventListener("input", drawSamp);
+  $("draw1").addEventListener("click",()=>{ sampleOnce(); showDraws(); });
+  $("draw20").addEventListener("click",()=>{ for(let i=0;i<20;i++) sampleOnce(); showDraws(); });
+  $("clear").addEventListener("click",()=>{ Object.keys(tally).forEach(k=>tally[k]=0); history=[]; $("blank").textContent="___"; showDraws(); });
+  drawSamp();
+
+  /* ---------- cost chart ---------- */
+  const BASE = 12000; // system prompt + AGENTS.md + tool schemas + first user message
+  const fmt = n => n.toLocaleString("en-US");
+  function niceMax(v){ const p=Math.pow(10,Math.floor(Math.log10(v))); const f=v/p; const n = f<=1?1: f<=2?2: f<=2.5?2.5: f<=5?5:10; return n*p; }
+  function drawCost(){
+    const add = +$("add").value, turns = +$("turns").value;
+    $("addout").textContent = fmt(add); $("turnsout").textContent = turns;
+    const W=520,H=250, L=62, R=12, T=12, B=30, pw=W-L-R, ph=H-T-B;
+    const sent = Array.from({length:turns},(_,i)=> BASE + add*i);
+    const ymax = niceMax(sent[turns-1]);
+    const y = v => T + ph - (v/ymax)*ph;
+    const slot = pw/turns, bw = Math.max(3, slot*0.68);
+    let s = "";
+    for (let g=0; g<=4; g++){
+      const v = ymax*g/4, yy=y(v);
+      s += '<line class="'+(g?'grid':'axis')+'" x1="'+L+'" x2="'+(W-R)+'" y1="'+yy.toFixed(1)+'" y2="'+yy.toFixed(1)+'"/>';
+      s += '<text x="'+(L-6)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end">'+(v>=1000? (v/1000)+'k' : v)+'</text>';
+    }
+    sent.forEach((v,i)=>{
+      const x = L + i*slot + (slot-bw)/2;
+      const cached = i===0 ? 0 : sent[i-1];
+      const nw = v - cached;
+      if (cached) s += '<rect class="cached" x="'+x.toFixed(1)+'" y="'+y(cached).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(y(0)-y(cached)).toFixed(1)+'"/>';
+      s += '<rect class="new" x="'+x.toFixed(1)+'" y="'+y(v).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(y(cached)-y(v)).toFixed(1)+'"/>';
+      const every = turns>20?5: turns>10?2:1;
+      if ((i+1)%every===0 || i===0) s += '<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-B+15)+'" text-anchor="middle">'+(i+1)+'</text>';
+    });
+    s += '<text x="'+(L+pw/2)+'" y="'+(H-2)+'" text-anchor="middle">call number (turn)</text>';
+    s += '<text x="12" y="'+(T+ph/2)+'" text-anchor="middle" transform="rotate(-90 12 '+(T+ph/2)+')">input tokens sent</text>';
+    $("cost").innerHTML = s;
+    const total = sent.reduce((a,b)=>a+b,0);
+    const newOnly = BASE + add*(turns-1);
+    $("coststat").innerHTML = "Input tokens sent across "+turns+" calls: <b>"+fmt(total)+"</b>. Tokens that were new: "+fmt(newOnly)+". Resending multiplied the input "+(total/newOnly).toFixed(1)+"×.";
+  }
+  $("add").addEventListener("input", drawCost);
+  $("turns").addEventListener("input", drawCost);
+  drawCost();
+})();
+</script>
+
+</body></html>
