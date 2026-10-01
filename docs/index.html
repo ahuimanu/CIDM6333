@@ -10,15 +10,16 @@
 @media (prefers-color-scheme: dark){:root{color-scheme:dark;--bg:#0E151B;--surface:#16212A;--ink:#E2E8ED;--ink-2:#9AAAB6;--line:#3B4B58;--accent:#F0A04B;--accent-ink:#F6B874}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.55}
-.wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:32px 64px}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:20px;padding-block:32px 64px}
 .eyebrow{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--ink-2)}
 h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:56px;line-height:1;margin:6px 0 12px}
-.list{display:grid;gap:14px;margin-top:24px}
-a.card{display:grid;gap:4px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:inherit;text-decoration:none}
+p.lede{max-width:68ch;margin:0}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px;margin-top:24px}
+a.card{display:grid;gap:4px;align-content:start;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:inherit;text-decoration:none}
 a.card:hover,a.card:focus-visible{border-color:var(--accent);outline:none}
-a.card b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:24px;font-weight:600}
+a.card b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:24px;font-weight:600;line-height:1.1}
 a.card span{color:var(--ink-2);font-size:15px}
-.weeks{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--accent-ink)}
+.weeks{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--accent-ink)!important}
 footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
 </style>
 </head>
@@ -26,17 +27,82 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
 <div class="wrap">
   <div class="eyebrow">CIDM 6333 · Agentic Systems Design and Development</div>
   <h1>Figures</h1>
-  <p>Interactive explainers for the course. Each one steps through a mechanism the lectures describe. Use Next and Back, the step dots, or the arrow keys.</p>
+  <p class="lede">Interactive explainers for the course, one or more for each Evolution. Each one steps through a mechanism the lecture describes. Use Next and Back, the step dots, or the arrow keys, then try the interactive panels below each figure.</p>
   <div class="list">
     <a class="card" href="figures/two-loops.html">
-      <span class="weeks">Figure 01 · E0 E1 E3 E6 E7 E10 E11</span>
+      <span class="weeks">Figure 01 · E0 E1 E6 E10</span>
       <b>Two Loops</b>
-      <span>How a language model writes one token per pass, inside the agent loop your harness runs. Includes a temperature sampler and a per-turn token cost chart.</span>
+      <span>How a language model writes one token per pass inside the agent loop your harness runs, with a temperature sampler and a per-turn token cost chart.</span>
     </a>
     <a class="card" href="figures/transformer-2017.html">
       <span class="weeks">Figure 01b · after Vaswani et al. (2017)</span>
       <b>The 2017 Transformer</b>
-      <span>Figure 1 of <em>Attention Is All You Need</em>, redrawn and quoted step by step, with a decoder-only switch, live scaled dot-product attention, positional encodings, and Tables 1 and 3.</span>
+      <span>Figure 1 of Attention Is All You Need redrawn and quoted step by step, with a decoder-only switch, live attention, positional encodings, and Tables 1 and 3.</span>
+    </a>
+    <a class="card" href="figures/transformer-evidence.html">
+      <span class="weeks">Figure 01c · E10 E6 E11</span>
+      <b>The Transformer's Evidence</b>
+      <span>The paper's evidence as working charts: cost against BLEU, one-change ablations, the warmup schedule, the attention pictures, and parsing.</span>
+    </a>
+    <a class="card" href="figures/loop-that-halts.html">
+      <span class="weeks">Figure 02 · E1</span>
+      <b>The Loop That Halts</b>
+      <span>The agent loop as a state machine with an exit for every halt condition, and a budget simulator that shows the spiral when the halt check is off.</span>
+    </a>
+    <a class="card" href="figures/who-owns-the-loop.html">
+      <span class="weeks">Figure 03 · E2</span>
+      <b>Who Owns the Loop</b>
+      <span>The five workflow patterns and the agent as mechanisms, and a framework picker that shows who owns each part of the loop.</span>
+    </a>
+    <a class="card" href="figures/the-gate-holds.html">
+      <span class="weeks">Figure 04 · E3</span>
+      <b>The Gate Holds</b>
+      <span>One tool call played through model, harness, permission gate, human, tool, and ledger, for read, write, destructive, malformed, and injected calls.</span>
+    </a>
+    <a class="card" href="figures/n-plus-m.html">
+      <span class="weeks">Figure 05 · E4</span>
+      <b>N×M Becomes N+M</b>
+      <span>Sliders redraw direct integrations beside MCP, with hosts, clients, servers, and the three server primitives.</span>
+    </a>
+    <a class="card" href="figures/trust-boundaries.html">
+      <span class="weeks">Figure 06 · E5</span>
+      <b>Trust Boundaries</b>
+      <span>The five-step MCP authorization flow, the threat model as trust boundaries, and a live hash-pin check on a tool description.</span>
+    </a>
+    <a class="card" href="figures/window-budget.html">
+      <span class="weeks">Figure 07 · E6</span>
+      <b>Window Budget</b>
+      <span>The context window by who fills it, the per-turn budget record, a compaction simulator, and the 258K exhaustion.</span>
+    </a>
+    <a class="card" href="figures/memory-is-a-claim.html">
+      <span class="weeks">Figure 08 · E7</span>
+      <b>Memory Is a Claim</b>
+      <span>Chunk, represent, store, score, inject: four questions against a five-record store with two retrievers, eviction, and a ledger.</span>
+    </a>
+    <a class="card" href="figures/plan-do-check.html">
+      <span class="weeks">Figure 09 · E8</span>
+      <b>Plan, Do, Check</b>
+      <span>Controller, worker, and reviewer as a state graph with typed results, replaying the deck's trace with a read-only or editing reviewer.</span>
+    </a>
+    <a class="card" href="figures/claim-receipt-verdict.html">
+      <span class="weeks">Figure 10 · E9</span>
+      <b>Claim, Receipt, Verdict</b>
+      <span>Who writes each record and which ones are evidence, the MAST failure matrix, and the ten-deep chain with and without receipts.</span>
+    </a>
+    <a class="card" href="figures/one-run-is-an-anecdote.html">
+      <span class="weeks">Figure 11 · E10</span>
+      <b>One Run Is an Anecdote</b>
+      <span>The delta gate from golden set to exit code, with a simulation of how often a gate that sees few runs gets it wrong.</span>
+    </a>
+    <a class="card" href="figures/receipts-over-narrative.html">
+      <span class="weeks">Figure 12 · E11</span>
+      <b>Receipts Over Narrative</b>
+      <span>A span waterfall of one agent run where the trace catches a claim the agent's own account got wrong.</span>
+    </a>
+    <a class="card" href="figures/rolled-back.html">
+      <span class="weeks">Figure 13 · E12</span>
+      <b>Rolled Back</b>
+      <span>The release path and the way back, a circuit-breaker simulator, and two ways to ship the same release.</span>
     </a>
   </div>
   <footer>Jeffry Babb · West Texas A&amp;M University · Fall 2026</footer>

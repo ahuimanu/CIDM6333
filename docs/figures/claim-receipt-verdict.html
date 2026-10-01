@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Claim, Receipt, Verdict</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --go:#2F7D4F; --go-soft:#DDEFE3; --stop:#B3261E; --stop-soft:#F6DCDA;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+    --go:#5DBB84; --go-soft:#16301F; --stop:#F07A70; --stop-soft:#3A1A18;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+  --go:#5DBB84; --go-soft:#16301F; --stop:#F07A70; --stop-soft:#3A1A18;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3{font-family:var(--display); font-weight:600; font-size:20px; line-height:1.15; margin:0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+header{display:grid; gap:4px; margin-bottom:22px}
+code,.mono{font-family:var(--mono); font-size:.86em}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:900px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:11.5px; fill:var(--ink)}
+.fig .monos{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .lane{fill:var(--surface-2); opacity:.6}
+.fig .evchip{fill:var(--surface-2); stroke:var(--line); stroke-width:1}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .blocked{fill:none; stroke:var(--ink-2); stroke-width:1.6; stroke-dasharray:3 4}
+.fig .xmark{stroke:var(--ink); stroke-width:2.4}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig .el.on .box{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .blocked{stroke:var(--accent); stroke-width:2.2}
+.fig .el.on .xmark{stroke:var(--accent)}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.prompt{font-family:var(--mono); font-size:13.5px; background:var(--surface-2); padding:10px 12px; border-radius:8px; line-height:1.5; white-space:pre-wrap; overflow-x:auto}
+
+/* MAST matrix */
+.mast{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:18px}
+.fc{display:grid; gap:6px; align-content:start; min-width:0}
+.fc .fchead{display:flex; justify-content:space-between; align-items:baseline; gap:8px; border-bottom:1.5px solid var(--ink-2); padding-bottom:4px}
+.fc .fchead span{font-family:var(--mono); font-size:13px; color:var(--ink-2)}
+.fc .fcdesc{font-size:14px; color:var(--ink-2); margin:0 0 4px}
+.mode{display:grid; grid-template-columns:minmax(0,1fr) 84px 44px; gap:8px; align-items:center; width:100%; text-align:left; padding:6px 8px; font-size:14.5px; letter-spacing:.02em}
+.mode .nm{overflow-wrap:anywhere}
+.mode .nm b{font-family:var(--mono); font-weight:400; font-size:12px; color:var(--ink-2); margin-right:6px}
+.mode .track{height:12px; background:var(--surface-2); border-radius:3px; overflow:hidden}
+.mode .fill{height:100%; background:var(--s-a)}
+.mode .pc{font-family:var(--mono); font-weight:400; font-size:12.5px; text-align:right; font-variant-numeric:tabular-nums}
+.mode[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft)}
+.mode[aria-pressed="true"] .fill{background:var(--s-b)}
+.mode.hl{border-color:var(--accent); border-style:dashed; border-width:2px}
+.axisrow{display:grid; grid-template-columns:minmax(0,1fr) 84px 44px; gap:8px; padding:0 9px; font-family:var(--mono); font-size:11px; color:var(--ink-2)}
+.axisrow .ax{display:flex; justify-content:space-between}
+.detail{background:var(--surface-2); border-radius:10px; padding:14px 16px; display:grid; gap:8px}
+.detail .dh{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+.detail .dh h3{font-size:22px}
+.detail dl{margin:0; display:grid; grid-template-columns:minmax(110px,auto) minmax(0,1fr); gap:6px 14px; font-size:15px}
+.detail dt{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--ink-2); padding-top:3px}
+.detail dd{margin:0}
+@media (max-width:520px){ .detail dl{grid-template-columns:1fr} .detail dt{padding-top:6px} .mode,.axisrow{grid-template-columns:minmax(0,1fr) 60px 40px} }
+.namerow{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
+/* ten-deep chain */
+.chainhead{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center}
+.chain{display:grid; gap:5px}
+.hop{display:grid; grid-template-columns:80px minmax(0,1fr) auto; gap:10px; align-items:center; padding:7px 10px; border:1px solid var(--line); border-radius:8px; background:var(--surface); transition:opacity .3s ease}
+.hop.future{opacity:.22}
+.hop.cur{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent)}
+.hop .who{font-family:var(--display); font-weight:600; font-size:15px}
+.hop .say{font-family:var(--mono); font-size:13px; overflow-wrap:anywhere}
+.hop .say small{display:block; font-family:var(--body); font-size:13px; color:var(--ink-2)}
+.hop.ev{background:var(--surface-2)}
+.st{font-family:var(--display); font-weight:600; font-size:12.5px; letter-spacing:.06em; padding:2px 8px; border-radius:999px; white-space:nowrap; text-transform:uppercase}
+.st.fact{background:var(--stop-soft); color:var(--stop)}
+.st.claim{background:var(--surface-2); color:var(--ink-2); border:1px solid var(--line)}
+.st.rc{background:var(--go-soft); color:var(--go)}
+.st.nc{background:var(--accent-soft); color:var(--accent-ink)}
+.outcome{border-radius:10px; padding:12px 14px; border:1.5px solid var(--line); display:grid; gap:4px}
+.outcome.bad{border-color:var(--stop); background:var(--stop-soft)}
+.outcome.good{border-color:var(--go); background:var(--go-soft)}
+.outcome b{font-family:var(--display); font-weight:600; font-size:18px}
+.meter{display:flex; gap:18px; flex-wrap:wrap; font-family:var(--mono); font-size:13.5px}
+.meter b{font-weight:500; color:var(--accent-ink)}
+@media (max-width:560px){ .hop{grid-template-columns:1fr; gap:4px} }
+
+/* tiers, locks */
+.tiers{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:10px}
+.tier{border:1px solid var(--line); border-radius:10px; padding:12px 14px; display:grid; gap:6px; align-content:start}
+.tier .n{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.tier p{font-size:15px}
+.lockgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:12px}
+.lockfile{font-family:var(--mono); font-size:13px; background:var(--surface-2); border-radius:8px; padding:10px 12px; min-height:92px; white-space:pre-wrap; overflow-wrap:anywhere}
+.ledger{font-family:var(--mono); font-size:12.5px; background:var(--surface-2); border-radius:8px; padding:10px 12px; min-height:92px; max-height:180px; overflow:auto; display:grid; gap:2px; align-content:start}
+.ledger .e{color:var(--ink)} .ledger .m{color:var(--ink-2)}
+.steps4{margin:0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px; white-space:nowrap}
+td.m{font-family:var(--mono); font-size:13.5px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 10</div>
+  <h1>Claim, Receipt, Verdict</h1>
+  <p class="lede">A worker that says all tests pass has produced a sentence. The harness that ran the tests and wrote down the exit code has produced evidence. Step through the four records a multi-agent system writes about one piece of work, then use the failure matrix and the ten-deep chain below to see what happens when a claim travels without a receipt.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 650" role="img" aria-label="Four swim lanes for four authors. The worker model writes a claim. The harness runs the test command against the worker's commit and writes a receipt. A second-family adversary receives the claim and the receipt and writes a verdict. A human writes an attestation that goes to Gate 5. Claims, receipts, and verdicts go to the append-only ledger; only receipts are cited in the flight log.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- lanes -->
+    <rect class="lane" x="16" y="16" width="1068" height="136" rx="8"/>
+    <rect class="lane" x="16" y="332" width="1068" height="120" rx="8"/>
+    <rect class="lane" x="16" y="560" width="1068" height="82" rx="8"/>
+    <text class="lab" x="28" y="44">Worker model</text><text class="ts" x="28" y="62">Big Pickle or a Go model</text><text class="ts" x="28" y="78">writes claims</text>
+    <text class="lab" x="28" y="188">Harness</text><text class="ts" x="28" y="206">your code</text><text class="ts" x="28" y="222">writes receipts</text>
+    <text class="lab" x="28" y="360">Adversary</text><text class="ts" x="28" y="378">a second model family</text><text class="ts" x="28" y="394">writes verdicts</text>
+    <text class="lab" x="28" y="488">Human</text><text class="ts" x="28" y="506">the Chase, or you</text><text class="ts" x="28" y="522">writes attestations</text>
+    <text class="lab" x="28" y="590">Where it goes</text><text class="ts" x="28" y="608">append-only stores</text>
+
+    <!-- claim -> ledger -->
+    <g class="el" data-k="cl2led">
+      <path class="flow" d="M186,138 L186,570"/>
+      <text class="ts" transform="translate(203,548) rotate(-90)">claim, marked unverified</text>
+    </g>
+
+    <!-- claim card -->
+    <g class="el" data-k="claim">
+      <rect class="box" x="170" y="30" width="220" height="108" rx="8"/>
+      <text class="tt" x="184" y="52">Claim</text>
+      <text class="tag" x="376" y="52" text-anchor="end">NOT EVIDENCE</text>
+      <text class="mono" x="184" y="76">HandoffResult</text>
+      <text class="mono" x="184" y="94">status: DONE</text>
+      <text class="mono" x="184" y="112">text: "3/3 tests pass"</text>
+      <text class="ts" x="184" y="130">proves only that the worker wrote it</text>
+    </g>
+
+    <!-- worker edits -> repo -->
+    <g class="el" data-k="edit">
+      <path class="flow" d="M300,138 L300,194"/>
+      <text class="ts" x="308" y="172">commits its edits</text>
+    </g>
+    <g class="el" data-k="repo">
+      <rect class="box" x="214" y="196" width="136" height="96" rx="8"/>
+      <text class="tt" x="226" y="218">Repository</text>
+      <text class="mono" x="226" y="240">a1b2c3d</text>
+      <text class="ts" x="226" y="260">the code itself,</text>
+      <text class="ts" x="226" y="276">at one commit</text>
+    </g>
+    <g class="el" data-k="run">
+      <path class="flow" d="M350,244 L438,244"/>
+      <text class="ts" x="394" y="216" text-anchor="middle">harness runs</text>
+      <text class="ts" x="394" y="232" text-anchor="middle">the command</text>
+    </g>
+
+    <!-- receipt card -->
+    <g class="el" data-k="receipt">
+      <rect class="box" x="440" y="172" width="230" height="144" rx="8"/>
+      <text class="tt" x="454" y="194">Receipt</text>
+      <text class="tag" x="656" y="194" text-anchor="end">EVIDENCE</text>
+      <text class="monos" x="454" y="216">cmd: python -m unittest -v</text>
+      <text class="monos" x="454" y="233">exit_code: 1</text>
+      <text class="monos" x="454" y="250">commit: a1b2c3d</text>
+      <text class="monos" x="454" y="267">stdout_sha256: 9f2c…</text>
+      <text class="monos" x="454" y="284">ran_at: 2026-10-31T19:02:11Z</text>
+      <text class="ts" x="454" y="305">harness-written, never a model</text>
+    </g>
+
+    <!-- receipt -> ledger -->
+    <g class="el" data-k="rc2led">
+      <path class="flow" d="M500,316 L500,570"/>
+      <text class="ts" x="508" y="500">receipt event</text>
+    </g>
+
+    <!-- inputs to adversary -->
+    <g class="el" data-k="adv">
+      <path class="flow" d="M390,64 L770,64 L770,344"/>
+      <text class="ts" x="580" y="56" text-anchor="middle">the claim text, alone</text>
+      <path class="flow" d="M670,200 L740,200 L740,344"/>
+      <text class="ts" x="705" y="192" text-anchor="middle">receipt</text>
+      <text class="ts" x="782" y="300">claim + receipt only</text>
+    </g>
+
+    <!-- verdict card -->
+    <g class="el" data-k="verdict">
+      <rect class="box" x="690" y="346" width="230" height="98" rx="8"/>
+      <text class="tt" x="704" y="368">Adversary verdict</text>
+      <text class="tag" x="906" y="368" text-anchor="end">A CLAIM</text>
+      <text class="mono" x="704" y="390">verdict: "REFUTED"</text>
+      <text class="mono" x="704" y="408">cites: "…#failures"</text>
+      <text class="ts" x="704" y="432">never sees the worker's summary</text>
+    </g>
+
+    <!-- verdict -> ledger -->
+    <g class="el" data-k="v2led">
+      <path class="flow" d="M690,428 L640,428 L640,570"/>
+      <text class="ts" x="648" y="500">model id, family</text>
+    </g>
+
+    <!-- verdict -> human -->
+    <g class="el" data-k="v2h">
+      <path class="flow" d="M920,396 L990,396 L990,472"/>
+      <text class="ts" x="998" y="424">Chase checks</text>
+      <text class="ts" x="998" y="440">the citation</text>
+    </g>
+
+    <!-- attestation -->
+    <g class="el" data-k="human">
+      <rect class="box" x="900" y="474" width="180" height="72" rx="8"/>
+      <text class="tt" x="914" y="496">Attestation</text>
+      <text class="tag" x="1066" y="496" text-anchor="end">BY NAME</text>
+      <text class="ts" x="914" y="516">a human, after reading</text>
+      <text class="ts" x="914" y="532">the receipts</text>
+    </g>
+    <g class="el" data-k="h2g"><path class="flow" d="M990,546 L990,572"/></g>
+
+    <!-- destinations -->
+    <g class="el" data-k="ledger">
+      <rect class="box" x="170" y="572" width="490" height="62" rx="8"/>
+      <text class="lab" x="184" y="592">Ledger · append-only</text>
+      <rect class="evchip" x="184" y="602" width="146" height="22" rx="4"/><text class="monos" x="257" y="617" text-anchor="middle">claim · unverified</text>
+      <rect class="evchip" x="338" y="602" width="70" height="22" rx="4"/><text class="monos" x="373" y="617" text-anchor="middle">receipt</text>
+      <rect class="evchip" x="416" y="602" width="140" height="22" rx="4"/><text class="monos" x="486" y="617" text-anchor="middle">adversary_verdict</text>
+    </g>
+    <g class="el" data-k="flog">
+      <path class="blocked" d="M660,603 L718,603"/>
+      <path class="xmark" d="M682,595 L696,611 M696,595 L682,611"/>
+      <rect class="box" x="720" y="572" width="160" height="62" rx="8"/>
+      <text class="tt" x="734" y="593">Flight log</text>
+      <text class="ts" x="734" y="611">each PASS cites a</text>
+      <text class="ts" x="734" y="626">receipt by path</text>
+    </g>
+    <g class="el" data-k="gate5">
+      <rect class="box" x="900" y="572" width="180" height="62" rx="8"/>
+      <text class="tt" x="914" y="593">Gate 5</text>
+      <text class="ts" x="914" y="611">a human's attestation;</text>
+      <text class="ts" x="914" y="626">never inferred</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step. Receipt values are the deck's worked example.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- ===== MAST matrix ===== -->
+  <section class="panel wide" aria-labelledby="h-mast">
+    <div class="eyebrow">Interaction 1 · Cemri et al. (2025) · E9 slides 4, 13, 14</div>
+    <h2 id="h-mast">Fourteen ways a multi-agent system fails</h2>
+    <p class="small">The MAST taxonomy sorts 1,642 annotated traces from seven frameworks into three categories and fourteen modes. Each bar is the mode's share of failures in MAST-Data, all on one scale. Select a mode to see what the deck says about it and which part of your build catches it.</p>
+    <div class="namerow">
+      <span class="small">gzkit adds two names the paper does not use:</span>
+      <button type="button" class="gzname" data-g="sl" aria-pressed="false">Summary laundering</button>
+      <button type="button" class="gzname" data-g="ha" aria-pressed="false">Hallucinated authorization</button>
+    </div>
+    <div class="mast" id="mast"></div>
+    <div class="detail" id="mdetail" aria-live="polite"></div>
+    <p class="small">Prevalence from the paper's HTML (v3, 26 Oct 2025). Category totals are the deck's sums of the paper's figures. Human inter-annotator agreement κ = 0.88; the paper's LLM annotator κ = 0.77 against experts. Where the deck says nothing about a single mode, the panel says so and gives the category's fix location.</p>
+  </section>
+
+  <!-- ===== ten-deep chain ===== -->
+  <section class="panel wide" aria-labelledby="h-chain">
+    <div class="eyebrow">Interaction 2 · Reference design · 2026-05-24 · E9 slide 20</div>
+    <h2 id="h-chain">The ten-deep chain: how a summary becomes a fact</h2>
+    <p class="small">In May 2026 the reference design ran a chain of subagents ten deep, each summarizing the layer below it. Each layer's polished summary became the next layer's fact, and by the end nobody in the chain had looked at the primary evidence. No single agent lied. Step up the chain one hop at a time, then run the same chain with receipts required. The deck does not quote the chain's text, so the summaries here are illustrative, built on the deck's worked receipt (3 tests run, 1 failure).</p>
+    <div class="chainhead">
+      <div class="seg" role="group" aria-label="Chain design">
+        <button type="button" id="c-sum" aria-pressed="true">05-24 · summaries only</button>
+        <button type="button" id="c-rec" aria-pressed="false">Receipts required</button>
+      </div>
+      <div class="btnrow">
+        <button type="button" id="hprev">◀ Hop back</button>
+        <button type="button" id="hnext" class="primary">Next hop ▶</button>
+        <button type="button" id="hreset">Reset</button>
+      </div>
+    </div>
+    <div class="meter" id="cmeter" aria-live="polite"></div>
+    <div class="chain" id="chain"></div>
+    <div class="outcome" id="coutcome" aria-live="polite"></div>
+    <p class="small">MAST reading from the deck: FC2, because information passed without checking, and FC3, because the check verified the summary and never the work. In Appendix C terms it is #3 fabrication, without any single agent lying. The deck asks the instructor to verify the date, the depth, and the rule's wording against AGENTS.md before class.</p>
+  </section>
+
+  <!-- ===== tiers ===== -->
+  <section class="panel" aria-labelledby="h-tiers">
+    <div class="eyebrow">E9 slide 6 · chapter 18</div>
+    <h2 id="h-tiers">Adversarial validation in three tiers</h2>
+    <p class="small">Independence is the property you are buying. Size is not.</p>
+    <div class="tiers">
+      <div class="tier"><span class="n">Tier 1 · cross-vendor</span><p>A different model family. It does not share the worker's training data, tokenizer, or house style, so it is least likely to find the worker's mistake plausible. Model evaluators recognize and score their own generations higher than equal work from others (Panickssery, Bowman, &amp; Feng, 2024).</p></div>
+      <div class="tier"><span class="n">Tier 2 · independent subagent</span><p>Same family, fresh context, no access to the worker's transcript. Cheaper to arrange. It shares the family's blind spots.</p></div>
+      <div class="tier"><span class="n">Tier 3 · human</span><p>The Chase, or you. Slowest. The only tier that can attest.</p></div>
+    </div>
+    <p>On OpenCode, tier 1 is cheap this term. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a named family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
+    <p class="small">The adversary gets the claim and the receipt. It never gets the worker's summary, its reasoning, or the answer you planted. The deck's worked agent file denies the adversary edit, bash, and webfetch, and defines NOT-REFUTED inside the prompt, because a model left to its own words will write “verified.”</p>
+  </section>
+
+  <!-- ===== locks ===== -->
+  <section class="panel" aria-labelledby="h-locks">
+    <div class="eyebrow">E9 slide 8 · try it</div>
+    <h2 id="h-locks">Locks: who may work on what</h2>
+    <ol class="steps4">
+      <li><b>Acquire atomically.</b> Create <code>locks/&lt;resource&gt;.lock</code> with <code>os.open(path, O_CREAT | O_EXCL)</code>. The operating system lets exactly one caller create it. Ledger: <code>lock_acquired</code>.</li>
+      <li><b>Deny the second.</b> A second worker's create fails with <code>FileExistsError</code>. It returns BLOCKED with the holder's name. Ledger: <code>lock_denied</code>.</li>
+      <li><b>Release with the token.</b> Only the caller holding the token may delete the lock. Ledger: <code>lock_released</code>.</li>
+      <li><b>Expire, then reclaim.</b> If now &gt; acquired_at + ttl_s, the holder is presumed dead. The next worker records the expiry first. Ledger: <code>lock_expired</code>, then <code>lock_acquired</code>.</li>
+    </ol>
+    <div class="btnrow" style="justify-content:flex-start">
+      <button type="button" data-l="acq A">A acquires</button>
+      <button type="button" data-l="acq B">B acquires</button>
+      <button type="button" data-l="rel A">A releases</button>
+      <button type="button" data-l="rel B">B releases</button>
+      <button type="button" data-l="tick">Clock +60 s</button>
+      <button type="button" data-l="reset">Reset</button>
+    </div>
+    <div class="lockgrid">
+      <div><div class="eyebrow">locks/notes_db.lock</div><div class="lockfile" id="lockfile"></div></div>
+      <div><div class="eyebrow">Ledger, the lock's witness</div><div class="ledger" id="lockledger"></div></div>
+    </div>
+    <p class="small">The resource name, the 120-second TTL, and the clock are illustrative. The falsifier is a lock that changed hands with no ledger event, because then nobody can tell whether a collision happened.</p>
+  </section>
+
+  <!-- ===== routing ===== -->
+  <section class="panel wide" aria-labelledby="h-route">
+    <div class="eyebrow">E9 slide 9 · chapter 18.4</div>
+    <h2 id="h-route">Routing and cost: send each task to a tier</h2>
+    <p class="small">Route by task class, declare a budget per sortie, and record the cost of every call. Prices and limits are from opencode.ai/docs/go, checked 09/24/2026; the deck says to verify them again before you fly.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Task class</th><th>Tier</th><th>Example model (verify)</th><th>Listed price in / out per 1M tokens</th><th>Why this tier</th></tr></thead>
+      <tbody>
+        <tr><td>Classify, extract, format</td><td>small</td><td class="m">opencode-go/glm-5.3-flash</td><td class="m">$0.15 / $0.50</td><td>A schema check catches the errors; errors are cheap.</td></tr>
+        <tr><td>Implement a small change</td><td>mid</td><td class="m">opencode-go/deepseek-v4-flash</td><td class="m">$0.15–0.30 / $0.60–1.20 (peak/off-peak)</td><td>The receipt checks the result.</td></tr>
+        <tr><td>Plan, review, settle a conflict</td><td>large</td><td class="m">opencode-go/kimi-k3</td><td class="m">$3.00 / $15.00</td><td>An error here reaches every worker. Kimi K3 allows about 110 requests per 5 hours on Go.</td></tr>
+        <tr><td>Adversary</td><td>other family</td><td>a family the worker is not</td><td>small tier is enough</td><td>Independence matters more than size.</td></tr>
+        <tr><td>Free or local</td><td>—</td><td class="m">opencode/big-pickle; Ollama</td><td class="m">$0</td><td>Big Pickle data may be used to improve the model; local costs your laptop's time.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Go is $10/month with dollar limits per model per 5 hours, week, and month (20% / 50% / 100% of the monthly limit). Published results for the same idea: RouteLLM (Ong et al., 2024) reported 85% lower cost on MT Bench at 95% of GPT-4's quality, and FrugalGPT (Chen, Zaharia, &amp; Zou, 2023) reported cascades that matched GPT-4 at up to 98% lower cost. Your route table is the small version.</p>
+  </section>
+
+  <!-- ===== counterpoint ===== -->
+  <section class="panel" aria-labelledby="h-cog">
+    <div class="eyebrow">E9 slide 17 · counterpoint</div>
+    <h2 id="h-cog">“Don't Build Multi-Agents”</h2>
+    <p class="small">Walden Yan, Cognition, June 2025. Two principles from the team that builds a coding agent.</p>
+    <blockquote>“Share context, and share full agent traces, not just individual messages.”<cite>Yan (2025), principle 1</cite></blockquote>
+    <blockquote>“Actions carry implicit decisions, and conflicting decisions carry bad results.”<cite>Yan (2025), principle 2</cite></blockquote>
+    <p><b>Mechanism.</b> Two subagents given parts of one task make decisions the other cannot see. Yan's example: one builds a background in the wrong visual style, the other builds a bird that matches neither, and the lead cannot reconcile them.</p>
+    <p><b>Design choice.</b> One single-threaded agent with continuous context, which compresses its history with a model when the window runs out.</p>
+    <p><b>Read against Anthropic's post.</b> The two do not conflict. Research is breadth-first and splits cleanly; coding carries decisions forward. Sortie 9 does not ask you to parallelize anything. It asks you to check one claim with an agent that shares nothing with the worker.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-anth">
+    <div class="eyebrow">E9 slide 15 · the other side</div>
+    <h2 id="h-anth">What coordination cost Anthropic's research system</h2>
+    <p>A Claude Opus 4 lead plans and starts Claude Sonnet 4 subagents that search in parallel, and a CitationAgent ties the report's claims to sources at the end (June 2025).</p>
+    <div class="tablewrap"><table style="min-width:0">
+      <tbody>
+        <tr><td>15×</td><td>tokens used relative to a chat (single agents: about 4×)</td></tr>
+        <tr><td>80%</td><td>of performance variance on BrowseComp explained by token usage alone</td></tr>
+        <tr><td>90.2%</td><td>better than single-agent Claude Opus 4 on Anthropic's internal research eval, which is not a public benchmark</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Early subagents duplicated searches and spawned too many tasks for simple queries; the fix was detailed task descriptions and explicit effort rules. Subagents write output to a filesystem, which turns a relayed claim into an artifact the next agent can check. The authors say multi-agent fits breadth-first research and fits badly where all agents must share one context, including most coding.</p>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">In your sortie · Flight Card 9 (corner) · Sprint due Wed 11/04</div>
+  <h2 id="h-map">Each test point checks one arrow in the figure</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Test point</th><th>What you do</th><th>Evidence the Chase reads</th><th>Part of the figure</th></tr></thead>
+    <tbody>
+      <tr><td>TP1</td><td>Worker returns DONE with the planted claim</td><td>Ledger: claim {status: unverified}; flight log unchanged</td><td>Claim → ledger; blocked arrow to the flight log</td></tr>
+      <tr><td>TP2</td><td>Harness runs the tests itself</td><td><code>receipts/…json</code> {cmd, exit_code, commit, sha256}; ledger: receipt</td><td>Repository → receipt</td></tr>
+      <tr><td>TP3</td><td>Adversary gets the claim and the receipt only</td><td>REFUTED, citing a receipt field; ledger: verdict {model, family}</td><td>Inputs → verdict → ledger</td></tr>
+      <tr><td>TP4</td><td>Control: a true claim with its receipt</td><td>NOT-REFUTED; the adversary does not refute everything</td><td>Verdict</td></tr>
+      <tr><td>TP5</td><td>Two workers request one lock</td><td>Second denied (lock_denied); TTL expiry logged, then reclaim</td><td>Locks panel</td></tr>
+      <tr><td>TP6</td><td>Every model call goes through the router</td><td>Ledger: {task_class, model, tokens, cost}; sortie total ≤ budget</td><td>Routing table</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:12px">Pre-registered falsifiers, any one of which fails the sortie: a claim promoted to the flight log with no receipt; the adversary returning NOT-REFUTED on the planted falsehood; a lock held by two workers, or a lock change with no ledger event; passing only by telling the adversary the answer, using the worker's model, or editing a receipt. From gzkit you borrow <code>gz obpi dispatch</code> (a dispatch record per task; “credit is never inferred”), <code>gz obpi lock</code>, <code>DISPATCH_MODEL_MAP</code> for routing by role, and Step 4b, which prefers Codex as the tier-1 adversary and calls one vendor degraded mode. The deck marks these names for verification against the repository.</p>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>The other two dated gzkit episodes. In June 2026 Gate-5 attestations were attributed to an operator who never gave them, and the reference design answered with <code>gz obpi repudiate</code>, which appends a repudiation and never erases the attestation. On 2026-08-21 a stale marker file licensed about 350 lines with no dispatch and no review.</li>
+      <li>Delegation across organizations. A2A v1.0 can sign an Agent Card, which proves who sent an artifact and says nothing about whether it is true. An A2A artifact enters your ledger as a claim with a verified sender.</li>
+      <li>Marketplaces. AP2 mandates prove what a human authorized for a payment. No protocol in the deck carries a receipt for “tests pass” across an agent boundary, so that job stays in your harness.</li>
+      <li>The ReviewResult from Sortie 8 and the two-stage review. The figure draws one worker and one adversary.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Readings</h2>
+    <ol>
+      <li>Cemri, M., et al. (2025). Why do multi-agent LLM systems fail? <em>NeurIPS 2025</em>. arXiv:2503.13657.</li>
+      <li>Anthropic. (2025, June). Multi-agent research system [Engineering post]. anthropic.com/engineering/multi-agent-research-system.</li>
+      <li>Yan, W. (2025, June). Don't build multi-agents. Cognition. cognition.com/blog/dont-build-multi-agents.</li>
+      <li>Panickssery, A., Bowman, S. R., &amp; Feng, S. (2024). LLM evaluators recognize and favor their own generations. arXiv:2404.13076.</li>
+      <li>Ong, I., et al. (2024). RouteLLM. arXiv:2406.18665.</li>
+      <li>Chen, L., Zaharia, M., &amp; Zou, J. (2023). FrugalGPT. arXiv:2305.05176.</li>
+      <li>A2A Project. (2026). Agent2Agent protocol specification, v1.0. a2a-protocol.org.</li>
+      <li>AP2 Protocol. (2025). ap2-protocol.org.</li>
+      <li>OpenCode documentation: Go, Zen, agents, CLI. opencode.ai/docs.</li>
+      <li>Course topic guide, chapter 18 and Appendix G (gzkit casebook).</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 10 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  /* ---------- step-through player ---------- */
+  const STEPS = [
+    {k:"*", t:"Four records, four authors", w:["E8","E9"],
+     p:"A multi-agent system writes four kinds of record about one piece of work. A worker model writes a claim, the harness writes a receipt, a second model writes a verdict, and a person writes an attestation. Only two of the four are evidence, and only the receipt is evidence about the code. Step through to see who writes each record and where your Sortie 9 lets it go."},
+    {k:"claim cl2led ledger", t:"The worker returns a claim", w:["E8","E9"],
+     p:"The worker ends its task with a HandoffResult from Sortie 8: a status such as DONE and a line of text, here “3/3 tests pass.” This record proves only that the worker produced the sentence. Your harness appends it to the ledger marked unverified. It never goes into the flight log on its own."},
+    {k:"edit repo run", t:"The harness runs the command itself", w:["E3","E9"],
+     p:"The worker's edits sit in the repository at commit a1b2c3d. The harness does not ask the worker whether the tests pass. It runs python -m unittest -v against that commit and records what the process returns. The worker's sentence plays no part in this step."},
+    {k:"receipt rc2led ledger", t:"What makes a receipt", w:["E9","E11"],
+     p:"A receipt holds the command, the exit code, the commit, a hash of the output, and the time. The harness writes it to receipts/ and appends a receipt event to the ledger. A model never writes it. If the worker writes its own receipt, you have a claim with a file extension."},
+    {k:"claim receipt adv", t:"The adversary gets the claim and the receipt", w:["E9"],
+     p:"A model from a second family receives two inputs: the claim text and the receipt. It never receives the worker's summary, its reasoning, or the falsehood you planted. A reviewer handed the worker's story checks whether the story is coherent, and a fluent story always is."},
+    {k:"verdict v2led ledger", t:"The verdict is a claim from a second author", w:["E9"],
+     p:"The adversary answers with one JSON object: REFUTED or NOT-REFUTED, and the receipt field it cites. This receipt shows exit_code 1, so the adversary returns REFUTED and cites the failures field. The harness logs the verdict with the model id and family. NOT-REFUTED means this adversary could not break the claim with this evidence. It never means verified."},
+    {k:"v2h human h2g gate5", t:"A person attests at Gate 5", w:["E9","E10"],
+     p:"Your Chase reads the receipts and the ledger slice, never the transcripts, and checks that the adversary's citation points at a real field in the receipt. Only a human, by name, writes the attestation, and it goes to Gate 5. An attestation that an agent writes for a human is not an attestation."},
+    {k:"ledger flog", t:"The flight log cites receipts, never claims", w:["E9"],
+     p:"Every PASS in your flight log points at a receipt by path. A claim with no receipt stays in the ledger, marked unverified. The first falsifier on Flight Card 9 is a claim promoted to the flight log with no receipt."},
+    {k:"*", t:"Two rules the week returns to", w:["E9"],
+     p:"The first rule: a claim moves toward the flight log only with a receipt that the harness wrote. The second rule: the check comes from something that does not share the worker's blind spots, a second model family first, an independent subagent second, a human third. The panels below apply both rules to the failure taxonomy, the ten-deep chain, locks, and routing."}
+  ];
+  const fig = $("fig"), els = [...fig.querySelectorAll(".el")];
+  let cur = 0;
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="dot"; b.setAttribute("aria-label","Step "+i+": "+s.t); b.addEventListener("click",()=>go(i)); dots.appendChild(b); });
+  function render(){
+    const s = STEPS[cur], keys = s.k==="*" ? null : s.k.split(" ");
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+    $("stepno").textContent = "Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent = s.t; $("captext").textContent = s.p;
+    $("capweeks").innerHTML = s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled = cur===0; $("next").disabled = cur===STEPS.length-1;
+  }
+  function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); render(); }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  render();
+
+  /* ---------- MAST matrix ---------- */
+  const CATS = {
+    FC1:{name:"System design", total:"44.2", desc:"The failure is in the setup: the task or role specification, the stopping condition, the memory.",
+      fix:"Your prompts, roles, and halt rules.",
+      catch:"The deck's fix location for FC1 is the setup itself. In the MAST paper's ChatDev tests, a clearer role specification raised success by 9.4%. Anthropic fixed its own duplicated searches and over-spawning with detailed task descriptions and explicit effort rules in the prompt. Better prompts raised success but did not remove the categories."},
+    FC2:{name:"Inter-agent misalignment", total:"32.4", desc:"The failure is in the traffic between agents: information lost, ignored, or never asked for.",
+      fix:"Contracts and handoffs.",
+      catch:"A handoff carries identity, scope, a result contract, and an evidence obligation. The result contract says what evidence each status requires and fails closed: DONE without a receipt parses as NEEDS_CONTEXT. If the worker writes its own receipt, you have a claim with a file extension."},
+    FC3:{name:"Task verification", total:"23.5", desc:"The failure is at the end: the check was missing, wrong, or came too early.",
+      fix:"Receipts and the adversary.",
+      catch:"Your receipt is the low-level check and your second-family adversary is the second level. Neither replaces the other. The MAST authors write that sole reliance on final-stage, low-level checks is inadequate; a high-level verification step added 15.6% on ProgramDev."}
+  };
+  const MODES = [
+    {c:"FC1", id:"1.1", n:"Disobey task specification", p:11.8, note:"One of the three largest FC1 modes on the deck's taxonomy slide."},
+    {c:"FC1", id:"1.2", n:"Disobey role specification", p:1.5, note:"The MAST authors tested a clearer role specification on ChatDev and measured +9.4% success."},
+    {c:"FC1", id:"1.3", n:"Step repetition", p:15.7, note:"The largest single mode in the taxonomy. The deck calls it a halt problem you met in week one."},
+    {c:"FC1", id:"1.4", n:"Loss of conversation history", p:2.8, note:""},
+    {c:"FC1", id:"1.5", n:"Unaware of stopping conditions", p:12.4, note:"A missing or unread stopping condition. The deck's fix location is your halt rules."},
+    {c:"FC2", id:"2.1", n:"Conversation reset", p:2.2, note:""},
+    {c:"FC2", id:"2.2", n:"Fail to ask for clarification", p:6.8, note:"Information that was never asked for. The Sortie 8 HandoffResult gives a worker an honest way to ask: status NEEDS_CONTEXT, with a required question field (E8)."},
+    {c:"FC2", id:"2.3", n:"Task derailment", p:7.4, note:""},
+    {c:"FC2", id:"2.4", n:"Information withholding", p:0.85, note:""},
+    {c:"FC2", id:"2.5", n:"Ignored other agent's input", p:1.9, note:""},
+    {c:"FC2", id:"2.6", n:"Reasoning-action mismatch", p:13.2, note:"The agent says one thing and does another. The largest FC2 mode. The deck places it next to Appendix C #3, fabrication."},
+    {c:"FC3", id:"3.1", n:"Premature termination", p:6.2, note:"The check came too early, or the work stopped before it."},
+    {c:"FC3", id:"3.2", n:"No or incomplete verification", p:8.2, note:"The check was missing. The deck maps it to Appendix C #4, skipped cheap verification. On your card, the harness-written receipt (TP2) is the check that cannot be skipped."},
+    {c:"FC3", id:"3.3", n:"Incorrect verification", p:9.1, note:"A reviewer that checked and got it wrong. This is where summary laundering lives, because the check happened and checked the wrong thing. On your card, the adversary gets the receipt, never the narrative (TP3), and a true-claim control shows it does not refute everything (TP4)."}
+  ];
+  const GZ = {
+    sl:{t:"Summary laundering", ids:["2.1","2.2","2.3","2.4","2.5","2.6","3.3"],
+        d:"A summary is promoted to fact. The deck reads it as FC2 and FC3 at once, because the information passes and nobody checks it. Its home in MAST is 3.3, incorrect verification. The ten-deep chain below is the reference design's own case.",
+        f:"Receipts that travel with the claim, and an adversary that reads the receipt."},
+    ha:{t:"Hallucinated authorization", ids:[],
+        d:"Appendix C #7: an agent acts on a gate it believes was passed when nothing records it. MAST has no code for it. The reference design's case is 2026-06-13, when a Gate-5 attestation was attributed to an operator who never gave it.",
+        f:"A gate that reads a record. Gate 5 is a human's attestation, never inferred and never written by an agent on the human's behalf."}
+  };
+  const SCALE = 16;
+  const mast = $("mast");
+  ["FC1","FC2","FC3"].forEach(c=>{
+    const col = document.createElement("div"); col.className="fc";
+    col.innerHTML = '<div class="fchead"><h3>'+c+' · '+CATS[c].name+'</h3><span>'+CATS[c].total+'%</span></div><p class="fcdesc">'+CATS[c].desc+' Fix location: '+CATS[c].fix+'</p>';
+    MODES.filter(m=>m.c===c).forEach(m=>{
+      const b = document.createElement("button"); b.type="button"; b.className="mode"; b.dataset.id=m.id; b.setAttribute("aria-pressed","false");
+      b.title = m.id+" "+m.n+": "+m.p+"% of failures in MAST-Data";
+      b.innerHTML = '<span class="nm"><b>'+m.id+'</b>'+m.n+'</span><span class="track"><span class="fill" style="display:block;width:'+(m.p/SCALE*100).toFixed(1)+'%"></span></span><span class="pc">'+m.p+'%</span>';
+      b.addEventListener("click",()=>pickMode(m.id));
+      col.appendChild(b);
+    });
+    const ax = document.createElement("div"); ax.className="axisrow"; ax.setAttribute("aria-hidden","true");
+    ax.innerHTML = '<span>share of failures</span><span class="ax"><span>0</span><span>8</span><span>16%</span></span><span></span>';
+    col.appendChild(ax);
+    mast.appendChild(col);
+  });
+  const modeBtns = [...mast.querySelectorAll(".mode")], gzBtns=[...document.querySelectorAll(".gzname")];
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+  function pickMode(id){
+    const m = MODES.find(x=>x.id===id), C = CATS[m.c];
+    modeBtns.forEach(b=>{ b.setAttribute("aria-pressed", b.dataset.id===id); b.classList.remove("hl"); });
+    gzBtns.forEach(b=>b.setAttribute("aria-pressed","false"));
+    $("mdetail").innerHTML = '<div class="dh"><span class="chip">'+m.c+' · '+C.name+'</span><h3>'+m.id+' '+esc(m.n)+'</h3><span class="stat"><b>'+m.p+'%</b> of failures</span></div>'+
+      '<dl><dt>Category</dt><dd>'+C.desc+'</dd>'+
+      '<dt>Deck on this mode</dt><dd>'+(m.note? esc(m.note) : 'The deck lists this mode by name and share only. Read it through its category.')+'</dd>'+
+      '<dt>What catches it</dt><dd><b>'+C.fix+'</b> '+C.catch+'</dd></dl>';
+  }
+  function pickGz(g){
+    const G = GZ[g];
+    modeBtns.forEach(b=>{ b.setAttribute("aria-pressed","false"); b.classList.toggle("hl", G.ids.includes(b.dataset.id)); });
+    gzBtns.forEach(b=>b.setAttribute("aria-pressed", b.dataset.g===g));
+    $("mdetail").innerHTML = '<div class="dh"><span class="chip">gzkit name</span><h3>'+G.t+'</h3>'+(G.ids.length? '<span class="small">dashed outline: the modes it spans</span>' : '<span class="small">no MAST code</span>')+'</div>'+
+      '<dl><dt>What it is</dt><dd>'+G.d+'</dd><dt>What catches it</dt><dd>'+G.f+'</dd></dl>';
+  }
+  gzBtns.forEach(b=>b.addEventListener("click",()=>pickGz(b.dataset.g)));
+  pickMode("3.3");
+
+  /* ---------- ten-deep chain ---------- */
+  const RC = "receipts/…_unittest.json";
+  const SUM = [
+    "Ran the suite: 2 of 3 pass; test_delete fails, maybe a flaky fixture.",
+    "2 of 3 pass; the failure looks like a flaky fixture.",
+    "Tests pass apart from one flaky fixture.",
+    "Tests pass (one known flake).",
+    "Test suite is green.",
+    "Tests pass.",
+    "Implementation complete; tests pass.",
+    "Done and tested.",
+    "Verified: all tests pass.",
+    "Fact: the feature works and all tests pass."
+  ];
+  let cmode = "sum", hop = 0; // hop 0 = evidence only; 1..10 = layers 10..1; 11 = outcome
+  function rowsFor(mode){
+    const rows = [];
+    if (mode==="sum"){
+      rows.push({who:"Evidence", say:"Test output at commit a1b2c3d: 3 run, 1 failure, exit 1.", sub:"Printed in layer 10's transcript. No receipt file was written.", st:["claim","primary"], ev:true});
+      SUM.forEach((s,i)=>{
+        const L = 10-i;
+        rows.push({who:"Layer "+L, say:s,
+          sub: L===10 ? "Read the test output, then summarized it." : "Read only layer "+(L+1)+"'s summary.",
+          st: L===10 ? ["claim","claim"] : ["fact","read as fact"]});
+      });
+    } else {
+      rows.push({who:"Receipt", say:"exit_code: 1 · tests_run: 3 · failures: 1 · commit: a1b2c3d · stdout_sha256: 9f2c…", sub:"Written by the harness to "+RC+". No model touched it.", st:["rc","evidence"], ev:true});
+      SUM.forEach((s,i)=>{
+        const L = 10-i;
+        if (L===6) rows.push({who:"Layer 6", say:"Test suite is green.", sub:"Its result arrived with no receipt path. DONE without a receipt parses as NEEDS_CONTEXT, so layer 5 asked for the path, and layer 6 re-sent it.", st:["nc","needs_context"]});
+        else rows.push({who:"Layer "+L, say:s, sub:"Forwards its summary plus "+RC+" (sha256 unchanged). Ledger: claim, unverified.", st:["claim","claim + receipt"]});
+      });
+    }
+    return rows;
+  }
+  function outcome(mode){
+    if (mode==="sum") return {cls:"bad", h:"Flight log: “all tests pass.” No receipt.",
+      p:"Ten hops from the evidence, a qualified sentence (2 of 3 pass, one failure) arrived as a fact. No layer lied; each dropped one hedge. Nothing in the chain could refute the top claim, because the only record of the failure sat in a transcript nobody above layer 10 read. On Flight Card 9 this is the first falsifier: a claim promoted to the flight log with no receipt."};
+    return {cls:"good", h:"Flight log: FAIL, citing "+RC+"#failures.",
+      p:"The summaries drifted the same way, but every hop carried the same receipt path and hash. At the top, the claim “all tests pass” meets the receipt. The second-family adversary, given the claim and the receipt, returns REFUTED and cites the failures field, and the Chase checks that field. The flight log cites the receipt, and the polished summaries stay in the ledger as unverified claims."};
+  }
+  function renderChain(){
+    const rows = rowsFor(cmode), n = rows.length; // 11
+    const order = rows.map((r,i)=>({r,i})).reverse(); // top layer first
+    $("chain").innerHTML = order.map(({r,i})=>{
+      const cls = ["hop"]; if (r.ev) cls.push("ev"); if (i>hop) cls.push("future"); if (i===hop) cls.push("cur");
+      const shown = i<=hop;
+      return '<div class="'+cls.join(" ")+'"><span class="who">'+r.who+'</span><span class="say">'+(shown? esc(r.say) : '·  ·  ·')+(shown? '<small>'+esc(r.sub)+'</small>' : '')+'</span>'+(shown? '<span class="st '+r.st[0]+'">'+r.st[1]+'</span>' : '<span></span>')+'</div>';
+    }).join("");
+    const layersUp = Math.min(hop,10);
+    const readers = cmode==="sum" ? (hop>=1?1:0) : (hop>=1? layersUp : 0);
+    $("cmeter").innerHTML = 'Hop <b>'+Math.min(hop,11)+'</b> of 11 · Layers that can check the primary evidence: <b>'+readers+'</b>'+(cmode==="rec"? ' (each one holds the receipt path)' : '')+' · Hops from the evidence: <b>'+layersUp+'</b>';
+    const o = $("coutcome");
+    if (hop>=11){ const r=outcome(cmode); o.className="outcome "+r.cls; o.innerHTML='<b>'+esc(r.h)+'</b><span>'+r.p+'</span>'; }
+    else { o.className="outcome"; o.innerHTML='<b>'+(hop===0? 'Start at the bottom.' : 'Layer '+(11-hop)+' has written its result.')+'</b><span>'+(hop===0? 'The primary evidence sits at the bottom of the chain. Press Next hop to move one layer up.' : 'Keep stepping. The outcome appears when the top layer\'s result reaches the flight log.')+'</span>'; }
+    $("hprev").disabled = hop===0; $("hnext").disabled = hop>=11;
+  }
+  function setCMode(m){ cmode=m; $("c-sum").setAttribute("aria-pressed", m==="sum"); $("c-rec").setAttribute("aria-pressed", m==="rec"); renderChain(); }
+  $("c-sum").addEventListener("click",()=>setCMode("sum"));
+  $("c-rec").addEventListener("click",()=>setCMode("rec"));
+  $("hnext").addEventListener("click",()=>{ hop=Math.min(11,hop+1); renderChain(); });
+  $("hprev").addEventListener("click",()=>{ hop=Math.max(0,hop-1); renderChain(); });
+  $("hreset").addEventListener("click",()=>{ hop=0; renderChain(); });
+  renderChain();
+
+  /* ---------- lock simulator ---------- */
+  const TTL = 120;
+  let clock = 0, lock = null, log = [], tokenSeq = 0;
+  const TOK = {A:"tok-7f3a", B:"tok-c21e"};
+  function ts(){ return "t+"+String(clock).padStart(3,"0")+"s"; }
+  function ev(name, extra){ log.push('<span class="e">'+ts()+' '+name+'</span>'+(extra? ' <span class="m">'+extra+'</span>' : '')); }
+  function note(msg){ log.push('<span class="m">'+ts()+' '+msg+'</span>'); }
+  function lockAct(a){
+    if (a==="reset"){ clock=0; lock=null; log=[]; }
+    else if (a==="tick"){ clock+=60; note("clock advances 60 s"); }
+    else {
+      const [verb, w] = a.split(" ");
+      if (verb==="acq"){
+        if (lock && clock > lock.at + TTL){ ev("lock_expired", "holder "+lock.holder+", acquired t+"+lock.at+"s, ttl "+TTL+"s"); lock=null; }
+        if (!lock){ lock={holder:w, token:TOK[w], at:clock}; ev("lock_acquired", "holder "+w); }
+        else if (lock.holder===w){ note(w+" already holds the lock"); }
+        else { ev("lock_denied", w+" gets FileExistsError; returns BLOCKED, holder "+lock.holder); }
+      } else if (verb==="rel"){
+        if (!lock) note(w+": no lock to release");
+        else if (lock.holder===w){ ev("lock_released", "holder "+w+", token matches"); lock=null; }
+        else note(w+"'s release refused: token "+TOK[w]+" does not match");
+      }
+    }
+    $("lockfile").textContent = lock ? '{"holder": "'+lock.holder+'",\n "token": "'+lock.token+'",\n "acquired_at": "t+'+lock.at+'s",\n "ttl_s": '+TTL+'}' + (clock>lock.at+TTL? "\n\nexpired: now t+"+clock+"s" : "") : "(no lock file)\nnow t+"+clock+"s";
+    const L = $("lockledger"); L.innerHTML = log.length? log.map(x=>'<div>'+x+'</div>').join("") : '<span class="m">No events yet.</span>'; L.scrollTop = L.scrollHeight;
+  }
+  document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>lockAct(b.dataset.l)));
+  lockAct("reset");
+})();
+</script>
+
+</body></html>

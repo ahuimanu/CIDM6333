@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Window Budget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100; --c5:#e87ba4; --c6:#008300;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#008300;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#008300;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+code{font-family:var(--mono); font-size:.86em}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:880px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .tm{font-size:14px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .code{font-family:var(--mono); font-size:11.5px; fill:var(--ink)}
+.fig .al{paint-order:stroke; stroke:var(--surface); stroke-width:5px; stroke-linejoin:round}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .disk{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.3}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.18}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el.keep:not(.on){opacity:.6}
+.fig .el.on .box,.fig .el.on .disk{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .stripe{fill:var(--accent-soft)}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 12px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.ctrl{display:flex; gap:10px 12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 160px; accent-color:var(--accent)}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+svg.chart{width:100%; height:auto; display:block; min-width:600px}
+.chart text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.chart .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.chart .axis{stroke:var(--line)} .chart .grid{stroke:var(--line); stroke-dasharray:2 4}
+.chart .budget{stroke:var(--ink); stroke-width:2}
+.chart .thresh{stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:6 4}
+.chart .ghost{fill:none; stroke:var(--ink-2); stroke-width:1; stroke-dasharray:3 3}
+.chart .seg{stroke:var(--surface); stroke-width:1.5}
+.chart .ev{fill:var(--ink)}
+.chart .hit{fill:transparent}
+.legend{display:flex; gap:8px 16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px; white-space:nowrap}
+.panel table{font-size:14.5px; min-width:520px}
+.panel td,.panel th{padding:7px 10px}
+.st{font-family:var(--mono); font-size:13px; white-space:nowrap}
+.st.lost{color:var(--accent-ink); font-weight:500}
+details{border:1px solid var(--line); border-radius:8px; padding:8px 12px}
+summary{cursor:pointer; font-family:var(--display); font-weight:600; font-size:15px}
+pre.ledger{font-family:var(--mono); font-size:12px; line-height:1.5; margin:8px 0 0; overflow-x:auto; white-space:pre}
+.big{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px}
+.big div{border-left:3px solid var(--line); padding-left:10px}
+.big b{display:block; font-family:var(--display); font-weight:700; font-size:34px; line-height:1}
+.big span{font-size:14px; color:var(--ink-2)}
+svg.hbar{width:100%; height:auto; display:block}
+.hbar text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.hbar .lbl{font-family:var(--display); font-size:13.5px; font-weight:600; fill:var(--ink)}
+.hbar .axis{stroke:var(--line)} .hbar .grid{stroke:var(--line); stroke-dasharray:2 4}
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:12px}
+.card{background:var(--surface-2); border-radius:10px; padding:12px 14px; display:grid; gap:6px; align-content:start}
+.card p{font-size:15px}
+.card .n{font-family:var(--mono); font-size:13px; color:var(--accent-ink)}
+.hand{font-family:var(--mono); font-size:13px; background:var(--surface-2); border-radius:8px; padding:12px 14px; line-height:1.55; display:grid; gap:4px}
+.hand b{font-weight:500; color:var(--ink)}
+.verdict{border:1.5px solid var(--line); border-radius:10px; padding:10px 14px; font-size:15px}
+.verdict.bad{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink)}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.closer{font-family:var(--display); font-weight:700; font-size:clamp(28px,4.4vw,46px); line-height:1.02; margin:40px 0 0; text-wrap:balance; max-width:22ch}
+section.map{margin-top:36px}
+.map .tablewrap{margin-top:10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 07</div>
+  <h1>Window Budget</h1>
+  <p class="lede">On every turn the model knows what is in the window and nothing else. E6 treats the window as <em>an artifact with a budget</em>: you know what is in it and who put it there, you log what each turn cost, and you decide what compaction may lose before it runs. Step through the figure, then run the four compaction moves on a session and watch the stacks shrink.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 740" role="img" aria-label="The context window drawn as seven rows, each fed by the party that writes it: the harness, you, plugins, you and the model, the tools, and your code. To the right, every model call produces a turn_budget record appended to the ledger; over 80 percent of the budget, a compactor rewrites the window. Below, canon files on disk re-seed the window, and a handoff lets a fresh session resume.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <text class="lab" x="16" y="98">Who puts it there</text>
+    <text class="lab" x="160" y="98">What it grows with</text>
+
+    <!-- window frame -->
+    <g class="el keep" data-k="win">
+      <rect class="frame" x="290" y="60" width="300" height="410" rx="12"/>
+      <text class="lab" x="302" y="82">Context window · this turn</text>
+      <text class="ts" x="302" y="100">small print: what survives /compact in Claude Code</text>
+    </g>
+
+    <!-- rows with owners -->
+    <g class="el" data-k="harness">
+      <rect class="box" x="16" y="112" width="134" height="94" rx="8"/>
+      <text class="tt" x="28" y="140">The harness</text>
+      <text class="ts" x="28" y="158">OpenCode, Claude</text>
+      <text class="ts" x="28" y="174">Code, Codex …</text>
+      <path class="flow" d="M150,134 L300,134"/><text class="ts al" x="224" y="128" text-anchor="middle">before turn one</text>
+      <path class="flow" d="M150,184 L300,184"/><text class="ts al" x="224" y="178" text-anchor="middle">+ per tool, per server</text>
+      <rect class="stripe" x="302" y="112" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="131">System prompt</text><text class="ts" x="312" y="149">reloaded</text>
+      <rect class="stripe" x="302" y="162" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="181">Tool definitions (schemas)</text><text class="ts" x="312" y="199">reloaded · MCP tools as names while deferred</text>
+    </g>
+    <g class="el" data-k="you">
+      <rect class="box" x="16" y="212" width="134" height="44" rx="8"/>
+      <text class="tt" x="28" y="239">You</text>
+      <path class="flow" d="M150,234 L300,234"/><text class="ts al" x="224" y="228" text-anchor="middle">+ every line, imports</text>
+      <rect class="stripe" x="302" y="212" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="231">Instruction files</text><text class="ts" x="312" y="249">AGENTS.md, CLAUDE.md · reloaded from disk</text>
+    </g>
+    <g class="el" data-k="skills">
+      <rect class="box" x="16" y="262" width="134" height="44" rx="8"/>
+      <text class="tt" x="28" y="289">You, plugins</text>
+      <path class="flow" d="M150,284 L300,284"/><text class="ts al" x="224" y="278" text-anchor="middle">+ per skill installed</text>
+      <rect class="stripe" x="302" y="262" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="281">Skill descriptions</text><text class="ts" x="312" y="299">listing not reloaded · bodies back ≤ 5,000 each</text>
+    </g>
+    <g class="el" data-k="hist">
+      <rect class="box" x="16" y="312" width="134" height="44" rx="8"/>
+      <text class="tt" x="28" y="339">You and the model</text>
+      <path class="flow" d="M150,334 L300,334"/><text class="ts al" x="224" y="328" text-anchor="middle">+ every turn</text>
+      <rect class="stripe" x="302" y="312" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="331">Conversation history</text><text class="ts" x="312" y="349">replaced by one structured summary</text>
+    </g>
+    <g class="el" data-k="tools">
+      <rect class="box" x="16" y="362" width="134" height="44" rx="8"/>
+      <text class="tt" x="28" y="389">The tools</text>
+      <path class="flow" d="M150,384 L300,384"/><text class="ts al" x="224" y="378" text-anchor="middle">+ every call</text>
+      <rect class="stripe" x="302" y="362" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="381">Tool results</text><text class="ts" x="312" y="399">full outputs gone · up to 5 files re-read</text>
+    </g>
+    <g class="el" data-k="ret">
+      <rect class="box" x="16" y="412" width="134" height="44" rx="8"/>
+      <text class="tt" x="28" y="439">Your code</text>
+      <path class="flow" d="M150,434 L300,434"/><text class="ts al" x="224" y="428" text-anchor="middle">+ what you retrieve</text>
+      <rect class="stripe" x="302" y="412" width="276" height="44" rx="4"/>
+      <text class="tm" x="312" y="431">Retrieved memory and notes</text><text class="ts" x="312" y="449">back only if your code reloads it</text>
+    </g>
+
+    <!-- model call -->
+    <g class="el" data-k="call">
+      <path class="flow" d="M590,150 L698,150"/>
+      <text class="ts al" x="644" y="128" text-anchor="middle">whole window,</text>
+      <text class="ts al" x="644" y="142" text-anchor="middle">every call</text>
+      <rect class="modelbox" x="700" y="112" width="240" height="76" rx="10"/>
+      <text class="tt" x="714" y="138">Model call</text>
+      <text class="ts" x="714" y="156">the provider counts the tokens</text>
+      <text class="ts" x="714" y="172">it billed, in and out</text>
+    </g>
+
+    <!-- budget record -->
+    <g class="el" data-k="rec">
+      <path class="flow" d="M820,188 L820,222"/>
+      <text class="ts al" x="828" y="210">resp.usage, not an estimate</text>
+      <rect class="box" x="700" y="224" width="250" height="110" rx="8"/>
+      <text class="lab" x="712" y="242">turn_budget record (illustrative)</text>
+      <text class="code" x="712" y="262">{"event":"turn_budget","turn":7,</text>
+      <text class="code" x="712" y="278"> "in":41200,"out":640,</text>
+      <text class="code" x="712" y="294"> "total":41840,"budget":64000,</text>
+      <text class="code" x="712" y="310"> "pct":65}</text>
+      <text class="ts" x="712" y="326">one per call, against a declared budget</text>
+    </g>
+    <g class="el" data-k="ledger">
+      <path class="flow" d="M950,258 L962,258"/>
+      <rect class="disk" x="964" y="224" width="130" height="70" rx="8"/>
+      <text class="lab" x="976" y="242">L2 ledger</text>
+      <text class="tm" x="976" y="262">ledger.jsonl</text>
+      <text class="ts" x="976" y="279">appended, never</text>
+      <text class="ts" x="976" y="294">edited</text>
+    </g>
+    <g class="el" data-k="l3">
+      <path class="flow" d="M1029,294 L1029,326"/>
+      <text class="ts al" x="1037" y="314">computed</text>
+      <rect class="box" x="964" y="328" width="130" height="86" rx="8"/>
+      <text class="lab" x="976" y="346">L3 derived</text>
+      <text class="ts" x="976" y="364">TUI token counter</text>
+      <text class="ts" x="976" y="380">status.md</text>
+      <text class="ts" x="976" y="396">compaction summary</text>
+    </g>
+
+    <!-- threshold check -->
+    <g class="el" data-k="chk">
+      <path class="flow" d="M820,334 L820,360"/>
+      <rect class="box" x="700" y="362" width="250" height="42" rx="20"/>
+      <text class="tt" x="825" y="388" text-anchor="middle">total &gt; 0.8 × budget ?</text>
+      <text class="ts" x="700" y="422">no: the record is the only action</text>
+    </g>
+
+    <!-- compactor -->
+    <g class="el" data-k="cmp">
+      <path class="flow" d="M900,404 L900,440"/>
+      <text class="ts al" x="908" y="426">yes</text>
+      <rect class="box" x="700" y="442" width="250" height="110" rx="8"/>
+      <text class="lab" x="712" y="460">Compactor · cheapest first</text>
+      <text class="tm" x="712" y="480">1 Clear old tool results</text>
+      <text class="tm" x="712" y="498">2 Summarize the history</text>
+      <text class="tm" x="712" y="516">3 Keep the keep list verbatim</text>
+      <text class="tm" x="712" y="534">4 Re-seed from disk</text>
+      <text class="ts" x="712" y="548">every run logs a compaction event</text>
+      <path class="flow" d="M700,496 L640,496 L640,360 L594,360"/>
+      <text class="ts al" x="670" y="488" text-anchor="middle">rewrites</text>
+    </g>
+
+    <!-- kept out -->
+    <g class="el" data-k="out">
+      <rect class="box" x="16" y="500" width="234" height="136" rx="8"/>
+      <text class="lab" x="28" y="520">Kept out until needed</text>
+      <text class="ts" x="28" y="540">skill bodies wait on disk</text>
+      <text class="ts" x="28" y="556">deferred tools: names first</text>
+      <text class="ts" x="28" y="572">handoff points at evidence</text>
+      <text class="ts" x="28" y="588">subagent: its own window,</text>
+      <text class="ts" x="28" y="604">a 1,000–2,000-token summary back</text>
+      <text class="ts" x="28" y="624">each lookup can fail: log it</text>
+      <path class="flow" d="M250,530 L312,530 L312,474"/>
+      <text class="ts al" x="281" y="522" text-anchor="middle">on demand</text>
+    </g>
+
+    <!-- canon on disk -->
+    <g class="el" data-k="l1">
+      <rect class="disk" x="290" y="560" width="300" height="78" rx="8"/>
+      <text class="lab" x="302" y="580">L1 canon · on disk</text>
+      <text class="ts" x="302" y="598">AGENTS.md · docs/prd.md · docs/adr/</text>
+      <text class="ts" x="302" y="614">flight-card.md · handoff.md</text>
+      <text class="ts" x="302" y="630">changes by commit and review</text>
+    </g>
+    <g class="el" data-k="reseed">
+      <path class="flow" d="M550,560 L550,474"/>
+      <text class="ts al" x="558" y="506">re-seed</text>
+      <text class="ts al" x="558" y="520">after the</text>
+      <text class="ts al" x="558" y="534">summary</text>
+    </g>
+
+    <!-- handoff -->
+    <g class="el" data-k="handoff">
+      <path class="flow" d="M380,470 L380,558"/>
+      <text class="ts al" x="388" y="506">session end:</text>
+      <text class="ts al" x="388" y="520">handoff.md,</text>
+      <text class="ts al" x="388" y="534">seven sections</text>
+      <path class="flow" d="M440,638 L440,670"/>
+      <text class="ts al" x="448" y="660">read before turn one</text>
+      <rect class="box" x="290" y="672" width="300" height="56" rx="8"/>
+      <text class="tt" x="302" y="694">Fresh session B</text>
+      <text class="ts" x="302" y="714">handoff + L1 + ledger · no transcript</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 11</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- ===== compaction simulator ===== -->
+  <section class="panel wide" aria-labelledby="h-sim">
+    <div class="eyebrow">Steps 5–7, up close · Flight Card 6, test points 1–2</div>
+    <h2 id="h-sim">Fourteen turns, one budget line, four moves</h2>
+    <p class="small">Each bar is one call: what the window held on that turn, by category. The loop logs a budget record after every call, and when a turn's total (in + out) crosses 80% of the declared budget, it compacts before the next turn. Apply the deck's four moves in order, cheapest first. The dashed outline is the same session with no compaction. <b>All token figures are illustrative</b>; one session's real counts come from your provider's usage fields.</p>
+    <div class="ctrl"><span>Compaction moves applied</span>
+      <div class="seg" role="group" aria-label="Compaction moves applied" id="lvl">
+        <button type="button" data-l="0" aria-pressed="true">None</button>
+        <button type="button" data-l="1" aria-pressed="false">1 Clear</button>
+        <button type="button" data-l="2" aria-pressed="false">+ 2 Summarize</button>
+        <button type="button" data-l="3" aria-pressed="false">+ 3 Keep verbatim</button>
+        <button type="button" data-l="4" aria-pressed="false">+ 4 Re-seed</button>
+      </div>
+    </div>
+    <div class="ctrl"><label for="bud">Declared turn budget</label><input id="bud" type="range" min="24000" max="128000" step="8000" value="64000"><output id="budout" for="bud">64,000</output></div>
+    <div class="ctrl"><label class="cb"><input type="checkbox" id="canon"> The rule typed in chat on turn 3 is also written to AGENTS.md (canon)</label></div>
+    <div class="scroller"><svg class="chart" id="chart" viewBox="0 0 760 330" role="img" aria-label="Stacked bar chart of window tokens per turn by category, with the declared budget and the 80 percent compaction line."></svg></div>
+    <div class="legend" id="legend"></div>
+    <div class="stat" id="simstat"></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>What the session needs to keep</th><th>Where it is after the last compaction</th></tr></thead>
+      <tbody id="intent"></tbody>
+    </table></div>
+    <details>
+      <summary>The ledger for this session (L2, one JSON object per line)</summary>
+      <pre class="ledger" id="ledger"></pre>
+    </details>
+    <p class="small">Clearing keeps the record that a call happened and loses only raw output. Summarizing is lossy by design, and the summarizer decides what is lost unless you tell it. The keep list costs tokens and buys back intent, so the stack grows a little when you add move 3. Re-seeding reloads canon and the ledger tail, so a rule written to a file comes back in the file's own words.</p>
+  </section>
+
+  <!-- ===== 258K ===== -->
+  <section class="panel wide" aria-labelledby="h-258">
+    <div class="eyebrow">Reference design · gzkit · the 258K exhaustion (E5, revisited in E6)</div>
+    <h2 id="h-258">The instruction surface grew without a budget</h2>
+    <div class="big">
+      <div><b>~258K</b><span>tokens consumed before the first user turn (Codex session) [verify]</span></div>
+      <div><b>4,000</b><span>characters: the budget your 09/17 AGENTS.md was written under</span></div>
+      <div><b>~100</b><span>lines: OpenAI's AGENTS.md, Feb 2026, for comparison</span></div>
+    </div>
+    <div class="scroller"><svg class="hbar" id="hbar" viewBox="0 0 640 150" role="img" aria-label="Horizontal bars drawn to scale: about 258 thousand tokens of startup context against about one thousand tokens for a 4,000-character AGENTS.md."></svg></div>
+    <p class="small">Drawn to scale. The second bar converts 4,000 characters to tokens with the deck's characters ÷ 4 rule, so it is an estimate, about 1,000 tokens. OpenAI's ~100 lines has no token count in the deck and is not drawn.</p>
+    <p><b>The incident.</b> The rendered instruction surface, AGENTS.md plus imported doctrine, grew until a Codex session's startup context was on the order of 258K tokens before the first user turn. The symptoms: compaction on turn one, rules near the end of the file ignored, and a harness that could not hold the task and the rules at once. The file had become the encyclopedia.</p>
+    <p><b>The rule that replaced it.</b> Map, not encyclopedia (ADR-0.0.54). The file names where each kind of truth lives and what must hold on every turn. A budget is declared and validated (<code>gz validate --instructions-files-budget</code>). Procedures move to skills, enforcement moves to hooks, and derivable facts are deleted. The measure is what the harness loads at startup, not the file's length.</p>
+    <p class="small">The deck flags this case for checking: verify the figure, the harness, and the date against the insights corpus. OpenAI's team reached the same rule from the other direction, about a hundred lines used as a map. Your E5 Sprint re-measured the 09/17 file the same way, by what the harness loaded.</p>
+  </section>
+
+  <!-- ===== progressive disclosure ===== -->
+  <section class="panel" aria-labelledby="h-pd">
+    <div class="eyebrow">Step 8, up close · load later, or load elsewhere</div>
+    <h2 id="h-pd">Progressive disclosure</h2>
+    <p class="small">Every technique trades tokens now for a lookup later. The lookup can fail, so log it. Anthropic calls the whole family just-in-time context; LangChain's four verbs (Jul 2025) are write, select, compress, isolate.</p>
+    <div class="cards">
+      <div class="card"><h3 class="sub">Skills</h3><p>The name and description sit in context; the body loads when the skill is invoked. E5 moved procedures out of AGENTS.md into skills; E6 counts what that saved.</p></div>
+      <div class="card"><h3 class="sub">Deferred tools</h3><p>Only MCP tool names enter context until a task needs one (Claude Code default).</p><span class="n">Cursor A/B, Jan 2026: 46.9% fewer agent tokens in runs that called an MCP tool</span></div>
+      <div class="card"><h3 class="sub">Just-in-time retrieval</h3><p>Keep identifiers, not contents: a path, a query, a ledger event id. Load the content at runtime with a tool. A handoff points at evidence and does not paste it.</p></div>
+      <div class="card"><h3 class="sub">Subagents</h3><p>The verbose work stays in the child's window, and a summary returns.</p><span class="n">often 1,000–2,000 tokens (Anthropic) · the summary is a claim (E9)</span></div>
+    </div>
+  </section>
+
+  <!-- ===== handoff ===== -->
+  <section class="panel" aria-labelledby="h-ho">
+    <div class="eyebrow">Step 9, up close · Chapter 15 · test points 3–4</div>
+    <h2 id="h-ho">Handoffs: writing for a stranger with no transcript</h2>
+    <div class="seg" role="group" aria-label="Handoff version">
+      <button type="button" id="ho-diary" aria-pressed="true">The diary</button>
+      <button type="button" id="ho-seven" aria-pressed="false">Seven sections</button>
+    </div>
+    <div class="hand" id="hand"></div>
+    <div class="verdict" id="hoverdict" aria-live="polite"></div>
+    <p class="small">The test of a handoff: a stranger with no transcript takes the action you named first, and asks nothing you already answered. The machinery around it: a session-start advisement that loads the handoff before turn one (Claude Code's SessionStart hook), a rulings store so settled decisions stay settled, and an exit bookmark. The seven-section text is an illustrative skeleton.</p>
+  </section>
+
+  <!-- ===== layers ===== -->
+  <section class="panel wide" aria-labelledby="h-lt">
+    <div class="eyebrow">Step 10, up close · gzkit state doctrine (ADR-0.0.9)</div>
+    <h2 id="h-lt">Layers of truth: canon, ledger, derived</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Layer</th><th>What it is</th><th>In your system (example paths)</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>L1 canon</td><td>Markdown written by people: PRD, ADRs, AGENTS.md, flight cards, the handoff template</td><td><code>docs/prd.md</code> · <code>docs/adr/</code> · <code>AGENTS.md</code> · <code>evolution-*/flight-card.md</code></td><td>Changes by commit and review</td></tr>
+        <tr><td>L2 ledger</td><td>Append-only events the system wrote when things happened</td><td><code>var/ledger.jsonl</code>: turn_budget, compaction, handoff_written, session_resumed</td><td>Never edited; a correction is a new event</td></tr>
+        <tr><td>L3 derived</td><td>Views computed from L1 and L2: status pages, summaries, frontmatter, markers, on-screen counters</td><td><code>status.md</code> · the compaction summary · a drafted handoff · the TUI's token counter</td><td>Regenerable; can never block a gate</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>Frontmatter can lie; the ledger is the truth.<cite>gzkit state doctrine, docs/governance/state-doctrine.md (ADR-0.0.9) [verify path and ADR number]</cite></blockquote>
+    <p class="small">Precedence runs L2 &gt; L1 &gt; L3. A compaction summary is L3: it may inform the next turn, and it may not overrule the ledger. A handoff your agent drafted is L3 until you check it against the ledger. OpenCode's session totals add every turn's cache reads (issue #30649), so its counter may be a lifetime sum; the window is one call's input [verify on your version].</p>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">In your sortie</div>
+  <h2 id="h-map">Flight Card 6 flies this figure: the handoff</h2>
+  <p class="small" style="max-width:75ch">Expansion. Design claim: a handoff written at session end lets a fresh session resume with no loss of intent; the fresh session's first action is the one the handoff named. To force test point 2 inside one session, set a low turn budget for the sortie, for example 8,000 or 16,000 tokens, and say so on the card.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Test point</th><th>Part of the figure</th><th>What must show</th></tr></thead>
+    <tbody>
+      <tr><td>1 · budget per call</td><td>Model call → turn_budget record → ledger (step 5)</td><td>Session A runs a bounded task of six or more turns; one record per call {turn, in, out, total, budget}.</td></tr>
+      <tr><td>2 · compaction</td><td>80% check → compactor (steps 6–7); the chart above</td><td>Compaction event {before, after, kept[]}; objective and L1 pointers present after; the task continues.</td></tr>
+      <tr><td>3 · handoff written</td><td>Session end → handoff.md (step 9)</td><td>handoff.md in seven sections + a handoff_written event with its hash.</td></tr>
+      <tr><td>4 · fresh resume</td><td>Fresh session B, no transcript (step 9)</td><td>First action == NEXT STEP 1; zero questions the handoff answered; session_resumed event.</td></tr>
+      <tr><td>5 · stale L3 view</td><td>Layers of truth (step 10)</td><td>B follows the ledger; the conflict is logged; L3 blocks nothing.</td></tr>
+      <tr><td>Lab, 6:00–6:30</td><td>The whole figure, in OpenCode</td><td><code>opencode export</code>, a per-turn table from <code>budget.py</code>, a handoff by hand, and a <code>/new</code> session that states its first action. Commit the table, not the raw export.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:10px">Pre-registered falsifiers, any one of which fails the sortie: B asks a question the handoff answered or takes an action it did not name; an L3 view contradicts the ledger and wins; any call has no budget record, or a compaction has no event; the pass came from pasting A's transcript into B or editing the handoff after B starts. Go: the Chase signs in the repo by Mon 10/12, 11:59 p.m. The Sprint is due Wed 10/14.</p>
+</section>
+
+<p class="closer">Intent that lives only in the window dies with the window.</p>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>Prompt caching. A stable prefix is cheaper to resend, and a compaction rebuilds the cache; Figure 01 covers the bill.</li>
+      <li>Codex's server-side compaction, which returns an encrypted item the client cannot read, and Cursor's dynamic context discovery, which moves long outputs to files. Both are in the deck's teardowns.</li>
+      <li>The simulation folds the skill listing into the instruction-files segment, counts the keep list with history, and counts the re-seeded ledger tail with retrieved notes. Real summaries vary in size; this one is fixed.</li>
+      <li>Field names differ by provider. OpenAI-compatible endpoints return prompt_tokens and completion_tokens; Anthropic's API returns input_tokens and output_tokens with cache fields counted separately, so a naive sum undercounts.</li>
+      <li>Why long windows degrade: Chroma tested 18 models in July 2025 and all grew less reliable as input grew, and Liu et al. (2024) found accuracy lowest in the middle of a long input.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Sources and readings</h2>
+    <ol>
+      <li>Anthropic. (2025, September 29). <em>Effective context engineering for AI agents</em>. Anthropic Engineering.</li>
+      <li>Young, J. (2025, November 26). <em>Effective harnesses for long-running agents</em>. Anthropic Engineering.</li>
+      <li>Anthropic. (2025). <em>Managing context on the Claude Developer Platform</em>.</li>
+      <li>Anthropic. (2026). <em>Claude Code docs: Explore the context window; Commands; Hooks; Memory</em>. code.claude.com/docs. Checked 09/24/2026.</li>
+      <li>Liu, N. F., et al. (2024). Lost in the middle: How language models use long contexts. <em>TACL, 12</em>, 157–173.</li>
+      <li>Chroma. (2025, July 14). <em>Context rot</em>.</li>
+      <li>LangChain. (2025, July 2). <em>Context engineering for agents</em>.</li>
+      <li>Cursor. (2026, January 6). <em>Dynamic context discovery</em>.</li>
+      <li>OpenCode. (2026). <em>Config, TUI, CLI, Agents, and Skills</em> documentation. opencode.ai/docs.</li>
+      <li>gzkit. <code>docs/governance/state-doctrine.md</code> (ADR-0.0.9); <code>gz handoff create/resume</code>; <code>.gzkit/handoffs/rulings.jsonl</code>; ADR-0.0.37 and ADR-0.0.54.</li>
+      <li>Course textbook, Chapter 15: Context engineering; Chapter 25 on handoffs.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 07 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  /* ---------- player ---------- */
+  const STEPS = [
+    {k:"*", t:"The window is an artifact with a budget", w:["E6"],
+     p:"On every turn the model knows what is in the window and nothing else; what is in it by accident still costs attention. The figure shows who puts each kind of text in the window, the record your loop writes after each call, and what the loop does when a turn crosses the budget. Two rules run through it: measure the window on every turn, and put what must survive in a file."},
+    {k:"harness", t:"The harness writes the system prompt and tool definitions", w:["E3","E4","E6"],
+     p:"OpenCode writes the system prompt and the tool definitions before your first word. They grow with every tool you enable and every MCP server you add; Claude Code keeps MCP tools as names only while they are deferred. After /compact, Claude Code reloads both. Your E4 server's schemas sit in this row."},
+    {k:"you skills", t:"You write the instruction files and the skills", w:["E5","E6"],
+     p:"AGENTS.md, CLAUDE.md, and rules grow with every line you add, and imports load in full. They reload from disk after compaction. Skill descriptions sit in the window while a skill's body waits until it is invoked. After /compact, Claude Code does not reload the skill listing, and it re-injects invoked skill bodies at 5,000 tokens each at most."},
+    {k:"hist", t:"You and the model write the history", w:["E1","E6"],
+     p:"Every turn adds your message and the model's reply. History is the row that compaction replaces with one structured summary. A rule you typed in chat on turn three becomes whatever the summarizer chose to write about it. The deck names this mistake the chat is the memory, failure mode #5, correction fails."},
+    {k:"tools ret", t:"The tools and your code fill the rest", w:["E3","E6","E7"],
+     p:"Tool results grow with every call, and one log file can be tens of thousands of tokens. After /compact in Claude Code the full outputs are gone, and up to five recently modified files are re-read. Retrieved memory and notes are whatever your code chose to load, and only your code reloads them. Codex and OpenCode publish no such list, so the lab measures theirs."},
+    {k:"call rec ledger", t:"One budget record per turn", w:["E6","E11"],
+     p:"After every model call, your loop reads the count the provider returned in resp.usage. It writes a turn_budget record with the turn, tokens in and out, the total, the declared budget, and the percentage, and appends it to var/ledger.jsonl. File size and a session total do not count as the measure. Big Pickle's window is unpublished, so the budget you declare is the only number you have."},
+    {k:"chk cmp hist tools", t:"Over 80 percent, the loop compacts", w:["E6"],
+     p:"When a turn's total crosses 80 percent of the declared budget, the loop compacts before the next turn. The four moves run from cheapest to most lossy: clear old tool results, summarize the history, keep the declared keep list verbatim, and re-seed from disk. Sortie 6 logs a compaction event with tokens before and after on every run. The chart below the figure runs all four."},
+    {k:"l1 reseed cmp", t:"Re-seed from canon", w:["E6"],
+     p:"After the summary, the loop reloads the L1 files and the ledger tail from disk. The rules come back in the file's own words, so the summary's paraphrase never stands in for them. Claude Code does this for CLAUDE.md and up to five recently modified files; your loop reloads what your README declares."},
+    {k:"out skills ret", t:"Load later, or load elsewhere", w:["E5","E6","E9"],
+     p:"Progressive disclosure keeps tokens out of the window until they earn a place. Skill bodies wait on disk, deferred tools enter as names, a handoff carries pointers to evidence, and a subagent does the verbose work in its own window and returns a summary. Each lookup can fail, so the loop logs it. A subagent's summary is a claim, which is E9's rule arriving early."},
+    {k:"handoff l1", t:"Handoffs: writing for a stranger", w:["E6"],
+     p:"At session end, session A writes handoff.md in seven sections and records a handoff_written event. Fresh session B reads the handoff, the L1 files, and the ledger before turn one, with no transcript. B passes when its first action is the one the handoff named and it asks nothing the handoff answered. Pasting A's transcript into B falsifies the claim."},
+    {k:"l1 ledger l3", t:"Layers of truth", w:["E6"],
+     p:"L1 canon is Markdown written by people and changed by commit. L2 ledger is the append-only events the system wrote when things happened. L3 derived is anything computed from them, including the compaction summary and the TUI's token counter. Precedence runs L2 over L1 over L3, and an L3 view can never block a gate."},
+    {k:"*", t:"Intent that lives only in the window dies with the window", w:["E6","E7"],
+     p:"Compaction and a new session both discard the conversation. Whatever must survive goes to a file the next session reads on purpose: rules to canon, decisions to the ledger, the next action to a handoff. The loop rebuilds the window from those files on every turn."}
+  ];
+  const fig = $("fig");
+  const els = [...fig.querySelectorAll(".el")];
+  let cur = 0;
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="dot";
+    b.setAttribute("aria-label","Step "+i+": "+s.t);
+    b.addEventListener("click",()=>go(i));
+    dots.appendChild(b);
+  });
+  function render(){
+    const s = STEPS[cur];
+    const keys = s.k==="*" ? null : s.k.split(" ");
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+    $("stepno").textContent = "Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent = s.t; $("captext").textContent = s.p;
+    $("capweeks").innerHTML = s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled = cur===0; $("next").disabled = cur===STEPS.length-1;
+  }
+  function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); render(); }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  render();
+
+  /* ---------- compaction simulator (illustrative numbers) ---------- */
+  const fmt = n => Math.round(n).toLocaleString("en-US");
+  const K = n => (n>=1000 ? (Math.round(n/100)/10)+"K" : String(n));
+  const SEGS = [
+    {id:"sys",  name:"System prompt",     c:"var(--c1)"},
+    {id:"ins",  name:"Instruction files", c:"var(--c2)"},
+    {id:"sch",  name:"Tool schemas",      c:"var(--c3)"},
+    {id:"hist", name:"History",           c:"var(--c4)"},
+    {id:"tool", name:"Tool results",      c:"var(--c5)"},
+    {id:"ret",  name:"Retrieved",         c:"var(--c6)"}
+  ];
+  const SYS=2500, SCH=7000, INS=4000, RULE=150, HIST=1100, OUT=600, STUB=60, SUMM=1500, KEEP=400, TAIL=700;
+  const TR  = [0,2500,6000,1500,16000,3000,8000,2500,11000,4000,6500,3000,9000,2500];
+  const RET = [0,0,2000,0,0,3000,0,1500,0,2500,0,0,2000,0];
+  const N = TR.length;
+  const MOVES = ["clear","summarize","keep","reseed"];
+
+  function simulate(level, budget, canon){
+    let hist=[], tools=[], summary=0, keep=0, tail=0;
+    const recs=[], events=[];
+    let ruleState = "verbatim", logState = "verbatim", objState = "verbatim", ptrState = "verbatim";
+    const window = t => {
+      const h = hist.length*HIST + summary + keep;
+      const tl = tools.reduce((a,x)=>a+(x.cleared?STUB:x.tok),0);
+      return {sys:SYS, ins:INS+(canon?RULE:0), sch:SCH, hist:h, tool:tl, ret:(t!=null?RET[t-1]:0)+tail,
+              hv:hist.length, sum:summary, kp:keep, nclr:tools.filter(x=>x.cleared).length, tail};
+    };
+    const sum = w => w.sys+w.ins+w.sch+w.hist+w.tool+w.ret;
+    for (let t=1;t<=N;t++){
+      hist.push(t); tools.push({t, tok:TR[t-1], cleared:false});
+      const w = window(t), inn = sum(w), total = inn+OUT;
+      recs.push({t, w, inn, total, pct:Math.round(100*total/budget)});
+      if (level>0 && total > 0.8*budget){
+        const before = inn;
+        tools.forEach(x=>{ if (x.t < t-1) x.cleared = true; });
+        if (tools.some(x=>x.t===5 && x.cleared)) logState = "cleared";
+        if (level>=2){
+          if (level>=3){ hist = hist.filter(x=>x>=t-1); keep = KEEP; }
+          else hist = [];
+          summary = SUMM;
+          if (!hist.includes(3)) ruleState = "summary";
+          objState = level>=3 ? "kept" : "summary";
+          ptrState = level>=3 ? "kept" : "summary";
+        }
+        if (level>=4){ tail = TAIL; ptrState = "reseeded"; }
+        const after = sum(window(null));
+        events.push({t, before, after, moves:MOVES.slice(0,level)});
+      }
+    }
+    if (canon) ruleState = (events.length && level>=4) ? "canon-reseeded" : "canon";
+    return {recs, events, ruleState, logState, objState, ptrState};
+  }
+
+  function niceMax(v){ const p=Math.pow(10,Math.floor(Math.log10(v))); const f=v/p; const c=[1,1.2,1.5,2,2.5,3,4,5,6,8,10].find(x=>f<=x); return c*p; }
+
+  let level = 0;
+  const legend = $("legend");
+  legend.innerHTML = SEGS.map(s=>'<span><i class="sw" style="background:'+s.c+'"></i>'+s.name+'</span>').join("")
+    + '<span><i class="sw" style="border:1px dashed var(--ink-2)"></i>no compaction</span><span>▼ compaction event</span>';
+
+  function drawSim(){
+    const budget = +$("bud").value; $("budout").textContent = fmt(budget);
+    const canon = $("canon").checked;
+    const base = simulate(0, budget, canon), sim = simulate(level, budget, canon);
+    const W=760,H=330,L=60,R=96,T=22,B=40,pw=W-L-R,ph=H-T-B;
+    const ymax = niceMax(Math.max(...base.recs.map(r=>r.inn), budget)*1.04);
+    const y = v => T+ph-(v/ymax)*ph;
+    const slot = pw/N, bw = slot*0.62;
+    let s = "";
+    for (let g=0; g<=5; g++){
+      const v=ymax*g/5, yy=y(v);
+      s+='<line class="'+(g?'grid':'axis')+'" x1="'+L+'" x2="'+(L+pw)+'" y1="'+yy.toFixed(1)+'" y2="'+yy.toFixed(1)+'"/>';
+      s+='<text x="'+(L-6)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end">'+K(v)+'</text>';
+    }
+    sim.recs.forEach((r,i)=>{
+      const x = L+i*slot+(slot-bw)/2;
+      let acc = 0;
+      SEGS.forEach(sg=>{
+        const v = r.w[sg.id]; if (!v) return;
+        let note = "";
+        if (sg.id==="hist") note = " ("+r.w.hv+" turns verbatim"+(r.w.sum?", summary "+fmt(r.w.sum):"")+(r.w.kp?", keep list "+fmt(r.w.kp):"")+")";
+        if (sg.id==="tool" && r.w.nclr) note = " ("+r.w.nclr+" old results cleared to stubs)";
+        if (sg.id==="ret" && r.w.tail) note = " (includes re-seeded ledger tail "+fmt(r.w.tail)+")";
+        const y1=y(acc+v), y0=y(acc);
+        s+='<rect class="seg" x="'+x.toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(0,y0-y1).toFixed(1)+'" style="fill:'+sg.c+'"><title>Turn '+r.t+' · '+sg.name+': '+fmt(v)+' tokens'+note+' · illustrative</title></rect>';
+        acc += v;
+      });
+      if (level>0){
+        const g = base.recs[i].inn;
+        s+='<rect class="ghost" x="'+(x-2).toFixed(1)+'" y="'+y(g).toFixed(1)+'" width="'+(bw+4).toFixed(1)+'" height="'+(y(0)-y(g)).toFixed(1)+'"><title>Turn '+r.t+' with no compaction: '+fmt(g)+' tokens</title></rect>';
+      }
+      s+='<rect class="hit" x="'+(L+i*slot).toFixed(1)+'" y="'+T+'" width="'+slot.toFixed(1)+'" height="'+(y(r.inn)-T).toFixed(1)+'"><title>Turn '+r.t+': window '+fmt(r.inn)+' in + '+fmt(OUT)+' out = '+fmt(r.total)+' ('+r.pct+'% of budget) · illustrative</title></rect>';
+      s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-B+15)+'" text-anchor="middle">'+r.t+'</text>';
+    });
+    sim.events.forEach(ev=>{
+      const i = ev.t-1, x = L+i*slot+slot/2, yy = y(sim.recs[i].inn)-6;
+      s+='<path class="ev" d="M'+(x-5).toFixed(1)+','+(yy-8).toFixed(1)+' L'+(x+5).toFixed(1)+','+(yy-8).toFixed(1)+' L'+x.toFixed(1)+','+yy.toFixed(1)+' z"><title>Compaction after turn '+ev.t+': '+fmt(ev.before)+' → '+fmt(ev.after)+' tokens ('+ev.moves.join(", ")+')</title></path>';
+    });
+    const yb = y(budget), yt = y(0.8*budget);
+    s+='<line class="budget" x1="'+L+'" x2="'+(L+pw)+'" y1="'+yb.toFixed(1)+'" y2="'+yb.toFixed(1)+'"><title>Declared budget: '+fmt(budget)+' tokens</title></line>';
+    s+='<text class="lbl" x="'+(L+pw+6)+'" y="'+(yb+4).toFixed(1)+'">budget '+K(budget)+'</text>';
+    s+='<line class="thresh" x1="'+L+'" x2="'+(L+pw)+'" y1="'+yt.toFixed(1)+'" y2="'+yt.toFixed(1)+'"><title>80% of budget: '+fmt(0.8*budget)+' tokens</title></line>';
+    s+='<text class="lbl" x="'+(L+pw+6)+'" y="'+(yt+4).toFixed(1)+'">80%: compact</text>';
+    s+='<text x="'+(L+pw/2)+'" y="'+(H-4)+'" text-anchor="middle">turn (one model call each)</text>';
+    s+='<text x="14" y="'+(T+ph/2)+'" text-anchor="middle" transform="rotate(-90 14 '+(T+ph/2)+')">tokens in the window</text>';
+    $("chart").innerHTML = s;
+
+    const peak = Math.max(...sim.recs.map(r=>r.inn));
+    const over = sim.recs.filter(r=>r.total>budget).length;
+    const sent = sim.recs.reduce((a,r)=>a+r.total,0), sentBase = base.recs.reduce((a,r)=>a+r.total,0);
+    $("simstat").innerHTML = "Peak window <b>"+fmt(peak)+"</b> ("+Math.round(100*peak/budget)+"% of budget) · turns over budget <b>"+over+"</b> · compaction events <b>"+sim.events.length+"</b> · tokens sent across 14 calls <b>"+fmt(sent)+"</b>"+(level? " (no compaction: "+fmt(sentBase)+")" : "")+". Illustrative.";
+
+    const hadEv = sim.events.length>0;
+    const ST = {
+      verbatim:["✓","In the window, verbatim",""],
+      kept:["✓","Kept verbatim (keep list)",""],
+      summary:["≈","Only the summarizer's paraphrase, if it chose to keep it","lost"],
+      cleared:["✕","Cleared; the record that the call happened remains","lost"],
+      reseeded:["✓","Kept, and the ledger tail re-seeded from disk",""],
+      canon:["✓","In AGENTS.md; reloads from disk in the file's words",""],
+      "canon-reseeded":["✓","In AGENTS.md; re-seeded from disk in the file's words",""]
+    };
+    const row = (what, st) => { const v = hadEv ? st : (st.startsWith("canon")? st : "verbatim"); const [ic,tx,cl]=ST[v]; return '<tr><td>'+what+'</td><td class="st '+cl+'">'+ic+' '+tx+'</td></tr>'; };
+    $("intent").innerHTML =
+      row("Current objective and open test point", sim.objState) +
+      row("Rule typed in chat on turn 3", sim.ruleState) +
+      row("Raw output of the turn-5 log (16,000 tokens)", sim.logState) +
+      row("Pointers to canon and the ledger tail", sim.ptrState);
+
+    const lines = [];
+    sim.recs.forEach(r=>{
+      lines.push(JSON.stringify({event:"turn_budget",turn:r.t,in:r.inn,out:OUT,total:r.total,budget:budget,pct:r.pct}));
+      const ev = sim.events.find(e=>e.t===r.t);
+      if (ev) lines.push(JSON.stringify({event:"compaction",turn:ev.t,before:ev.before,after:ev.after,moves:ev.moves,kept:level>=3?["objective","open_test_point","last_2_turns","canon_pointers"]:[]}));
+    });
+    $("ledger").textContent = lines.join("\n");
+  }
+  [...$("lvl").querySelectorAll("button")].forEach(b=>b.addEventListener("click",()=>{
+    level = +b.dataset.l;
+    [...$("lvl").querySelectorAll("button")].forEach(x=>x.setAttribute("aria-pressed", x===b));
+    drawSim();
+  }));
+  $("bud").addEventListener("input", drawSim);
+  $("canon").addEventListener("change", drawSim);
+  drawSim();
+
+  /* ---------- 258K bars (to scale) ---------- */
+  (function(){
+    const W=640,H=150,L=12,R=20,T=14,pw=W-L-R, xmax=275000;
+    const x = v => L + v/xmax*pw;
+    let s="";
+    for (let v=0; v<=250000; v+=50000){
+      s+='<line class="'+(v?'grid':'axis')+'" x1="'+x(v).toFixed(1)+'" x2="'+x(v).toFixed(1)+'" y1="'+T+'" y2="118"/>';
+      s+='<text x="'+x(v).toFixed(1)+'" y="132" text-anchor="middle">'+(v? (v/1000)+'K':'0')+'</text>';
+    }
+    s+='<rect x="'+L+'" y="24" width="'+(x(258000)-L).toFixed(1)+'" height="26" rx="3" style="fill:var(--s-b)"><title>~258,000 tokens before the first user turn (Codex session) [verify]</title></rect>';
+    s+='<text class="lbl" x="'+(L+8)+'" y="66">~258K tokens: startup context of one Codex session, before turn one [verify]</text>';
+    s+='<rect x="'+L+'" y="76" width="'+Math.max(2,x(1000)-L).toFixed(1)+'" height="26" rx="1" style="fill:var(--s-a)"><title>4,000 characters ≈ 1,000 tokens (characters ÷ 4 estimate)</title></rect>';
+    s+='<text class="lbl" x="'+(L+10)+'" y="94">≈1K tokens: a 4,000-character AGENTS.md (÷ 4 estimate)</text>';
+    s+='<text x="'+(L+pw/2)+'" y="148" text-anchor="middle">tokens loaded before the first user turn</text>';
+    $("hbar").innerHTML = s;
+  })();
+
+  /* ---------- handoff toggle ---------- */
+  const DIARY = '<div>Made good progress on the loop; continue tomorrow.</div>';
+  const SEVEN = [
+    ["1 Current state","budget meter logs every call; compactor runs at 80%. HEAD at &lt;commit&gt;."],
+    ["2 Important context","Big Pickle's window is unpublished; the declared turn budget is 16,000."],
+    ["3 Decisions","keep list = objective, open test point, last two turns, canon pointers. &lt;who&gt;, &lt;date&gt;, ledger event &lt;id&gt;."],
+    ["4 Next steps","1. Run the resume-loader test: &lt;one command&gt;."],
+    ["5 Pending work","handoff writer started; handoff_written hash not yet logged."],
+    ["6 Verification","git rev-parse HEAD == &lt;commit&gt;; last line of var/ledger.jsonl is a turn_budget event."],
+    ["7 Evidence","var/ledger.jsonl events &lt;ids&gt;; evolution-06/lab/budget.md. Pointers, not pastes."]
+  ].map(([h,t])=>'<div><b>'+h+'.</b> '+t+'</div>').join("");
+  function setHand(which){
+    const seven = which==="seven";
+    $("ho-diary").setAttribute("aria-pressed", !seven); $("ho-seven").setAttribute("aria-pressed", seven);
+    $("hand").innerHTML = seven ? SEVEN : DIARY;
+    const v = $("hoverdict"); v.classList.toggle("bad", !seven);
+    v.textContent = seven
+      ? "Fresh session B: its first action is NEXT STEP 1, it asks nothing the handoff answered, and it logs session_resumed. Test point 4 passes."
+      : "Fresh session B: no next action, no names on decisions, no evidence. It reconstructs intent from the code, and guesses. Falsifier: B asks a question the handoff should have answered, or takes an action it did not name.";
+  }
+  $("ho-diary").addEventListener("click",()=>setHand("diary"));
+  $("ho-seven").addEventListener("click",()=>setHand("seven"));
+  setHand("diary");
+})();
+</script>
+
+</body></html>

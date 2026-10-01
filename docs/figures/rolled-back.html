@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Rolled Back</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.figtop{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:14px 18px 4px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .mono{font-family:var(--mono); font-size:11.5px; fill:var(--ink)}
+.fig .mono2{font-family:var(--mono); font-size:11.5px; fill:var(--ink-2)}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .store{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="frame"]:not(.on){opacity:.55}
+.fig .el.on .box,.fig .el.on .store{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow,.fig .el.on .dash{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl{fill:var(--accent-soft)}
+.fig .rbonly{opacity:0; transition:opacity .35s ease}
+.fig.mode-rb .rbonly{opacity:1}
+.fig.mode-rb.focus .rbonly:not(.on){opacity:.2}
+.fig.mode-rb .rdonly{opacity:.08}
+.fig .rdonly{transition:opacity .35s ease}
+.fig .sw-rb{display:none}
+.fig.mode-rb .sw-rb{display:inline}
+.fig.mode-rb .sw-rd{display:none}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow,.fig .el.on .dash{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.chip.n{background:var(--surface-2); color:var(--ink-2)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.split{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.stack{display:grid; gap:12px; align-content:start; min-width:0}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent)}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.btnrow.l{justify-content:flex-start}
+svg.sm{width:100%; height:auto; display:block}
+.sm text{font-family:var(--display); fill:var(--ink)}
+.sm .tt{font-size:17px; font-weight:600}
+.sm .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.sm .node{fill:var(--surface); stroke:var(--line); stroke-width:1.4}
+.sm .node.cur{fill:var(--accent-soft); stroke:var(--accent); stroke-width:2.6}
+.sm .ar{fill:none; stroke:var(--ink-2); stroke-width:1.5; marker-end:url(#sa)}
+.sm .ar.hot{stroke:var(--accent); stroke-width:2.6; marker-end:url(#saon)}
+.sm .mk{fill:var(--ink-2)} .sm .mkon{fill:var(--accent)}
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(118px,1fr)); gap:8px}
+.tile{background:var(--surface-2); border-radius:8px; padding:8px 10px; display:grid; gap:2px}
+.tile span{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--ink-2)}
+.tile b{font-family:var(--mono); font-weight:500; font-size:18px; font-variant-numeric:tabular-nums}
+.tile.hot{background:var(--accent-soft)}
+.tile.hot b{color:var(--accent-ink)}
+.health{font-family:var(--mono); font-size:13px; background:var(--surface-2); padding:8px 12px; border-radius:8px; overflow-x:auto; white-space:nowrap}
+.log{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); margin:0; padding-left:18px; display:grid; gap:2px; min-height:7.5em}
+.log li:first-child{color:var(--ink)}
+svg.tl{width:100%; height:auto; display:block}
+.tl text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.tl .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.tl .axis{stroke:var(--line)} .tl .grid{stroke:var(--line); stroke-dasharray:2 4}
+.tl .ok{fill:var(--s-a)} .tl .to{fill:var(--s-b)} .tl .rf{stroke:var(--ink-2); stroke-width:2}
+.tl .b-closed{fill:var(--surface-2)} .tl .b-open{fill:var(--s-b); opacity:.3} .tl .b-half{fill:var(--s-a); opacity:.3}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:13.5px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:14px; height:12px; border-radius:2px; display:inline-block}
+.cards6{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:10px}
+.c6{background:var(--surface-2); border-radius:8px; padding:10px 12px; font-size:14.5px}
+.c6 b{font-family:var(--display); font-weight:600; font-size:17px; display:block}
+.c6.hl{background:var(--accent-soft)}
+svg.ship{width:100%; min-width:760px; height:auto; display:block}
+.ship text{font-family:var(--display); fill:var(--ink)}
+.ship .tt{font-size:16px; font-weight:600}
+.ship .ts{font-size:13px; fill:var(--ink-2); font-weight:500}
+.ship .mono{font-family:var(--mono); font-size:11.5px; fill:var(--ink)}
+.ship .rail{stroke:var(--ink-2); stroke-width:2}
+.ship .st{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.6}
+.ship .st.key{fill:var(--accent-soft); stroke:var(--accent); stroke-width:2.4}
+.ship .num{font-family:var(--mono); font-size:13px; fill:var(--ink)}
+.ship .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.ship .box.gone{stroke-dasharray:4 3; opacity:.6}
+.ship .box.key{stroke:var(--accent); stroke-width:2.2}
+.ship .ptr{fill:none; stroke:var(--ink-2); stroke-width:1.8; marker-end:url(#pa)}
+.ship .ptr.moved{stroke:var(--accent); marker-end:url(#paon)}
+.ship .mk{fill:var(--ink-2)} .ship .mkon{fill:var(--accent)}
+.two{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:14px}
+.col{background:var(--surface-2); border-radius:10px; padding:12px 14px; display:grid; gap:6px; align-content:start}
+.col h3{font-family:var(--display); font-weight:600; font-size:20px; margin:0}
+.col ul{margin:0; padding-left:18px; display:grid; gap:4px; font-size:15px}
+.col.warnc{background:var(--accent-soft)}
+ol.five{margin:0; padding-left:22px; display:grid; gap:6px; font-size:15.5px}
+ol.five b{font-family:var(--display); font-weight:600; font-size:17px}
+.gates{display:flex; gap:6px; flex-wrap:wrap; align-items:center}
+.gate{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.04em; padding:4px 10px; border-radius:8px; border:1px solid var(--line); background:var(--surface)}
+.gate.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink)}
+.gate.lite{background:var(--surface-2)}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.nw{white-space:nowrap}
+.t td code{font-family:var(--mono); font-size:13.5px}
+.t tr.hl td{background:var(--accent-soft)}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+code{font-family:var(--mono); font-size:.88em}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 13</div>
+  <h1>Rolled Back</h1>
+  <p class="lede">A release is a built thing with a version and a hash. A rollback reinstalls a thing that already exists. Step through one release, a broken release, and the way back. Then switch to <em>rollback by rebuild</em> and watch the version string stay right while the hash goes wrong.</p>
+</header>
+
+<div class="figwrap">
+  <div class="figtop">
+    <div class="eyebrow">The release path and the way back</div>
+    <div class="seg" role="group" aria-label="Rollback method">
+      <button type="button" id="m-rd" aria-pressed="true">Redeploy the prior artifact</button>
+      <button type="button" id="m-rb" aria-pressed="false">Rollback by rebuild (the common mistake)</button>
+    </div>
+  </div>
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 650" role="img" aria-label="Release path from a clean commit through a build to an artifact with a SHA-256, a release event in the ledger, and a deploy environment that serves it. Released artifacts are kept apart. The correct rollback reinstalls the prior artifact after checking its hash. The rebuild mode shows a rebuilt 0.1.0 wheel with different bytes overwriting the released file, and a ledger rollback line whose hash does not match.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <text class="lab" x="20" y="34">Release path</text>
+
+    <!-- secret injection -->
+    <g class="el" data-k="secret">
+      <text class="ts" x="985" y="36" text-anchor="middle">secret injected at run time</text>
+      <text class="mono2" x="985" y="52" text-anchor="middle">--env-file (untracked)</text>
+      <path class="dash" d="M985,58 L985,94"/>
+    </g>
+
+    <!-- 1 commit -->
+    <g class="el" data-k="commit">
+      <rect class="box" x="20" y="96" width="170" height="80" rx="8"/>
+      <text class="tt" x="34" y="120">Clean commit</text>
+      <text class="ts" x="34" y="140">pyproject version 0.1.0</text>
+      <text class="ts" x="34" y="158">no dirty tree, no latest tag</text>
+    </g>
+    <!-- 2 build -->
+    <g class="el" data-k="build">
+      <path class="flow" d="M190,136 L238,136"/>
+      <text class="ts" x="215" y="72" text-anchor="middle">source at</text>
+      <text class="ts" x="215" y="86" text-anchor="middle">one commit</text>
+      <rect class="box" x="240" y="96" width="170" height="80" rx="8"/>
+      <text class="tt" x="254" y="120">Build</text>
+      <text class="mono" x="254" y="140">uv build</text>
+      <text class="mono2" x="254" y="158">or docker build -t …</text>
+    </g>
+    <!-- 3 artifact -->
+    <g class="el" data-k="artifact">
+      <path class="flow" d="M410,136 L458,136"/>
+      <text class="ts" x="435" y="72" text-anchor="middle">bytes and</text>
+      <text class="ts" x="435" y="86" text-anchor="middle">their SHA-256</text>
+      <rect class="box" x="460" y="96" width="170" height="80" rx="8"/>
+      <text class="tt" x="474" y="120">Artifact</text>
+      <text class="ts" x="474" y="140">wheel, or image by ID</text>
+      <text class="mono" x="474" y="158">sha256 21cb6c3d…</text>
+    </g>
+    <!-- 4 release -->
+    <g class="el" data-k="release">
+      <path class="flow" d="M630,136 L678,136"/>
+      <text class="ts" x="655" y="72" text-anchor="middle">version</text>
+      <text class="ts" x="655" y="86" text-anchor="middle">and hash</text>
+      <rect class="box" x="680" y="96" width="170" height="80" rx="8"/>
+      <text class="tt" x="694" y="120">Release event</text>
+      <text class="ts" x="694" y="140">one command; ledger line</text>
+      <text class="ts" x="694" y="158">Gate 5: a human attests</text>
+    </g>
+    <!-- 5 serve -->
+    <g class="el" data-k="serve">
+      <path class="flow" d="M850,136 L898,136"/>
+      <text class="ts" x="875" y="72" text-anchor="middle">install that</text>
+      <text class="ts" x="875" y="86" text-anchor="middle">artifact</text>
+      <rect class="box" x="900" y="96" width="170" height="80" rx="8"/>
+      <text class="tt" x="914" y="120">Serve · deploy env</text>
+      <text class="ts" x="914" y="140">a service or a job</text>
+      <text class="mono" x="914" y="158">/health → 0.1.0</text>
+    </g>
+
+    <!-- artifact store -->
+    <g class="el" data-k="store">
+      <path class="flow" d="M545,176 L545,230"/>
+      <text class="ts" x="553" y="207"><tspan class="sw-rd">kept, out of reach</tspan><tspan class="sw-rb">written to dist/</tspan></text>
+      <rect class="store" x="440" y="232" width="300" height="116" rx="8"/>
+      <text class="lab" x="454" y="252"><tspan class="sw-rd">Released artifacts</tspan><tspan class="sw-rb">dist/ · the build's own folder</tspan></text>
+      <text class="ts" x="454" y="267"><tspan class="sw-rd">a build cannot overwrite them</tspan><tspan class="sw-rb">the next build can overwrite them</tspan></text>
+      <rect class="stripe hl" x="452" y="276" width="276" height="28" rx="4"/>
+      <text class="mono" x="462" y="294"><tspan class="sw-rd">0.1.0 · sha256 21cb6c3d…</tspan><tspan class="sw-rb">0.1.0 · sha256 4aefd5f6…</tspan></text>
+      <text class="ts" x="720" y="294" text-anchor="end"><tspan class="sw-rd">released</tspan><tspan class="sw-rb">overwritten</tspan></text>
+    </g>
+    <g class="el" data-k="bad">
+      <rect class="stripe hl" x="452" y="310" width="276" height="28" rx="4"/>
+      <text class="mono" x="462" y="328">0.1.1 · planted defect</text>
+      <text class="ts" x="720" y="328" text-anchor="end">smoke fails</text>
+    </g>
+
+    <!-- correct rollback -->
+    <g class="el rdonly" data-k="rollback">
+      <path class="flow" d="M740,290 L788,290"/>
+      <text class="ts" x="764" y="250" text-anchor="middle">prior</text>
+      <text class="ts" x="764" y="264" text-anchor="middle">artifact</text>
+      <rect class="box" x="790" y="256" width="200" height="74" rx="8"/>
+      <text class="tt" x="804" y="278">Rollback command</text>
+      <text class="ts" x="804" y="297">one governed command · 0.1 s</text>
+      <text class="ts" x="804" y="315">refuses a hash ≠ the release</text>
+      <path class="flow" d="M960,256 L960,178"/>
+      <text class="ts" x="952" y="208" text-anchor="end">reinstall 0.1.0;</text>
+      <text class="ts" x="952" y="222" text-anchor="end">hash checked first</text>
+    </g>
+
+    <!-- rollback by rebuild -->
+    <g class="el rbonly" data-k="rebuild">
+      <text class="lab" x="240" y="390">Rollback by rebuild</text>
+      <path class="flow" d="M60,176 L60,398"/>
+      <text class="ts" x="68" y="292">version set back</text>
+      <text class="ts" x="68" y="306">to 0.1.0</text>
+      <rect class="box" x="20" y="400" width="190" height="70" rx="8"/>
+      <text class="tt" x="34" y="424">Old version, again</text>
+      <text class="mono" x="34" y="444">uv version → 0.1.0</text>
+      <path class="flow" d="M210,435 L238,435"/>
+      <rect class="box" x="240" y="400" width="190" height="70" rx="8"/>
+      <text class="tt" x="254" y="424">uv build, again</text>
+      <text class="ts" x="254" y="444">same file name, new bytes</text>
+      <path class="flow" d="M430,435 L458,435"/>
+      <rect class="box" x="460" y="400" width="280" height="70" rx="8"/>
+      <text class="tt" x="474" y="424">Rebuilt wheel at the old path</text>
+      <text class="mono" x="474" y="444">0.1.0 · sha256 4aefd5f6…</text>
+      <text class="ts" x="474" y="461">different bytes from the release</text>
+      <path class="dash" d="M600,400 L600,350"/>
+      <text class="ts" x="608" y="384">overwrites the released file</text>
+      <path class="flow" d="M740,435 L1030,435 L1030,178"/>
+      <text class="ts" x="885" y="427" text-anchor="middle">installed as a “rollback” to 0.1.0</text>
+    </g>
+
+    <!-- ledger -->
+    <g class="el" data-k="frame">
+      <rect class="frame" x="20" y="500" width="1050" height="136" rx="10"/>
+      <text class="lab" x="36" y="522">Release ledger · append-only</text>
+    </g>
+    <g class="el" data-k="l1 release">
+      <text class="mono" x="36" y="546">{release, 0.1.0, 21cb6c3d…, ok}</text>
+      <text class="ts" x="520" y="546">test point 1 · /health reports 0.1.0</text>
+    </g>
+    <g class="el" data-k="l2 bad">
+      <text class="mono" x="36" y="568">{release, 0.1.1, ok:false}</text>
+      <text class="ts" x="520" y="568">test point 2 · the smoke check failed</text>
+    </g>
+    <g class="el" data-k="l3">
+      <text class="mono" x="36" y="590"><tspan class="sw-rd">{rollback, 0.1.0, 21cb6c3d…, ok}</tspan><tspan class="sw-rb">{rollback, 0.1.0, 4aefd5f6…}</tspan></text>
+      <text class="ts" x="520" y="590"><tspan class="sw-rd">test point 3 · hash equals the release it restores</tspan><tspan class="sw-rb" style="fill:var(--accent-ink)">test point 4 · hash does not match the release it claims to restore</tspan></text>
+    </g>
+    <g class="el" data-k="l4 release">
+      <text class="mono" x="36" y="612">{attestation, 0.1.0, Completed}</text>
+      <text class="ts" x="520" y="612">test point 6 · recorded by a person, never by the agent</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 10</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step. The two hashes and the 0.1 s come from the deck's lab run of 09/24.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- circuit breaker -->
+  <section class="panel wide" aria-labelledby="h-cb">
+    <div class="eyebrow">Nygard's Circuit Breaker, applied to the model route · E12 slide 9</div>
+    <h2 id="h-cb">Break the provider and watch the breaker</h2>
+    <p class="small">Your agent calls a model route over and over. Set the provider to failing and make calls. Each failing call waits out its timeout. After N failures in a row the breaker opens, and calls fail at once with a reason instead of waiting. After the cool-down, one trial call decides whether it closes again. Times are simulated and illustrative.</p>
+    <div class="split">
+      <div class="stack">
+        <svg class="sm" id="sm" viewBox="0 0 520 250" role="img" aria-label="Circuit breaker state machine: Closed, Open, and Half-open, with the transitions between them.">
+          <defs>
+            <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="saon" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <path class="ar" id="t-co" d="M160,66 L358,66"/>
+          <text class="ts" x="260" y="56" text-anchor="middle">N failures in a row</text>
+          <path class="ar" id="t-oh" d="M380,104 L318,168"/>
+          <text class="ts" x="342" y="132" text-anchor="end">cool-down elapsed</text>
+          <path class="ar" id="t-ho" d="M330,210 L440,210 L440,106"/>
+          <text class="ts" x="385" y="228" text-anchor="middle">trial call fails</text>
+          <path class="ar" id="t-hc" d="M190,210 L90,210 L90,106"/>
+          <text class="ts" x="98" y="152">trial call</text>
+          <text class="ts" x="98" y="166">succeeds</text>
+          <rect class="node" id="n-closed" x="20" y="38" width="140" height="66" rx="10"/>
+          <text class="tt" x="90" y="66" text-anchor="middle">Closed</text>
+          <text class="ts" x="90" y="86" text-anchor="middle">calls pass through</text>
+          <rect class="node" id="n-open" x="360" y="38" width="140" height="66" rx="10"/>
+          <text class="tt" x="430" y="66" text-anchor="middle">Open</text>
+          <text class="ts" x="430" y="86" text-anchor="middle">calls refused at once</text>
+          <rect class="node" id="n-half" x="190" y="170" width="140" height="66" rx="10"/>
+          <text class="tt" x="260" y="198" text-anchor="middle">Half-open</text>
+          <text class="ts" x="260" y="218" text-anchor="middle">one trial call</text>
+        </svg>
+        <div class="tiles">
+          <div class="tile" id="tl-state"><span>Breaker</span><b id="v-state">closed</b></div>
+          <div class="tile"><span>Failures in a row</span><b id="v-fails">0 / 3</b></div>
+          <div class="tile"><span>Timeouts</span><b id="v-to">0</b></div>
+          <div class="tile"><span>Retries</span><b id="v-re">0</b></div>
+          <div class="tile"><span>Refused at once</span><b id="v-rf">0</b></div>
+          <div class="tile"><span>Seconds waited</span><b id="v-wait">0</b></div>
+        </div>
+        <div class="health" id="health"></div>
+      </div>
+      <div class="stack">
+        <div class="ctrl"><span>Provider</span>
+          <div class="seg" role="group" aria-label="Provider health">
+            <button type="button" id="p-ok" aria-pressed="true">Healthy</button>
+            <button type="button" id="p-bad" aria-pressed="false">Failing (calls time out)</button>
+          </div>
+        </div>
+        <div class="btnrow l">
+          <button type="button" id="c1" class="primary">Make a call</button>
+          <button type="button" id="c5">Make 5 calls</button>
+          <button type="button" id="w10">Wait 10 s</button>
+          <button type="button" id="rst">Reset</button>
+        </div>
+        <div class="ctrl"><label for="nf">Failure threshold N</label><input id="nf" type="range" min="1" max="6" step="1" value="3"><output id="nfo" for="nf">3</output></div>
+        <div class="ctrl"><label for="to">Call timeout</label><input id="to" type="range" min="5" max="60" step="5" value="20"><output id="too" for="to">20 s</output></div>
+        <div class="ctrl"><label for="cd">Cool-down</label><input id="cd" type="range" min="10" max="120" step="10" value="60"><output id="cdo" for="cd">60 s</output></div>
+        <div class="ctrl">
+          <label class="cb"><input type="checkbox" id="brk" checked> Breaker installed</label>
+          <label class="cb"><input type="checkbox" id="rty"> Retry at once after a timeout</label>
+        </div>
+        <svg class="tl" id="tl" viewBox="0 0 520 168" role="img" aria-label="Timeline of calls on simulated time, with the breaker's state shaded behind them."></svg>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s-a)"></i>call succeeded</span>
+          <span><i class="sw" style="background:var(--s-b)"></i>call timed out</span>
+          <span><i class="sw" style="background:var(--ink-2);width:3px"></i>refused at once</span>
+          <span><i class="sw" style="background:var(--s-b);opacity:.3"></i>open</span>
+          <span><i class="sw" style="background:var(--s-a);opacity:.3"></i>half-open</span>
+        </div>
+        <ol class="log" id="log" reversed></ol>
+      </div>
+    </div>
+    <p class="small">Try two runs. First, turn the breaker off and make five calls to a failing provider: every call waits the full timeout. Then turn on <em>retry at once</em>: each timeout doubles the wait, which is what Nygard warns against, because the fault is probably still there. The <code>breaker</code> field in the /health line is the deck's advice to expose the breaker's state; its name is illustrative.</p>
+    <div class="cards6">
+      <div class="c6"><b>Timeouts</b>Every model call and tool call has one. Do not retry at once after a timeout. Queue or halt.</div>
+      <div class="c6 hl"><b>Circuit Breaker</b>After N failures from a provider or tool, stop calling it for a period and fail the run with a reason. Expose its state in /health.</div>
+      <div class="c6"><b>Steady State</b>Everything that accumulates is purged by something: traces, the idempotency store, memory rows, old wheels.</div>
+      <div class="c6"><b>Fail Fast</b>Check the key, the model route, and the budget before the first turn. A run that cannot finish should not start.</div>
+      <div class="c6"><b>Governor</b>Slow automation in the unsafe direction so a human can intervene: deletes, deploys, mass writes.</div>
+      <div class="c6"><b>Force Multiplier (antipattern)</b>Automation that spreads one wrong decision across the fleet. A scheduled agent multiplies whatever its prompt gets wrong.</div>
+    </div>
+  </section>
+
+  <!-- two ways to ship -->
+  <section class="panel wide" aria-labelledby="h-ship">
+    <div class="eyebrow">E12 slide 7 · the lab offers both; the Sprint flies one end to end</div>
+    <h2 id="h-ship">Two ways to ship the same release</h2>
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Shipping path">
+        <button type="button" id="s-w" aria-pressed="true">No container · a versioned wheel</button>
+        <button type="button" id="s-c" aria-pressed="false">Container · an image</button>
+      </div>
+      <label class="cb"><input type="checkbox" id="s-rb"> Build again under the same name</label>
+    </div>
+    <div class="scroller"><svg class="ship" id="ship" viewBox="0 0 1000 330" role="img" aria-label="Timeline of six steps for shipping one release, with a pointer diagram showing what a version name points at."></svg></div>
+    <p class="small" id="s-note"></p>
+    <p class="small">The deck's strip under both columns: a version number is a name. The hash is the release. Record the hash when you release and check it when you roll back.</p>
+  </section>
+
+  <!-- service or job -->
+  <section class="panel" aria-labelledby="h-svc">
+    <div class="eyebrow">E12 slide 4 · Ch. 21.1</div>
+    <h2 id="h-svc">Serving an agent: a service or a job</h2>
+    <div class="two">
+      <div class="col"><h3>Service (request/response)</h3><ul>
+        <li>A caller sends a request and waits; FastAPI in front of your loop</li>
+        <li>Every request has a time budget; the loop halts inside it</li>
+        <li>A retried POST must not run the agent twice: idempotency key</li>
+        <li>Long answers stream</li>
+        <li>/health reports status and version</li></ul></div>
+      <div class="col"><h3>Job (run to completion)</h3><ul>
+        <li>A trigger starts a run; nobody waits on a socket</li>
+        <li>A turn and dollar budget, not a request timeout</li>
+        <li>Output is an artifact: a branch, a report, a ledger entry</li>
+        <li>The result must say what it did</li>
+        <li>Exit code is the only status the scheduler sees</li></ul></div>
+    </div>
+    <p class="small">Pick one in an ADR and state the lifecycle. The deck's mistake is a service with job semantics: a POST that starts a ten-minute loop, a client that times out at 60 seconds and retries, and three agents doing the same work with your key. A request that outlives its caller becomes an orphan, so decide who owns the halt.</p>
+  </section>
+
+  <!-- unattended -->
+  <section class="panel" aria-labelledby="h-un">
+    <div class="eyebrow">E12 slides 8 and 16 · Ch. 21.3</div>
+    <h2 id="h-un">Who attests a job nobody watched?</h2>
+    <ol class="five">
+      <li><b>Stored trigger.</b> An authorized person wrote the prompt and schedule ahead of time. The firing is evidence of storage, not of consent for this run's actions.</li>
+      <li><b>Isolated environment.</b> A fresh VM or runner per run; network limited by default.</li>
+      <li><b>Narrow write path.</b> One branch with a known prefix (copilot/, claude/, codex/). No push to a protected branch; no merge by the agent.</li>
+      <li><b>Human merge.</b> A person with write access reviews the diff and merges.</li>
+      <li><b>Record and read.</b> A green status means the run exited. Somebody reads the transcript.</li>
+    </ol>
+    <blockquote>The trigger “attests only that the prompt was stored ahead of time” and “can't act as approval or consent for actions during the run.”<cite>Claude Code routines documentation, as quoted in E12 slide 16</cite></blockquote>
+    <p class="small">The run's record must answer three questions: what did it change, under whose authority, and who accepted it. For your system, a scheduled run writes only to its own branch or file, a person accepts it, and the ledger shows the run and the acceptance as two events.</p>
+  </section>
+
+  <!-- heavy lane -->
+  <section class="panel" aria-labelledby="h-hv">
+    <div class="eyebrow">E12 slides 10 and 24 · Ch. 21.5 and 26</div>
+    <h2 id="h-hv">The Heavy lane and the release ceremony</h2>
+    <div class="gates" aria-label="Gates 1 to 5">
+      <span class="gate lite">1 · ADR</span><span class="gate lite">2 · TDD</span><span class="gate on">3 · Docs</span><span class="gate on">4 · BDD</span><span class="gate on">5 · Human</span>
+    </div>
+    <p class="small">Lite ran gates 1–2 all term. The Final System runs gates 1–5. Gates 3–5 are the ones a release adds.</p>
+    <ul style="margin:0; padding-left:20px; display:grid; gap:6px; font-size:15.5px">
+      <li><b>Docs.</b> The README, the runbook, and the release notes describe the release that exists. A command in the docs that fails when pasted is a gate failure.</li>
+      <li><b>BDD.</b> Scenarios for the external contract, what a caller of /runs or a user of the CLI can rely on. Executed, not just written.</li>
+      <li><b>Human.</b> A person attests Completed, Completed — Partial, or Dropped. The attestation is a ledger event. The agent never records it for you.</li>
+      <li><b>Release notes and changelog.</b> The changelog is every change, for maintainers. Release notes are what a user must know to upgrade and to roll back.</li>
+    </ul>
+    <div class="tablewrap" style="margin-top:0">
+    <table class="t" style="min-width:520px; font-size:14.5px">
+      <thead><tr><th>Ceremony element</th><th>You bring or do</th><th>Evidence on the screen</th></tr></thead>
+      <tbody>
+        <tr><td>Readiness</td><td>Clean tree at the freeze commit; gates 1–5 on the Heavy lane</td><td><code>gz status</code>; the gate output</td></tr>
+        <tr><td>Bill of materials</td><td>PRD, ADRs, briefs, code and tests, eval suite with red-team card, runbook, release, Design Analysis Ledger (13 rows), AI_LOG.md</td><td>Paths, opened one by one</td></tr>
+        <tr><td>Docs alignment</td><td>The README and runbook match what runs</td><td>A pasted command that works</td></tr>
+        <tr><td>Value walkthrough</td><td>What your system does for its user, in your words, without the agent</td><td>Your personalized brief beside it</td></tr>
+        <tr class="hl"><td>Live demo</td><td>You run it; you release and roll back; the instructor watches</td><td>The ledger lines as they appear</td></tr>
+        <tr><td>Attestation and audit</td><td>You attest; the record is checked afterwards</td><td>The attestation event; the audit output</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- runbook -->
+  <section class="panel" aria-labelledby="h-rb">
+    <div class="eyebrow">E12 slide 12 · docs/runbook.md</div>
+    <h2 id="h-rb">The runbook is one page</h2>
+    <p class="small">Someone who has never seen your system uses it at 2 a.m. The right-hand column is how your Chase tests each section without asking you anything.</p>
+    <div class="tablewrap" style="margin-top:0">
+    <table class="t" style="min-width:520px; font-size:14.5px">
+      <thead><tr><th>Section</th><th>What it says</th><th>How the Chase tests it</th></tr></thead>
+      <tbody>
+        <tr><td>What runs where</td><td>Artifact type, where it runs, which port, which environment variables (names only)</td><td>Start it from a clean shell with only these steps</td></tr>
+        <tr><td>Release</td><td>The one command, what it records, where the hash goes</td><td>Run it; find the release event and the hash</td></tr>
+        <tr><td>Health</td><td>The route or command; the expected output, with the version</td><td>Compare output with the release event</td></tr>
+        <tr class="hl"><td>Rollback</td><td>The one command; the time you measured; what it refuses to do</td><td>Run it after a bad release; time it; compare hashes</td></tr>
+        <tr><td>Limits and budgets</td><td>Per-run turns and dollars; request rate; what happens when exceeded</td><td>Exceed one on purpose</td></tr>
+        <tr><td>Secrets</td><td>Where each secret comes from at run time; how to rotate it; the canary check</td><td>Run the canary search</td></tr>
+        <tr class="hl"><td>Known gaps</td><td>What the runbook does not cover (e.g. the in-memory idempotency store lost on restart)</td><td>Check the gap is real and stated</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">In your sortie · Flight Card 12, a release that can be rolled back</div>
+  <h2 id="h-map">Where each test point meets this figure</h2>
+  <div class="tablewrap">
+  <table class="t">
+    <thead><tr><th>Test point</th><th>What you fly</th><th>Evidence</th><th>Part of the figure</th></tr></thead>
+    <tbody>
+      <tr><td class="nw">TP1</td><td>Release N</td><td><code>{release, N, hash_N, ok}</code>; health reports N</td><td>Release path; ledger line 1</td></tr>
+      <tr><td class="nw">TP2</td><td>Release N+1 with a planted defect</td><td>Smoke fails; <code>{release, N+1, ok:false}</code></td><td>The 0.1.1 entry; ledger line 2</td></tr>
+      <tr><td class="nw">TP3</td><td>Rollback, one command, timed</td><td><code>{rollback, N, hash == hash_N, ok}</code>; health reports N</td><td>Redeploy mode: rollback command; ledger line 3</td></tr>
+      <tr class="hl"><td class="nw">TP4</td><td>Rebuild N over its own path, then roll back</td><td>Refused, or the hash mismatch recorded as not ok</td><td>Rebuild mode</td></tr>
+      <tr><td class="nw">TP5</td><td>Canary search: image history, logs, traces, git log</td><td>Zero hits</td><td>Secret injected at run time</td></tr>
+      <tr><td class="nw">TP6</td><td>Attest the release</td><td>A human attestation event in the ledger</td><td>Ledger line 4; Gate 5</td></tr>
+      <tr><td class="nw">Lab</td><td>Release 0.1.0, break with 0.1.1, roll back with <code>python deploy.py rollback</code>; OpenCode as adversary</td><td>release-ledger.jsonl (3+ lines); worksheet with rollback seconds, both hashes, and your verdict on the model's claim</td><td>The whole figure, at lab scale</td></tr>
+      <tr><td class="nw">gzkit</td><td><code>gz validate --distribution</code> (ADR-0.0.31); GHI #830 backfilled releases; MX mode (ADR-0.0.74)</td><td>A validator checks the release before it leaves; the record is written when the release happens</td><td>The door: loose in the bay, hard at the door</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:10px">Falsifiers, any one of which fails the sortie: a rollback that needs a manual step or restores a hash other than hash_N; the canary found in any artifact; a release with no attestation event; a pass obtained by editing the ledger, skipping the smoke check, or deleting the defect. If the container engine will not run, that is an abort for the container path, and you fly the wheel path. Code freeze Sun 11/22, 11:59 p.m.</p>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>The two hash prefixes and the 0.1 s rollback time come from the deck's lab run of relcheck 0.1.0 on 09/24/2026. The figure reuses them for one release. Every number in the circuit-breaker simulation is illustrative.</li>
+      <li>The deck states the breaker rule as “after N failures, stop calling for a period and fail the run with a reason.” The half-open trial call is the standard form of the pattern in Nygard's book; the figure draws it, and the simulation counts timeouts as failures.</li>
+      <li>Ledger lines use the flight card's shorthand. Your release-ledger.jsonl will hold the same facts as JSON fields.</li>
+      <li>The figure draws one deploy environment. A registry, a TLS proxy (FastAPI's <code>--proxy-headers</code>), streaming, and the idempotency store are on the deck's slides but not in the diagram.</li>
+      <li>gzkit items carry the deck's verify markers: the distribution invariant's exact wording, what #830 backfilled, and ADR-0.0.74's text.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Sources</h2>
+    <ol>
+      <li>Nygard, M. T. (2018). <em>Release it! Design and deploy production-ready software</em> (2nd ed.). Pragmatic Bookshelf. (“Stability Antipatterns” and “Stability Patterns.”)</li>
+      <li>FastAPI. (2026). <em>FastAPI in containers: Docker</em>; <em>Run a server manually</em>. fastapi.tiangolo.com. Checked 09/24/2026.</li>
+      <li>Astral. (2026). <em>uv: building and publishing a package</em>. docs.astral.sh. Checked 09/24/2026.</li>
+      <li>GitHub. (2026). <em>About Copilot cloud agent</em>; <em>Risks and mitigations</em>; changelog of 2026-04-01. docs.github.com.</li>
+      <li>Anthropic. (2026). <em>Claude Code on the web</em>; <em>Routines</em>; <em>GitHub Actions</em>. code.claude.com/docs.</li>
+      <li>OpenAI. (2026). <em>Codex cloud</em> and <em>internet access</em>. developers.openai.com.</li>
+      <li>CIDM 6333 course text, Ch. 21 (Production and operations) and Ch. 26 (closeout); gzkit <code>docs/examples/guide-releasing.md</code> and <code>command-doctrine.md</code>.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 13 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const NS = "http://www.w3.org/2000/svg";
+
+  /* ---------- main figure: mode + player ---------- */
+  const fig = $("fig");
+  function setMode(m){
+    fig.classList.toggle("mode-rb", m==="rb");
+    $("m-rd").setAttribute("aria-pressed", m!=="rb");
+    $("m-rb").setAttribute("aria-pressed", m==="rb");
+  }
+  $("m-rd").addEventListener("click",()=>setMode("rd"));
+  $("m-rb").addEventListener("click",()=>setMode("rb"));
+
+  const STEPS = [
+    {k:"*", m:"rd", t:"Release, break, roll back", w:["E12"],
+     p:"The top row is the release path: a clean commit, a build, an artifact with a hash, a release event, and a deploy environment that serves it. Below it sit the released artifacts and the ledger. Step through one good release, one broken release, and two ways back. The deck's claim is that you have not released it until you have rolled it back."},
+    {k:"commit build", m:"rd", t:"Build from a clean commit", w:["E12"],
+     p:"You build the release from a clean commit with uv build, or with docker build if your laptop runs a container engine. A dirty tree or an image tagged latest leaves no way to trace the artifact back to its source. The deck lists both as the wrong place for an artifact to come from."},
+    {k:"artifact", m:"rd", t:"The hash is the release", w:["E12"],
+     p:"The build produces bytes: a wheel or an image. The version number is a name for them. The wheel's SHA-256, or the image ID or registry digest, identifies the bytes themselves. A Docker tag is a pointer, and the next build with the same tag moves it to a different image."},
+    {k:"release l1 l4", m:"rd", t:"The release is an event in the ledger", w:["E10","E12"],
+     p:"One governed command installs the artifact and appends a release line with the version and the hash. On the Heavy lane a person then attests at Gate 5: Completed, Completed — Partial, or Dropped. The agent never records that event for you, and a release with no attestation event fails Sortie 12."},
+    {k:"serve secret", m:"rd", t:"Serve it, with the secret injected", w:["E5","E12"],
+     p:"The deploy environment runs the artifact as a service or as a job. A service reports status and version at /health, which is how anyone outside can see a rollback. The model key reaches the process from the environment at run time. It never sits in the image, the log, the repository, or the model's context."},
+    {k:"bad l2 store", m:"rd", t:"Release N+1 fails its smoke check", w:["E10","E12"],
+     p:"You bump to 0.1.1, plant a defect, build, and release. The smoke check fails, and the ledger records the release as ok:false. The released 0.1.0 wheel still sits in a place no build can overwrite. That kept file is what the next step reinstalls."},
+    {k:"store rollback l3 serve", m:"rd", t:"Rollback redeploys the prior artifact", w:["E12"],
+     p:"One command takes the 0.1.0 wheel named in the release record, checks its SHA-256 against the release event, and reinstalls it. The lab script did this in 0.1 s. The rollback line in the ledger names the same hash as the release it restores, and /health reports 0.1.0 again."},
+    {k:"rebuild", m:"rb", t:"The common mistake: rollback by rebuild", w:["E12"],
+     p:"Here the version is set back to 0.1.0 and uv build runs again. The new wheel has the same file name and different bytes, and it overwrites the released file at the same path. In the deck's run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of the same relcheck 0.1.0."},
+    {k:"l3 serve store", m:"rb", t:"Only the hash shows the difference", w:["E12"],
+     p:"The rollback installs the rebuilt wheel. The version string is right, the file name is right, and /health reports 0.1.0. The ledger records a rollback to 0.1.0 with a hash that does not match the release it claims to restore. Test point 4 of your flight card flies exactly this trap."},
+    {k:"rollback store", m:"rd", t:"Make the rollback refuse a mismatch", w:["E12"],
+     p:"The fix has two parts. Keep every released artifact where a build cannot overwrite it, and make the rollback refuse any hash that differs from the release event. The lens puts both in the exceptional column. Time the rollback and write the number in your runbook."},
+    {k:"*", m:"rd", t:"Operated means someone else can take it back", w:["E12"],
+     p:"A system is operated when someone other than its author can release it, see which version is live, and roll it back from a written page. The reference design's phrase is loose in the bay, hard at the door. Your deploy environment is the door: the rollback, the canary search, and the attestation run there every time."}
+  ];
+  const els = [...fig.querySelectorAll(".el")];
+  let cur = 0;
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="dot";
+    b.setAttribute("aria-label","Step "+i+": "+s.t);
+    b.addEventListener("click",()=>go(i));
+    dots.appendChild(b);
+  });
+  function go(i){
+    cur = Math.max(0, Math.min(STEPS.length-1, i));
+    const s = STEPS[cur];
+    setMode(s.m);
+    const keys = s.k==="*" ? null : s.k.split(" ");
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{
+      const ek=(e.dataset.k||"").split(" ");
+      e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x)));
+    });
+    $("stepno").textContent = "Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent = s.t;
+    $("captext").textContent = s.p;
+    $("capweeks").innerHTML = s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,j)=>{ if(j===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled = cur===0;
+    $("next").disabled = cur===STEPS.length-1;
+  }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  go(0);
+
+  /* ---------- circuit breaker simulation ---------- */
+  const OK_DUR = 1.5, GAP = 2;          // illustrative seconds
+  let S;
+  function reset(){
+    S = {state:"closed", fails:0, to:0, re:0, rf:0, waited:0, clock:0, openedAt:0, calls:[], bands:[{t:0,s:"closed"}], log:[], hot:null};
+    logp("t=0 s · breaker closed; provider "+(faulty?"failing":"healthy"));
+    draw();
+  }
+  let faulty = false;
+  const P = () => ({N:+$("nf").value, T:+$("to").value, C:+$("cd").value, brk:$("brk").checked, rty:$("rty").checked});
+  function logp(s){ S.log.unshift(s); if (S.log.length>7) S.log.pop(); }
+  function setState(ns, via){
+    if (S.state===ns) return;
+    S.state = ns; S.hot = via; S.bands.push({t:S.clock, s:ns});
+    if (ns==="open") S.openedAt = S.clock;
+  }
+  function tick(){
+    const p=P();
+    if (S.state==="open" && S.clock - S.openedAt >= p.C){ setState("half","t-oh"); logp("t="+S.clock+" s · cool-down elapsed; breaker half-open"); }
+  }
+  function attempt(isRetry){
+    const p=P(); const t0=S.clock;
+    if (faulty){
+      S.calls.push({s:t0, d:p.T, o:"to", r:isRetry});
+      S.clock += p.T; S.waited += p.T; S.to++; S.fails++;
+      if (!p.brk){ logp("t="+t0+" s · "+(isRetry?"retry":"call")+" timed out after "+p.T+" s; no breaker, so the next call waits again"); }
+      else if (S.state==="half"){ setState("open","t-ho"); logp("t="+t0+" s · trial call timed out; breaker opens again"); }
+      else if (S.fails >= p.N){ setState("open","t-co"); logp("t="+t0+" s · "+(isRetry?"retry":"call")+" timed out; "+S.fails+" in a row; breaker opens; run fails with a reason"); }
+      else { logp("t="+t0+" s · "+(isRetry?"retry":"call")+" timed out after "+p.T+" s ("+S.fails+" of "+p.N+")"); }
+      if (p.rty && !isRetry && S.state==="closed"){ S.re++; attempt(true); }
+      else if (p.rty && !isRetry && !p.brk){ S.re++; attempt(true); }
+    } else {
+      S.calls.push({s:t0, d:OK_DUR, o:"ok", r:isRetry});
+      S.clock += OK_DUR;
+      if (S.state==="half"){ setState("closed","t-hc"); logp("t="+t0+" s · trial call succeeded; breaker closes"); }
+      else { S.hot=null; logp("t="+t0+" s · call succeeded; failure count reset"); }
+      S.fails = 0;
+    }
+  }
+  function callOnce(){
+    const p=P();
+    tick();
+    if (p.brk && S.state==="open"){
+      S.calls.push({s:S.clock, d:0, o:"rf"}); S.rf++; S.hot=null;
+      logp("t="+S.clock+" s · refused at once; breaker open ("+Math.max(0,p.C-(S.clock-S.openedAt))+" s of cool-down left)");
+    } else {
+      attempt(false);
+    }
+    S.clock += GAP;
+    tick();
+  }
+  function fmtT(n){ return (Math.round(n*10)/10).toString(); }
+  function draw(){
+    const p=P();
+    ["closed","open","half"].forEach(n=>$("n-"+n).classList.toggle("cur", S.state===n && p.brk));
+    ["t-co","t-oh","t-ho","t-hc"].forEach(id=>$(id).classList.toggle("hot", S.hot===id));
+    const name = !p.brk ? "none" : S.state==="half" ? "half-open" : S.state;
+    $("v-state").textContent = name;
+    $("tl-state").classList.toggle("hot", S.state!=="closed" && p.brk);
+    $("v-fails").textContent = S.fails+" / "+p.N;
+    $("v-to").textContent = S.to; $("v-re").textContent = S.re; $("v-rf").textContent = S.rf;
+    $("v-wait").textContent = fmtT(S.waited);
+    $("health").textContent = 'GET /health → {"status": "ok", "version": "0.1.0", "breaker": "'+name+'"}';
+    $("log").innerHTML = S.log.map(l=>"<li>"+l+"</li>").join("");
+    drawTL();
+  }
+  function niceMax(v){ const steps=[60,120,180,300,600,900,1200,1800,3600]; for (const s of steps) if (v<=s) return s; return Math.ceil(v/600)*600; }
+  function drawTL(){
+    const W=520, L=64, R=12, xmax=niceMax(Math.max(30,S.clock)), pw=W-L-R;
+    const X = t => L + t/xmax*pw;
+    let s = "";
+    s += '<text class="lbl" x="'+(L-8)+'" y="30" text-anchor="end">breaker</text>';
+    s += '<text class="lbl" x="'+(L-8)+'" y="66" text-anchor="end">calls</text>';
+    s += '<text class="lbl" x="'+(L-8)+'" y="100" text-anchor="end">retries</text>';
+    for (let g=0; g<=4; g++){
+      const v=xmax*g/4, x=X(v).toFixed(1);
+      s += '<line class="grid" x1="'+x+'" x2="'+x+'" y1="14" y2="114"/>';
+      s += '<text x="'+x+'" y="130" text-anchor="middle">'+v+'</text>';
+    }
+    s += '<line class="axis" x1="'+L+'" x2="'+(W-R)+'" y1="114" y2="114"/>';
+    s += '<text x="'+(L+pw/2)+'" y="152" text-anchor="middle">simulated time (s)</text>';
+    if (P().brk){
+      S.bands.forEach((b,i)=>{
+        const t1 = i+1<S.bands.length ? S.bands[i+1].t : S.clock;
+        if (t1<=b.t) return;
+        const cls = b.s==="open"?"b-open": b.s==="half"?"b-half":"b-closed";
+        const lab = b.s==="half"?"half-open":b.s;
+        s += '<rect class="'+cls+'" x="'+X(b.t).toFixed(1)+'" y="18" width="'+Math.max(1,X(t1)-X(b.t)).toFixed(1)+'" height="18"><title>'+lab+' from '+fmtT(b.t)+' s to '+fmtT(t1)+' s</title></rect>';
+      });
+    } else {
+      s += '<text x="'+(L+6)+'" y="31">no breaker installed</text>';
+    }
+    S.calls.forEach(c=>{
+      const y = c.r ? 88 : 54;
+      if (c.o==="rf"){
+        s += '<line class="rf" x1="'+X(c.s).toFixed(1)+'" x2="'+X(c.s).toFixed(1)+'" y1="'+(y-2)+'" y2="'+(y+22)+'"><title>refused at once at '+fmtT(c.s)+' s; no wait</title></line>';
+      } else {
+        const cls = c.o==="ok"?"ok":"to";
+        s += '<rect class="'+cls+'" x="'+X(c.s).toFixed(1)+'" y="'+y+'" width="'+Math.max(2,X(c.s+c.d)-X(c.s)-1).toFixed(1)+'" height="20" rx="2"><title>'+(c.r?"retry":"call")+' at '+fmtT(c.s)+' s · '+(c.o==="ok"?"succeeded in "+c.d+" s":"timed out after "+c.d+" s")+'</title></rect>';
+      }
+    });
+    $("tl").innerHTML = s;
+  }
+  $("p-ok").addEventListener("click",()=>{ faulty=false; $("p-ok").setAttribute("aria-pressed","true"); $("p-bad").setAttribute("aria-pressed","false"); logp("t="+S.clock+" s · provider healthy"); draw(); });
+  $("p-bad").addEventListener("click",()=>{ faulty=true; $("p-bad").setAttribute("aria-pressed","true"); $("p-ok").setAttribute("aria-pressed","false"); logp("t="+S.clock+" s · provider failing"); draw(); });
+  $("c1").addEventListener("click",()=>{ callOnce(); draw(); });
+  $("c5").addEventListener("click",()=>{ for(let i=0;i<5;i++) callOnce(); draw(); });
+  $("w10").addEventListener("click",()=>{ S.clock+=10; S.hot=null; tick(); draw(); });
+  $("rst").addEventListener("click",reset);
+  $("nf").addEventListener("input",()=>{ $("nfo").textContent=$("nf").value; draw(); });
+  $("to").addEventListener("input",()=>{ $("too").textContent=$("to").value+" s"; });
+  $("cd").addEventListener("input",()=>{ $("cdo").textContent=$("cd").value+" s"; });
+  $("brk").addEventListener("change",reset);
+  $("rty").addEventListener("change",()=>{ logp("t="+S.clock+" s · retry at once "+($("rty").checked?"on":"off")); draw(); });
+  reset();
+
+  /* ---------- two ways to ship ---------- */
+  const SHIP = {
+    w:{ st:[
+        ["Bump", ["uv version --bump patch"], ["pyproject says 0.1.1"]],
+        ["Build", ["uv build"], ["dist/myagent-0.1.1-","py3-none-any.whl (and an sdist)"]],
+        ["Record the hash", [], ["the wheel's SHA-256 goes","in the release record"]],
+        ["Install", ["uv venv deploy-env","uv pip install <wheel>"], ["a deploy env that stands","in for production"]],
+        ["Check health", [], ["/health reports 0.1.1"]],
+        ["Roll back", [], ["reinstall the prior wheel file","from the release record;","check its SHA-256 first"]]
+      ], key:2,
+      ptr:{name:"dist/myagent-0.1.1-py3-none-any.whl", a:"wheel bytes A · sha256 recorded", b:"wheel bytes B · new sha256", aGone:"bytes A overwritten unless kept apart", lab:"a file name points at bytes"},
+      note:"Works on every laptop in the room. No daemon, no admin rights.",
+      rb:"Built again under the same version, the file at the same path holds new bytes. The release record still names hash A, so a rollback that checks the hash refuses the new file. In the deck's lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of one version."
+    },
+    c:{ st:[
+        ["Build", ["docker build -t","myagent:0.1.1 ."], ["or podman build"]],
+        ["Tag or ID", [], ["the tag is a pointer;","the image ID or registry","digest is the release"]],
+        ["Record the ID", [], ["the image ID goes","in the release event"]],
+        ["Run", ["docker run --env-file …"], ["the secret is injected","at run, untracked"]],
+        ["Check health", [], ["/health reports 0.1.1"]],
+        ["Roll back", [], ["stop the container; start","the prior image by ID, or a","tag verified to point at it"]]
+      ], key:2,
+      ptr:{name:"tag myagent:0.1.1", a:"image ID A · recorded", b:"image ID B · next build", aGone:"image A still runs by its ID", lab:"a tag points at an image"},
+      note:"Needs Docker or Podman. Not every laptop can run it, which is why the lab does not require it. If the engine will not run during the sortie, that is an abort for this path, and you fly the wheel path.",
+      rb:"The next docker build with the same tag moved the pointer to image B. Image A still exists, and it runs by its ID. That is why the release event records the ID and the rollback starts the prior image by ID."
+    }
+  };
+  let ship = "w";
+  function svgText(x,y,cls,txt,anchor){ return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(anchor?' text-anchor="'+anchor+'"':'')+'>'+txt.replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</text>'; }
+  function drawShip(){
+    const d = SHIP[ship], rb = $("s-rb").checked;
+    let s = '<defs><marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker><marker id="paon" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker></defs>';
+    const xs = i => 85 + i*166;
+    s += '<line class="rail" x1="'+xs(0)+'" x2="'+xs(5)+'" y1="56" y2="56"/>';
+    d.st.forEach((st,i)=>{
+      const x = xs(i);
+      s += svgText(x,24,"tt",st[0],"middle");
+      s += '<circle class="st'+(i===d.key||i===5?' key':'')+'" cx="'+x+'" cy="56" r="15"><title>'+st[0]+'</title></circle>';
+      s += svgText(x,61,"num",String(i+1),"middle");
+      let y = 96;
+      st[1].forEach(c=>{ s += svgText(x,y,"mono",c,"middle"); y+=16; });
+      if (st[1].length) y+=4;
+      st[2].forEach(c=>{ s += svgText(x,y,"ts",c,"middle"); y+=16; });
+    });
+    /* pointer diagram */
+    const p = d.ptr, py = 230;
+    s += svgText(20,py-14,"ts",p.lab.toUpperCase(),null);
+    s += '<rect class="box" x="20" y="'+py+'" width="300" height="52" rx="8"/>';
+    s += svgText(34,py+31,"mono",p.name,null);
+    s += '<rect class="box'+(rb?(ship==="w"?" gone":""):" key")+'" x="460" y="'+(py-22)+'" width="300" height="42" rx="8"/>';
+    s += svgText(474,py+3,"mono",p.a,null);
+    if (rb){
+      s += svgText(474,py+36,"ts",p.aGone,null);
+      s += '<rect class="box key" x="460" y="'+(py+46)+'" width="300" height="42" rx="8"/>';
+      s += svgText(474,py+71,"mono",p.b,null);
+      s += '<path class="ptr moved" d="M320,'+(py+30)+' L390,'+(py+30)+' L390,'+(py+67)+' L456,'+(py+67)+'"/>';
+      s += svgText(400,py+58,"ts","moved",null);
+      s += '<path class="ptr" d="M820,'+(py-1)+' L764,'+(py-1)+'" style="stroke-dasharray:4 3"/>';
+      s += svgText(826,py-12,"ts","the release record",null);
+      s += svgText(826,py+4,"ts","still names this",null);
+    } else {
+      s += '<path class="ptr" d="M320,'+(py+20)+' L390,'+(py+20)+' L390,'+(py-1)+' L456,'+(py-1)+'"/>';
+      s += svgText(826,py-4,"ts","the release record",null);
+      s += svgText(826,py+12,"ts","names this",null);
+      s += '<path class="ptr" d="M820,'+(py-1)+' L764,'+(py-1)+'" style="stroke-dasharray:4 3"/>';
+    }
+    $("ship").innerHTML = s;
+    $("s-note").textContent = d.note + (rb ? " " + d.rb : "");
+  }
+  $("s-w").addEventListener("click",()=>{ ship="w"; $("s-w").setAttribute("aria-pressed","true"); $("s-c").setAttribute("aria-pressed","false"); drawShip(); });
+  $("s-c").addEventListener("click",()=>{ ship="c"; $("s-c").setAttribute("aria-pressed","true"); $("s-w").setAttribute("aria-pressed","false"); drawShip(); });
+  $("s-rb").addEventListener("change",drawShip);
+  drawShip();
+})();
+</script>
+
+</body></html>

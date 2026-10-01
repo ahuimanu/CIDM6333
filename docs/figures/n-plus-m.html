@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>N×M Becomes N+M</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+code{font-family:var(--mono); font-size:.86em}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.figtop{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:10px 28px; padding:16px 22px 6px; align-items:center}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:880px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .nm{font-size:14px; font-weight:600}
+.fig .big{font-size:24px; font-weight:700}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .chipbox{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1}
+.fig .bus{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.3}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .divider{stroke:var(--line); stroke-width:1.2}
+.fig .edge{fill:none; stroke:var(--ink-2); stroke-width:1; opacity:.6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.18}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="frame"]:not(.on){opacity:.55}
+.fig .el.on .box,.fig .el.on .modelbox,.fig .el.on .chipbox,.fig .el.on .bus{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .edge{stroke:var(--accent); stroke-width:1.8; opacity:1}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+.pick{display:flex; gap:6px; flex-wrap:wrap}
+.pick button{font-size:14px; padding:6px 12px}
+.pick button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel p{margin:0}
+.panel.wide{grid-column:1/-1}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 160px; accent-color:var(--accent)}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:3ch}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+svg.chart{width:100%; height:auto; display:block}
+.chart text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.chart .lbl{font-family:var(--display); font-size:13.5px; font-weight:600; fill:var(--ink)}
+.chart .axis{stroke:var(--line)} .chart .grid{stroke:var(--line); stroke-dasharray:2 4}
+.chart .sa{fill:none; stroke:var(--s-a); stroke-width:2.4}
+.chart .sb{fill:none; stroke:var(--s-b); stroke-width:2.4}
+.chart .pa{fill:var(--s-a)} .chart .pb{fill:var(--s-b)}
+.chart .mark{stroke:var(--ink-2); stroke-dasharray:3 4}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:14px; height:12px; border-radius:2px; display:inline-block}
+.archcap{border-top:1px solid var(--line); padding-top:12px}
+.archcap p{max-width:80ch}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.seq{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:14px}
+.seq ol{margin:4px 0 0; padding-left:22px; display:grid; gap:5px; font-size:14.5px}
+.seq h3{font-family:var(--display); font-weight:600; font-size:18px; margin:0}
+.tl{margin:0; padding:0; list-style:none; display:grid; gap:6px; font-size:15px}
+.tl b{font-family:var(--mono); font-weight:500; font-size:13px; display:inline-block; min-width:8ch; color:var(--ink-2)}
+.tplist{display:grid; gap:8px; margin:0; padding-left:22px; font-size:15px}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+tr.hl td{background:var(--accent-soft)}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 05</div>
+  <h1>N×M Becomes N+M</h1>
+  <p class="lede">Before a shared protocol, every host that wanted a tool wrote its own adapter for it, so N hosts and M tools cost N×M adapters. With MCP, each host writes one client and each tool becomes one server, so the cost drops to N+M. Move the sliders and step through the figure to watch the two counts part.</p>
+</header>
+
+<div class="figwrap">
+  <div class="figtop">
+    <div class="ctrl"><label for="n">N hosts</label><input id="n" type="range" min="1" max="8" step="1" value="4"><output id="nout" for="n">4</output></div>
+    <div class="ctrl"><label for="m">M tools or services</label><input id="m" type="range" min="1" max="10" step="1" value="5"><output id="mout" for="m">5</output></div>
+    <div class="stat" id="topstat" aria-live="polite"></div>
+  </div>
+  <div class="scroller">
+    <svg class="fig" id="fig" viewBox="0 0 1100 556" role="img" aria-label="Two bipartite graphs side by side. Left, direct integrations: every host connects to every tool, N times M lines. Right, with MCP: each host connects once to the protocol through its client and each tool connects once as a server, N plus M lines."></svg>
+  </div>
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step. Host and tool names are placeholders.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <section class="panel" aria-labelledby="h-chart">
+    <div class="eyebrow">The counts, to scale · E4 slide 3</div>
+    <h2 id="h-chart">What each new tool costs</h2>
+    <p class="small">For the current N, the chart plots the integration code the field maintains as the number of tools grows. The counts follow the deck's rule exactly. Each line counts as one unit of work, although real adapters differ in size.</p>
+    <svg class="chart" id="chart" viewBox="0 0 520 280" role="img" aria-label="Line chart of pieces of integration code against the number of tools M, for direct integrations (N times M) and for MCP (N plus M)."></svg>
+    <div class="legend"><span><i class="sw" style="background:var(--s-a)"></i>direct, N×M adapters</span><span><i class="sw" style="background:var(--s-b)"></i>MCP, N+M clients and servers</span></div>
+    <div class="stat" id="chartstat"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-promise">
+    <div class="eyebrow">Three promises a signature cannot make · E4 slide 3</div>
+    <h2 id="h-promise">What the protocol adds to E3's contract</h2>
+    <ul class="tplist" style="list-style:disc">
+      <li><b>Discovery.</b> A client can ask a server what it offers before it calls anything.</li>
+      <li><b>Negotiation.</b> Client and server state which version and which capabilities they support, and a mismatch is an error. Neither side guesses.</li>
+      <li><b>Transport independence.</b> The same server runs over a pipe on your laptop and over HTTP on a host you do not control.</li>
+    </ul>
+    <p>Your E3 tool had a schema and a permission gate. It had none of these three, because nothing outside your process could ask it anything.</p>
+    <blockquote>A protocol is a contract that strangers can discover.<cite>E4 deck, slide 13</cite></blockquote>
+  </section>
+</div>
+
+<section class="panel wide" style="margin-top:28px" aria-labelledby="h-arch">
+  <div class="eyebrow">Hosts, clients, servers · E4 slide 4</div>
+  <h2 id="h-arch">Who controls each primitive</h2>
+  <p class="small">The deck sorts the three server primitives by who controls them. Pick a primitive to trace its path from its controller to the server, or pick Sortie 4 to see one server called by two clients.</p>
+  <div class="pick" role="group" aria-label="Highlight" id="archpick">
+    <button type="button" data-mode="all" aria-pressed="true">All</button>
+    <button type="button" data-mode="t" aria-pressed="false">Tools</button>
+    <button type="button" data-mode="r" aria-pressed="false">Resources</button>
+    <button type="button" data-mode="p" aria-pressed="false">Prompts</button>
+    <button type="button" data-mode="s4" aria-pressed="false">Sortie 4: one server, two clients</button>
+  </div>
+  <div class="scroller">
+  <svg class="fig" id="arch" viewBox="0 0 1100 520" role="img" aria-label="Two hosts on the left, a harness with a human, a model, a gate, the host application and a client, and a script with its own client. Wires carry JSON-RPC 2.0 to one server on the right that declares prompts, tools and resources and keeps a server log.">
+    <defs>
+      <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arr2On" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+    <g class="el" data-k="frame"><rect class="frame" x="16" y="40" width="474" height="272" rx="12"/><text class="lab" x="32" y="62">Host · your harness (OpenCode)</text>
+      <text class="ts" x="214" y="300">The server never sees the human.</text></g>
+    <g class="el" data-k="frame s4"><rect class="frame" x="16" y="336" width="474" height="152" rx="12"/><text class="lab" x="32" y="358">Host · script client (SDK, about twenty lines)</text></g>
+    <g class="el" data-k="frame"><rect class="frame" x="620" y="40" width="464" height="448" rx="12"/><text class="lab" x="636" y="62">Server · e3-tools (FastMCP)</text></g>
+
+    <g class="el" data-k="p"><rect class="box" x="36" y="84" width="150" height="52" rx="7"/><text class="tt" x="50" y="106">Human</text><text class="ts" x="50" y="124">picks prompts · approves calls</text></g>
+    <g class="el" data-k="t"><rect class="modelbox" x="36" y="160" width="150" height="52" rx="7"/><text class="tt" x="50" y="182">Model</text><text class="ts" x="50" y="200">chooses tool calls</text></g>
+    <g class="el" data-k="r"><rect class="box" x="36" y="236" width="150" height="52" rx="7"/><text class="tt" x="50" y="258">Host application</text><text class="ts" x="50" y="276">decides what enters context</text></g>
+    <g class="el" data-k="t"><rect class="box" x="214" y="160" width="92" height="52" rx="7"/><text class="tt" x="226" y="182">Gate</text><text class="ts" x="226" y="200">E3 confirm</text></g>
+    <g class="el" data-k="t r p s4"><rect class="box" x="336" y="146" width="134" height="80" rx="7"/><text class="tt" x="350" y="168">Client</text><text class="ts" x="350" y="186">one per server</text><text class="ts" x="350" y="203">JSON-RPC 2.0</text></g>
+
+    <g class="el" data-k="p"><path class="flow" style="marker-end:url(#arr2)" d="M186,110 L316,110 L316,162 L334,162"/></g>
+    <g class="el" data-k="t"><path class="flow" style="marker-end:url(#arr2)" d="M186,186 L212,186"/><path class="flow" style="marker-end:url(#arr2)" d="M306,186 L334,186"/></g>
+    <g class="el" data-k="r"><path class="flow" style="marker-end:url(#arr2)" d="M186,262 L316,262 L316,210 L334,210"/></g>
+
+    <g class="el" data-k="p"><path class="flow" style="marker-end:url(#arr2)" d="M470,162 L600,162 L600,123 L638,123"/><text class="ts" x="478" y="156">prompts/get</text></g>
+    <g class="el" data-k="t s4"><path class="flow" style="marker-end:url(#arr2)" d="M470,186 L590,186 L590,215 L638,215"/><text class="ts" x="478" y="180">tools/call</text></g>
+    <g class="el" data-k="r"><path class="flow" style="marker-end:url(#arr2)" d="M470,210 L548,210 L548,307 L638,307"/><text class="ts" x="478" y="204">resources/read</text></g>
+
+    <g class="el" data-k="s4"><rect class="box" x="36" y="376" width="236" height="90" rx="7"/><text class="tt" x="50" y="398">Script code</text><text class="ts" x="50" y="416">calls read_note with the same</text><text class="ts" x="50" y="432">arguments as the harness</text><text class="ts" x="50" y="448">no model in this host</text></g>
+    <g class="el" data-k="s4"><path class="flow" style="marker-end:url(#arr2)" d="M272,421 L334,421"/></g>
+    <g class="el" data-k="s4"><rect class="box" x="336" y="386" width="134" height="70" rx="7"/><text class="tt" x="350" y="408">Client</text><text class="ts" x="350" y="426">one per server</text><text class="ts" x="350" y="443">JSON-RPC 2.0</text></g>
+    <g class="el" data-k="s4"><path class="flow" style="marker-end:url(#arr2)" d="M470,421 L612,421 L612,240 L638,240"/><text class="ts" x="478" y="415">tools/call</text></g>
+
+    <g class="el" data-k="p"><rect class="box" x="640" y="84" width="424" height="78" rx="7"/><text class="tt" x="656" y="106">Prompts · user-controlled</text><text class="ts" x="656" y="126">/what-is-attested, from the governance-server project</text><text class="ts" x="656" y="144">the server proposes a template; the human picks it</text></g>
+    <g class="el" data-k="t s4"><rect class="box" x="640" y="176" width="424" height="78" rx="7"/><text class="tt" x="656" y="198">Tools · model-controlled</text><text class="ts" x="656" y="218">read_note(path) → str · name, description, input schema</text><text class="ts" x="656" y="236">the model chooses to call; the host may gate the call first</text></g>
+    <g class="el" data-k="r"><rect class="box" x="640" y="268" width="424" height="78" rx="7"/><text class="tt" x="656" y="290">Resources · application-controlled</text><text class="ts" x="656" y="310">ledger://events, the last 50 ledger events</text><text class="ts" x="656" y="328">data by URI; the host decides when it enters context</text></g>
+    <g class="el" data-k="t s4"><rect class="box" x="640" y="380" width="424" height="88" rx="7"/><text class="tt" x="656" y="402">Server log</text><text class="ts" x="656" y="422">one entry per call: {ts, tool, args, outcome}</text><text class="ts" x="656" y="440">written by the server, never by a client</text><text class="ts" x="656" y="458">the log the Chase reads in Sortie 4</text></g>
+    <g class="el" data-k="t s4"><path class="flow" style="marker-end:url(#arr2)" d="M1064,224 L1076,224 L1076,424 L1066,424"/></g>
+
+    <g class="el" data-k="frame"><text class="ts" x="555" y="508" text-anchor="middle">wire: JSON-RPC 2.0 · stdio tonight, Streamable HTTP later</text></g>
+  </svg>
+  </div>
+  <div class="archcap" aria-live="polite"><p id="archtext"></p></div>
+</section>
+
+<section class="map" aria-labelledby="h-wire">
+  <div class="eyebrow">The wire after 2026-07-28 · E4 slide 5</div>
+  <h2 id="h-wire">A stateless core</h2>
+  <p class="small" style="max-width:80ch">The revision that went to general availability on July 28, 2026 rewrote the wire, and its headline is statelessness. The deck gives the rationale as infrastructure: any request can land on any instance behind a round-robin balancer. The table is the deck's.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Before (2025-11-25)</th><th>After (2026-07-28)</th><th>Consequence for your server</th></tr></thead>
+    <tbody>
+      <tr><td><code>initialize</code> handshake, then <code>notifications/initialized</code></td><td>No handshake. Every request carries protocol version and client capabilities in <code>_meta</code>; servers answer with <code>serverInfo</code> in <code>_meta</code></td><td>A request can land on any instance behind a plain load balancer; nothing to remember between calls</td></tr>
+      <tr><td><code>Mcp-Session-Id</code> header on Streamable HTTP</td><td>Removed. <code>tools/list</code> and friends no longer vary per connection; cross-call state uses server-minted handles passed as ordinary arguments</td><td>If your server needed a session, it now needs a handle, and the handle is a design decision to record</td></tr>
+      <tr class="hl"><td>Server-initiated requests: <code>roots/list</code>, <code>sampling/createMessage</code>, <code>elicitation/create</code></td><td>Multi Round-Trip Requests: the server returns <code>resultType: "input_required"</code> with <code>inputRequests</code>; the client retries the original request with <code>inputResponses</code></td><td>A server that needs more from the human asks by returning, not by calling back; every result now carries <code>resultType</code></td></tr>
+      <tr><td>Capabilities discovered at handshake</td><td><code>server/discover</code>, a mandatory RPC advertising versions, capabilities, identity; usable as a back-compat probe on stdio</td><td>The inspector's first call; Test Point 1 of Sortie 4</td></tr>
+      <tr><td><code>resources/subscribe</code>, HTTP GET stream</td><td><code>subscriptions/listen</code>, one long-lived POST stream for opted-in list-changed notifications</td><td>Optional for the sortie; declare it only if you implement it</td></tr>
+      <tr><td>List results unbounded</td><td><code>ttlMs</code> and <code>cacheScope</code> required on list and read results; deterministic tool order recommended</td><td>Order your tools; give an honest TTL; the client will cache on it</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="panels" style="margin-top:18px">
+    <section class="panel" aria-labelledby="h-first">
+      <h2 id="h-first" style="font-size:22px">One tool call, before and after</h2>
+      <div class="seq">
+        <div><h3>2025-11-25</h3><ol>
+          <li><code>initialize</code>, the handshake</li>
+          <li><code>notifications/initialized</code></li>
+          <li><code>tools/list</code>; on Streamable HTTP, later requests carry <code>Mcp-Session-Id</code></li>
+          <li><code>tools/call</code></li>
+        </ol></div>
+        <div><h3>2026-07-28</h3><ol>
+          <li><code>server/discover</code>: versions, capabilities, identity</li>
+          <li><code>tools/list</code>, with version and capabilities in <code>_meta</code>; the result carries <code>ttlMs</code> and <code>cacheScope</code></li>
+          <li><code>tools/call</code>; the result carries <code>resultType</code></li>
+          <li>If <code>resultType</code> is <code>input_required</code>, the client retries the same request with <code>inputResponses</code></li>
+        </ol></div>
+      </div>
+      <p class="small">The sequences are this figure's arrangement of the deck's table. The deck tells the instructor to check which revision the lab's Python SDK speaks; record yours on the card's SUBSTRATE line.</p>
+    </section>
+    <section class="panel" aria-labelledby="h-dep">
+      <h2 id="h-dep" style="font-size:22px">Deprecated, and beyond the core</h2>
+      <p><b>Deprecated in 2026-07-28.</b> Roots, sampling, and logging are deprecated with a twelve-month window. Pass paths as tool arguments, call the model API directly, and log to stderr or OpenTelemetry. The HTTP+SSE transport is deprecated; use Streamable HTTP. Do not build a new server on a deprecated feature, even when a 2025 tutorial teaches it.</p>
+      <p><b>Extensions and tasks.</b> Both capability sets carry an <code>extensions</code> field. Long-running work moved to the official tasks extension (<code>tasks/get</code> polling, <code>tasks/update</code> for input). The deck's advice is to adopt an extension only when the core cannot express the need.</p>
+    </section>
+  </div>
+</section>
+
+<section class="map" aria-labelledby="h-tear">
+  <div class="eyebrow">Teardowns · E4 slides 7–8</div>
+  <h2 id="h-tear">Description without negotiation, and the protocol that followed</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>System</th><th>Discovery</th><th>Negotiation</th><th>Transport</th><th>Primitives</th><th>Theory of control</th></tr></thead>
+    <tbody>
+      <tr><td>ChatGPT plugins (March 2023)</td><td>One store, inside one product</td><td>None of capability or version</td><td>Vendor-hosted; no local transport</td><td>Functions only; no content or prompts</td><td>The vendor owns discovery, hosting, and the loop; you own an HTTP endpoint. Deprecated within a year in favor of GPTs and Actions.</td></tr>
+      <tr><td>OpenAPI-style tool specs (2023– )</td><td>None; the host must already know the spec</td><td>None; no version, no capability exchange</td><td>In-process, on any model</td><td>Everything is a function</td><td>You own the loop and the schema; nothing owns the boundary between hosts. Each host still wrote its own loader, which is N×M by another name.</td></tr>
+      <tr><td>Your E3 tool</td><td>None; nothing outside your process could ask</td><td>None</td><td>In-process</td><td>One tool with a schema and a permission gate</td><td>You own the loop, the schema, and the gate.</td></tr>
+      <tr class="hl"><td>MCP (revision 2026-07-28)</td><td><code>server/discover</code>, <code>tools/list</code></td><td>Version and capabilities stated; a mismatch is an error</td><td>stdio on a laptop; Streamable HTTP on a host you do not control</td><td>Tools, resources, prompts</td><td>The boundary between hosts is the thing the protocol specifies. Consent stays in the host.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="panels" style="margin-top:18px">
+    <section class="panel" aria-labelledby="h-tl">
+      <h2 id="h-tl" style="font-size:22px">MCP as a system, on a timeline</h2>
+      <ul class="tl">
+        <li><b>Nov 2024</b> Anthropic publishes the protocol, SDKs, and reference servers.</li>
+        <li><b>Mar 2025</b> Streamable HTTP; HTTP+SSE deprecated; OAuth authorization.</li>
+        <li><b>Jun 2025</b> Resource indicators, structured tool output, elicitation.</li>
+        <li><b>Nov 2025</b> Tasks (experimental), URL-mode elicitation.</li>
+        <li><b>Dec 2025</b> Donated to the Agentic AI Foundation (Linux Foundation).</li>
+        <li><b>Jul 2026</b> 2026-07-28 GA: stateless core, MRTR, deprecation policy.</li>
+      </ul>
+      <p class="small">A healthy protocol ecosystem, in the deck's list, needs a versioning and deprecation policy, independent SDKs (TypeScript, Python, Go, C#; Rust in beta), a server registry with provenance, and governance that no single vendor holds. A registry without provenance is a supply chain, which E5 takes up with SmartLoader.</p>
+    </section>
+    <section class="panel" aria-labelledby="h-human">
+      <h2 id="h-human" style="font-size:22px">Where is the human?</h2>
+      <blockquote>In the host, and only in the host. The protocol puts consent in the host: the client must get the human's approval before a tool runs, and the server must never assume it. The wire carries requests, not permissions.<cite>E4 deck, slide 8</cite></blockquote>
+      <p>Read as a Design Analysis, MCP answers the N×M problem with a client–server protocol over JSON-RPC, three server primitives, and negotiated capabilities. The alternatives were a plugin store, per-vendor function-calling formats, or a library. The consequences are adoption across hosts and a security surface that did not exist while tools stayed in-process. MCP places the human outside the wire, and E5 studies what happens when the host's trust is misplaced.</p>
+    </section>
+  </div>
+</section>
+
+<div class="panels">
+  <section class="panel" aria-labelledby="h-sortie">
+    <div class="eyebrow">In your sortie · Flight Card 4</div>
+    <h2 id="h-sortie">Sortie 4: one server, two clients</h2>
+    <p><b>Design claim.</b> Every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side.</p>
+    <ol class="tplist">
+      <li>Inspector sends <code>server/discover</code> and <code>tools/list</code>. Expect versions, capabilities, and one tool with the intended schema.</li>
+      <li>Harness client sends <code>tools/call read_note(path)</code>. Expect the result and a server log entry <code>{ts, tool, args, outcome}</code>.</li>
+      <li>Script client sends the same call. Expect an identical result and a second log entry.</li>
+      <li>Script client sends a call with a bad argument. Expect the server to reject it on schema, with the rejection in the log.</li>
+    </ol>
+    <div class="btnrow" style="justify-content:flex-start"><button type="button" id="shows4">Show this in the diagram</button></div>
+    <p class="small"><b>Falsifiers (any one fails the sortie):</b> a tool callable from one client but not the other; a call with no server-side log entry; a schema the client accepted that the server rejected, or the reverse; a pass obtained only by disabling validation or by editing the log. Students tend to underrate the asymmetric falsifier. A tool that works from the harness and fails from the script means the harness was compensating, and the sortie has measured the compensation.</p>
+    <p class="small"><b>Substrate:</b> repo and commit, Python SDK version, protocol revision claimed, model and route, stdio. The write tool stays behind the E3 gate and does not go on the wire. Sortie 4 depends on a Sortie 3 PASS. An SDK and protocol-revision mismatch that prevents discovery aborts the card as halt-not-fail.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-ref">
+    <div class="eyebrow">Reference design · gzkit · E4 slides 9–10</div>
+    <h2 id="h-ref">Why gzkit refused MCP, and the server one tier up</h2>
+    <blockquote>No external protocol may become a prerequisite for core governance operations.<cite>gzkit, docs/governance/storage-tiers.md, as quoted in the E4 deck</cite></blockquote>
+    <p class="small">gzkit's governance verbs (<code>gz status</code>, <code>gz validate</code>, the ledger, receipts) run on the standard library over files. A kit that needed a running server to say what is attested would make attestation depend on availability, so the ledger must stay readable with <code>cat</code>. The campaign review still scored MCP as absent and un-designed; a refusal counts as a decision only when someone writes it down with its alternatives.</p>
+    <p class="small">The student project adds a governance server above the core. Tools: <code>gz_status()</code> and <code>gz_validate(scope)</code>, read-class only. Resources: <code>ledger://events?tail=N</code>, <code>attest://&lt;artifact&gt;</code>, <code>receipts://&lt;id&gt;</code>. Prompt: <code>/what-is-attested</code>. The tier boundary has its own falsifier: kill the server and run <code>gz validate</code>. If validation fails, the server became a prerequisite and the doctrine is broken.</p>
+  </section>
+</div>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>The graphs assume every host wants every tool. In practice a host connects to a subset, so the direct count is an upper bound.</li>
+      <li>A host opens one client per server at run time, so live connections can still number N×M. The count that falls to N+M is the code someone writes and maintains.</li>
+      <li>The figure does not count the specification or the SDKs, which the ecosystem shares.</li>
+      <li>Authentication, scope, and least privilege belong to E5, along with tool poisoning, resource injection, and the confused deputy.</li>
+      <li>The deck tells the instructor to verify the storage-tiers quotation against the repository before class.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Readings and sources</h2>
+    <ol>
+      <li>Model Context Protocol. (2026). <em>Specification</em>, revision 2026-07-28, and changelog. modelcontextprotocol.io.</li>
+      <li>Model Context Protocol. <em>Python SDK documentation</em>.</li>
+      <li>Anthropic. (2024, November). <em>Introducing the Model Context Protocol</em>.</li>
+      <li>OpenAI. (2023, March). <em>ChatGPT plugins</em>.</li>
+      <li>OpenAI. (2023, June). <em>Function calling and other API updates</em>.</li>
+      <li>Babb, J. <em>Stop the presses, hail the autoloom</em>. Sprint and Drift.</li>
+      <li>CIDM 6333 E4 lecture deck, <em>MCP I: Building a Server</em> (09/24/2026), and course text ch. 7 and 13.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 05 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const HOSTS = ["OpenCode","Claude Code","Codex","Gemini CLI","Script client","Host 6","Host 7","Host 8"];
+  const fig = $("fig");
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+  const STEPS = [
+    {k:"*", t:"Two ways to wire N hosts to M tools", w:["E4"],
+     p:"On the left, every host reaches every tool through its own adapter. On the right, every host and every tool implements one protocol. Move the sliders to change N and M, and step through to see where each count comes from."},
+    {k:"lh0 le-h0", t:"One host writes one adapter per tool", w:["E4"],
+     p:"Before November 2024, a host that wanted a tool wrote its own adapter for it. The first host on the left draws M lines, one per tool. Each line is code that a team writes, tests, and maintains."},
+    {k:"lt0 le-t0", t:"One tool sits at the end of N adapters", w:["E4"],
+     p:"The first tool on the left sits at the end of N lines, one for each host that wanted it. The deck says the tools wrote adapters too, one per host. Either way, every host and tool pair needed its own integration."},
+    {k:"le lh lt lcount", t:"N×M: the cost is a product", w:["E4"],
+     p:"With N hosts and M tools, the field maintained N×M adapters. Add one host with the slider and the left graph gains M lines. In the deck's words, the problem was combinatorial before it was technical."},
+    {k:"rh rc bar", t:"Each host writes one client", w:["E4"],
+     p:"With a protocol, each host implements one client, the connector inside the host that speaks MCP. At run time the host opens one client per server it uses, but the team writes the client code once. N hosts cost N pieces of code."},
+    {k:"rs rsn bar", t:"Each tool is served once", w:["E4"],
+     p:"Each tool is wrapped once as a server that declares its capabilities and answers requests over JSON-RPC 2.0. M tools cost M servers. In Sortie 4 you draw one of these lines yourself when you serve your E3 read tool."},
+    {k:"rh rc rs rsn bar rcount", t:"N+M: the cost is a sum", w:["E4"],
+     p:"A new host now costs one client, and a new tool costs one server. The right graph gains one line per slider step, while the left graph gains a whole row or column. The chart below the figure plots both counts."},
+    {k:"bar prom", t:"What the middle column promises", w:["E3","E4"],
+     p:"The protocol makes three promises that a function signature cannot. A client can discover what a server offers before calling it. Client and server negotiate a version and capabilities, and a mismatch is an error. The same server runs over a pipe or over HTTP. Your E3 tool had a schema and a gate and none of these three."},
+    {k:"*", t:"A contract that strangers can discover", w:["E4","E5"],
+     p:"A host that has never seen your server can ask what it offers, agree on a version, and call it. That is what MCP adds to last week's tool contract. E5 shows the price, when the stranger who wrote a tool description turns out to be an adversary."}
+  ];
+
+  function ys(n){
+    const top=84, h=372, gap=Math.min(42, h/n), tot=gap*n, start=top+(h-tot)/2+gap/2;
+    return Array.from({length:n},(_,i)=>start+i*gap);
+  }
+
+  function renderMain(){
+    const N=+$("n").value, M=+$("m").value;
+    $("nout").textContent=N; $("mout").textContent=M;
+    const yh=ys(N), yt=ys(M);
+    let s='<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker><marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker></defs>';
+    s+='<line class="divider" x1="550" y1="16" x2="550" y2="540"/>';
+    s+='<text class="lab" x="30" y="34">Direct integrations</text><text class="ts" x="30" y="54">each line is one adapter someone writes and maintains</text>';
+    s+='<text class="lab" x="580" y="34">With a protocol (MCP)</text><text class="ts" x="580" y="54">each line is one implementation of the protocol</text>';
+    // left edges
+    for(let i=0;i<N;i++) for(let j=0;j<M;j++){
+      s+='<g class="el" data-k="le le-h'+i+' le-t'+j+'"><title>'+esc(HOSTS[i])+' ↔ Tool '+(j+1)+': one adapter</title><path class="edge" d="M170,'+yh[i].toFixed(1)+' L370,'+yt[j].toFixed(1)+'"/></g>';
+    }
+    yh.forEach((y,i)=>{ s+='<g class="el" data-k="lh lh'+i+'"><rect class="box" x="30" y="'+(y-14).toFixed(1)+'" width="140" height="28" rx="6"/><text class="nm" x="100" y="'+(y+5).toFixed(1)+'" text-anchor="middle">'+esc(HOSTS[i])+'</text></g>'; });
+    yt.forEach((y,j)=>{ s+='<g class="el" data-k="lt lt'+j+'"><rect class="box" x="370" y="'+(y-14).toFixed(1)+'" width="140" height="28" rx="6"/><text class="nm" x="440" y="'+(y+5).toFixed(1)+'" text-anchor="middle">Tool '+(j+1)+'</text></g>'; });
+    s+='<g class="el" data-k="lcount"><text class="big" x="270" y="504" text-anchor="middle">'+N+' × '+M+' = '+(N*M)+' adapters</text></g>';
+    // right
+    s+='<g class="el" data-k="bar"><rect class="bus" x="826" y="84" width="26" height="372" rx="6"/><text class="ts" x="0" y="0" text-anchor="middle" transform="translate(843.5,270) rotate(-90)">MCP · JSON-RPC 2.0</text></g>';
+    yh.forEach((y,i)=>{
+      s+='<g class="el" data-k="rc"><title>'+esc(HOSTS[i])+' client: one piece of code</title><path class="edge" d="M756,'+y.toFixed(1)+' L826,'+y.toFixed(1)+'"/></g>';
+      s+='<g class="el" data-k="rh rh'+i+'"><rect class="box" x="580" y="'+(y-14).toFixed(1)+'" width="120" height="28" rx="6"/><text class="nm" x="640" y="'+(y+5).toFixed(1)+'" text-anchor="middle">'+esc(HOSTS[i])+'</text><rect class="chipbox" x="704" y="'+(y-11).toFixed(1)+'" width="52" height="22" rx="11"/><text class="ts" x="730" y="'+(y+4).toFixed(1)+'" text-anchor="middle">client</text></g>';
+    });
+    yt.forEach((y,j)=>{
+      s+='<g class="el" data-k="rs"><title>Tool '+(j+1)+' server: one piece of code</title><path class="edge" d="M852,'+y.toFixed(1)+' L930,'+y.toFixed(1)+'"/></g>';
+      s+='<g class="el" data-k="rsn"><rect class="box" x="930" y="'+(y-14).toFixed(1)+'" width="150" height="28" rx="6"/><text class="nm" x="1005" y="'+(y+5).toFixed(1)+'" text-anchor="middle">Server · Tool '+(j+1)+'</text></g>';
+    });
+    s+='<g class="el" data-k="rcount"><text class="big" x="830" y="504" text-anchor="middle">'+N+' + '+M+' = '+(N+M)+' clients and servers</text></g>';
+    s+='<g class="el" data-k="prom">'+[["discovery",596,130],["negotiation",756,130],["transport independence",916,164]].map(p=>'<rect class="chipbox" x="'+p[1]+'" y="522" width="'+p[2]+'" height="24" rx="12"/><text class="ts" x="'+(p[1]+p[2]/2)+'" y="538.5" text-anchor="middle">'+p[0]+'</text>').join("")+'</g>';
+    fig.innerHTML=s;
+    $("topstat").innerHTML='Direct: <b>'+(N*M)+'</b> adapters · MCP: <b>'+(N+M)+'</b> · one more host costs '+M+' vs 1';
+    applyStep(); drawChart(N,M);
+  }
+
+  let cur=0;
+  const dots=$("dots");
+  STEPS.forEach((st,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="dot"; b.setAttribute("aria-label","Step "+i+": "+st.t); b.addEventListener("click",()=>go(i)); dots.appendChild(b); });
+  function applyStep(){
+    const st=STEPS[cur], keys=st.k==="*"?null:st.k.split(" ");
+    fig.classList.toggle("focus",!!keys);
+    fig.querySelectorAll(".el").forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+  }
+  function go(i){
+    cur=Math.max(0,Math.min(STEPS.length-1,i));
+    const st=STEPS[cur];
+    applyStep();
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=st.t; $("captext").textContent=st.p;
+    $("capweeks").innerHTML=st.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,j)=>{ if(j===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  $("n").addEventListener("input",renderMain);
+  $("m").addEventListener("input",renderMain);
+
+  /* ---------- chart ---------- */
+  function niceMax(v){ const p=Math.pow(10,Math.floor(Math.log10(v))); const f=v/p; const n=f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10; return n*p; }
+  function drawChart(N,M){
+    const W=520,H=280,L=52,R=60,T=14,B=42,pw=W-L-R,ph=H-T-B, MM=10;
+    const ymax=niceMax(Math.max(N*MM,N+MM));
+    const X=m=>L+(m-1)/(MM-1)*pw, Y=v=>T+ph-v/ymax*ph;
+    let s="";
+    for(let g=0;g<=4;g++){ const v=ymax*g/4, yy=Y(v); s+='<line class="'+(g?'grid':'axis')+'" x1="'+L+'" x2="'+(L+pw)+'" y1="'+yy.toFixed(1)+'" y2="'+yy.toFixed(1)+'"/><text x="'+(L-6)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end">'+(+v.toFixed(1))+'</text>'; }
+    for(let m=1;m<=MM;m++) s+='<text x="'+X(m).toFixed(1)+'" y="'+(T+ph+16)+'" text-anchor="middle">'+m+'</text>';
+    s+='<text x="'+(L+pw/2)+'" y="'+(H-4)+'" text-anchor="middle">M, tools or services (N = '+N+')</text>';
+    s+='<text x="12" y="'+(T+ph/2)+'" text-anchor="middle" transform="rotate(-90 12 '+(T+ph/2)+')">pieces of integration code</text>';
+    s+='<line class="mark" x1="'+X(M).toFixed(1)+'" x2="'+X(M).toFixed(1)+'" y1="'+T+'" y2="'+(T+ph)+'"/>';
+    const ms=Array.from({length:MM},(_,i)=>i+1);
+    s+='<polyline class="sa" points="'+ms.map(m=>X(m).toFixed(1)+','+Y(N*m).toFixed(1)).join(" ")+'"/>';
+    s+='<polyline class="sb" points="'+ms.map(m=>X(m).toFixed(1)+','+Y(N+m).toFixed(1)).join(" ")+'"/>';
+    ms.forEach(m=>{
+      const big = m===M;
+      s+='<circle class="pa" cx="'+X(m).toFixed(1)+'" cy="'+Y(N*m).toFixed(1)+'" r="'+(big?5.5:3.5)+'"><title>N = '+N+', M = '+m+': '+(N*m)+' direct adapters</title></circle>';
+      s+='<circle class="pb" cx="'+X(m).toFixed(1)+'" cy="'+Y(N+m).toFixed(1)+'" r="'+(big?5.5:3.5)+'"><title>N = '+N+', M = '+m+': '+(N+m)+' MCP clients and servers</title></circle>';
+    });
+    s+='<text class="lbl" x="'+(X(MM)+8)+'" y="'+(Y(N*MM)+4).toFixed(1)+'">N×M</text>';
+    s+='<text class="lbl" x="'+(X(MM)+8)+'" y="'+(Y(N+MM)+4).toFixed(1)+'">N+M</text>';
+    $("chart").innerHTML=s;
+    $("chartstat").innerHTML='With N = '+N+', each new tool adds <b>'+N+'</b> adapter'+(N>1?'s':'')+' on the left and <b>1</b> server on the right. At M = '+M+': '+(N*M)+' vs '+(N+M)+'.';
+  }
+
+  /* ---------- architecture ---------- */
+  const arch=$("arch"), archEls=[...arch.querySelectorAll(".el")];
+  const ARCH = {
+    all:"The human, the model, and the host application all sit in the host. Each host runs one client per server, and the client speaks JSON-RPC 2.0 to the server. The server declares three primitives, and the deck sorts them by who controls each one. The human sits in the host, and the server never sees the human.",
+    t:"Tools are model-controlled. The model chooses to call read_note, the host may gate the call first, and the client sends tools/call. A tool is declared with a name, a description, a JSON Schema for input, and optionally one for output. This is E3's contract on the wire, and the server logs every call.",
+    r:"Resources are application-controlled. The server exposes data by URI, here ledger://events, the last fifty ledger events. The host application decides which resources enter the model's context and when. A resource is content, so E5 treats a resource that carries an instruction as an attack.",
+    p:"Prompts are user-controlled. The server offers a reusable template with arguments, and the host surfaces it as a slash command or a menu item. The human picks it. Tonight's e3-tools server offers no prompt; /what-is-attested comes from the governance-server project.",
+    s4:"Sortie 4 flies this shape. Your harness and a twenty-line script are two independent hosts, each with its own client, calling the same read_note on one server. The server writes one log entry per call. If a call works from the harness and fails from the script, the harness was doing work the protocol should have done."
+  };
+  function setArch(mode){
+    document.querySelectorAll("#archpick button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.mode===mode));
+    arch.classList.toggle("focus", mode!=="all");
+    archEls.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", mode!=="all" && ek.includes(mode)); });
+    archEls.forEach(e=>e.querySelectorAll(".flow").forEach(f=>f.style.markerEnd = e.classList.contains("on") ? "url(#arr2On)" : "url(#arr2)"));
+    $("archtext").textContent=ARCH[mode];
+  }
+  document.querySelectorAll("#archpick button").forEach(b=>b.addEventListener("click",()=>setArch(b.dataset.mode)));
+  $("shows4").addEventListener("click",()=>{ setArch("s4"); arch.scrollIntoView({behavior:"smooth", block:"center"}); });
+
+  renderMain(); go(0); setArch("all");
+})();
+</script>
+
+</body></html>

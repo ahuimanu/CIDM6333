@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Plan, Do, Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+header{display:grid; gap:4px; margin-bottom:22px}
+code{font-family:var(--mono); font-size:.86em}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.figtop{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:14px 18px 0}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
+.fig .monos{font-family:var(--mono); font-size:10.5px; fill:var(--ink-2)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .human{fill:var(--accent-soft); stroke:var(--line); stroke-width:1.3}
+.fig .card{fill:var(--surface-2); stroke:var(--line); stroke-width:1.2}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .lock{fill:none; stroke:var(--ink-2); stroke-width:1.5}
+.fig .lockb{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="frame"]:not(.on){opacity:.55}
+.fig .el.on .box,.fig .el.on .human,.fig .el.on .card,.fig .el.on .kvbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .lock{stroke:var(--accent)} .fig .el.on .lockb{fill:var(--accent)}
+/* edit mode: the reviewer can write */
+.fig .editonly{opacity:0; transition:opacity .35s ease; pointer-events:none}
+.fig.mode-edit .editonly{opacity:1}
+.fig.mode-edit .rolegend{opacity:0}
+.fig .sw-edit{display:none}
+.fig.mode-edit .sw-edit{display:inline}
+.fig.mode-edit .sw-ro{display:none}
+.fig.mode-edit .lockg{opacity:.15}
+.fig .bad{fill:none; stroke:var(--accent); stroke-width:2.4; stroke-dasharray:6 4; marker-end:url(#arrOn)}
+.fig .badtxt{fill:var(--accent-ink); font-weight:600; font-size:13px}
+.fig .badbox{fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.6}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  .fig.mode-edit .bad{animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:4px 10px}
+select{font-size:13.5px; padding:5px 8px; max-width:280px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .cur{background:var(--accent-soft); color:var(--ink); display:block; border-radius:3px; outline:1px solid var(--accent)}
+.log .fut{opacity:.28}
+.log .dim{color:var(--ink-2)}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .ok{color:var(--ink); font-weight:500}
+.log .cons{color:var(--ink-2); font-style:italic}
+.nodes{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-family:var(--display); font-weight:600; font-size:14px}
+.nodes span.n{padding:3px 10px; border-radius:6px; border:1px solid var(--line); background:var(--surface)}
+.nodes span.n.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.nodes span.ar{color:var(--ink-2)}
+.kv{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 12px; font-size:14.5px}
+.kv dt{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--ink-2); padding-top:2px}
+.kv dd{margin:0; font-family:var(--mono); font-size:13px; word-break:break-word}
+.checks{display:grid; gap:4px; font-family:var(--mono); font-size:13px}
+.checks .pass::before{content:"✓ "; color:var(--ink)}
+.checks .fail::before{content:"✗ "; color:var(--accent-ink)}
+.checks .fail{color:var(--accent-ink)}
+.callout{border-left:3px solid var(--accent); background:var(--surface-2); padding:10px 14px; border-radius:0 8px 8px 0; font-size:15px}
+textarea{width:100%; min-height:110px; font-family:var(--mono); font-size:13px; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:10px; resize:vertical}
+.res2{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:10px}
+.res2 > div{background:var(--surface-2); border-radius:8px; padding:10px 12px}
+.res2 .h{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--ink-2)}
+.res2 .v{font-family:var(--mono); font-size:15px; margin-top:4px}
+.res2 .v.bad{color:var(--accent-ink)}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+ol.stages{margin:0; padding-left:22px; display:grid; gap:6px; font-size:15px}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t tr.hl td{background:var(--accent-soft)}
+.t.compact{font-size:14.5px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 09</div>
+  <h1>Plan, Do, Check</h1>
+  <p class="lede">A worker's result is a claim with a type, and a verdict counts only from a reviewer that can say no. This figure draws the controller as a state graph: implement, parse, two reviews, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to see a pair of agents collapse into one.</p>
+</header>
+
+<div class="figwrap">
+  <div class="figtop">
+    <div class="eyebrow">The implementer–reviewer pair as a state graph</div>
+    <div class="seg" role="group" aria-label="Reviewer permissions">
+      <button type="button" id="m-ro" aria-pressed="true">Read-only reviewer</button>
+      <button type="button" id="m-ed" aria-pressed="false">Reviewer can edit</button>
+    </div>
+  </div>
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 700" role="img" aria-label="State graph. The controller loads a brief and dispatches one task to an implementer, which returns a HandoffResult. The controller parses it fail-closed and rejects malformed results. A read-only spec reviewer, then a read-only quality reviewer, return ReviewResults. FAIL routes back to the implementer for a bounded number of rounds, then BLOCKED goes to the human. Two cited PASS verdicts lead to an interrupt where the human approves from a checkpoint before merge.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- frame: the controller's graph -->
+    <g class="el" data-k="frame">
+      <rect class="frame" x="14" y="44" width="716" height="640" rx="14"/>
+      <text class="lab" x="30" y="674">Controller · the state graph · it plans, dispatches, parses, and routes; it never implements</text>
+    </g>
+
+    <!-- row 1 -->
+    <g class="el" data-k="start">
+      <rect class="box" x="34" y="80" width="160" height="80" rx="8"/>
+      <text class="tt" x="46" y="102">Load context</text>
+      <text class="ts" x="46" y="120">brief B-07 · allowed paths</text>
+      <text class="ts" x="46" y="136">no brief, no dispatch</text>
+      <text class="tag" x="46" y="152">PLAN · CONTROLLER</text>
+    </g>
+    <g class="el" data-k="start impl"><path class="flow" d="M194,120 L272,120"/><text class="ts" x="233" y="112" text-anchor="middle">one task</text></g>
+    <g class="el" data-k="impl">
+      <rect class="box" x="274" y="80" width="180" height="80" rx="8"/>
+      <text class="tt" x="286" y="102">implement</text>
+      <text class="ts" x="286" y="120">implementer persona</text>
+      <text class="ts" x="286" y="136">own window · allowed paths</text>
+      <text class="tag" x="286" y="152">DO · WORKER</text>
+    </g>
+    <g class="el" data-k="impl hcard parse"><path class="flow" d="M454,120 L532,120"/><text class="ts" x="493" y="112" text-anchor="middle">HandoffResult</text></g>
+    <g class="el" data-k="parse">
+      <rect class="box" x="534" y="80" width="170" height="80" rx="8"/>
+      <text class="tt" x="546" y="102">parse</text>
+      <text class="ts" x="546" y="120">closed status set</text>
+      <text class="ts" x="546" y="136">no default branch</text>
+      <text class="tag" x="546" y="152">CONTROLLER</text>
+    </g>
+    <g class="el" data-k="reject">
+      <path class="flow" d="M570,160 L570,214 L400,214 L400,162"/>
+      <text class="ts" x="485" y="232" text-anchor="middle">REJECT · re-dispatch with schema</text>
+    </g>
+
+    <!-- row 2 -->
+    <g class="el" data-k="parse spec"><path class="flow" d="M619,160 L619,288"/><text class="ts" x="611" y="266" text-anchor="end">parsed result + diff</text></g>
+    <g class="el" data-k="spec">
+      <rect class="box" x="534" y="290" width="170" height="80" rx="8"/>
+      <text class="tt" x="546" y="312">spec review</text>
+      <text class="ts" x="546" y="330">does it meet the brief?</text>
+      <text class="ts" x="546" y="346"><tspan class="sw-ro">reads brief + diff · edit: deny</tspan><tspan class="sw-edit">edit: allow · bash: allow</tspan></text>
+      <text class="tag" x="546" y="362">CHECK · REVIEWER</text>
+      <g class="lockg"><rect class="lockb" x="684" y="302" width="12" height="9" rx="1.5"/><path class="lock" d="M686.5,302 v-3.5 a3.5,3.5 0 0 1 7,0 v3.5"/></g>
+    </g>
+    <g class="el" data-k="spec route"><path class="flow" d="M534,330 L456,330"/><text class="ts" x="495" y="322" text-anchor="middle">FAIL + findings</text></g>
+    <g class="el" data-k="route">
+      <rect class="box" x="274" y="290" width="180" height="80" rx="8"/>
+      <text class="tt" x="286" y="312">route</text>
+      <text class="ts" x="286" y="330">pass · fail · halt</text>
+      <text class="ts" x="286" y="346">counts rounds, max 3</text>
+      <text class="tag" x="286" y="362">CONTROLLER</text>
+    </g>
+    <g class="el" data-k="route impl"><path class="flow" d="M364,290 L364,162"/><text class="ts" x="372" y="262">fail · round n of 3</text></g>
+    <g class="el" data-k="route blocked"><path class="flow" d="M274,330 L196,330"/><text class="ts" x="235" y="322" text-anchor="middle">halt</text></g>
+    <g class="el" data-k="blocked">
+      <rect class="human" x="34" y="290" width="160" height="80" rx="8"/>
+      <text class="tt" x="46" y="312">BLOCKED → human</text>
+      <text class="ts" x="46" y="330">after N failed rounds</text>
+      <text class="ts" x="46" y="346">no silent retry loop</text>
+      <text class="tag" x="46" y="362">INDEX ZERO</text>
+    </g>
+
+    <!-- row 3 -->
+    <g class="el" data-k="spec quality"><path class="flow" d="M619,370 L619,438"/><text class="ts" x="627" y="410">spec PASS</text></g>
+    <g class="el" data-k="quality">
+      <rect class="box" x="534" y="440" width="170" height="80" rx="8"/>
+      <text class="tt" x="546" y="462">quality review</text>
+      <text class="ts" x="546" y="480">is it done well?</text>
+      <text class="ts" x="546" y="496"><tspan class="sw-ro">after spec PASS · edit: deny</tspan><tspan class="sw-edit">edit: allow · bash: allow</tspan></text>
+      <text class="tag" x="546" y="512">CHECK · REVIEWER</text>
+      <g class="lockg"><rect class="lockb" x="684" y="452" width="12" height="9" rx="1.5"/><path class="lock" d="M686.5,452 v-3.5 a3.5,3.5 0 0 1 7,0 v3.5"/></g>
+    </g>
+    <g class="el" data-k="quality route"><path class="flow" d="M534,480 L420,480 L420,372"/><text class="ts" x="477" y="472" text-anchor="middle">FAIL</text></g>
+
+    <!-- role legend (read-only mode) -->
+    <g class="el rolegend" data-k="legend">
+      <text class="lab" x="34" y="420">Who does what</text>
+      <text class="ts" x="34" y="442"><tspan style="font-weight:700;fill:var(--ink)">PLAN</tspan>  the controller: the graph itself</text>
+      <text class="ts" x="34" y="460"><tspan style="font-weight:700;fill:var(--ink)">DO</tspan>  the worker: the implementer persona</text>
+      <text class="ts" x="34" y="478"><tspan style="font-weight:700;fill:var(--ink)">CHECK</tspan>  the reviewers: spec, then quality</text>
+      <text class="ts" x="34" y="496"><tspan style="font-weight:700;fill:var(--ink)">INDEX ZERO</tspan>  the human, before merge</text>
+    </g>
+
+    <!-- row 4 -->
+    <g class="el" data-k="quality int"><path class="flow" d="M590,520 L590,578"/><text class="ts" x="582" y="552" text-anchor="end">PASS, cites evidence</text></g>
+    <g class="el" data-k="quality int concerns"><path class="flow" d="M664,520 L664,578"/><text class="ts" x="672" y="552">CONCERNS</text></g>
+    <g class="el" data-k="int">
+      <rect class="human" x="534" y="580" width="170" height="80" rx="8"/>
+      <text class="tt" x="546" y="602">interrupt · human</text>
+      <text class="ts" x="546" y="620">graph pauses; state saved</text>
+      <text class="ts" x="546" y="636">resume with approval</text>
+      <text class="tag" x="546" y="652">INDEX ZERO</text>
+    </g>
+    <g class="el" data-k="int merge"><path class="flow" d="M534,620 L456,620"/><text class="ts" x="495" y="612" text-anchor="middle">resume</text></g>
+    <g class="el" data-k="merge">
+      <rect class="box" x="274" y="580" width="180" height="80" rx="8"/>
+      <text class="tt" x="286" y="602">merge</text>
+      <text class="ts" x="286" y="620">only on two cited PASS</text>
+      <text class="ts" x="286" y="636">exactly one merge commit</text>
+      <text class="tag" x="286" y="652">CONTROLLER</text>
+    </g>
+    <g class="el" data-k="merge end"><path class="flow" d="M274,620 L196,620"/><text class="ts" x="235" y="612" text-anchor="middle">commit id</text></g>
+    <g class="el" data-k="end">
+      <rect class="box" x="34" y="580" width="160" height="80" rx="8"/>
+      <text class="tt" x="46" y="602">END · main</text>
+      <text class="ts" x="46" y="620">the work is on the</text>
+      <text class="ts" x="46" y="636">main branch</text>
+    </g>
+
+    <!-- contract cards -->
+    <g class="el" data-k="parse hcard"><path class="dash" d="M704,120 L752,120"/><text class="ts" x="728" y="112" text-anchor="middle">schema</text></g>
+    <g class="el" data-k="hcard">
+      <rect class="card" x="754" y="64" width="326" height="208" rx="8"/>
+      <text class="tt" x="766" y="86">HandoffResult · worker → controller</text>
+      <text class="lab" x="766" y="106">status, one of</text>
+      <text class="mono" x="766" y="124">DONE · DONE_WITH_CONCERNS</text>
+      <text class="mono" x="766" y="140">NEEDS_CONTEXT · BLOCKED</text>
+      <text class="lab" x="766" y="162">course fields</text>
+      <text class="monos" x="766" y="180">task · files changed</text>
+      <text class="monos" x="766" y="196">evidence: test command + exit code</text>
+      <text class="monos" x="766" y="212">concerns (if DONE_WITH_CONCERNS)</text>
+      <text class="monos" x="766" y="228">question (if NEEDS_CONTEXT)</text>
+      <text class="ts" x="766" y="248">Anything else is rejected. A worker that can</text><text class="ts" x="766" y="264">say BLOCKED need not invent DONE.</text>
+    </g>
+    <g class="el" data-k="spec rcard"><path class="dash" d="M704,330 L752,330"/><text class="ts" x="728" y="322" text-anchor="middle">returns</text></g>
+    <g class="el" data-k="quality rcard"><path class="dash" d="M704,480 L752,480"/><text class="ts" x="728" y="472" text-anchor="middle">returns</text></g>
+    <g class="el" data-k="rcard">
+      <rect class="card" x="754" y="286" width="326" height="212" rx="8"/>
+      <text class="tt" x="766" y="308">ReviewResult · reviewer → controller</text>
+      <text class="lab" x="766" y="328">verdict, one of</text>
+      <text class="mono" x="766" y="346">PASS · FAIL · CONCERNS</text>
+      <text class="lab" x="766" y="368">findings, each with</text>
+      <text class="monos" x="766" y="386">location: file:line, test id, or hunk</text>
+      <text class="monos" x="766" y="402">what is wrong · severity</text>
+      <text class="ts" x="766" y="426">FAIL and CONCERNS need at least one finding.</text>
+      <text class="ts" x="766" y="444">PASS needs a list of what was checked.</text>
+      <text class="ts" x="766" y="462">A verdict with no citations is rejected as</text>
+      <text class="ts" x="766" y="478">malformed, whatever it says.</text>
+    </g>
+    <g class="el" data-k="disp">
+      <rect class="kvbox" x="754" y="518" width="326" height="74" rx="8"/>
+      <text class="tt" x="766" y="540">Dispatch records</text>
+      <text class="ts" x="766" y="558">one per role per task: role, task, result</text>
+      <text class="ts" x="766" y="576">no record for a role means the role did not run</text>
+    </g>
+    <g class="el" data-k="int ckpt"><path class="dash" d="M704,640 L752,640"/><text class="ts" x="728" y="632" text-anchor="middle">save</text></g>
+    <g class="el" data-k="ckpt">
+      <rect class="kvbox" x="754" y="606" width="326" height="72" rx="8"/>
+      <text class="tt" x="766" y="628">Checkpointer</text>
+      <text class="ts" x="766" y="646">state saved after every node · thread_id</text>
+      <text class="ts" x="766" y="664">interrupt() pauses · Command(resume=True)</text>
+    </g>
+
+    <!-- edit-mode overlay -->
+    <g class="editonly" aria-hidden="true">
+      <path class="bad" d="M560,290 C540,250 470,215 446,164"/>
+      <rect class="badbox" x="34" y="400" width="360" height="118" rx="8"/>
+      <text class="badtxt" x="46" y="424">One agent with extra steps</text>
+      <text class="ts" x="46" y="446">The reviewer writes the fix into the diff, then</text>
+      <text class="ts" x="46" y="463">returns PASS on its own work. Nobody who did not</text>
+      <text class="ts" x="46" y="480">write that change has judged it. App. C #1.</text>
+      <text class="ts" x="46" y="502">Fix: permission edit: deny; bash allowlist.</text>
+      <text class="badtxt" x="470" y="262" text-anchor="end">writes the fix</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 11</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- ============ worked trace ============ -->
+  <section class="panel wide" aria-labelledby="h-trace">
+    <div class="eyebrow">The deck's worked trace · slide 12 · E8</div>
+    <h2 id="h-trace">One task, three results, one rejection</h2>
+    <p class="small">This is the controller's log the deck shows after a short run, the kind of log the Chase reads. Step through it line by line. The parser on this page is the deck's <code>parse_handoff</code>, ported to JavaScript, and it runs on each result as it arrives. The deck's trace uses one reviewer, which Sortie 8 allows; two-stage review would add a quality review after each spec PASS.</p>
+    <div class="ctrl">
+      <span>Reviewer</span>
+      <div class="seg" role="group" aria-label="Reviewer permissions in the trace">
+        <button type="button" id="t-ro" aria-pressed="true">Read-only (the deck's trace)</button>
+        <button type="button" id="t-ed" aria-pressed="false">Can edit (constructed variant)</button>
+      </div>
+      <button type="button" id="tprev">◀ Back</button>
+      <button type="button" id="tnext" class="primary">Next line ▶</button>
+      <button type="button" id="tall">Show all</button>
+    </div>
+    <div class="nodes" id="tnodes" aria-label="Current node in the graph"></div>
+    <div class="twocol">
+      <div>
+        <pre class="log" id="tlog" aria-live="polite"></pre>
+      </div>
+      <div>
+        <h3 class="sub" id="tih">What the controller sees</h3>
+        <dl class="kv" id="tstate"></dl>
+        <div class="checks" id="tchecks"></div>
+        <p id="tnote"></p>
+      </div>
+    </div>
+    <div class="callout" id="tcall"></div>
+    <div class="ctrl">
+      <button type="button" id="fixit">Ask the reviewer to "just fix it"</button>
+      <span class="small" style="font-family:var(--body); font-weight:400">Test point 4 on Flight Card 8.</span>
+    </div>
+    <pre class="log" id="fixout">Press the button to send the request.</pre>
+  </section>
+
+  <!-- ============ parser ============ -->
+  <section class="panel" aria-labelledby="h-parse">
+    <div class="eyebrow">Steps 3–5, up close · fail-closed parsing</div>
+    <h2 id="h-parse">Feed the parser a reply</h2>
+    <p class="small">The lab asks you to feed your parser three malformed replies. Pick a contract and a sample, or type your own JSON. Each reply goes through two checks. The left one is a common mistake from the deck: a parser that defaults to DONE for the implementer, or a substring search for 'PASS' for the reviewer. The right one is the fail-closed parse.</p>
+    <div class="ctrl">
+      <label for="pc">Contract</label>
+      <select id="pc"><option value="h">HandoffResult (implementer)</option><option value="r">ReviewResult (reviewer)</option></select>
+      <label for="ps">Sample</label>
+      <select id="ps"></select>
+    </div>
+    <textarea id="pin" spellcheck="false" aria-label="Reply text to parse"></textarea>
+    <div class="res2">
+      <div><div class="h" id="pnh">Lenient check</div><div class="v" id="pnaive"></div></div>
+      <div><div class="h">Fail-closed parse</div><div class="v" id="pstrict"></div></div>
+    </div>
+    <p class="small" id="pwhy"></p>
+    <pre class="log"><span class="dim"># from the deck, slide 7 (Python)</span>
+OK = {"DONE", "DONE_WITH_CONCERNS",
+      "NEEDS_CONTEXT", "BLOCKED"}
+def parse_handoff(text):
+    try: r = json.loads(text)
+    except ValueError:
+        return reject("json")
+    if r.get("status") not in OK:
+        return reject("status")
+    if r["status"].startswith("DONE") \
+       and not r.get("evidence"):
+        return reject("no evidence")
+    return r
+<span class="dim"># There is no default branch that returns DONE.</span></pre>
+    <p class="small">This page adds two checks from the same slide's field rules (concerns required with DONE_WITH_CONCERNS, a question required with NEEDS_CONTEXT). The ReviewResult checks follow the slide's rule for verdicts.</p>
+  </section>
+
+  <!-- ============ common mistakes ============ -->
+  <section class="panel" aria-labelledby="h-mist">
+    <div class="eyebrow">Step 10, up close · common mistakes · slide 11</div>
+    <h2 id="h-mist">How a pair of agents becomes one agent with extra steps</h2>
+    <div class="tablewrap"><table class="t compact" id="mistakes">
+      <thead><tr><th>Mistake</th><th>What happens</th><th>Fix</th><th>App. C</th></tr></thead>
+      <tbody>
+        <tr><td>Reviewer runs in the implementer's session</td><td>Same context, same blind spots; the review agrees with the author</td><td>Separate agent, own window; hand it the brief and the diff only</td><td>#4</td></tr>
+        <tr><td>Verdict read by searching the reply for 'PASS'</td><td>'This would not PASS without tests' parses as PASS</td><td>JSON with an enum; reject everything else</td><td>#9</td></tr>
+        <tr><td>Parser catches the error and defaults to DONE</td><td>A crash or a refusal merges</td><td>No default branch; reject, log, halt</td><td>#3</td></tr>
+        <tr><td>Reviewer given the implementer's summary instead of the diff</td><td>The summary becomes the fact the reviewer checks</td><td>Reviewer reads primary sources: diff, test output</td><td>#3</td></tr>
+        <tr id="m-edit"><td>Reviewer has edit or bash write</td><td>It fixes the code, then passes its own fix</td><td>permission edit: deny; bash allowlist</td><td>#1</td></tr>
+        <tr><td>FAIL loops back with no bound</td><td>Retries until the reviewer gives in</td><td>Max rounds, then BLOCKED to the human</td><td>#9</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Rows quoted from the deck. The deck adds that row four is the E9 incident in miniature: in gzkit's 2026-05-24 chain, polished summaries became facts ten levels deep.</p>
+    <h3 class="sub">Read-only is a permission in config</h3>
+    <pre class="log"><span class="dim"># .opencode/agents/reviewer.md (deck, slide 10)</span>
+---
+description: Reviews one diff against one brief. Returns one ReviewResult JSON. Never edits.
+mode: subagent
+temperature: 0.1
+permission:
+  edit: deny
+  webfetch: deny
+  bash:
+    "*": deny
+    "git diff*": allow
+    "git log*": allow
+---</pre>
+    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." A sentence in the prompt is only a request.</p>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-ref">
+  <div class="eyebrow">Reference design · gzkit ADR-0.18.0, as the deck states it</div>
+  <h2 id="h-ref">The controller–worker pipeline</h2>
+  <div class="panels" style="margin-top:10px">
+    <div class="panel">
+      <h3 class="sub">Five stages; the controller never implements</h3>
+      <ol class="stages">
+        <li><b>Load context.</b> The controller reads the brief (OBPI), its requirements, and its allowed paths. Nothing is dispatched without a brief.</li>
+        <li><b>Implement.</b> One dispatch per task to the implementer persona; HandoffResult back; then two-stage review, spec reviewer then quality reviewer, each returning ReviewResult.</li>
+        <li><b>Verify.</b> The controller runs the checks itself: tests, lint, the brief's verification commands. A worker's 'tests pass' is not this stage.</li>
+        <li><b>Present evidence.</b> Paths, commands, and outputs go to the human, not conclusions.</li>
+        <li><b>Sync.</b> Ledger events, brief status, and dispatch records written. The human attests; the pipeline does not.</li>
+      </ol>
+      <p class="small">The deck's sources: <code>docs/user/concepts/subagent-pipeline.md</code>, <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>, <code>.gzkit/personas/</code>. The deck marks the ADR number, stage names, and paths "verify against the repository before class."</p>
+    </div>
+    <div class="panel">
+      <h3 class="sub">HandoffResult, dispatch records, and credit</h3>
+      <p>HandoffResult statuses come from ADR-0.18.0: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, BLOCKED. ReviewResult is PASS, FAIL, or CONCERNS with findings. Both are parsed fail-closed. The field names beyond status are the course's.</p>
+      <blockquote>Credit is never inferred.<cite>gzkit rule, as quoted in the E8 deck, slide 21</cite></blockquote>
+      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie: if your reviewer could not run, the flight log says so and the sortie is an ABORT, not a PASS with a missing verdict.</p>
+    </div>
+  </div>
+</section>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">In your sortie · Flight Card 8 · a reviewer that can say no</div>
+  <h2 id="h-map">Each test point exercises one path through the graph</h2>
+  <div class="tablewrap">
+  <table class="t">
+    <thead><tr><th>Test point</th><th>Path through the graph</th><th>What the Chase reads</th></tr></thead>
+    <tbody>
+      <tr><td>1 · clean task</td><td>implement → parse ok → review PASS citing the diff → interrupt → merge</td><td>The ReviewResult, the checkpoint id, the merge commit.</td></tr>
+      <tr><td>2 · planted defect</td><td>review FAIL with a located finding → route → implement; no merge</td><td>The finding's file:line exists and says what the reviewer claims.</td></tr>
+      <tr><td>3 · malformed result</td><td>parse REJECT (not JSON, unknown status, DONE without evidence); no review dispatched, no merge</td><td>The REJECT line in the log.</td></tr>
+      <tr><td>4 · 'fix it yourself'</td><td>The reviewer's edit is denied by the harness; the diff is unchanged; a verdict is still returned</td><td>The harness refusal and an unchanged diff.</td></tr>
+      <tr><td>5 · resume after halt</td><td>interrupt → checkpoint → human approval → exactly one merge commit</td><td>The checkpoint id, the recorded approval, git log.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:10px">Pre-registered falsifiers (any one means FAIL): merged work with no ReviewResult on record for that task; a malformed result parsed as PASS or DONE; a reviewer claim accepted without the evidence it cites; passing only by loosening the parser, granting the reviewer edit, or editing the log. The Chase also re-runs one evidence command. The lab (CIDM6333_Lab_E8_Subagents.md) has you declare this read-only reviewer in OpenCode tonight; the Sprint is due Wed 10/28.</p>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>Parallel workers. This week's build is one implementer and one reviewer in sequence. Parallel work, with locks, is E9.</li>
+      <li>The cost. Anthropic's June 2025 post on its research system reports about 15 times the tokens of a chat turn for the multi-agent version, against about 4 times for a single agent. Cognition's counter-argument from the same month says to share full traces, because two workers with different implicit decisions build parts that do not fit.</li>
+      <li>gzkit's Stage 3 verify and Stage 4 present evidence sit between review and the human in the reference pipeline. The graph shows the LangGraph shape from slide 9, so they are listed in the reference panel instead.</li>
+      <li>The narrator, the fourth persona in the reference design, and the persona files themselves: role, traits, anti-traits, and a why sentence.</li>
+      <li>The supervisor pattern. LangChain now recommends building the supervisor with tool calling; the older langgraph-supervisor library is no longer the advised path.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Readings and sources</h2>
+    <ol>
+      <li>Smith, R. G. (1980). The contract net protocol: High-level communication and control in a distributed problem solver. <em>IEEE Transactions on Computers, C-29</em>(12).</li>
+      <li>Rao, A. S., &amp; Georgeff, M. P. (1995). BDI agents: From theory to practice. <em>ICMAS-95</em>.</li>
+      <li>Li, G., et al. (2023). CAMEL: Communicative agents for "mind" exploration of large language model society. <em>NeurIPS 2023</em>. arXiv:2303.17760.</li>
+      <li>Hong, S., et al. (2023). <em>MetaGPT: Meta programming for a multi-agent collaborative framework</em>. arXiv:2308.00352.</li>
+      <li>Wu, Q., et al. (2023). <em>AutoGen: Enabling next-gen LLM applications via multi-agent conversation</em>. arXiv:2308.08155.</li>
+      <li>Anthropic. (2025, June). <em>How we built our multi-agent research system</em>. Anthropic Engineering.</li>
+      <li>Yan, W. (2025, June). <em>Don't build multi-agents</em>. Cognition.</li>
+      <li>LangChain. (2026). LangGraph documentation: interrupts; multi-agent patterns.</li>
+      <li>OpenCode. (2026). Agents and permissions documentation. Anthropic. (2026). Claude Code documentation: subagents; agent teams. Checked by the deck on 09/24/2026.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 09 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+  /* ================= main figure ================= */
+  const STEPS = [
+    {k:"*", t:"Plan, do, check under every name", w:["E2","E8"],
+     p:"FIPA called the roles manager and contractor, MetaGPT called them architect and engineer, and Claude Code calls them main agent and subagent. The division of labor stays the same. What keeps going missing is a check whose FAIL stops the work. This graph puts that check in code, with a human before merge."},
+    {k:"start frame", t:"The controller loads the brief", w:["E8"],
+     p:"The controller is the graph itself. It reads the brief, its requirements, and its allowed paths, and it dispatches nothing without a brief. It plans, dispatches, parses, and routes. It never implements, so it has no work of its own to defend."},
+    {k:"impl", t:"The worker gets one task in a clean window", w:["E8"],
+     p:"The controller dispatches one task, the brief, and the allowed paths to the implementer persona. The worker starts with a clean window and returns a result, not its whole trace. That context isolation is the first of the deck's three reasons to split the work."},
+    {k:"hcard impl", t:"The result is a claim with a type", w:["E3","E8"],
+     p:"The worker returns a HandoffResult with one of four statuses: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, or BLOCKED. Two of the four are ways to say 'I did not finish'. A worker with an honest way to say BLOCKED has less reason to invent DONE. Prose from a worker is never read as a status."},
+    {k:"parse reject", t:"The parse fails closed", w:["E3","E8"],
+     p:"The controller parses the result against the closed status set. Invalid JSON, an unknown status, or DONE without evidence is rejected, logged, and re-dispatched with the schema, and the round counts. The deck warns that the most common bug this week is a parser that catches the exception and carries on."},
+    {k:"spec rcard", t:"The spec reviewer asks one question", w:["E8"],
+     p:"A separate reviewer reads the brief and the diff, never the implementer's summary, and asks whether the change does what the brief says inside the allowed paths. It returns a ReviewResult. Every finding cites a file and line, a test id, or a diff hunk, and a verdict with no citations is rejected as malformed."},
+    {k:"route blocked", t:"FAIL routes back, and the rounds are bounded", w:["E8"],
+     p:"On FAIL, the controller sends the findings back to the implementer and counts the round. After a fixed number of failed rounds the task goes BLOCKED to the human. Without that bound, the loop retries until the reviewer gives in, which the deck files under App. C #9, metagaming the gate."},
+    {k:"quality", t:"Quality review runs only after spec PASS", w:["E8"],
+     p:"The second reviewer asks whether the work is done well: tests present and meaningful, errors handled, no dead code. Order matters. A quality reviewer handed the wrong feature will review it carefully and pass it. One reviewer is sound for Sortie 8; two stages with separate personas is Exceptional."},
+    {k:"int ckpt concerns", t:"The human sits in the graph as a node", w:["E0","E8"],
+     p:"After two cited PASS verdicts, or on CONCERNS, the graph reaches an interrupt. LangGraph's interrupt() pauses the run and the checkpointer saves state under a thread_id. The human resumes it with Command(resume=True). This is where index zero sits: a node in the graph, not a comment in the README."},
+    {k:"merge end disp", t:"Merge, and write the dispatch records", w:["E8","E9"],
+     p:"The controller merges only on two PASS verdicts that cite evidence, and it writes a dispatch record for each role on each task. gzkit's rule is that credit is never inferred: if no record exists for the spec reviewer, spec review did not happen, whatever any summary says."},
+    {k:"spec quality impl", mode:"edit", t:"When the reviewer can edit", w:["E5","E8"],
+     p:"Give the reviewer edit or bash write and it fixes the code, then passes its own fix. The verdict now judges work its author wrote, and the pair has become one agent with extra steps. The fix is a permission in config, edit: deny with a bash allowlist, enforced by the harness. The switch above the figure toggles this view."},
+    {k:"parse spec disp ckpt", t:"What the Chase reads", w:["E8","Sortie 8"],
+     p:"The Chase reads the dispatch log, both ReviewResults, the parser's REJECT lines, and git log, and re-runs one evidence command. Transcripts are not evidence. The evidence field in a HandoffResult is a claim until someone runs the command and gets the same exit code."}
+  ];
+  const fig=$("fig"), els=[...fig.querySelectorAll(".el")];
+  let cur=0, userMode="ro";
+  function setMode(m, fromUser){
+    if (fromUser) userMode=m;
+    fig.classList.toggle("mode-edit", m==="ed");
+    $("m-ro").setAttribute("aria-pressed", m!=="ed");
+    $("m-ed").setAttribute("aria-pressed", m==="ed");
+  }
+  $("m-ro").addEventListener("click",()=>setMode("ro",true));
+  $("m-ed").addEventListener("click",()=>setMode("ed",true));
+  const dots=$("dots");
+  STEPS.forEach((s,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="dot"; b.setAttribute("aria-label","Step "+i+": "+s.t); b.addEventListener("click",()=>go(i)); dots.appendChild(b); });
+  function go(i){
+    const prev=cur;
+    cur=Math.max(0,Math.min(STEPS.length-1,i));
+    const s=STEPS[cur];
+    if (s.mode==="edit") setMode("ed"); else if (STEPS[prev].mode==="edit" && prev!==cur) setMode(userMode);
+    const keys=s.k==="*"?null:s.k.split(" ");
+    fig.classList.toggle("focus",!!keys);
+    els.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=s.t; $("captext").textContent=s.p;
+    $("capweeks").innerHTML=s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,j)=>{ if(j===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  go(0);
+
+  /* ================= parsers (ported from the deck) ================= */
+  const OK = new Set(["DONE","DONE_WITH_CONCERNS","NEEDS_CONTEXT","BLOCKED"]);
+  function parseHandoff(text){
+    const checks=[]; let r;
+    try { r=JSON.parse(text); checks.push(["valid JSON",true]); }
+    catch(e){ checks.push(["valid JSON",false]); return {ok:false, why:"json", checks}; }
+    const st = (r && typeof r==="object") ? r.status : undefined;
+    if (!OK.has(st)){ checks.push(["status in the closed set ("+(st===undefined?"missing":st)+")",false]); return {ok:false, why:"status", checks}; }
+    checks.push(["status in the closed set ("+st+")",true]);
+    if (st.startsWith("DONE")){
+      const ev=r.evidence;
+      if (!ev || (typeof ev==="object" && !Object.keys(ev).length)){ checks.push(["DONE carries evidence",false]); return {ok:false, why:"no evidence", checks}; }
+      checks.push(["DONE carries evidence ("+(ev.cmd? ev.cmd+", exit "+ev.exit : "present")+")",true]);
+    }
+    if (st==="DONE_WITH_CONCERNS" && !r.concerns){ checks.push(["concerns given with DONE_WITH_CONCERNS",false]); return {ok:false, why:"no concerns", checks}; }
+    if (st==="NEEDS_CONTEXT" && !r.question){ checks.push(["question given with NEEDS_CONTEXT",false]); return {ok:false, why:"no question", checks}; }
+    return {ok:true, r, checks};
+  }
+  const VERD = new Set(["PASS","FAIL","CONCERNS"]);
+  function parseReview(text){
+    const checks=[]; let r;
+    try { r=JSON.parse(text); checks.push(["valid JSON",true]); }
+    catch(e){ checks.push(["valid JSON",false]); return {ok:false, why:"json", checks}; }
+    const v = (r && typeof r==="object") ? r.verdict : undefined;
+    if (!VERD.has(v)){ checks.push(["verdict in the closed set ("+(v===undefined?"missing":v)+")",false]); return {ok:false, why:"verdict", checks}; }
+    checks.push(["verdict in the closed set ("+v+")",true]);
+    const f = Array.isArray(r.findings) ? r.findings : [];
+    if (v!=="PASS"){
+      if (!f.length){ checks.push([v+" has at least one finding",false]); return {ok:false, why:"no findings", checks}; }
+      checks.push([v+" has "+f.length+" finding"+(f.length>1?"s":""),true]);
+      if (f.some(x=>!x || !x.loc)){ checks.push(["every finding has a location",false]); return {ok:false, why:"finding without location", checks}; }
+      checks.push(["every finding has a location ("+f.map(x=>x.loc).join(", ")+")",true]);
+    } else {
+      if (!Array.isArray(r.checked) || !r.checked.length){ checks.push(["PASS lists what was checked",false]); return {ok:false, why:"PASS without a checked list", checks}; }
+      checks.push(["PASS lists what was checked ("+r.checked.length+" items)",true]);
+    }
+    return {ok:true, r, checks};
+  }
+
+  /* ================= worked trace ================= */
+  const TASK = "TASK T-03  add a retention rule to the memory layer (brief B-07, allowed: src/memory/, tests/memory/)";
+  const I1 = '{"status":"DONE","task":"T-03","files":["src/memory/store.py"],"evidence":{"cmd":"uv run pytest tests/memory -q","exit":0}}';
+  const R1 = '{"verdict":"FAIL","findings":[{"loc":"tests/memory/","what":"B-07 REQ-2 (evict after 30 days) has no test","sev":"high"}],"checked":["diff","B-07"]}';
+  const I2 = 'Sure! I added the test and everything passes now.';
+  const I3 = '{"status":"DONE","files":["src/memory/store.py","tests/memory/test_retention.py"],"evidence":{"cmd":"uv run pytest tests/memory -q","exit":0}}';
+  const R2 = '{"verdict":"PASS","findings":[],"checked":["diff","B-07 REQ-1..3","test_retention.py::test_evicts_after_30_days"]}';
+  const RE = '{"verdict":"PASS","findings":[],"checked":["diff","B-07"]}';
+  const NODES = ["load context","implement","parse","review","route","interrupt","merge"];
+  const TRACES = {
+    ro: [
+      {n:0, line:TASK, st:{round:"1 of 3"}, note:"The controller holds the brief and the allowed paths before it dispatches anything."},
+      {n:1, line:"[implement#1] -> "+I1, raw:I1, kind:"h", st:{disp:["implement"]}, note:"The worker returns a typed claim. Its evidence field names a test command and an exit code. That is still a claim until someone runs it."},
+      {n:2, line:"[parse]       ok", raw:I1, kind:"hp", note:"The parser accepts it: valid JSON, a status from the closed set, and evidence present."},
+      {n:3, line:"[review#1]    -> "+R1, raw:R1, kind:"r", st:{disp:["review"]}, note:"The reviewer read the diff and the brief, not the worker's summary. Its FAIL cites a location and the requirement that has no test."},
+      {n:4, line:"[route]       fail -> implement (round 2 of 3)", st:{round:"2 of 3"}, note:"FAIL blocks the merge. The controller routes back with the finding and counts the round."},
+      {n:1, line:"[implement#2] -> "+I2, raw:I2, kind:"h", st:{disp:["implement"]}, note:"The second attempt comes back as chat prose. A substring search would find nothing to object to here."},
+      {n:2, line:"[parse]       REJECT not JSON  -> re-dispatch with the schema attached (round 3 of 3)", raw:I2, kind:"hp", st:{round:"3 of 3", reject:1}, note:"The parser rejects it before any review is dispatched. The controller re-dispatches once with the schema, and the round counts."},
+      {n:1, line:"[implement#3] -> "+I3, raw:I3, kind:"h", st:{disp:["implement"]}, note:"The third result names the new test file."},
+      {n:2, line:"[parse]       ok", raw:I3, kind:"hp", note:"It parses."},
+      {n:3, line:"[review#2]    -> "+R2, raw:R2, kind:"r", st:{disp:["review"]}, note:"PASS lists what was checked, down to the test by name."},
+      {n:5, line:"[interrupt]   checkpoint 7f3a  waiting for human", st:{ckpt:"7f3a"}, note:"The graph pauses and the checkpointer saves state. Nothing merges until the human resumes it."},
+      {n:6, line:"[resume]      approved by <student>  -> merge 1c9e2d4", st:{disp:["human"], merged:"1c9e2d4"}, note:"One approval, one merge commit."},
+      {n:6, line:"\nDISPATCH RECORDS  implement x3 (1 rejected) · review x2 · human x1\nCHASE READS       this log, both ReviewResults, git show 1c9e2d4 --stat; re-runs the test command", note:"The Chase re-runs the test command. The evidence field is a claim until someone runs it."}
+    ],
+    ed: [
+      {n:0, line:TASK, st:{round:"1 of 3"}, note:"Same task, same brief. The only change is the reviewer's permission block."},
+      {n:1, line:"[implement#1] -> "+I1, raw:I1, kind:"h", st:{disp:["implement"]}, note:"The same first result: REQ-2 still has no test."},
+      {n:2, line:"[parse]       ok", raw:I1, kind:"hp", note:"It parses, as before."},
+      {n:3, line:"[review#1]    edit tests/memory/test_retention.py   (permission edit: allow)", cons:true, st:{edit:true}, note:"The reviewer sees the missing test and writes it. The harness allows the edit because the config allows it."},
+      {n:3, line:"[review#1]    -> "+RE, raw:RE, kind:"r", cons:true, st:{disp:["review"]}, note:"The reviewer passes a diff that now contains its own test. The parser accepts this verdict: it is well formed. Only the permission config could have stopped it."},
+      {n:5, line:"[interrupt]   checkpoint saved  waiting for human", cons:true, st:{ckpt:"saved"}, note:"The human sees a PASS and has no sign that the reviewer wrote part of the change."},
+      {n:6, line:"[resume]      approved by <student>  -> merge", cons:true, st:{disp:["human"], merged:"(commit)"}, note:"It merges after one round."},
+      {n:6, line:"\nDISPATCH RECORDS  implement x1 · review x1 · human x1", cons:true, note:"The records look clean. Nobody who did not write the test has judged it."}
+    ]
+  };
+  let tmode="ro", ti=0;
+  function stateAt(tr, upto){
+    const s={round:"1 of 3", implement:0, review:0, human:0, reject:0, ckpt:"none", merged:"no", edit:false};
+    for (let i=0;i<=upto;i++){ const x=tr[i].st||{}; if (x.round) s.round=x.round; (x.disp||[]).forEach(d=>s[d]++); if (x.reject) s.reject+=x.reject; if (x.ckpt) s.ckpt=x.ckpt; if (x.merged) s.merged=x.merged; if (x.edit) s.edit=true; }
+    return s;
+  }
+  function renderTrace(){
+    const tr=TRACES[tmode];
+    ti=Math.max(0,Math.min(tr.length-1,ti));
+    $("tlog").innerHTML = tr.map((x,i)=>{
+      const cls = i===ti ? "cur" : (i>ti ? "fut" : "");
+      let txt=esc(x.line);
+      if (/REJECT/.test(x.line)) txt='<span class="bad">'+txt+'</span>';
+      if (x.cons) txt='<span class="cons">'+txt+'</span>';
+      return '<span class="'+cls+'">'+txt+'</span>';
+    }).join("\n");
+    const x=tr[ti];
+    $("tnodes").innerHTML = NODES.map((n,i)=>'<span class="n'+(i===x.n?' on':'')+'">'+n+'</span>').join('<span class="ar">→</span>');
+    const s=stateAt(tr,ti);
+    $("tstate").innerHTML =
+      '<dt>Line</dt><dd>'+(ti+1)+' of '+tr.length+'</dd>'+
+      '<dt>Round</dt><dd>'+s.round+'</dd>'+
+      '<dt>Dispatches</dt><dd>implement ×'+s.implement+(s.reject?' ('+s.reject+' rejected)':'')+' · review ×'+s.review+' · human ×'+s.human+'</dd>'+
+      '<dt>Checkpoint</dt><dd>'+s.ckpt+'</dd>'+
+      '<dt>Merged</dt><dd>'+s.merged+'</dd>'+
+      (tmode==="ed"?'<dt>Reviewer wrote code</dt><dd>'+(s.edit?'yes':'not yet')+'</dd>':'');
+    let checks="";
+    if (x.kind==="h"||x.kind==="hp"){ const p=parseHandoff(x.raw); $("tih").textContent="parse_handoff on this result → "+(p.ok?"ok":"REJECT "+p.why); checks=p.checks.map(c=>'<div class="'+(c[1]?'pass':'fail')+'">'+esc(c[0])+'</div>').join(""); }
+    else if (x.kind==="r"){ const p=parseReview(x.raw); $("tih").textContent="ReviewResult check → "+(p.ok?"well formed":"REJECT "+p.why); checks=p.checks.map(c=>'<div class="'+(c[1]?'pass':'fail')+'">'+esc(c[0])+'</div>').join(""); }
+    else $("tih").textContent="What the controller sees";
+    $("tchecks").innerHTML=checks;
+    $("tnote").textContent=x.note||"";
+    $("tcall").innerHTML = tmode==="ro"
+      ? "<b>Read-only reviewer.</b> Three implementer results, one rejected by the parser, one FAIL that blocked, one PASS that cites what it checked, and a human before merge. Each verdict comes from an agent that could not edit the work it judged."
+      : "<b>Constructed variant.</b> The deck shows only the read-only trace; these lines are built from its common-mistakes row 'Reviewer has edit or bash write: it fixes the code, then passes its own fix.' Every line still parses. The collapse is invisible to the parser and to the dispatch counts, which is why Flight Card 8 lists 'granting the reviewer edit' as a falsifier.";
+    $("tprev").disabled=ti===0; $("tnext").disabled=ti===tr.length-1;
+    $("m-edit").classList.toggle("hl", tmode==="ed");
+  }
+  function setT(m){ tmode=m; ti=0; $("t-ro").setAttribute("aria-pressed",m==="ro"); $("t-ed").setAttribute("aria-pressed",m==="ed"); $("fixout").textContent="Press the button to send the request."; renderTrace(); }
+  $("t-ro").addEventListener("click",()=>setT("ro"));
+  $("t-ed").addEventListener("click",()=>setT("ed"));
+  $("tprev").addEventListener("click",()=>{ ti--; renderTrace(); });
+  $("tnext").addEventListener("click",()=>{ ti++; renderTrace(); });
+  $("tall").addEventListener("click",()=>{ ti=TRACES[tmode].length-1; renderTrace(); });
+  $("fixit").addEventListener("click",()=>{
+    $("fixout").innerHTML = tmode==="ro"
+      ? 'you       @reviewer just fix the missing test\nreviewer  edit tests/memory/test_retention.py\n<span class="bad">harness   denied: permission edit: deny</span>\nreviewer  -> {"verdict":"FAIL","findings":[{"loc":"tests/memory/", ...}]}\n<span class="dim">diff unchanged · verdict still returned · test point 4 passes</span>'
+      : 'you       @reviewer just fix the missing test\nreviewer  edit tests/memory/test_retention.py\n<span class="bad">harness   allowed: permission edit: allow</span>\nreviewer  -> {"verdict":"PASS","findings":[],"checked":["diff","B-07"]}\n<span class="bad">the diff now holds the reviewer\'s change · test point 4 fails</span>';
+  });
+  renderTrace();
+
+  /* ================= parser panel ================= */
+  const SAMPLES = {
+    h: [
+      ["The deck's implement#3 (valid)", I3],
+      ["The deck's implement#2: prose", I2],
+      ["Unknown status (constructed)", '{"status":"COMPLETE","files":["src/memory/store.py"],"evidence":{"cmd":"uv run pytest tests/memory -q","exit":0}}'],
+      ["DONE without evidence (constructed)", '{"status":"DONE","files":["src/memory/store.py"]}'],
+      ["Honest BLOCKED (constructed)", '{"status":"BLOCKED","task":"T-03","question":null,"concerns":"src/memory/ has no clock to inject; REQ-2 cannot be tested"}']
+    ],
+    r: [
+      ["The deck's review#2 (valid)", R2],
+      ["The deck's review#1 (valid FAIL)", R1],
+      ["The deck's example sentence", "This would not PASS without tests"],
+      ["PASS with no checked list (constructed)", '{"verdict":"PASS","findings":[]}'],
+      ["FAIL with no location (constructed)", '{"verdict":"FAIL","findings":[{"what":"looks wrong","sev":"low"}]}']
+    ]
+  };
+  function fillSamples(){
+    const c=$("pc").value;
+    $("ps").innerHTML=SAMPLES[c].map((s,i)=>'<option value="'+i+'">'+esc(s[0])+'</option>').join("");
+    $("pin").value=SAMPLES[c][0][1]; runParse();
+  }
+  function runParse(){
+    const c=$("pc").value, txt=$("pin").value;
+    const p = c==="h" ? parseHandoff(txt) : parseReview(txt);
+    let naive;
+    if (c==="h"){
+      // the deck's mistake: the parser catches the error and defaults to DONE
+      let st; try { const r=JSON.parse(txt); st=r && r.status; } catch(e){ st=undefined; }
+      naive = OK.has(st) ? st : "DONE (default)";
+      $("pnh").textContent="Parser that defaults to DONE";
+    } else {
+      naive = txt.includes("PASS") ? "PASS" : (txt.includes("FAIL") ? "FAIL" : "no verdict word");
+      $("pnh").textContent="Substring search for 'PASS'";
+    }
+    $("pnaive").textContent = naive;
+    $("pstrict").textContent = p.ok ? (c==="h" ? "ok · "+p.r.status : "ok · "+p.r.verdict) : "REJECT "+p.why;
+    $("pstrict").className = "v"+(p.ok?"":" bad");
+    let why;
+    const strictVal = p.ok ? (c==="h"? p.r.status : p.r.verdict) : null;
+    if (!p.ok && /^(DONE|PASS)/.test(naive)) why = c==="h"
+      ? "The two checks disagree. The lenient parser hands the controller DONE, so a refusal or a crash would merge. The fail-closed parse rejects the reply, logs it, and dispatches nothing downstream."
+      : "The two checks disagree. The substring search finds the word PASS and reads a verdict the reviewer never gave. The fail-closed parse rejects the reply as malformed.";
+    else if (!p.ok) why="The fail-closed parse rejects the reply and says why. The lenient check reads "+naive+", which the controller cannot act on safely.";
+    else if (strictVal===naive) why="Both checks agree on a well-formed reply. The difference shows on malformed replies; try the other samples.";
+    else why="The checks disagree. The parse reads the field; the lenient check reads "+naive+".";
+    $("pwhy").textContent=why;
+  }
+  $("pc").addEventListener("change",fillSamples);
+  $("ps").addEventListener("change",()=>{ $("pin").value=SAMPLES[$("pc").value][+$("ps").value][1]; runParse(); });
+  $("pin").addEventListener("input",runParse);
+  fillSamples();
+})();
+</script>
+
+</body></html>

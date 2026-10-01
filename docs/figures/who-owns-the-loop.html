@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Who Owns the Loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.figtop{display:grid; gap:10px; padding:14px 18px 6px}
+.seg{display:inline-flex; flex-wrap:wrap; border:1px solid var(--line); border-radius:9px; overflow:hidden; justify-self:start}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 12px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.flegend{display:flex; gap:8px 18px; flex-wrap:wrap; font-size:14px; color:var(--ink-2); align-items:center}
+.flegend span{display:inline-flex; align-items:center; gap:7px}
+.flegend svg{display:block}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:900px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:17px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .bt{font-size:14.5px; font-weight:600}
+.fig .t13{font-size:13px; font-weight:600}
+.fig .t11{font-size:11px; fill:var(--ink-2); font-weight:500}
+.fig .cellbox{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .mbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.4}
+.fig .cbox{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .ghost{fill:none; stroke:var(--model-line); stroke-width:1.3; stroke-dasharray:4 3}
+.fig .dec{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.3}
+.fig .badge{fill:var(--surface-2); stroke:none}
+.fig .ea{fill:none; stroke:var(--s-a); stroke-width:1.7; marker-end:url(#mA)}
+.fig .eb{fill:none; stroke:var(--s-b); stroke-width:1.7; stroke-dasharray:5 4; marker-end:url(#mB)}
+.fig .guard{fill:none; stroke:var(--s-a); stroke-width:1.3; stroke-dasharray:2 4}
+.fig .kchip{fill:var(--surface); stroke:var(--s-a); stroke-width:1.4}
+.fig .mka{fill:var(--s-a)} .fig .mkb{fill:var(--s-b)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.22}
+.fig.focus .el.on{opacity:1}
+.fig .el.on .cellbox{stroke:var(--ink); stroke-width:2.4}
+.fig .el.on .ea,.fig .el.on .eb{stroke-width:2.3}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .eb{animation:march 1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-18}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.ctlline{margin-top:8px; font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:.02em}
+.ctlline span{color:var(--ink-2); font-weight:500; letter-spacing:.08em; text-transform:uppercase; font-size:12.5px; margin-right:6px}
+blockquote{margin:0; padding:8px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px; max-width:70ch}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.theory{background:var(--surface-2); border-radius:10px; padding:12px 14px; display:grid; gap:6px}
+.theory .big{font-family:var(--display); font-weight:600; font-size:22px; line-height:1.15; margin:0}
+
+/* lanes */
+.lanes{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px}
+@media (max-width:700px){ .lanes{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.lane{border:1px solid var(--line); border-radius:10px; padding:10px; display:grid; gap:8px; align-content:start; min-height:150px; background:var(--surface)}
+.lane h3{margin:0; font-family:var(--display); font-weight:600; font-size:17px; letter-spacing:.04em; display:flex; gap:8px; align-items:center}
+.lane h3 .sw{flex:none}
+.lane .count{font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-left:auto}
+.pchip{border-left:5px solid var(--ink-2); background:var(--surface-2); border-radius:6px; padding:5px 8px; font-family:var(--display); font-weight:600; font-size:15px; line-height:1.2; cursor:help}
+.pchip small{display:block; font-weight:500; font-size:12.5px; color:var(--ink-2); letter-spacing:.02em}
+.pchip.o-Y{border-left-color:var(--s-a)}
+.pchip.o-M{border-left-color:var(--s-b)}
+.pchip.o-F{border-left-color:var(--ink-2)}
+.pchip.o-N{border-left-style:dotted; border-left-color:var(--ink)}
+@media (prefers-reduced-motion: no-preference){ .pchip{animation:pop .3s ease} @keyframes pop{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:none}} }
+.ndrow{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:14px; color:var(--ink-2)}
+.ndrow .nd{font-family:var(--display); font-weight:600; font-size:14px; padding:2px 9px; border:1px dashed var(--line); border-radius:999px; color:var(--ink-2)}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.sw.hatch{background:repeating-linear-gradient(45deg,var(--ink-2) 0 2px,transparent 2px 5px)}
+
+/* ladder */
+.qs{display:grid; gap:8px}
+.qs label{display:grid; grid-template-columns:20px minmax(0,1fr); gap:10px; align-items:start; font-size:15.5px; cursor:pointer}
+.qs input{accent-color:var(--accent); width:18px; height:18px; margin-top:3px}
+.ladder{display:grid; gap:6px}
+.rung{display:grid; grid-template-columns:118px minmax(0,1fr); gap:12px; border:1px solid var(--line); border-radius:8px; padding:8px 12px; background:var(--surface); transition:background .2s ease, opacity .2s ease}
+.rung .rn{font-family:var(--display); font-weight:600; font-size:17px; line-height:1.2}
+.rung .rn small{display:block; font-family:var(--mono); font-weight:400; font-size:12px; color:var(--ink-2)}
+.rung .rd{font-size:14.5px}
+.rung .rd i{display:block; font-style:normal; color:var(--ink-2); font-size:13.5px}
+.rung.reached{background:var(--accent-soft); border-color:var(--accent)}
+.rung.blocked{opacity:.55}
+@media (max-width:520px){ .rung{grid-template-columns:1fr; gap:2px} }
+.result{font-family:var(--display); font-weight:600; font-size:19px; line-height:1.25}
+
+/* adr */
+dl.adr{margin:0; display:grid; grid-template-columns:max-content minmax(0,1fr); gap:6px 14px; font-size:15.5px}
+dl.adr dt{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--ink-2); padding-top:3px}
+dl.adr dd{margin:0}
+@media (max-width:520px){ dl.adr{grid-template-columns:1fr} dl.adr dd{margin-bottom:6px} }
+ol.shape{margin:0; padding-left:22px; display:grid; gap:4px; font-size:15.5px}
+
+/* traces */
+.traces{display:grid; gap:8px}
+.trace{display:grid; grid-template-columns:150px minmax(0,1fr); gap:10px; align-items:center}
+.trace .nm{font-family:var(--display); font-weight:600; font-size:15.5px}
+.trace .ev{display:flex; flex-wrap:wrap; gap:5px}
+.ev span{font-family:var(--mono); font-size:12.5px; padding:2px 7px; border-radius:5px; background:var(--surface-2); border:1px solid var(--line)}
+.ev span.tool{border:2px solid var(--s-a); font-weight:500}
+.ev span.mdl{background:var(--model); border-color:var(--model-line)}
+@media (max-width:520px){ .trace{grid-template-columns:1fr; gap:4px} }
+.challenges{display:flex; flex-wrap:wrap; gap:6px}
+.challenges span{font-family:var(--display); font-weight:600; font-size:14px; padding:3px 10px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line)}
+.challenges span small{font-weight:500; color:var(--ink-2); font-size:13px}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+table.mx{min-width:860px; font-size:14px}
+table.det{min-width:520px; font-size:15px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px; white-space:nowrap}
+.mx td,.mx th{padding:7px 9px}
+.mx td.ns{color:var(--ink-2); font-style:italic}
+.mx tr.hl td{background:var(--accent-soft)}
+.mx tr{cursor:pointer}
+.card{font-family:var(--mono); font-size:13px; line-height:1.55; background:var(--surface-2); border-radius:8px; padding:12px 14px; overflow-x:auto; white-space:pre; margin:0}
+.sortie{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr)); gap:20px; margin-top:12px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 03</div>
+  <h1>Who Owns the Loop</h1>
+  <p class="lede">Every pattern and every framework answers one design question: who decides what happens next, your code or the model? The figure draws the five workflow patterns and the agent as small mechanisms and marks each edge by its owner. Below it, pick a framework from the E2 teardowns to see which parts of the loop it takes from you.</p>
+</header>
+
+<div class="figwrap">
+  <div class="figtop">
+    <div class="seg" role="group" aria-label="Jump to a pattern" id="tabs"></div>
+    <div class="flegend">
+      <span><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" style="stroke:var(--s-a); stroke-width:2"/></svg>edge fixed by your code</span>
+      <span><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" style="stroke:var(--s-b); stroke-width:2; stroke-dasharray:5 4"/></svg>edge chosen by the model at run time</span>
+      <span><i class="sw" style="background:var(--model); border:1px solid var(--model-line)"></i>model call</span>
+      <span><i class="sw" style="background:var(--surface-2); border:1px solid var(--ink-2)"></i>code step</span>
+      <span><svg width="14" height="14" aria-hidden="true"><path d="M7,1 L13,7 L7,13 L1,7 Z" style="fill:var(--surface); stroke:var(--ink-2); stroke-width:1.3"/></svg>decision in code</span>
+    </div>
+  </div>
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1160 600" role="img" aria-label="Six small mechanism diagrams. Prompt chaining: model calls in a fixed sequence with a code gate between them. Routing: one model call classifies the input and code dispatches it to one of three paths. Parallelization: code splits work across parallel model calls and merges or votes. Orchestrator-workers: a model chooses subtasks, delegates them to workers, and synthesizes. Evaluator-optimizer: a producer drafts, an evaluator passes or sends it back, up to K rounds. The agent: a model calls tools and reads observations inside budgets enforced in code.">
+    <defs>
+      <marker id="mA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mka" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="mB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkb" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- 1 chaining -->
+    <g class="el" data-k="c1" transform="translate(20,20)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">1 · Prompt chaining</text>
+      <text class="ts" x="16" y="50">When: decomposable task; accuracy over latency</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L46,136"/>
+      <rect class="mbox" x="48" y="118" width="56" height="36" rx="6"/><text class="t13" x="76" y="141" text-anchor="middle">LLM 1</text>
+      <path class="ea" d="M104,136 L121,136"/>
+      <path class="dec" d="M138,121 L153,136 L138,151 L123,136 Z"/>
+      <text class="t11" x="138" y="112" text-anchor="middle">gate (code)</text>
+      <path class="ea" d="M138,151 L138,182"/><text class="t11" x="146" y="180">fail → exit</text>
+      <path class="ea" d="M153,136 L170,136"/>
+      <rect class="mbox" x="172" y="118" width="56" height="36" rx="6"/><text class="t13" x="200" y="141" text-anchor="middle">LLM 2</text>
+      <path class="ea" d="M228,136 L244,136"/>
+      <rect class="mbox" x="246" y="118" width="56" height="36" rx="6"/><text class="t13" x="274" y="141" text-anchor="middle">LLM 3</text>
+      <path class="ea" d="M302,136 L318,136"/>
+      <text class="ts" x="320" y="140">out</text>
+      <text class="t11" x="180" y="212" text-anchor="middle">each step's output is the next step's input</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Your code owns every edge</text>
+    </g>
+
+    <!-- 2 routing -->
+    <g class="el" data-k="c2" transform="translate(400,20)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">2 · Routing</text>
+      <text class="ts" x="16" y="50">When: distinct classes that deserve distinct prompts</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L46,136"/>
+      <rect class="mbox" x="48" y="116" width="72" height="40" rx="6"/><text class="t13" x="84" y="133" text-anchor="middle">LLM</text><text class="t11" x="84" y="149" text-anchor="middle">classify</text>
+      <path class="eb" d="M120,136 L145,136"/><text class="t11" x="133" y="114" text-anchor="middle">label</text>
+      <path class="dec" d="M162,121 L177,136 L162,151 L147,136 Z"/>
+      <text class="t11" x="160" y="190" text-anchor="middle">dispatch (code)</text>
+      <path class="ea" d="M177,136 L212,101"/>
+      <path class="ea" d="M177,136 L212,136"/>
+      <path class="ea" d="M177,136 L212,171"/>
+      <rect class="mbox" x="214" y="86" width="64" height="28" rx="6"/><text class="t13" x="246" y="105" text-anchor="middle">path A</text>
+      <rect class="mbox" x="214" y="122" width="64" height="28" rx="6"/><text class="t13" x="246" y="141" text-anchor="middle">path B</text>
+      <rect class="mbox" x="214" y="158" width="64" height="28" rx="6"/><text class="t13" x="246" y="177" text-anchor="middle">path C</text>
+      <path class="ea" d="M278,100 L313,132"/>
+      <path class="ea" d="M278,136 L313,136"/>
+      <path class="ea" d="M278,172 L313,140"/>
+      <text class="ts" x="318" y="140">out</text>
+      <text class="t11" x="246" y="210" text-anchor="middle">each path: its own prompt or model</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Model picks the class · code owns the paths</text>
+    </g>
+
+    <!-- 3 parallelization -->
+    <g class="el" data-k="c3" transform="translate(780,20)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">3 · Parallelization</text>
+      <text class="ts" x="16" y="50">When: independent subtasks; confidence from samples</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L46,136"/>
+      <rect class="cbox" x="48" y="120" width="50" height="32" rx="6"/><text class="t13" x="73" y="141" text-anchor="middle">split</text>
+      <path class="ea" d="M98,136 L128,97"/>
+      <path class="ea" d="M98,136 L128,136"/>
+      <path class="ea" d="M98,136 L128,175"/>
+      <rect class="mbox" x="130" y="82" width="56" height="28" rx="6"/><text class="t13" x="158" y="101" text-anchor="middle">LLM</text>
+      <rect class="mbox" x="130" y="122" width="56" height="28" rx="6"/><text class="t13" x="158" y="141" text-anchor="middle">LLM</text>
+      <rect class="mbox" x="130" y="162" width="56" height="28" rx="6"/><text class="t13" x="158" y="181" text-anchor="middle">LLM</text>
+      <path class="ea" d="M186,96 L222,132"/>
+      <path class="ea" d="M186,136 L222,136"/>
+      <path class="ea" d="M186,176 L222,140"/>
+      <rect class="cbox" x="224" y="116" width="78" height="40" rx="6"/><text class="t13" x="263" y="133" text-anchor="middle">merge</text><text class="t11" x="263" y="149" text-anchor="middle">or vote</text>
+      <path class="ea" d="M302,136 L318,136"/>
+      <text class="ts" x="320" y="140">out</text>
+      <text class="t11" x="180" y="212" text-anchor="middle">sectioning: split, run, merge · voting: same task N times</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Your code splits, runs, and merges</text>
+    </g>
+
+    <!-- 4 orchestrator-workers -->
+    <g class="el" data-k="c4" transform="translate(20,310)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">4 · Orchestrator–workers</text>
+      <text class="ts" x="16" y="50">When: subtasks unknown in advance; edits across files</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L46,136"/>
+      <rect class="mbox" x="48" y="114" width="78" height="44" rx="6"/><text class="t13" x="87" y="133" text-anchor="middle" style="font-size:12px">orchestrator</text><text class="t11" x="87" y="149" text-anchor="middle">decomposes</text>
+      <text class="t11" x="188" y="76" text-anchor="middle">subtasks the model chose</text>
+      <path class="eb" d="M126,136 L156,99"/>
+      <path class="eb" d="M126,136 L156,136"/>
+      <path class="eb" d="M126,136 L156,173"/>
+      <rect class="mbox" x="158" y="84" width="60" height="28" rx="6"/><text class="t13" x="188" y="103" text-anchor="middle">worker 1</text>
+      <rect class="mbox" x="158" y="122" width="60" height="28" rx="6"/><text class="t13" x="188" y="141" text-anchor="middle">worker 2</text>
+      <rect class="ghost" x="158" y="160" width="60" height="28" rx="6"/><text class="t13" x="188" y="179" text-anchor="middle">worker n</text>
+      <path class="ea" d="M218,98 L250,132"/>
+      <path class="ea" d="M218,136 L250,136"/>
+      <path class="ea" d="M218,174 L250,140"/>
+      <rect class="mbox" x="252" y="114" width="68" height="44" rx="6"/><text class="t13" x="286" y="133" text-anchor="middle" style="font-size:12px">synthesize</text><text class="t11" x="286" y="149" text-anchor="middle">orchestrator</text>
+      <path class="ea" d="M320,136 L330,136"/>
+      <text class="ts" x="332" y="140">out</text>
+      <text class="t11" x="188" y="210" text-anchor="middle">each worker runs under its own budget (code)</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Model plans subtasks · code bounds each worker</text>
+    </g>
+
+    <!-- 5 evaluator-optimizer -->
+    <g class="el" data-k="c5" transform="translate(400,310)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">5 · Evaluator–optimizer</text>
+      <text class="ts" x="16" y="50">When: clear criteria; iteration measurably helps</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L46,136"/>
+      <rect class="mbox" x="48" y="116" width="80" height="40" rx="6"/><text class="t13" x="88" y="133" text-anchor="middle">producer</text><text class="t11" x="88" y="149" text-anchor="middle">LLM</text>
+      <path class="ea" d="M128,136 L170,136"/><text class="t11" x="149" y="128" text-anchor="middle">draft</text>
+      <rect class="mbox" x="172" y="116" width="84" height="40" rx="6"/><text class="t13" x="214" y="133" text-anchor="middle">evaluator</text><text class="t11" x="214" y="149" text-anchor="middle">LLM · criteria</text>
+      <path class="eb" d="M256,136 L304,136"/><text class="t11" x="280" y="128" text-anchor="middle">PASS</text>
+      <text class="ts" x="308" y="140">out</text>
+      <path class="eb" d="M214,156 L214,190 L88,190 L88,159"/>
+      <rect class="kchip" x="118" y="180" width="66" height="20" rx="10"/><text class="t13" x="151" y="194.5" text-anchor="middle">≤ K rounds</text>
+      <text class="t11" x="151" y="214" text-anchor="middle">revise, with the evaluator's feedback</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Evaluator judges the halt · code caps rounds</text>
+    </g>
+
+    <!-- 6 agent -->
+    <g class="el" data-k="c6" transform="translate(780,310)">
+      <rect class="cellbox" x="0" y="0" width="360" height="280" rx="10"/>
+      <text class="tt" x="16" y="30">6 · The agent</text>
+      <text class="ts" x="16" y="50">When: path cannot be scripted; trust, budget in place</text>
+      <rect class="guard" x="40" y="80" width="276" height="126" rx="8"/>
+      <text class="t11" x="46" y="74">budgets in code: turn, cost, error (E1)</text>
+      <text class="ts" x="12" y="140">in</text>
+      <path class="ea" d="M30,136 L52,136"/>
+      <rect class="mbox" x="54" y="112" width="76" height="48" rx="6"/><text class="t13" x="92" y="133" text-anchor="middle">LLM</text><text class="t11" x="92" y="150" text-anchor="middle">plans, decides</text>
+      <path class="eb" d="M130,124 L212,124"/><text class="t11" x="171" y="117" text-anchor="middle">action</text>
+      <rect class="cbox" x="214" y="104" width="90" height="64" rx="6"/><text class="t13" x="259" y="131" text-anchor="middle">tools</text><text class="t11" x="259" y="148" text-anchor="middle">environment</text>
+      <path class="ea" d="M214,152 L132,152"/><text class="t11" x="173" y="170" text-anchor="middle">observation</text>
+      <path class="eb" d="M92,160 L92,194 L314,194"/><text class="t11" x="205" y="188" text-anchor="middle">final answer</text>
+      <text class="ts" x="320" y="198">out</text>
+      <rect class="badge" x="12" y="226" width="336" height="44" rx="8"/>
+      <text class="lab" x="24" y="244">Control</text>
+      <text class="bt" x="24" y="263">Model steers · your code holds the halts</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 9</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="ctlline" id="capctl"></div>
+      <blockquote id="capq" hidden style="margin-top:10px"></blockquote>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step. The tabs above the figure jump to a pattern.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- who owns the loop -->
+  <section class="panel wide" aria-labelledby="h-own">
+    <div class="eyebrow">Teardowns · E2 slides 7–9 · LangChain to LangGraph, Pydantic AI, role-based, vendor SDKs</div>
+    <h2 id="h-own">Pick a framework and see who owns each part of the loop</h2>
+    <div class="seg" role="group" aria-label="Framework" id="fws"></div>
+    <div class="theory">
+      <div class="eyebrow" id="fwmeta"></div>
+      <p class="big" id="theory"></p>
+      <p class="small" id="fwcost"></p>
+    </div>
+    <div class="lanes" id="lanes"></div>
+    <div class="ndrow" id="ndrow"></div>
+    <div class="tablewrap" style="margin-top:0"><table class="det" id="det"></table></div>
+    <p class="small">Each owner is read from the deck's tables and speaker notes. "You" means code, types, hooks, prompts, or approvals that you or your human supply. Where the deck says nothing about a part, the figure lists it as not stated and makes no guess. The vendor SDK rows are the deck's view as of early 2026, and the deck flags them to verify, because these SDKs change monthly. The deck adds that none of the three vendor SDKs records what was attested.</p>
+  </section>
+
+  <section class="panel wide" aria-labelledby="h-mx">
+    <div class="eyebrow">All eight at once</div>
+    <h2 id="h-mx">The comparison matrix</h2>
+    <p class="small">Select a row to load that framework above.</p>
+    <div class="tablewrap" style="margin-top:0"><table class="mx" id="mx"></table></div>
+  </section>
+
+  <!-- ladder -->
+  <section class="panel" aria-labelledby="h-lad">
+    <div class="eyebrow">E2 slide 6 · When to keep it simple</div>
+    <h2 id="h-lad">Climb only as far as your evidence goes</h2>
+    <p class="small">The deck turns the source's advice into a ladder, and each rung becomes a row in ADR-1. Check what is true of your system.</p>
+    <div class="qs" id="qs">
+      <label><input type="checkbox" id="q1"><span>I measured a single model call with retrieval and in-context examples.</span></label>
+      <label><input type="checkbox" id="q2"><span>The task decomposes cleanly, and I can measure the gain.</span></label>
+      <label><input type="checkbox" id="q3"><span>The path cannot be scripted in advance.</span></label>
+      <label><input type="checkbox" id="q4"><span>Trust, budget, and evaluation exist: my E1 halts and ledger.</span></label>
+      <label><input type="checkbox" id="q5"><span>I need something a stdlib loop cannot give me: checkpoints, tracing, or typed handoffs.</span></label>
+    </div>
+    <div class="ladder" id="ladder">
+      <div class="rung" id="r0"><div class="rn">Start<small>baseline</small></div><div class="rd">A single model call with retrieval and in-context examples. Measure it.<i>ADR-1: the baseline row in the scorecard.</i></div></div>
+      <div class="rung" id="r1"><div class="rn">Add a workflow<small>patterns 1–5</small></div><div class="rd">Only when the task decomposes cleanly and the gain is measurable.<i>ADR-1: the predicted delta, written before the run.</i></div></div>
+      <div class="rung" id="r2"><div class="rn">Add an agent<small>pattern 6</small></div><div class="rd">Only when the path cannot be scripted, and trust, budget, and evaluation exist.<i>ADR-1: the E1 halts and ledger are the precondition.</i></div></div>
+      <div class="rung" id="r3"><div class="rn">Add a framework<small>above the figure</small></div><div class="rd">Only when it buys something your stdlib loop cannot: checkpoints, tracing, typed handoffs.<i>ADR-1: "None / stdlib" is a legitimate alternative and must appear.</i></div></div>
+    </div>
+    <p class="result" id="ladres" aria-live="polite"></p>
+    <blockquote>If you cannot explain what the framework did on turn three, you do not own the loop; it owns you.<cite>E2 deck, slide 6 · the abstraction tax</cite></blockquote>
+  </section>
+
+  <!-- ADR -->
+  <section class="panel" aria-labelledby="h-adr">
+    <div class="eyebrow">Reference design · gzkit ADR-0.0.2 · E2 slide 10</div>
+    <h2 id="h-adr">Popularity is not rationale</h2>
+    <dl class="adr">
+      <dt>Decision</dt><dd>Build gzkit's CLI on the standard library's argparse rather than click.</dd>
+      <dt>Alternatives</dt><dd>click, typer, argparse, each with consequences, not adjectives.</dd>
+      <dt>Rejected reason</dt><dd>Click's popularity.</dd>
+      <dt>Reasons that counted</dt><dd>Zero external dependencies for a governance kit; a smaller attack and upgrade surface; the stdlib-first posture that later became doctrine.</dd>
+    </dl>
+    <p class="small">The deck summarizes this ADR from its title and the book's outline, and flags its alternatives and consequences for checking against the ADR text. The stakes are low and the reasoning is clean, which is why the deck uses it as the model.</p>
+    <div class="eyebrow">The shape of ADR-1</div>
+    <ol class="shape">
+      <li><b>Intent.</b> What the loop must do, from the PRD.</li>
+      <li><b>Decision.</b> Pattern plus framework, in one sentence.</li>
+      <li><b>Alternatives.</b> At least three, including none / stdlib, each with what it buys and what it costs.</li>
+      <li><b>Consequences.</b> Positive and negative, and the one you will measure in Sortie 2.</li>
+      <li><b>Decomposition scorecard.</b> The decision scored against the alternatives on the criteria you named.</li>
+      <li><b>Feature checklist.</b> What the choice must support by E12: tools, MCP, memory, multi-agent, evals, serving.</li>
+    </ol>
+    <blockquote>ADRs before code. After is post-hoc rationalization.<cite>E2 deck, slide 10</cite></blockquote>
+    <p class="small">Before you record the decision, run the reference design's three forcing functions. A pre-mortem writes the story of the choice failing in week twelve. WWHTBT asks what would have to be true for the rejected alternative to have been right. Constraint archaeology traces each constraint to the PRD, the syllabus, or habit, and habit does not count.</p>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-sortie">
+  <div class="eyebrow">In your sortie · E2</div>
+  <h2 id="h-sortie">Flight Card 2 · Sortie 2: two patterns, one trace</h2>
+  <div class="sortie">
+    <div style="display:grid; gap:10px; align-content:start">
+<pre class="card">ENVELOPE            center
+DESIGN CLAIM        The same task runs under two patterns with
+                    identical tool traces and a measurable
+                    difference in cost or quality that ADR-1
+                    predicted.
+SYSTEMS UNDER TEST  E1 loop · pattern A · pattern B ·
+                    tool layer (held constant) · ledger · ADR-1
+DEPENDS ON          Sortie 1 PASS on record
+ENTRY CONDITIONS    clean tree · ADR-1 committed BEFORE the
+                    refactor commit · Go recorded
+TEST POINTS         1 task under pattern A → ledger: tool events
+                      [A₁…Aₙ]; cost/latency/quality recorded
+                    2 same task, pattern B → identical tool
+                      event sequence; second measurement
+                    3 compare → delta in the direction and rough
+                      size ADR-1 predicted
+FALSIFIERS          tool sequences differ · no measurement
+                    recorded · the ADR's predicted consequence
+                    does not appear · ADR dated after the refactor
+ABORT               framework install/runtime failure unrelated
+                    to the pattern (squawk)
+CHASE               peer, from the two ledger slices and the
+                    ADR only → PASS / FAIL</pre>
+      <p class="small">Card text from the E2 deck, slide 13, rewrapped to fit. The falsifier students miss is the last one: an ADR dated after the refactor commit fails the sortie, because its prediction was written after the fact.</p>
+    </div>
+    <div style="display:grid; gap:12px; align-content:start">
+      <div class="eyebrow">Refactor the E1 loop, keep the trace (E2 slide 5)</div>
+      <div class="traces" aria-label="Three ledger traces of the same task. Outlined events are tool calls; they are the same in all three.">
+        <div class="trace"><div class="nm">E1 open loop</div><div class="ev"><span class="mdl">T1</span><span class="tool">tool A</span><span class="mdl">T2</span><span class="tool">tool B</span><span class="mdl">T3 answer</span></div></div>
+        <div class="trace"><div class="nm">Orchestrator–workers</div><div class="ev"><span class="mdl">plan</span><span class="mdl">worker 1</span><span class="tool">tool A</span><span class="mdl">worker 2</span><span class="tool">tool B</span><span class="mdl">synthesize → answer</span></div></div>
+        <div class="trace"><div class="nm">Evaluator–optimizer</div><div class="ev"><span class="mdl">producer</span><span class="tool">tool A</span><span class="tool">tool B</span><span class="mdl">evaluator</span><span>≤ K rounds</span><span class="mdl">PASS → answer</span></div></div>
+      </div>
+      <p class="small">Outlined events are tool calls. They match across all three traces, in the same order. Only control moves. The evaluator turns in the third trace are extra model calls you can count, and that count is one consequence ADR-1 can predict. Hold the tool layer constant, and the measured delta belongs to the decision you recorded.</p>
+      <div class="eyebrow">Red-team a peer's ADR-1 with the ten challenges (E2 slide 11)</div>
+      <div class="challenges">
+        <span>So what? <small>what changes if this is wrong</small></span>
+        <span>Scope <small>what is deliberately out</small></span>
+        <span>Alternative <small>the strongest one you did not pick</small></span>
+        <span>Dependency <small>what this now requires</small></span>
+        <span>Gold standard <small>what good would look like</small></span>
+        <span>Timeline <small>when will we know</small></span>
+        <span>Evidence <small>what you measured, not read</small></span>
+        <span>Consumer <small>who has to live with it</small></span>
+        <span>Regression <small>what got worse</small></span>
+        <span>Parity <small>what the alternative does that yours cannot</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>Patterns combine in real systems. A router can send one class into a chain and another into an agent. The figure draws each pattern alone.</li>
+      <li>Ownership here is coarse. "You" covers very different work: drawing a graph edge, writing a Pydantic type, writing a hook, or pressing allow on a permission prompt.</li>
+      <li>The figure carries no cost or quality numbers. Sortie 2 produces them, from your own two runs.</li>
+      <li>Week eight returns to the role-based frameworks with FIPA and BDI, and to orchestrator–workers with subagents. Week ten returns to evaluator–optimizer as evaluation as a gate.</li>
+      <li>The deck's ADR-0.0.2 summary and its vendor SDK table both carry verify-before-class flags. The figure repeats them as the deck states them.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Readings</h2>
+    <ol>
+      <li>Anthropic. (2024, December). <em>Building effective agents</em>. (The five workflow patterns, the agent, and the advice to keep it simple.)</li>
+      <li>OpenAI. (2025). <em>A practical guide to building agents</em>.</li>
+      <li>Wu, Q., et al. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. arXiv.</li>
+      <li>Hong, S., et al. (2023). MetaGPT: Meta programming for a multi-agent collaborative framework. arXiv.</li>
+      <li>gzkit. <code>docs/examples/guide-adr.md</code>; ADR-0.0.2.</li>
+      <li>Babb, J. Sprint and Drift, "Enthusiasm Is All You Need."</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 03 of the explainer series</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const STEPS = [
+    {k:"*", t:"Every framework is a theory of who owns the loop", w:["E0","E2"],
+     p:"Each panel draws one pattern from Anthropic's catalog, the one the deck uses. Tinted boxes are model calls. Solid edges are fixed by your code before the run; dashed edges are chosen by the model during it. Read each panel for one question: who decides the next step?",
+     q:"Workflow: the model is called along code paths you wrote. Agent: the model directs its own control flow.", c:"E2 deck, slide 3"},
+    {k:"c1", tab:0, t:"Prompt chaining", w:["E2"], ctl:"Your code owns every edge.",
+     p:"Your code calls the model in a fixed sequence, and each step's output becomes the next step's input. A gate between steps is a check in code that can end the chain early. Choose it when the task decomposes and accuracy matters more than latency."},
+    {k:"c2", tab:1, t:"Routing", w:["E2"], ctl:"The model picks the class. Your code owns the set of paths.",
+     p:"One model call classifies the input. Your code reads the label and dispatches the input to a specialized path, each with its own prompt or model. Choose it when the input classes are distinct enough to deserve different handling. Your E1 test points already name three classes."},
+    {k:"c3", tab:2, t:"Parallelization", w:["E1","E2"], ctl:"Your code splits, runs, and merges.",
+     p:"Your code splits the work and runs model calls side by side. In sectioning, each call handles one independent subtask and code merges the results. In voting, the same task runs N times and code aggregates the answers. E1 called voting the first evaluator and the first cost multiplier."},
+    {k:"c4", tab:3, t:"Orchestrator–workers", w:["E2","E8"], ctl:"The model plans the subtasks. Your code bounds each worker.",
+     p:"A central model breaks the task into subtasks, delegates each one to a worker, and synthesizes the results. The model chooses the subtasks at run time, so pick this pattern when they cannot be known in advance, as in large edits across files. Your code gives each worker its own budget. Week eight's subagents plug in here."},
+    {k:"c5", tab:4, t:"Evaluator–optimizer", w:["E2","E10"], ctl:"The evaluator judges the halt. Your code caps the rounds at K.",
+     p:"One model produces a draft, and a second model critiques it against criteria. The loop repeats until the draft passes or code stops it after K rounds. The halt is now a criterion, and the producer no longer decides it alone. This is week ten's evaluation as a gate, in miniature."},
+    {k:"c6", tab:5, t:"The agent", w:["E1","E2"], ctl:"The model steers. Your code holds the halts.",
+     p:"The model plans, acts on tools, reads observations, and continues until it answers or a halt stops it. This is the open loop you built in E1. The catalog lists it last and recommends it least. Reach for it only when the path cannot be scripted and trust, budget, and evaluation are in place."},
+    {k:"c6 c4 c5", t:"Refactor the E1 loop and keep the trace", w:["E2"], ctl:"Only control moves. The tool layer stays fixed.",
+     p:"Sortie 2 moves your E1 loop into a named pattern without touching the tool layer. As orchestrator–workers, a planner splits the task and bounded workers call the same tools in the same order. As evaluator–optimizer, a critic gates the halt and adds evaluator turns you can count. If the tool trace changes, the comparison measures nothing."},
+    {k:"c1 c2 c3 c4 c5", t:"Keep it simple", w:["E0","E2"], ctl:"Start with the simplest pattern that works.",
+     p:"The source advises you to start with the simplest pattern that works and add complexity only when it measurably helps. The deck adds that most production agents are workflows, and should be, because workflows are predictable, cheap, and testable. That advice is ADR-1's null hypothesis. The ladder below the figure walks the rungs."},
+    {k:"*", t:"From patterns to frameworks", w:["E2"],
+     p:"A pattern places control for one task. A framework places control for every task you build with it. LangGraph assumes you own every edge. The Claude Agent SDK assumes the vendor owns the loop. CrewAI assumes control is a conversation among roles. Pick each framework below to see what it takes from you.",
+     q:"A framework is a theory of who owns the loop. Choose one on evidence, write down what you gave up, and be ready to be wrong in the ledger.", c:"E2 deck, slide 14"}
+  ];
+  const TABS=["Chaining","Routing","Parallelization","Orchestrator–workers","Evaluator–optimizer","Agent"];
+
+  const fig=$("fig"), els=[...fig.querySelectorAll(".el")];
+  let cur=0;
+  const tabs=$("tabs");
+  TABS.forEach((n,i)=>{ const b=document.createElement("button"); b.type="button"; b.textContent=n; b.addEventListener("click",()=>go(i+1)); tabs.appendChild(b); });
+  const dots=$("dots");
+  STEPS.forEach((s,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="dot"; b.setAttribute("aria-label","Step "+i+": "+s.t); b.addEventListener("click",()=>go(i)); dots.appendChild(b); });
+
+  function render(){
+    const s=STEPS[cur];
+    const keys = s.k==="*"?null:s.k.split(" ");
+    fig.classList.toggle("focus",!!keys);
+    els.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=s.t; $("captext").textContent=s.p;
+    $("capctl").innerHTML = s.ctl ? "<span>Who decides next</span>"+s.ctl : "";
+    const bq=$("capq");
+    if (s.q){ bq.hidden=false; bq.textContent="“"+s.q+"”"; const c=document.createElement("cite"); c.textContent=s.c; bq.appendChild(c); } else bq.hidden=true;
+    $("capweeks").innerHTML=s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    [...tabs.children].forEach((b,i)=>b.setAttribute("aria-pressed", s.tab===i));
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); render(); }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  render();
+
+  /* ---------- who owns the loop ---------- */
+  const PARTS=[["loop","The loop"],["plan","Planning"],["tools","Tools"],["mem","Memory & context"],["coord","Coordination"],["eval","Evaluation"],["gov","Governance & human"],["run","Runtime"]];
+  const OWN={Y:"You",F:"Framework",M:"Model",N:"No one"};
+  const VENDOR_COST="Cost, per the deck: these SDKs change monthly, which is itself the lesson, and none of the three records what was attested.";
+  const FW=[
+    {id:"std", name:"None / stdlib", meta:"Your E1 loop · the reference design's posture · E1 slide 6, E2 slides 5–6",
+     theory:"You write the loop. The model decides each step inside budgets your code enforces.",
+     cost:"Cost: you build what a framework would buy, such as checkpoints, tracing, and typed handoffs. The deck says none / stdlib is a legitimate alternative and must appear in ADR-1.",
+     parts:{loop:["Y","for turn in range(BUDGET): a loop you wrote and can read line by line."],
+            plan:["M","Each turn the model chooses a tool or an answer. Control sits with the model, bounded by code."],
+            tools:["Y","tools.call(step.name, step.args) calls your own tool layer."],
+            mem:["Y","The messages list your loop appends to."],
+            coord:["Y","One loop on one model route, until you refactor it into a pattern."],
+            eval:["Y","The Step parser rejects a malformed decision. Any other evaluator is one you add."],
+            gov:["Y","Four halts with reasons, a ledger you write, and your attestation."],
+            run:["Y","A script. Tracing and checkpoints exist only if you build them."]}},
+    {id:"lc", name:"LangChain", meta:"Late 2022 · E2 slide 7",
+     theory:"The library owns the loop. It made the loop importable, and it hid the loop.",
+     cost:"Cost: the abstraction tax. Practitioners met opaque prompts, deep class hierarchies, and behavior that changed with each release.",
+     parts:{loop:["F","Chains and agents as objects, the first wrapper around the ReAct prompt."],
+            plan:["FM","Hidden in the agent class; prompt-driven."],
+            tools:["F","Tools as objects."],
+            mem:["F","Memory objects, opaque."],
+            gov:["N","None."],
+            run:["Y","A script."]}},
+    {id:"lg", name:"LangGraph", meta:"2024 · E2 slide 7",
+     theory:"You own every edge. The agent is a state graph you draw.",
+     cost:"Cost: you now have to draw the graph. Control moved from the library into a graph the user draws.",
+     parts:{loop:["Y","Nodes are steps; edges are control flow you draw."],
+            plan:["Y","An explicit graph with conditional edges."],
+            mem:["YF","State is an explicit typed object you define; a checkpointer persists it."],
+            gov:["YF","interrupt() before an edge, then resume. A human-in-the-loop interrupt is an edge."],
+            run:["F","Persisted runs, streaming, and tracing (LangSmith)."]}},
+    {id:"pai", name:"Pydantic AI", meta:"2024–25 · E2 slide 8",
+     theory:"The type system owns the boundary between model and code.",
+     cost:"Cost: what the schema cannot express, the model cannot do, and small local models fail the schema more often (E3's lesson).",
+     parts:{tools:["YF","Tools are plain functions you write; their schemas are derived from type hints."],
+            gov:["YF","You write the Pydantic models. Every output, tool call or final result, is validated, and a malformed one is retried or rejected before it can act."]}},
+    {id:"role", name:"Role-based", meta:"CAMEL · MetaGPT · AutoGen · CrewAI · 2023–24 · E2 slide 8",
+     theory:"Control is a conversation among personas: FIPA and BDI rediscovered, with a language model in the reasoner slot.",
+     cost:"Cost: AutoGPT's cost, multiplied. No one in the conversation is an evaluator, and one role's polished summary becomes the next role's fact.",
+     parts:{loop:["MF","Agents are chat participants and the conversation drives them (AutoGen). CrewAI adds a process, sequential or hierarchical; MetaGPT adds SOPs written as prompts."],
+            plan:["M","Roles plan by talking: two role players in CAMEL; PM, architect, and engineer in MetaGPT; roles, goals, and backstories in CrewAI."],
+            coord:["M","Conversation is the coordination primitive."],
+            eval:["N","No one in the conversation is an evaluator."]}},
+    {id:"oai", name:"OpenAI Agents SDK", meta:"2025 · E2 slide 9 · verify against current docs",
+     theory:"Agents with handoffs. You compose them, and the runner loops.", cost:VENDOR_COST,
+     parts:{loop:["F","The runner loops."],
+            plan:["M","Model-driven within each agent."],
+            tools:["YF","Function tools you write; hosted tools (search, computer)."],
+            coord:["YF","Handoffs between agents you compose."],
+            eval:["F","Guardrails on input and output; tracing built in."],
+            gov:["F","Guardrail tripwires."],
+            run:["F","Runner, sessions, and a tracing UI."]}},
+    {id:"cas", name:"Claude Agent SDK", meta:"2025 · E2 slide 9 · verify against current docs",
+     theory:"The harness is the library: the vendor's loop, your tools and instructions.", cost:VENDOR_COST,
+     parts:{loop:["F","The vendor's loop."],
+            plan:["FM","Claude Code's loop, plan mode, subagents."],
+            tools:["YF","Built-in file and shell tools plus MCP, with permissions and hooks. You supply your own tools."],
+            mem:["Y","You supply the instructions."],
+            coord:["F","Subagents; the Agent tool."],
+            eval:["YF","Hooks, and the human approving each tool call."],
+            gov:["YF","Permission prompts; hooks as a membrane."],
+            run:["F","CLI or SDK; background and cloud sessions."]}},
+    {id:"adk", name:"Google ADK", meta:"2025 · E2 slide 9 · verify against current docs",
+     theory:"A hierarchy of agents: workflow agents (sequential, parallel, loop) plus LLM agents.", cost:VENDOR_COST,
+     parts:{loop:["YM","Workflow agents run fixed sequential, parallel, or loop control; LLM agents let the model steer."],
+            plan:["YM","Explicit workflow agents, or model-driven."],
+            tools:["Y","Function tools; MCP; OpenAPI."],
+            coord:["F","Agent trees; A2A for peers."],
+            eval:["F","An evaluation framework; callbacks."],
+            gov:["Y","Callbacks; human-in-the-loop through tools."],
+            run:["F","Local dev UI; Vertex deployment."]}}
+  ];
+  const LANES=[["Y","You","var(--s-a)"],["F","Framework","var(--ink-2)"],["M","Model","var(--s-b)"],["N","No one",null]];
+  function ownLabel(code){ if(!code) return "not stated"; const parts=["Y","F","M","N"].filter(c=>code.includes(c)).map(c=>OWN[c]); return parts.join(" + ").replace(/ \+ (Framework|Model)/g,(m,x)=>" + "+x.toLowerCase()); }
+  let fwi=0;
+  const fwsEl=$("fws");
+  FW.forEach((f,i)=>{ const b=document.createElement("button"); b.type="button"; b.textContent=f.name; b.addEventListener("click",()=>pick(i)); fwsEl.appendChild(b); });
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+
+  function pick(i){
+    fwi=i; const f=FW[i];
+    [...fwsEl.children].forEach((b,j)=>b.setAttribute("aria-pressed", j===i));
+    $("fwmeta").textContent=f.meta; $("theory").textContent=f.theory; $("fwcost").textContent=f.cost;
+    let h="";
+    LANES.forEach(([code,name,col])=>{
+      const items=PARTS.filter(([pk])=>f.parts[pk] && f.parts[pk][0].includes(code));
+      h+='<div class="lane"><h3><i class="sw'+(col?'':' hatch')+'" style="'+(col?'background:'+col:'')+'"></i>'+name+'<span class="count">'+items.length+'</span></h3>';
+      if (!items.length) h+='<div class="small">nothing</div>';
+      items.forEach(([pk,pn])=>{
+        const [o,note]=f.parts[pk];
+        const others=o.split("").filter(c=>c!==code).map(c=>OWN[c].toLowerCase());
+        h+='<div class="pchip o-'+code+'" title="'+esc(note)+'">'+pn+(others.length?'<small>shared with '+others.join(", ")+'</small>':'')+'</div>';
+      });
+      h+='</div>';
+    });
+    $("lanes").innerHTML=h;
+    const nd=PARTS.filter(([pk])=>!f.parts[pk]);
+    $("ndrow").innerHTML = nd.length ? '<span>The deck does not say:</span>'+nd.map(([,pn])=>'<span class="nd">'+pn+'</span>').join("") : '<span>The deck states an owner for all eight parts.</span>';
+    let t='<thead><tr><th>Part</th><th>Owner</th><th>What the deck says</th></tr></thead><tbody>';
+    PARTS.forEach(([pk,pn])=>{ const v=f.parts[pk]; if (v) t+='<tr><td>'+pn+'</td><td>'+ownLabel(v[0])+'</td><td>'+esc(v[1])+'</td></tr>'; });
+    $("det").innerHTML=t+'</tbody>';
+    [...$("mx").querySelectorAll("tbody tr")].forEach((r,j)=>r.classList.toggle("hl", j===i));
+  }
+  (function buildMx(){
+    let t='<thead><tr><th>Framework</th>'+PARTS.map(([,pn])=>'<th>'+pn+'</th>').join("")+'</tr></thead><tbody>';
+    FW.forEach((f,i)=>{
+      t+='<tr data-i="'+i+'" tabindex="0"><td>'+f.name+'</td>'+PARTS.map(([pk])=>{ const v=f.parts[pk]; return v? '<td title="'+esc(v[1])+'">'+ownLabel(v[0])+'</td>' : '<td class="ns">not stated</td>'; }).join("")+'</tr>';
+    });
+    $("mx").innerHTML=t+'</tbody>';
+    [...$("mx").querySelectorAll("tbody tr")].forEach(r=>{
+      r.addEventListener("click",()=>pick(+r.dataset.i));
+      r.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ pick(+r.dataset.i); e.preventDefault(); } });
+    });
+  })();
+  pick(0);
+
+  /* ---------- ladder ---------- */
+  function ladder(){
+    const q=[1,2,3,4,5].map(n=>$("q"+n).checked);
+    const r1 = q[0]&&q[1], r2 = q[0]&&q[2]&&q[3], r3 = q[0]&&q[4];
+    const set=(id,on,blocked)=>{ $(id).classList.toggle("reached",on); $(id).classList.toggle("blocked",!on&&blocked); };
+    set("r0",true,false);
+    set("r1",r1,true); set("r2",r2,true); set("r3",r3,true);
+    let msg;
+    if (!q[0]) msg="Stay on the first rung. Measure the single call first; that measurement is the baseline row in your scorecard.";
+    else if (q[2] && !q[3]) msg="The path needs an agent, but trust, budget, and evaluation are missing. Finish your E1 halts and ledger before you climb.";
+    else if (r2) msg="An agent is justified. "+(r3?"A framework is justified too; name what it buys and list none / stdlib as an alternative.":"Keep the loop in the standard library, and record none / stdlib as your decision.");
+    else if (r1) msg="A workflow is justified. Write the predicted delta before the run. "+(r3?"A framework may help; name what it buys.":"No framework yet: none / stdlib.");
+    else msg="The single call stands. Adding a pattern now would add cost you cannot show a gain for.";
+    $("ladres").textContent=msg;
+  }
+  [1,2,3,4,5].forEach(n=>$("q"+n).addEventListener("change",ladder));
+  ladder();
+})();
+</script>
+
+</body></html>

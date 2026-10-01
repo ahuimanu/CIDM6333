@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>The Transformer's Evidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C; --grid:#DCE3E9;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22; --grid:#26343F;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22; --grid:#26343F;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:68ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+a{color:var(--accent-ink)}
+
+/* ---------- argument map ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.weak{stroke-dasharray:5 4}
+.fig .legln{fill:none; stroke:var(--ink-2); stroke-width:1.6}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig .el.on .box,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap{display:grid; gap:8px; align-content:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:0; text-wrap:balance}
+.cap p{margin:0; max-width:72ch}
+.cap .weeks{display:flex; gap:6px; flex-wrap:wrap; align-items:center}
+.cap .goto{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.04em; margin-left:6px}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+blockquote{margin:0; padding:10px 14px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic; font-size:16px; max-width:72ch}
+blockquote cite{display:block; font-style:normal; font-family:var(--mono); font-size:12px; color:var(--ink-2); margin-top:4px}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button:disabled{opacity:.45; cursor:default}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0; transition:box-shadow .3s ease, border-color .3s ease; scroll-margin-top:16px}
+.panel.wide{grid-column:1/-1}
+.panel.lit{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent)}
+.panel p{margin:0}
+.small{font-size:14.5px; color:var(--ink-2)}
+.eq{font-family:var(--mono); font-size:14px; background:var(--surface-2); padding:10px 12px; border-radius:8px; overflow-x:auto; white-space:nowrap; line-height:1.7}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 160px; accent-color:var(--accent)}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:5ch}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:6px 13px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.toprow{display:flex; gap:10px 18px; flex-wrap:wrap; align-items:center}
+.cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.cols > div{display:grid; gap:10px; align-content:start; min-width:0}
+.legend{display:flex; gap:8px 16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.legend svg{width:16px; height:16px; overflow:visible}
+.stat{font-family:var(--mono); font-size:13.5px; line-height:1.6}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.calc{font-family:var(--mono); font-size:13.5px; background:var(--surface-2); border-radius:8px; padding:10px 12px; display:grid; gap:3px; overflow-x:auto}
+.calc div{white-space:nowrap}
+.calc .res{border-top:1px solid var(--line); padding-top:5px; margin-top:3px}
+.calc b{font-weight:500; color:var(--accent-ink)}
+.flag{border:1px solid var(--line); border-left:3px solid var(--ink-2); border-radius:0 8px 8px 0; padding:9px 12px; font-size:15px}
+.flag b{font-family:var(--display); font-weight:600; letter-spacing:.04em}
+.quotes{display:grid; gap:8px}
+
+/* ---------- charts ---------- */
+svg.ch{display:block; width:100%; height:auto}
+.chs{min-width:560px}
+.ch text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.ch .lbl{font-family:var(--display); font-size:13.5px; font-weight:600; fill:var(--ink)}
+.ch .lbl2{font-family:var(--display); font-size:13px; font-weight:500; fill:var(--ink-2)}
+.ch .grp{font-family:var(--display); font-size:12px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; fill:var(--ink-2)}
+.ch .val{font-family:var(--mono); font-size:11.5px; fill:var(--ink)}
+.ch .axis{stroke:var(--line); stroke-width:1}
+.ch .grid{stroke:var(--grid); stroke-width:1}
+.ch .lane{fill:var(--surface-2)}
+.ch .band{fill:var(--accent-soft); opacity:.7}
+.ch .ref{stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4}
+.ch .sa{fill:var(--s-a); stroke:var(--surface); stroke-width:2}
+.ch .sb{fill:var(--s-b); stroke:var(--surface); stroke-width:2}
+.ch .hollow{fill:var(--surface); stroke:var(--s-a); stroke-width:2}
+.ch .basedot{fill:var(--surface); stroke:var(--ink); stroke-width:2}
+.ch .stem{stroke:var(--s-a); stroke-width:2}
+.ch .stem.b{stroke:var(--s-b)}
+.ch .stem.dim{opacity:.4}
+.ch .ghost{fill:none; stroke:var(--ink-2); stroke-width:1.6; stroke-dasharray:3 3}
+.ch .barA{fill:var(--s-a)} .ch .barB{fill:var(--s-b)}
+.ch .lr{fill:none; stroke:var(--s-b); stroke-width:2.2}
+.ch .lr0{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:5 4}
+.ch .cross{stroke:var(--ink-2); stroke-width:1}
+.ch *{pointer-events:none}
+.ch .hit,.ch .rowhit,.ch #lrhit{pointer-events:all}
+.ch .hit{fill:transparent; cursor:default}
+.ch .hit:focus{outline:none}
+.ch .hit:focus-visible{stroke:var(--accent); stroke-width:2}
+.ch .rowhit{fill:transparent}
+.ch .rowhit:hover,.ch .rowhit:focus-visible{fill:var(--surface-2); opacity:.6; outline:none}
+.ch .tok{font-family:var(--display); font-size:13.5px; font-weight:500; fill:var(--ink-2)}
+.ch .tok.q{fill:var(--ink); font-weight:700}
+.ch .tok.k{fill:var(--ink); font-weight:700}
+.ch .qbox{fill:var(--surface-2)}
+.ch .kbox{fill:var(--accent-soft)}
+.ch .link{fill:none; stroke-width:2.4}
+.ch .link.h5{stroke:var(--s-b)}
+.ch .link.h6{stroke:var(--s-a); stroke-dasharray:6 4}
+.ch .linklbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.tip{position:fixed; z-index:20; pointer-events:none; background:var(--ink); color:var(--bg); font-family:var(--mono); font-size:12.5px; line-height:1.5; padding:7px 10px; border-radius:7px; max-width:290px; box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.tip .h{font-family:var(--display); font-weight:600; font-size:14.5px; letter-spacing:.02em}
+
+/* ---------- tables ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+td:first-child{font-family:var(--display); font-weight:600; font-size:16px; white-space:nowrap}
+table.t td:first-child{white-space:normal; font-family:var(--body); font-weight:400; font-size:15px}
+table.t{min-width:560px; font-size:15px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 01c · after Vaswani et al. (2017)</div>
+  <h1>The Transformer's Evidence</h1>
+  <p class="lede">Figure 01b drew the 2017 Transformer. This figure weighs the evidence the paper gives for it: a cost estimate, test-set scores, one-change ablations, a training recipe, attention pictures, and a second task. Step through the argument map with Next, the dots, or the arrow keys, then work each table in the panels below.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 540" role="img" aria-label="Argument map of Attention Is All You Need. Six pieces of evidence point up to the paper's claim: Table 2 cost, Table 2 quality, Table 3 variations, the Equation 3 schedule, the attention figures, and Table 4 parsing. Four of them also point down to a box naming what an evaluation gate learns from the paper.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- legend -->
+    <g>
+      <text class="lab" x="24" y="38">Arrows carry</text>
+      <path class="legln" d="M24,56 L62,56"/><text class="ts" x="70" y="60">a measured result</text>
+      <path class="legln" d="M24,78 L62,78" style="stroke-dasharray:5 4"/><text class="ts" x="70" y="82">an estimate, a recipe, or a picture</text>
+    </g>
+
+    <!-- claim -->
+    <g class="el" data-k="claim">
+      <rect class="modelbox" x="300" y="22" width="500" height="88" rx="10"/>
+      <text class="lab" x="318" y="44">The claim · §7 Conclusion</text>
+      <text class="tt" x="318" y="70">The Transformer translates better than earlier models</text>
+      <text class="ts" x="318" y="92">and trains significantly faster than recurrent or convolutional ones</text>
+    </g>
+
+    <!-- up arrows: evidence to claim -->
+    <g class="el" data-k="cost"><path class="flow weak" d="M105,236 L105,176 L340,113"/><text class="ts" x="113" y="198">cost, as an</text><text class="ts" x="113" y="212">estimate</text></g>
+    <g class="el" data-k="qual"><path class="flow" d="M283,236 L283,176 L424,113"/><text class="ts" x="291" y="198">BLEU vs. the</text><text class="ts" x="291" y="212">best earlier</text></g>
+    <g class="el" data-k="abl"><path class="flow" d="M461,236 L461,176 L508,113"/><text class="ts" x="469" y="198">Δ BLEU for</text><text class="ts" x="469" y="212">each change</text></g>
+    <g class="el" data-k="sched"><path class="flow weak" d="M639,236 L639,176 L592,113"/><text class="ts" x="647" y="198">the recipe,</text><text class="ts" x="647" y="212">no result</text></g>
+    <g class="el" data-k="attn"><path class="flow weak" d="M817,236 L817,176 L676,113"/><text class="ts" x="825" y="198">a side</text><text class="ts" x="825" y="212">benefit (§4)</text></g>
+    <g class="el" data-k="parse"><path class="flow" d="M995,236 L995,176 L760,113"/><text class="ts" x="1003" y="198">a second</text><text class="ts" x="1003" y="212">task</text></g>
+
+    <!-- evidence boxes -->
+    <g class="el" data-k="cost">
+      <rect class="box" x="25" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="37" y="258">Table 2 · cost</text>
+      <text class="tt" x="37" y="281">Training FLOPs</text>
+      <text class="ts" x="37" y="299">time × GPUs × TFLOPS</text>
+      <text class="tag" x="37" y="321">ESTIMATE</text>
+    </g>
+    <g class="el" data-k="qual">
+      <rect class="box" x="203" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="215" y="258">Table 2 · quality</text>
+      <text class="tt" x="215" y="281">BLEU on test sets</text>
+      <text class="ts" x="215" y="299">newstest2014, 2 pairs</text>
+      <text class="tag" x="215" y="321">TEST SET</text>
+    </g>
+    <g class="el" data-k="abl">
+      <rect class="box" x="381" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="393" y="258">Table 3 · variations</text>
+      <text class="tt" x="393" y="281">One change per row</text>
+      <text class="ts" x="393" y="299">EN-DE, newstest2013</text>
+      <text class="tag" x="393" y="321">DEV SET</text>
+    </g>
+    <g class="el" data-k="sched">
+      <rect class="box" x="559" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="571" y="258">Eq. 3 · §5.3</text>
+      <text class="tt" x="571" y="281">Warmup schedule</text>
+      <text class="ts" x="571" y="299">warm up, then decay</text>
+      <text class="tag" x="571" y="321">RECIPE</text>
+    </g>
+    <g class="el" data-k="attn">
+      <rect class="box" x="737" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="749" y="258">Figs 3–5 · appendix</text>
+      <text class="tt" x="749" y="281">Attention pictures</text>
+      <text class="ts" x="749" y="299">a few heads, 3 sentences</text>
+      <text class="tag" x="749" y="321">ILLUSTRATION</text>
+    </g>
+    <g class="el" data-k="parse">
+      <rect class="box" x="915" y="238" width="160" height="94" rx="8"/>
+      <text class="lab" x="927" y="258">Table 4 · §6.3</text>
+      <text class="tt" x="927" y="281">English parsing</text>
+      <text class="ts" x="927" y="299">F1, WSJ section 23</text>
+      <text class="tag" x="927" y="321">SECOND TASK</text>
+    </g>
+
+    <!-- down arrows: evidence to gate -->
+    <g class="el" data-k="cost-dn"><path class="flow" d="M105,332 L105,372 L380,428"/><text class="ts" x="113" y="358">method beside the number</text></g>
+    <g class="el" data-k="qual-dn"><path class="flow" d="M283,332 L283,372 L470,428"/><text class="ts" x="291" y="358">test set kept apart</text></g>
+    <g class="el" data-k="abl-dn"><path class="flow" d="M461,332 L461,372 L560,428"/><text class="ts" x="469" y="358">one change vs. a fixed base</text></g>
+    <g class="el" data-k="attn-dn"><path class="flow" d="M817,332 L817,372 L720,428"/><text class="ts" x="825" y="358">a picture is no check</text></g>
+
+    <!-- gate -->
+    <g class="el" data-k="gate">
+      <rect class="box" x="330" y="430" width="440" height="88" rx="8"/>
+      <text class="lab" x="348" y="452">What an eval gate learns · E10</text>
+      <text class="tt" x="348" y="478">Freeze a base, change one thing, keep the test apart,</text>
+      <text class="ts" x="348" y="500">and put the method beside each number so your Chase can recompute it</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 9</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <blockquote id="capq"></blockquote>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step. The highlighted panel below holds the data for each step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+
+  <!-- ===== Table 2 ===== -->
+  <section class="panel wide" id="p-t2" aria-labelledby="h-t2">
+    <div class="eyebrow">Table 2, redrawn · §6.1 · E10 · E11</div>
+    <h2 id="h-t2">Quality against cost, as the paper reports them</h2>
+    <div class="cols">
+      <div>
+        <div class="toprow">
+          <div class="seg" role="group" aria-label="Language pair">
+            <button type="button" id="pair-de" aria-pressed="true">EN-DE</button>
+            <button type="button" id="pair-fr" aria-pressed="false">EN-FR</button>
+          </div>
+          <span class="small">BLEU on newstest2014 against estimated training FLOPs</span>
+        </div>
+        <div class="scroller"><svg class="ch chs" id="t2" viewBox="0 0 720 380" role="img" aria-label="Scatter plot of BLEU against training FLOPs on a log scale for the models in Table 2."></svg></div>
+        <div class="legend">
+          <span><svg viewBox="-8 -8 16 16"><circle r="6" style="fill:var(--s-a)"/></svg>earlier single model</span>
+          <span><svg viewBox="-8 -8 16 16"><path d="M0,-7 L7,0 L0,7 L-7,0 Z" style="fill:var(--s-a)"/></svg>earlier ensemble</span>
+          <span><svg viewBox="-8 -8 16 16"><circle r="7" style="fill:var(--s-b)"/></svg>Transformer</span>
+          <span id="leg-ghost"><svg viewBox="-8 -8 16 16"><circle r="6" style="fill:none;stroke:var(--ink-2);stroke-width:1.6;stroke-dasharray:3 3"/></svg>value in the §6.1 text</span>
+        </div>
+        <div class="stat" id="t2stat"></div>
+        <p class="small" id="t2note"></p>
+      </div>
+      <div>
+        <h3 class="sub">How the cost column was built</h3>
+        <p class="small">The paper does not measure FLOPs. It multiplies training time by the number of GPUs and by a rated speed per GPU, and it prints the rated speeds in footnote 5: 2.8, 3.7, 6.0, and 9.5 TFLOPS for the K80, K40, M40, and P100. Both Transformers trained on one machine with 8 P100s.</p>
+        <div class="seg" role="group" aria-label="Model to compute">
+          <button type="button" id="calc-base" aria-pressed="true">Base · 12 hours</button>
+          <button type="button" id="calc-big" aria-pressed="false">Big · 3.5 days</button>
+        </div>
+        <div class="calc" id="calc" aria-live="polite"></div>
+        <p class="small" id="calcnote"></p>
+        <div class="flag"><b>41.0 or 41.8?</b> The §6.1 text says the big English-French model “achieves a BLEU score of 41.0”. Table 2 prints 41.8. The paper does not say which is right. This page plots the table's 41.8 and marks 41.0 with a dashed ring, so the gap stays visible.</div>
+        <p class="small">The paper prints one cost per Transformer, spanning both language pairs. It states the method once and does not list the time and GPU inputs behind the earlier models' costs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Table 3 ===== -->
+  <section class="panel wide" id="p-t3" aria-labelledby="h-t3">
+    <div class="eyebrow">Table 3, redrawn · §6.2 · E10</div>
+    <h2 id="h-t3">One change at a time, against a fixed base</h2>
+    <p class="small">Each row starts from the base model and changes the settings named on the row. Unlisted settings equal the base. All scores are on the English-German development set, newstest2013, with beam search and no checkpoint averaging. Dots to the right of the dashed base line are better.</p>
+    <div class="toprow">
+      <div class="seg" role="group" aria-label="Metric">
+        <button type="button" id="met-bleu" aria-pressed="true">BLEU (higher is better)</button>
+        <button type="button" id="met-ppl" aria-pressed="false">PPL (lower is better)</button>
+      </div>
+    </div>
+    <div class="ctrl"><label for="th">Your threshold: call a row different from base only if |Δ| ≥</label><input id="th" type="range" min="0" max="1" step="0.1" value="0.3"><output id="thout" for="th">0.3</output></div>
+    <div class="scroller"><svg class="ch" id="t3" viewBox="0 0 720 660" style="min-width:620px; max-width:860px" role="img" aria-label="Dot plot of Table 3: one row per variant, grouped A to E plus the big model, each dot showing the variant's score against a dashed reference line at the base model."></svg></div>
+    <div class="legend">
+      <span><svg viewBox="-8 -8 16 16"><circle r="5" style="fill:var(--s-a)"/></svg>one-change variant, beyond threshold</span>
+      <span><svg viewBox="-8 -8 16 16"><circle r="5" style="fill:var(--surface);stroke:var(--s-a);stroke-width:2"/></svg>within threshold of base</span>
+      <span><svg viewBox="-8 -8 16 16"><circle r="6" style="fill:var(--s-b)"/></svg>big model, several changes</span>
+      <span><svg viewBox="-8 -8 16 16"><rect x="-8" y="-6" width="16" height="12" style="fill:var(--accent-soft)"/></svg>threshold band</span>
+    </div>
+    <div class="stat" id="t3stat"></div>
+    <p class="small">The paper sets no threshold and reports one run per row, so it gives no way to tell whether a 0.1 BLEU gap would survive a second run. The slider is a pre-registration you choose before you look. Perplexities are per wordpiece, and the paper warns they “should not be compared to per-word perplexities.” In row (D), ε_ls = 0.0 has better perplexity than base and worse BLEU. Switch the metric to watch it cross the line. §5.4 predicts this: label smoothing “hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.”</p>
+    <h3 class="sub">What the authors concluded (§6.2)</h3>
+    <div class="quotes">
+      <blockquote>While single-head attention is 0.9 BLEU worse than the best setting, quality also drops off with too many heads.<cite>Vaswani et al. (2017), §6.2, rows (A)</cite></blockquote>
+      <blockquote>In Table 3 rows (B), we observe that reducing the attention key size d_k hurts model quality.<cite>§6.2, rows (B)</cite></blockquote>
+      <blockquote>We further observe in rows (C) and (D) that, as expected, bigger models are better, and dropout is very helpful in avoiding over-fitting.<cite>§6.2, rows (C) and (D)</cite></blockquote>
+      <blockquote>In row (E) we replace our sinusoidal positional encoding with learned positional embeddings, and observe nearly identical results to the base model.<cite>§6.2, row (E)</cite></blockquote>
+    </div>
+  </section>
+
+  <!-- ===== Eq 3 ===== -->
+  <section class="panel" id="p-lr" aria-labelledby="h-lr">
+    <div class="eyebrow">Equation 3, plotted · §5.3</div>
+    <h2 id="h-lr">The learning-rate schedule</h2>
+    <div class="eq">lrate = d_model<sup>−0.5</sup> · min(step_num<sup>−0.5</sup>, step_num · warmup_steps<sup>−1.5</sup>)</div>
+    <div class="ctrl"><label for="wu">warmup_steps</label><input id="wu" type="range" min="500" max="16000" step="500" value="4000"><output id="wuout" for="wu">4,000</output></div>
+    <div class="ctrl"><span>d_model</span>
+      <div class="seg" role="group" aria-label="d_model">
+        <button type="button" data-dm="256" aria-pressed="false">256</button>
+        <button type="button" data-dm="512" aria-pressed="true">512</button>
+        <button type="button" data-dm="1024" aria-pressed="false">1024</button>
+      </div>
+    </div>
+    <div class="scroller"><svg class="ch" id="lr" viewBox="0 0 560 300" style="min-width:420px" role="img" aria-label="Line chart of learning rate against training step from 0 to 100,000, rising linearly to a peak at the warmup step and then decaying."></svg></div>
+    <div class="legend">
+      <span><svg viewBox="-8 -8 16 16"><path d="M-8,0 L8,0" style="stroke:var(--s-b);stroke-width:2.2"/></svg>your setting</span>
+      <span><svg viewBox="-8 -8 16 16"><path d="M-8,0 L8,0" style="stroke:var(--ink-2);stroke-width:1.4;stroke-dasharray:5 4"/></svg>paper: warmup 4,000, d_model 512</span>
+    </div>
+    <div class="stat" id="lrstat"></div>
+    <p class="small">Below the peak, the second term is smaller, so the rate climbs in a straight line. At step = warmup_steps the two terms are equal. After it, the first term is smaller, so the rate falls as 1/√step. A larger d_model lowers the whole curve. The y-axis is fixed so the curves can be compared. The base model trained for 100,000 steps; the big model for 300,000. The paper pairs this schedule with Adam, β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹.</p>
+  </section>
+
+  <!-- ===== Figures 3-4 ===== -->
+  <section class="panel" id="p-attn" aria-labelledby="h-attn">
+    <div class="eyebrow">Figures 3–4, schematic redraw · appendix · E6</div>
+    <h2 id="h-attn">What the attention pictures show</h2>
+    <div class="seg" role="group" aria-label="Figure">
+      <button type="button" id="fig3" aria-pressed="true">Figure 3 · making</button>
+      <button type="button" id="fig4" aria-pressed="false">Figure 4 · its</button>
+    </div>
+    <div class="scroller"><svg class="ch" id="att" viewBox="0 0 700 330" style="min-width:520px" role="img" aria-label="Schematic redraw of an appendix attention figure: the sentence's tokens in two rows, with lines from the query word in the top row to the keys the caption names in the bottom row."></svg></div>
+    <blockquote id="attcap"></blockquote>
+    <p class="small"><b>This is a schematic redraw.</b> The paper does not publish the attention weights, so the lines show only the links the captions name. Line width carries no value. Both figures come from encoder self-attention in layer 5 of 6. The paper's Figure 3 also shows fainter links from <i>making</i>, and Figure 4 also shows every link for head 5; neither is drawn here.</p>
+    <div class="flag"><b>Attention weights are not explanations.</b> Jain and Wallace (2019) tested recurrent models with attention on text classification and question answering. They found that attention weights often disagreed with other measures of which inputs mattered, and that quite different attention patterns could give the same prediction. A picture of one head on one sentence is a hypothesis about the model. The paper's own captions hedge with <i>apparently</i> and <i>seems</i>.</div>
+  </section>
+
+  <!-- ===== Table 4 ===== -->
+  <section class="panel wide" id="p-t4" aria-labelledby="h-t4">
+    <div class="eyebrow">Table 4, redrawn · §6.3</div>
+    <h2 id="h-t4">A second task: English constituency parsing</h2>
+    <p class="small">The authors trained a 4-layer Transformer with d_model = 1024 on the Wall Street Journal portion of the Penn Treebank, about 40,000 training sentences, and in a semi-supervised setting with about 17 million sentences. They tuned only dropout, learning rates, and beam size, on the Section 22 development set. Scores are F1 on Section 23.</p>
+    <div class="toprow">
+      <div class="seg" role="group" aria-label="Axis">
+        <button type="button" id="ax-0" aria-pressed="true">Axis from 0</button>
+        <button type="button" id="ax-z" aria-pressed="false">Zoom: axis from 85</button>
+      </div>
+      <span class="small" id="axnote">Bars start at 0, so their lengths are honest and the gaps look small.</span>
+    </div>
+    <div class="scroller"><svg class="ch" id="t4" viewBox="0 0 720 420" style="min-width:560px; max-width:860px" role="img" aria-label="Horizontal bar chart of WSJ section 23 F1 for each parser in Table 4, grouped by training regime, with the two Transformer rows highlighted."></svg></div>
+    <div class="legend">
+      <span><svg viewBox="-8 -8 16 16"><rect x="-8" y="-5" width="16" height="10" rx="2" style="fill:var(--s-a)"/></svg>earlier parser</span>
+      <span><svg viewBox="-8 -8 16 16"><rect x="-8" y="-5" width="16" height="10" rx="2" style="fill:var(--s-b)"/></svg>Transformer (4 layers)</span>
+    </div>
+    <p class="small">The text says the model gives “better results than all previously reported models with the exception of the Recurrent Neural Network Grammar,” which is Dyer et al. (2016) at 93.3. Table 4 also lists Luong et al. (2015), a multi-task model, at 93.0, above the Transformer's 92.7. Read the claim against the table, as you would read a model's summary against its trace.</p>
+  </section>
+
+  <!-- ===== E10 tie-in ===== -->
+  <section class="panel wide" id="p-gate" aria-labelledby="h-gate">
+    <div class="eyebrow">In your sortie · E10 Evals as Gates · Flight Card 10</div>
+    <h2 id="h-gate">Table 3 as a model of evaluation design</h2>
+    <p>Table 3 is the closest thing in the paper to the delta gate you build in Sortie 10. It holds one base fixed, changes one thing per row, and keeps the set it tunes on apart from the set it reports. It also has gaps that your gate must close.</p>
+    <div class="tablewrap"><table class="t">
+      <thead><tr><th>What Table 3 does</th><th>What your Sortie 10 gate does</th></tr></thead>
+      <tbody>
+        <tr><td>One base row, fixed before any variant runs: 25.8 BLEU, 4.92 PPL, 65M parameters.</td><td><code>baseline.json</code>, committed and frozen. A regression is a case that passed in the baseline and fails now.</td></tr>
+        <tr><td>Each lettered row changes one setting, or one coupled pair such as h with d_k.</td><td>One change per comparison. The delta compares case by case and prints the ids that moved.</td></tr>
+        <tr><td>Hyperparameters were “chosen after experimentation on the development set” (newstest2013). Headline scores in Table 2 come from newstest2014.</td><td>The golden set is frozen. Changing a case after a run needs a ledger event and a reason; a case edited to pass is metagaming.</td></tr>
+        <tr><td>Rows that remove capacity (h = 1, N = 2, P_drop = 0.0) make BLEU drop, so the measurement can go red.</td><td>A check counts only after it has been seen red. Remove the feature, run, and record the RED witness.</td></tr>
+        <tr><td>Two metrics per row. For ε_ls = 0.0 they point in opposite directions.</td><td>One task can carry several graders. Report pass^3 beside the mean.</td></tr>
+        <tr><td>One run per row, with no spread and no seeds.</td><td>One run is an anecdote. Run every model-in-the-loop case at least 3 times and report the trial count.</td></tr>
+        <tr><td>The big row changes five settings at once, so it cannot say which change helped.</td><td>Split a multi-change commit before the gate, or the delta cannot name a cause.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">The E10 deck's test for pre-registration applies to Table 3 as well: “could the evidence have come out against you, and did you say in advance what that would look like?” Table 3 passes the first half; the paper is silent on the second.</p>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">Where the course attaches</div>
+  <h2 id="h-map">Three weeks read this paper as evidence</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Week</th><th>Part of the figure</th><th>What it teaches</th></tr></thead>
+    <tbody>
+      <tr><td>E6 · Context engineering</td><td>Figures 3–4; the attention pictures</td><td>Each query spreads a total weight of 1 across every key. The more tokens in the window, the more pairs compete for it, which is the attention budget the deck names.</td></tr>
+      <tr><td>E10 · Evals as gates</td><td>Table 3; dev and test sets; the threshold slider</td><td>A fixed base, one change per row, and a reported set kept apart from the tuning set. The paper's one run per row is the gap your pass^3 closes.</td></tr>
+      <tr><td>E11 · Observability</td><td>Table 2's cost column; the 41.0 vs. 41.8 gap</td><td>A cost with its method printed beside it can be recomputed by a stranger, the way a receipt binds a result to a commit. A summary that disagrees with its own table is a transcript claim until the record settles it.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>What the figure leaves out</h2>
+    <ul>
+      <li>Figure 5 of the paper, and the full head-5 panel of Figure 4. The architecture and Table 1 are in Figure 01b, <em>The 2017 Transformer</em>.</li>
+      <li>Table 2's Transformer scores come from averaged checkpoints (the last 5 for base, the last 20 for big). Table 3 uses no averaging and a different test set, so its base 25.8 does not compare with Table 2's 27.3.</li>
+      <li>The big English-French model used P_drop = 0.1 instead of 0.3 (§6.1).</li>
+      <li>BLEU scores from different papers can depend on tokenization and the scoring script (Post, 2018). Table 2 compares numbers as each paper reported them.</li>
+      <li>The paper reports no variance, seeds, or repeated runs for any table.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Source and readings</h2>
+    <ol>
+      <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). Attention is all you need. <em>Advances in Neural Information Processing Systems, 30</em>. <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762</a></li>
+      <li>Jain, S., &amp; Wallace, B. C. (2019). Attention is not explanation. <em>Proceedings of NAACL-HLT 2019</em>.</li>
+      <li>Wiegreffe, S., &amp; Pinter, Y. (2019). Attention is not not explanation. <em>Proceedings of EMNLP-IJCNLP 2019</em>. (A reply to Jain and Wallace.)</li>
+      <li>Post, M. (2018). A call for clarity in reporting BLEU scores. <em>Proceedings of the Third Conference on Machine Translation (WMT)</em>.</li>
+      <li>Nosek, B. A., Ebersole, C. R., DeHaven, A. C., &amp; Mellor, D. T. (2018). The preregistration revolution. <em>PNAS</em>. (Cited in the E10 deck.)</li>
+      <li>Kerr, N. L. (1998). HARKing: Hypothesizing after the results are known. <em>Personality and Social Psychology Review</em>. (Cited in the E10 deck.)</li>
+      <li>Anthropic. (2026, January 9). <em>Demystifying evals for AI agents</em>. (Cited in the E10 deck.)</li>
+      <li>Anthropic. (2025, September 29). <em>Effective context engineering for AI agents</em>. (Cited in the E6 deck.)</li>
+    </ol>
+    <p class="small" style="margin-top:10px">Tables 2–4 and Figures 3–4 are redrawn from Vaswani et al. (2017) under the paper's notice: “Provided proper attribution is provided, Google hereby grants permission to reproduce the tables and figures in this paper solely for use in journalistic or scholarly works.” Figures 3–4 are schematic; no attention values are reproduced.</p>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Fall 2026 · West Texas A&amp;M University · Figure 01c of the explainer series</footer>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const NS = "http://www.w3.org/2000/svg";
+  const fmt = n => n.toLocaleString("en-US");
+  const SUP = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+  const sup = e => String(e).split("").map(c=>SUP[c]).join("");
+  function sci(v, d){ if(v===0) return "0"; const e=Math.floor(Math.log10(v)); const m=v/Math.pow(10,e); return m.toFixed(d==null?1:d)+" × 10"+sup(e); }
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+  /* ---------- tooltip ---------- */
+  const tip = $("tip");
+  function tipHTML(t){ const parts=t.split("|"); return '<div class="h">'+esc(parts[0])+'</div>'+parts.slice(1).map(p=>'<div>'+esc(p)+'</div>').join(""); }
+  function place(x,y){
+    const w=tip.offsetWidth, h=tip.offsetHeight;
+    let left=x+14, top=y+14;
+    if(left+w>innerWidth-8) left=Math.max(8,x-w-14);
+    if(top+h>innerHeight-8) top=Math.max(8,y-h-14);
+    tip.style.left=left+"px"; tip.style.top=top+"px";
+  }
+  document.addEventListener("pointerover",e=>{ const t=e.target.closest&&e.target.closest("[data-tip]"); if(!t) return; tip.innerHTML=tipHTML(t.getAttribute("data-tip")); tip.hidden=false; place(e.clientX,e.clientY); });
+  document.addEventListener("pointermove",e=>{ if(tip.hidden) return; const t=e.target.closest&&e.target.closest("[data-tip]"); if(!t){ if(!tip.dataset.lr) tip.hidden=true; return; } place(e.clientX,e.clientY); });
+  document.addEventListener("pointerout",e=>{ const t=e.target.closest&&e.target.closest("[data-tip]"); if(t) tip.hidden=true; });
+  document.addEventListener("focusin",e=>{ const t=e.target.closest&&e.target.closest("[data-tip]"); if(!t) return; tip.innerHTML=tipHTML(t.getAttribute("data-tip")); tip.hidden=false; const r=t.getBoundingClientRect(); place(r.right,r.top); });
+  document.addEventListener("focusout",e=>{ const t=e.target.closest&&e.target.closest("[data-tip]"); if(t) tip.hidden=true; });
+  addEventListener("scroll",()=>{ tip.hidden=true; },{passive:true});
+  function hit(x,y,r,text,extra){ return '<circle class="hit" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" tabindex="0" aria-label="'+esc(text.replace(/\|/g,", "))+'" data-tip="'+esc(text)+'"'+(extra||"")+'/>'; }
+
+  function segPair(a,b,on){ $(a).setAttribute("aria-pressed", on===a); $(b).setAttribute("aria-pressed", on===b); }
+
+  /* ================= Table 2 scatter ================= */
+  const T2=[
+    {m:"ByteNet",de:23.75,fr:null,cde:null,cfr:null,k:"single"},
+    {m:"Deep-Att + PosUnk",de:null,fr:39.2,cde:null,cfr:1.0e20,k:"single"},
+    {m:"GNMT + RL",de:24.6,fr:39.92,cde:2.3e19,cfr:1.4e20,k:"single"},
+    {m:"ConvS2S",de:25.16,fr:40.46,cde:9.6e18,cfr:1.5e20,k:"single"},
+    {m:"MoE",de:26.03,fr:40.56,cde:2.0e19,cfr:1.2e20,k:"single"},
+    {m:"Deep-Att + PosUnk Ensemble",de:null,fr:40.4,cde:null,cfr:8.0e20,k:"ens"},
+    {m:"GNMT + RL Ensemble",de:26.30,fr:41.16,cde:1.8e20,cfr:1.1e21,k:"ens"},
+    {m:"ConvS2S Ensemble",de:26.36,fr:41.29,cde:7.7e19,cfr:1.2e21,k:"ens"},
+    {m:"Transformer (base)",de:27.3,fr:38.1,cde:3.3e18,cfr:3.3e18,k:"tr"},
+    {m:"Transformer (big)",de:28.4,fr:41.8,cde:2.3e19,cfr:2.3e19,k:"tr"}
+  ];
+  const KIND={single:"earlier single model",ens:"earlier ensemble",tr:"Transformer"};
+  let pair="de";
+  function renderT2(){
+    const W=720,H=380,T=18,B=52,L=150,R=24,laneA=62,laneB=124;
+    const ph=H-T-B, pw=W-L-R;
+    const lx0=17.7, lx1=21.4;
+    const yd = pair==="de"?[23,29]:[37.5,42.5];
+    const X=v=>L+(Math.log10(v)-lx0)/(lx1-lx0)*pw;
+    const Y=v=>T+ph-(v-yd[0])/(yd[1]-yd[0])*ph;
+    let s='<rect class="lane" x="'+laneA+'" y="'+T+'" width="'+(laneB-laneA)+'" height="'+ph+'" rx="4"/>';
+    for(let v=Math.ceil(yd[0]); v<=yd[1]; v++){
+      const yy=Y(v).toFixed(1);
+      s+='<line class="grid" x1="'+laneA+'" x2="'+(W-R)+'" y1="'+yy+'" y2="'+yy+'"/>';
+      s+='<text x="'+(laneA-6)+'" y="'+(+yy+4)+'" text-anchor="end">'+v+'</text>';
+    }
+    s+='<line class="axis" x1="'+L+'" x2="'+(W-R)+'" y1="'+(T+ph)+'" y2="'+(T+ph)+'"/>';
+    for(let e=18;e<=21;e++){ const xx=X(Math.pow(10,e)).toFixed(1); s+='<line class="grid" x1="'+xx+'" x2="'+xx+'" y1="'+T+'" y2="'+(T+ph)+'"/><text x="'+xx+'" y="'+(T+ph+16)+'" text-anchor="middle">10'+sup(e)+'</text>'; }
+    s+='<text x="'+(L+pw/2)+'" y="'+(H-14)+'" text-anchor="middle">estimated training cost, FLOPs (log scale)</text>';
+    s+='<text class="lbl2" x="'+((laneA+laneB)/2)+'" y="'+(T+ph+16)+'" text-anchor="middle">no cost</text><text class="lbl2" x="'+((laneA+laneB)/2)+'" y="'+(T+ph+30)+'" text-anchor="middle">in paper</text>';
+    s+='<text x="14" y="'+(T+ph/2)+'" text-anchor="middle" transform="rotate(-90 14 '+(T+ph/2)+')">BLEU, newstest2014 '+(pair==="de"?"EN-DE":"EN-FR")+'</text>';
+    let marks="", hits="", labels="";
+    T2.forEach(r=>{
+      const b=r[pair], c=r["c"+pair]; if(b==null) return;
+      const x = c==null ? (laneA+laneB)/2 : X(c), y=Y(b);
+      if(r.k==="single") marks+='<circle class="sa" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="6"/>';
+      else if(r.k==="ens") marks+='<path class="sa" d="M'+x.toFixed(1)+','+(y-7.5).toFixed(1)+' l7.5,7.5 l-7.5,7.5 l-7.5,-7.5 z"/>';
+      else { marks+='<circle class="sb" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="7.5"/>'; labels+='<text class="lbl" x="'+(x+12).toFixed(1)+'" y="'+(y+5).toFixed(1)+'">'+r.m+' · '+b+'</text>'; }
+      hits+=hit(x,y,12, r.m+"|"+KIND[r.k]+"|BLEU "+(pair==="de"?"EN-DE":"EN-FR")+": "+b+"|Training cost: "+(c==null?"not given in the paper":sci(c)+" FLOPs"));
+    });
+    if(pair==="fr"){
+      const x=X(2.3e19), y=Y(41.0);
+      marks+='<circle class="ghost" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="7.5"/>';
+      labels+='<text class="lbl2" x="'+(x+12).toFixed(1)+'" y="'+(y+5).toFixed(1)+'">41.0 in the §6.1 text</text>';
+      hits+=hit(x,y,11,"Transformer (big), as the text states it|§6.1 says “a BLEU score of 41.0”|Table 2 prints 41.8|This page plots the table value");
+    }
+    $("t2").innerHTML=s+marks+labels+hits;
+    $("leg-ghost").style.display = pair==="fr"?"":"none";
+    const big=T2[9], best=T2[7];
+    const bb=best[pair], bc=best["c"+pair], tb=big[pair], tc=big["c"+pair];
+    $("t2stat").innerHTML = "Big vs. best earlier score ("+best.m+", "+bb+"): <b>+"+(tb-bb).toFixed(2)+" BLEU</b> at <b>"+(tc/bc).toFixed(pair==="de"?2:3)+"×</b> its estimated cost"+(pair==="fr"?" (about 1/"+Math.round(bc/tc)+")":"")+".";
+    $("t2note").textContent = pair==="de"
+      ? "ByteNet reports 23.75 BLEU and no training cost, so it sits in the grey lane at left. Deep-Att + PosUnk and its ensemble report English-French only. On this pair the base model beats every earlier model and ensemble at the lowest cost in the table."
+      : "ByteNet reports English-German only. On this pair the base model's 38.1 is below every earlier model, and the big model leads by about half a BLEU point. The dashed ring is the 41.0 the §6.1 text gives for the big model.";
+  }
+  function setPair(p){ pair=p; segPair("pair-de","pair-fr", p==="de"?"pair-de":"pair-fr"); renderT2(); }
+  $("pair-de").addEventListener("click",()=>setPair("de"));
+  $("pair-fr").addEventListener("click",()=>setPair("fr"));
+  renderT2();
+
+  /* ---------- FLOPs calculator ---------- */
+  let calcM="base";
+  function renderCalc(){
+    const big = calcM==="big";
+    const secs = big ? 3.5*86400 : 12*3600;
+    const gpuS = secs*8, flops = gpuS*9.5e12, printed = big?2.3e19:3.3e18;
+    $("calc").innerHTML =
+      '<div>time      '+(big?'3.5 days × 86,400 s/day':'12 hours × 3,600 s/hour')+' = '+fmt(secs)+' s</div>'+
+      '<div>× GPUs    8 P100s → '+fmt(gpuS)+' GPU-seconds</div>'+
+      '<div>× rated   9.5 TFLOPS = 9.5 × 10¹² FLOP/s per P100 (footnote 5)</div>'+
+      '<div class="res">= <b>'+sci(flops,2)+' FLOPs</b> · Table 2 prints '+sci(printed)+'</div>';
+    $("calcnote").textContent = big
+      ? "§5.2 gives the big model's step time as 1.0 second over 300,000 steps, which is about 3.47 days. The estimate uses the 3.5 days the paper states."
+      : "§5.2 gives the base model's step time as about 0.4 seconds over 100,000 steps, which is about 11.1 hours. The estimate uses the 12 hours the paper states.";
+    segPair("calc-base","calc-big", big?"calc-big":"calc-base");
+  }
+  $("calc-base").addEventListener("click",()=>{ calcM="base"; renderCalc(); });
+  $("calc-big").addEventListener("click",()=>{ calcM="big"; renderCalc(); });
+  renderCalc();
+
+  /* ================= Table 3 dot plot ================= */
+  const GH={A:"(A) heads; computation held constant",B:"(B) attention key size d_k only",C:"(C) model size",D:"(D) regularization",E:"(E) position encoding",big:"big model"};
+  const T3=[
+    {g:"base",l:"base · N 6, d_model 512, d_ff 2048, h 8",ppl:4.92,bleu:25.8,p:65},
+    {g:"A",l:"h = 1  (d_k = d_v = 512)",ppl:5.29,bleu:24.9},
+    {g:"A",l:"h = 4  (d_k = d_v = 128)",ppl:5.00,bleu:25.5},
+    {g:"A",l:"h = 16  (d_k = d_v = 32)",ppl:4.91,bleu:25.8},
+    {g:"A",l:"h = 32  (d_k = d_v = 16)",ppl:5.01,bleu:25.4},
+    {g:"B",l:"d_k = 16",ppl:5.16,bleu:25.1,p:58},
+    {g:"B",l:"d_k = 32",ppl:5.01,bleu:25.4,p:60},
+    {g:"C",l:"N = 2",ppl:6.11,bleu:23.7,p:36},
+    {g:"C",l:"N = 4",ppl:5.19,bleu:25.3,p:50},
+    {g:"C",l:"N = 8",ppl:4.88,bleu:25.5,p:80},
+    {g:"C",l:"d_model = 256  (d_k = d_v = 32)",ppl:5.75,bleu:24.5,p:28},
+    {g:"C",l:"d_model = 1024  (d_k = d_v = 128)",ppl:4.66,bleu:26.0,p:168},
+    {g:"C",l:"d_ff = 1024",ppl:5.12,bleu:25.4,p:53},
+    {g:"C",l:"d_ff = 4096",ppl:4.75,bleu:26.2,p:90},
+    {g:"D",l:"P_drop = 0.0",ppl:5.77,bleu:24.6},
+    {g:"D",l:"P_drop = 0.2",ppl:4.95,bleu:25.5},
+    {g:"D",l:"ε_ls = 0.0",ppl:4.67,bleu:25.3},
+    {g:"D",l:"ε_ls = 0.2",ppl:5.47,bleu:25.7},
+    {g:"E",l:"learned positional embedding",ppl:4.92,bleu:25.7},
+    {g:"big",l:"big · 5 settings changed",full:"d_model 1024, d_ff 4096, h 16, P_drop 0.3, 300K steps",ppl:4.33,bleu:26.4,p:213}
+  ];
+  let metric="bleu";
+  function renderT3(){
+    const base=T3[0], bv=base[metric], isB=metric==="bleu";
+    const th=+$("th").value; $("thout").textContent = isB? th.toFixed(1) : th.toFixed(2);
+    const W=720, x0=330, x1=560, rowH=24, top=34;
+    const dom = isB? [23.5,26.6] : [6.2,4.2];
+    const X=v=>x0+(v-dom[0])/(dom[1]-dom[0])*(x1-x0);
+    // layout rows
+    const lay=[]; let y=top, lastG="";
+    T3.forEach(r=>{ if(r.g!==lastG && r.g!=="base"){ y+=8; lay.push({hdr:GH[r.g],y:y}); y+=rowH; } lastG=r.g; lay.push({r:r,y:y}); y+=rowH; });
+    const yEnd=y+4, H=yEnd+40;
+    $("t3").setAttribute("viewBox","0 0 "+W+" "+H);
+    let s='';
+    s+='<text class="grp" x="8" y="18">Variant</text><text class="grp" x="'+((x0+x1)/2)+'" y="18" text-anchor="middle">'+"better →"+'</text><text class="grp" x="600" y="18" text-anchor="end">'+(isB?"BLEU":"PPL")+'</text><text class="grp" x="645" y="18" text-anchor="end">Δ</text><text class="grp" x="712" y="18" text-anchor="end">Params</text>';
+    s+='<rect class="band" x="'+Math.min(X(bv-th),X(bv+th)).toFixed(1)+'" y="'+(top-4)+'" width="'+Math.abs(X(bv+th)-X(bv-th)).toFixed(1)+'" height="'+(yEnd-top+4)+'"/>';
+    const ticks = isB? [24,24.5,25,25.5,26,26.5] : [6.0,5.5,5.0,4.5];
+    ticks.forEach(t=>{ const xx=X(t).toFixed(1); s+='<line class="grid" x1="'+xx+'" x2="'+xx+'" y1="'+(top-4)+'" y2="'+yEnd+'"/><text x="'+xx+'" y="'+(yEnd+16)+'" text-anchor="middle">'+(isB?t.toFixed(1):t.toFixed(1))+'</text>'; });
+    s+='<line class="axis" x1="'+x0+'" x2="'+x1+'" y1="'+yEnd+'" y2="'+yEnd+'"/>';
+    s+='<text x="'+((x0+x1)/2)+'" y="'+(yEnd+32)+'" text-anchor="middle">'+(isB?"BLEU on newstest2013":"perplexity per wordpiece on newstest2013")+'</text>';
+    const xb=X(bv).toFixed(1);
+    s+='<line class="ref" x1="'+xb+'" x2="'+xb+'" y1="'+(top-4)+'" y2="'+yEnd+'"/>';
+    let rows="", hits="";
+    let better=0, worse=0, tie=0;
+    lay.forEach(o=>{
+      if(o.hdr){ rows+='<text class="grp" x="8" y="'+(o.y+16)+'">'+o.hdr+'</text>'; return; }
+      const r=o.r, v=r[metric], cy=o.y+rowH/2, xv=X(v);
+      const d = v-bv, good = isB? d>0 : d<0;
+      const within = Math.abs(d) < th-1e-9;
+      rows+='<text class="lbl2" x="16" y="'+(cy+4.5)+'"'+(r.g==="base"||r.g==="big"?' style="fill:var(--ink);font-weight:600"':'')+'>'+esc(r.l)+'</text>';
+      if(r.g==="base"){
+        rows+='<circle class="basedot" cx="'+xb+'" cy="'+cy+'" r="5"/>';
+      } else {
+        const big=r.g==="big";
+        if(Math.abs(xv-X(bv))>1) rows+='<line class="stem'+(big?' b':'')+(within&&!big?' dim':'')+'" x1="'+xb+'" x2="'+xv.toFixed(1)+'" y1="'+cy+'" y2="'+cy+'"/>';
+        rows+='<circle class="'+(big?'sb':(within?'hollow':'sa'))+'" cx="'+xv.toFixed(1)+'" cy="'+cy+'" r="'+(big?6:5)+'"/>';
+        if(!big){ if(within) tie++; else if(good) better++; else worse++; }
+      }
+      const dtxt = r.g==="base" ? "" : (d>0?"+":d<0?"−":"±")+Math.abs(d).toFixed(isB?1:2);
+      rows+='<text class="val" x="600" y="'+(cy+4)+'" text-anchor="end">'+v.toFixed(isB?1:2)+'</text>';
+      rows+='<text class="val" x="645" y="'+(cy+4)+'" text-anchor="end">'+dtxt+'</text>';
+      rows+='<text class="val" x="712" y="'+(cy+4)+'" text-anchor="end" style="fill:var(--ink-2)">'+(r.p?r.p+"M":"–")+'</text>';
+      const tt = (r.g==="base"?"Base model":(GH[r.g]+": "+r.l))+"|BLEU "+r.bleu.toFixed(1)+" · PPL "+r.ppl.toFixed(2)+"|Params: "+(r.p?r.p+" million":"not given in the paper")+(r.g==="base"?"|This row is the reference line":"|Δ "+(isB?"BLEU ":"PPL ")+dtxt+" vs. base"+(r.g==="big"?"|Changes "+r.full:(within?"|Within your threshold":"")));
+      hits+='<rect class="rowhit" x="4" y="'+o.y+'" width="'+(W-8)+'" height="'+rowH+'" rx="4" tabindex="0" aria-label="'+esc(tt.replace(/\|/g,", "))+'" data-tip="'+esc(tt)+'"/>';
+    });
+    $("t3").innerHTML=s+hits+rows;
+    $("t3stat").innerHTML = "Of 18 one-change rows, at |Δ| ≥ "+(isB?th.toFixed(1)+" BLEU":th.toFixed(2)+" PPL")+": <b>"+better+" better</b>, <b>"+worse+" worse</b>, "+tie+" within threshold.";
+  }
+  function setMetric(m){
+    metric=m; segPair("met-bleu","met-ppl", m==="bleu"?"met-bleu":"met-ppl");
+    const th=$("th");
+    if(m==="bleu"){ th.max="1"; th.step="0.1"; th.value="0.3"; } else { th.max="0.5"; th.step="0.05"; th.value="0.1"; }
+    renderT3();
+  }
+  $("met-bleu").addEventListener("click",()=>setMetric("bleu"));
+  $("met-ppl").addEventListener("click",()=>setMetric("ppl"));
+  $("th").addEventListener("input",renderT3);
+  renderT3();
+
+  /* ================= Equation 3 ================= */
+  let dm=512;
+  const LR=(s,d,w)=> s<=0?0: Math.pow(d,-0.5)*Math.min(Math.pow(s,-0.5), s*Math.pow(w,-1.5));
+  const LW=560,LH=300,LL=62,LRm=16,LT=16,LB=44, lpw=LW-LL-LRm, lph=LH-LT-LB, SMAX=100000, YMAX=0.003;
+  const LX=s=>LL+s/SMAX*lpw, LY=v=>LT+lph-v/YMAX*lph;
+  function pts(d,w){ const a=[]; const n=500; for(let i=0;i<=n;i++){ const s=i/n*SMAX; a.push(LX(s).toFixed(1)+","+LY(LR(s,d,w)).toFixed(1)); } return a.join(" "); }
+  function renderLR(){
+    const w=+$("wu").value; $("wuout").textContent=fmt(w);
+    let s="";
+    for(let v=0; v<=YMAX+1e-9; v+=0.0005){ const yy=LY(v).toFixed(1); s+='<line class="'+(v===0?'axis':'grid')+'" x1="'+LL+'" x2="'+(LW-LRm)+'" y1="'+yy+'" y2="'+yy+'"/><text x="'+(LL-6)+'" y="'+(+yy+4)+'" text-anchor="end">'+(v===0?"0":v.toFixed(4))+'</text>'; }
+    for(let k=0;k<=5;k++){ const st=k*20000, xx=LX(st).toFixed(1); s+='<text x="'+xx+'" y="'+(LT+lph+16)+'" text-anchor="middle">'+(st===0?"0":(st/1000)+"K")+'</text>'; }
+    s+='<text x="'+(LL+lpw/2)+'" y="'+(LH-6)+'" text-anchor="middle">training step</text>';
+    s+='<text x="12" y="'+(LT+lph/2)+'" text-anchor="middle" transform="rotate(-90 12 '+(LT+lph/2)+')">learning rate</text>';
+    s+='<polyline class="lr0" points="'+pts(512,4000)+'"/>';
+    s+='<polyline class="lr" points="'+pts(dm,w)+'"/>';
+    const pk=LR(w,dm,w), px=LX(w), py=LY(pk);
+    s+='<line class="ref" x1="'+px.toFixed(1)+'" x2="'+px.toFixed(1)+'" y1="'+py.toFixed(1)+'" y2="'+(LT+lph)+'"/>';
+    s+='<circle class="sb" cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="5.5"/>';
+    const right = px < LW-200;
+    s+='<text class="lbl" x="'+(px+(right?10:-10)).toFixed(1)+'" y="'+Math.max(LT+12,py-8).toFixed(1)+'"'+(right?'':' text-anchor="end"')+'>peak at step = warmup_steps = '+fmt(w)+'</text>';
+    s+='<g id="lrx" style="display:none"><line class="cross" id="lrxl" y1="'+LT+'" y2="'+(LT+lph)+'"/><circle class="sb" id="lrxc" r="4.5"/></g>';
+    s+='<rect id="lrhit" x="'+LL+'" y="'+LT+'" width="'+lpw+'" height="'+lph+'" fill="transparent"/>';
+    $("lr").innerHTML=s;
+    $("lrstat").innerHTML="Peak <b>"+sci(pk,2)+"</b> at step "+fmt(w)+" · rate at step 100,000: "+sci(LR(100000,dm,w),2)+" · d_model = "+dm;
+    const hitr=$("lrhit"), svg=$("lr");
+    function mv(e){
+      const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+      const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+      const st=Math.max(0,Math.min(SMAX,Math.round((p.x-LL)/lpw*SMAX/100)*100));
+      const v=LR(st,dm,w);
+      $("lrx").style.display=""; $("lrxl").setAttribute("x1",LX(st)); $("lrxl").setAttribute("x2",LX(st));
+      $("lrxc").setAttribute("cx",LX(st)); $("lrxc").setAttribute("cy",LY(v));
+      tip.innerHTML=tipHTML("step "+fmt(st)+"|lrate "+sci(v,2)+"|"+(st<w?"warming up: rises linearly":"decaying as 1/√step")); tip.hidden=false; tip.dataset.lr="1"; place(e.clientX,e.clientY);
+    }
+    hitr.addEventListener("pointermove",mv);
+    hitr.addEventListener("pointerleave",()=>{ $("lrx").style.display="none"; tip.hidden=true; delete tip.dataset.lr; });
+  }
+  $("wu").addEventListener("input",renderLR);
+  document.querySelectorAll("[data-dm]").forEach(b=>b.addEventListener("click",()=>{ dm=+b.dataset.dm; document.querySelectorAll("[data-dm]").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderLR(); }));
+  renderLR();
+
+  /* ================= Figures 3-4 schematic ================= */
+  const F3={toks:"It is in this spirit that a majority of American governments have passed new laws since 2009 making the registration or voting process more difficult . <EOS> <pad> <pad> <pad> <pad> <pad> <pad>".split(" "),
+    q:"making", links:[{k:"more",c:"h5",lbl:""},{k:"difficult",c:"h5",lbl:"several heads"}],
+    cap:"Many of the attention heads attend to a distant dependency of the verb ‘making’, completing the phrase ‘making...more difficult’. Attentions here shown only for the word ‘making’. Different colors represent different heads.", cite:"Vaswani et al. (2017), Figure 3 caption, encoder self-attention, layer 5 of 6"};
+  const F4={toks:"The Law will never be perfect , but its application should be just - this is what we are missing , in my opinion . <EOS> <pad>".split(" "),
+    q:"its", links:[{k:"Law",c:"h5",lbl:"head 5"},{k:"application",c:"h6",lbl:"head 6"}],
+    cap:"Two attention heads, also in layer 5 of 6, apparently involved in anaphora resolution. Top: Full attentions for head 5. Bottom: Isolated attentions from just the word ‘its’ for attention heads 5 and 6. Note that the attentions are very sharp for this word.", cite:"Vaswani et al. (2017), Figure 4 caption; this redraw shows the bottom panel only"};
+  let fig="3";
+  function renderAtt(){
+    const F = fig==="3"?F3:F4;
+    const n=F.toks.length, W=700, x0=24, sp=(W-48)/(n-1);
+    const yTop=112, yBot=218, H=330;
+    const X=i=>x0+i*sp;
+    const qi=F.toks.indexOf(F.q);
+    const ki=F.links.map(l=>F.toks.indexOf(l.k));
+    let s="";
+    s+='<rect class="qbox" x="'+(X(qi)-9).toFixed(1)+'" y="8" width="18" height="'+(yTop-6)+'" rx="3"/>';
+    ki.forEach(k=>{ s+='<rect class="kbox" x="'+(X(k)-9).toFixed(1)+'" y="'+(yBot-2)+'" width="18" height="'+(H-yBot-8)+'" rx="3"/>'; });
+    F.toks.forEach((t,i)=>{
+      const x=X(i).toFixed(1);
+      const cq = i===qi?" q":"", ck = ki.includes(i)?" k":"";
+      s+='<text class="tok'+cq+'" transform="translate('+(+x+4.5)+','+(yTop-6)+') rotate(-90)">'+esc(t)+'</text>';
+      s+='<text class="tok'+ck+'" transform="translate('+(+x+4.5)+','+(yBot+4)+') rotate(-90)" text-anchor="end">'+esc(t)+'</text>';
+    });
+    F.links.forEach((l,j)=>{
+      const k=ki[j];
+      s+='<path class="link '+l.c+'" d="M'+X(qi).toFixed(1)+','+(yTop)+' L'+X(k).toFixed(1)+','+(yBot-4)+'"/>';
+      if(l.lbl){
+        const mx=(X(qi)+X(k))/2, my=(yTop+yBot)/2;
+        const left = X(k)<X(qi);
+        s+='<text class="linklbl" x="'+(mx+(left?-8:8)).toFixed(1)+'" y="'+(my+4)+'"'+(left?' text-anchor="end"':'')+'>'+l.lbl+'</text>';
+      }
+    });
+    s+='<text class="grp" x="'+(W-4)+'" y="'+(yTop+14)+'" text-anchor="end">queries</text>';
+    s+='<text class="grp" x="'+(W-4)+'" y="'+(yBot-8)+'" text-anchor="end">keys</text>';
+    $("att").innerHTML=s;
+    const bq=$("attcap"); bq.innerHTML=""; bq.append("“"+F.cap+"”"); const c=document.createElement("cite"); c.textContent=F.cite; bq.appendChild(c);
+    segPair("fig3","fig4", fig==="3"?"fig3":"fig4");
+  }
+  $("fig3").addEventListener("click",()=>{ fig="3"; renderAtt(); });
+  $("fig4").addEventListener("click",()=>{ fig="4"; renderAtt(); });
+  renderAtt();
+
+  /* ================= Table 4 bars ================= */
+  const T4=[
+    {g:"WSJ only, discriminative",rows:[["Vinyals & Kaiser et al. (2014)",88.3],["Petrov et al. (2006)",90.4],["Zhu et al. (2013)",90.4],["Dyer et al. (2016)",91.7],["Transformer (4 layers)",91.3,1]]},
+    {g:"Semi-supervised",rows:[["Zhu et al. (2013)",91.3],["Huang & Harper (2009)",91.3],["McClosky et al. (2006)",92.1],["Vinyals & Kaiser et al. (2014)",92.1],["Transformer (4 layers)",92.7,1]]},
+    {g:"Multi-task",rows:[["Luong et al. (2015)",93.0]]},
+    {g:"Generative",rows:[["Dyer et al. (2016)",93.3]]}
+  ];
+  let zoom=false;
+  function renderT4(){
+    const W=720, x0=250, x1=650, rowH=24, top=10;
+    const d0 = zoom?85:0, d1 = zoom?95:100;
+    const X=v=>x0+(v-d0)/(d1-d0)*(x1-x0);
+    let y=top, body="";
+    T4.forEach(G=>{
+      y+=6; body+='<text class="grp" x="8" y="'+(y+15)+'">'+G.g+'</text>'; y+=rowH;
+      G.rows.forEach(r=>{
+        const tr=!!r[2], cy=y+rowH/2, xe=X(r[1]);
+        body+='<text class="lbl2" x="16" y="'+(cy+4.5)+'"'+(tr?' style="fill:var(--ink);font-weight:600"':'')+'>'+esc(r[0])+'</text>';
+        body+='<rect class="'+(tr?'barB':'barA')+'" x="'+x0+'" y="'+(cy-7)+'" width="'+(xe-x0).toFixed(1)+'" height="14" rx="2"/>';
+        body+='<text class="val" x="'+(xe+6).toFixed(1)+'" y="'+(cy+4)+'">'+r[1].toFixed(1)+'</text>';
+        const tt=r[0]+"|"+G.g+"|WSJ section 23 F1: "+r[1].toFixed(1)+(tr?"|Transformer row":"");
+        body+='<rect class="rowhit" x="4" y="'+y+'" width="'+(W-8)+'" height="'+rowH+'" rx="4" tabindex="0" aria-label="'+esc(tt.replace(/\|/g,", "))+'" data-tip="'+esc(tt)+'" style="fill-opacity:0"/>';
+        y+=rowH;
+      });
+    });
+    const yEnd=y+4, H=yEnd+38;
+    $("t4").setAttribute("viewBox","0 0 "+W+" "+H);
+    let s="";
+    const ticks = zoom? [85,87,89,91,93,95] : [0,25,50,75,100];
+    ticks.forEach(t=>{ const xx=X(t).toFixed(1); s+='<line class="grid" x1="'+xx+'" x2="'+xx+'" y1="'+top+'" y2="'+yEnd+'"/><text x="'+xx+'" y="'+(yEnd+16)+'" text-anchor="middle">'+t+'</text>'; });
+    s+='<line class="axis" x1="'+x0+'" x2="'+x0+'" y1="'+top+'" y2="'+yEnd+'"/>';
+    s+='<text x="'+((x0+x1)/2)+'" y="'+(yEnd+32)+'" text-anchor="middle">F1 on WSJ section 23'+(zoom?" · axis cut at 85":"")+'</text>';
+    $("t4").innerHTML=s+body;
+    $("axnote").textContent = zoom ? "The axis starts at 85, so bar lengths exaggerate the gaps. Read the values, not the lengths." : "Bars start at 0, so their lengths are honest and the gaps look small.";
+    segPair("ax-0","ax-z", zoom?"ax-z":"ax-0");
+  }
+  $("ax-0").addEventListener("click",()=>{ zoom=false; renderT4(); });
+  $("ax-z").addEventListener("click",()=>{ zoom=true; renderT4(); });
+  renderT4();
+
+  /* ================= step-through player ================= */
+  const STEPS = [
+    {k:"*", t:"A claim, and the tables that must carry it", w:["E10","§7"], panel:null,
+     p:"Vaswani and colleagues claim that the Transformer translates better and trains faster than earlier models. Each box below the claim is one kind of evidence the paper offers, and each arrow names what that evidence carries. Your flight card works the same way: each test point ties a claim to the observation that could refute it. Step through to weigh each box.",
+     q:"For translation tasks, the Transformer can be trained significantly faster than architectures based on recurrent or convolutional layers.", c:"§7"},
+    {k:"claim cost", t:"Cost is an estimate, with its method printed", w:["E11","§6.1"], panel:"p-t2",
+     p:"The authors did not measure the FLOPs in Table 2. They multiplied training time by the number of GPUs and by a rated speed per GPU, and they printed the rated speeds in a footnote. Because the method is on the page, you can recompute 3.3 × 10¹⁸ yourself in the calculator. In week 11 terms, the number comes with its receipt.",
+     q:"We estimate the number of floating point operations used to train a model by multiplying the training time, the number of GPUs used, and an estimate of the sustained single-precision floating-point capacity of each GPU.", c:"§6.1"},
+    {k:"claim qual", t:"English-German: the clearest win", w:["E10","§6.1"], panel:"p-t2", pair:"de",
+     p:"On the English-German test set, the big model scores 28.4 BLEU against 26.36 for the best earlier ensemble. The base model, at the lowest cost in the table, also beats every earlier model and ensemble. In the scatter, both Transformer points sit high and to the left: more quality for less estimated compute.",
+     q:"the big transformer model (Transformer (big)) in Table 2 outperforms the best previously reported models (including ensembles) by more than 2.0 BLEU", c:"§6.1"},
+    {k:"claim qual", t:"English-French: a narrower win, and a mismatch", w:["E11","§6.1"], panel:"p-t2", pair:"fr",
+     p:"On English-French the big model's 41.8 edges the best ensemble's 41.29 at about one fiftieth of its estimated cost. The base model's 38.1 is the lowest score on this pair. The §6.1 text gives the big model 41.0 while Table 2 gives 41.8, and the paper does not say which is right. A reader who checks only the prose or only the table misses the gap.",
+     q:"On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0, outperforming all of the previously published single models, at less than 1/4 the training cost of the previous state-of-the-art model.", c:"§6.1"},
+    {k:"claim abl", t:"Table 3 changes one thing at a time", w:["E10","§6.2"], panel:"p-t3",
+     p:"Each row of Table 3 starts from the same base model and changes one setting, or one coupled pair. Everything else stays fixed, so a change in BLEU can be traced to the row's setting. That is the design of your delta gate: a frozen baseline, one change, and a comparison that names what moved. Set a threshold before you look, and count how many rows clear it.",
+     q:"To evaluate the importance of different components of the Transformer, we varied our base model in different ways, measuring the change in performance on English-to-German translation on the development set, newstest2013.", c:"§6.2"},
+    {k:"qual abl qual-dn abl-dn", t:"Tuned on one set, reported on another", w:["E10","§6.1"], panel:"p-t3 p-gate",
+     p:"The authors made their choices on newstest2013 and reported their headline scores on newstest2014. Keeping the two apart stops a tuned choice from inflating the reported score. Your golden set plays the test-set role only while you leave it alone. A case edited after a run to make it pass is metagaming the gate.",
+     q:"These hyperparameters were chosen after experimentation on the development set.", c:"§6.1"},
+    {k:"claim sched", t:"The recipe: warm up, then decay", w:["E11","§5.3"], panel:"p-lr",
+     p:"Equation 3 raises the learning rate in a straight line for the first 4,000 steps, then lowers it with the inverse square root of the step. The schedule produces no result of its own. It is what another lab needs in order to repeat the result. Move the sliders: the peak follows warmup_steps, and a larger d_model lowers the whole curve.",
+     q:"This corresponds to increasing the learning rate linearly for the first warmup_steps training steps, and decreasing it thereafter proportionally to the inverse square root of the step number.", c:"§5.3"},
+    {k:"claim attn", t:"Attention pictures are illustrations", w:["E6","E10","§4"], panel:"p-attn",
+     p:"The appendix draws a few heads on three sentences, and the captions hedge with apparently and seems. The paper publishes no weights and no count of how often such patterns occur. Jain and Wallace (2019) later showed that attention weights can disagree with other measures of which inputs mattered. Treat these figures as a hypothesis to test in a sortie, never as a check that passed.",
+     q:"As side benefit, self-attention could yield more interpretable models.", c:"§4"},
+    {k:"claim parse", t:"A second task, lightly tuned", w:["E10","§6.3"], panel:"p-t4",
+     p:"To test whether the architecture carries over, the authors trained a 4-layer Transformer on English constituency parsing. It scores 91.3 F1 on WSJ data alone and 92.7 semi-supervised. The text says it beats every earlier model except the RNN Grammar at 93.3, but Table 4 also lists a multi-task model at 93.0. Check the summary against the table.",
+     q:"Our results in Table 4 show that despite the lack of task-specific tuning our model performs surprisingly well, yielding better results than all previously reported models with the exception of the Recurrent Neural Network Grammar.", c:"§6.3"},
+    {k:"gate cost-dn qual-dn abl-dn attn-dn", t:"What an eval gate learns from this paper", w:["E10","E11"], panel:"p-gate",
+     p:"Three habits transfer to your Sortie 10 gate. Hold a base fixed and change one thing per comparison. Keep the cases you tune on apart from the cases you report. Put the method beside every number so your Chase can recompute it. The paper's gaps teach as much. It reports one run per row and no spread, and one headline number disagrees with its own table.",
+     q:"", c:""}
+  ];
+
+  const figEl=$("fig"), els=[...figEl.querySelectorAll(".el")];
+  const panels=[...document.querySelectorAll(".panel[id]")];
+  let cur=0;
+  const dots=$("dots");
+  STEPS.forEach((s,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="dot"; b.setAttribute("aria-label","Step "+i+": "+s.t); b.addEventListener("click",()=>go(i)); dots.appendChild(b); });
+  const PANELNAME={"p-t2":"Table 2 panel","p-t3":"Table 3 panel","p-lr":"Equation 3 panel","p-attn":"Figures 3–4 panel","p-t4":"Table 4 panel","p-gate":"In your sortie panel"};
+  function go(i){
+    cur=Math.max(0,Math.min(STEPS.length-1,i));
+    const s=STEPS[cur];
+    const keys = s.k==="*"?null:s.k.split(" ");
+    figEl.classList.toggle("focus",!!keys);
+    els.forEach(e=>{ const ek=(e.dataset.k||"").split(" "); e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x))); });
+    const ps = s.panel ? s.panel.split(" ") : [];
+    panels.forEach(p=>p.classList.toggle("lit", ps.includes(p.id)));
+    if(s.pair && s.pair!==pair) setPair(s.pair);
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=s.t; $("captext").textContent=s.p;
+    const bq=$("capq");
+    if(s.q){ bq.hidden=false; bq.innerHTML=""; bq.append("“"+s.q+"”"); const c=document.createElement("cite"); c.textContent="Vaswani et al. (2017), "+s.c; bq.appendChild(c); } else bq.hidden=true;
+    let wk=s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    if(ps.length) wk+=ps.map(p=>'<a class="goto" href="#'+p+'">'+PANELNAME[p]+' ↓</a>').join("");
+    $("capweeks").innerHTML=wk;
+    [...dots.children].forEach((d,j)=>{ if(j===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  go(0);
+})();
+</script>
+
+</body></html>
