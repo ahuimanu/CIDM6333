@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>E9 · Multi-Agent II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .sw-track{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .sw-knob{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="win"]:not(.on){opacity:.5}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl,.fig .el.on .stripe{fill:var(--accent-soft)}
+.fig .el.on .sw-track{stroke:var(--accent)} .fig .el.on .sw-knob{fill:var(--accent)}
+.fig .kind{cursor:pointer}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:3px 9px}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .ok{color:var(--ink); font-weight:500}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .dim{color:var(--ink-2)}
+svg.bars{width:100%; height:auto; display:block}
+.bars text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.bars .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.bars .axis{stroke:var(--line)} .bars .grid{stroke:var(--line); stroke-dasharray:2 4}
+.bars .ba{fill:var(--s-a)} .bars .bb{fill:var(--s-b)}
+.bars .thr{stroke:var(--ink); stroke-width:1.4; stroke-dasharray:5 4}
+
+/* heatmap */
+.hmwrap{overflow-x:auto}
+table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width:640px; width:100%}
+.hm th{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.04em; color:var(--ink-2); text-align:left; padding:4px 6px; vertical-align:bottom}
+.hm th.rid{font-family:var(--mono); font-weight:500; font-size:12px; text-align:center}
+.hm th.rid small{display:block; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:0}
+.hm td{font-family:var(--mono); font-size:13px; text-align:center; border-radius:4px; padding:8px 4px; font-variant-numeric:tabular-nums; min-width:62px}
+.hm td.q{font-family:var(--body); font-size:14.5px; text-align:left; background:none; min-width:220px; cursor:pointer; padding:6px 8px}
+.hm tr.sel td.q{background:var(--accent-soft); border-radius:6px}
+.hm td.q .kd{display:block; font-family:var(--display); font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+.hm td.low{color:var(--ink-2)}
+.hm td.inj{box-shadow:inset 0 0 0 3px var(--s-b); font-weight:500; color:var(--ink)}
+.hm td.gone{background:repeating-linear-gradient(45deg,var(--surface-2) 0 4px,var(--surface) 4px 8px); color:var(--ink-2)}
+.hm td.res{font-family:var(--body); font-size:14px; text-align:left; background:none; min-width:150px}
+.verdict{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.verdict.yes{color:var(--ink)} .verdict.no{color:var(--accent-ink)}
+.recs{display:grid; gap:6px}
+.rec{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:start; background:var(--surface-2); border-radius:8px; padding:8px 10px}
+.rec .meta{font-family:var(--mono); font-size:12px; color:var(--ink-2); word-break:break-word}
+.rec .txt{font-size:14.5px; grid-column:1/2}
+.rec.gone{opacity:.5}
+.rec.gone .txt{text-decoration:line-through}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.m{font-family:var(--mono); font-size:13.5px}
+.t.compact{font-size:14.5px; min-width:560px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:15px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<style>
+.viewer{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.stage{position:relative; background:#fff; aspect-ratio:16/9}
+.stage img{display:block; width:100%; height:100%; object-fit:contain}
+.bar{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--line)}
+.bar .count{font-family:var(--mono); font-size:13px; color:var(--ink-2); min-width:8ch}
+.bar .title{font-family:var(--display); font-weight:600; font-size:18px; flex:1 1 200px; min-width:0}
+.bar .spacer{flex:1}
+.strip{display:flex; gap:6px; overflow-x:auto; padding:10px 12px; border-top:1px solid var(--line); scroll-snap-type:x proximity}
+.strip button{padding:0; border:2px solid transparent; border-radius:6px; background:none; flex:0 0 auto; width:112px; scroll-snap-align:start}
+.strip button img{display:block; width:100%; border-radius:4px; border:1px solid var(--line)}
+.strip button[aria-current="true"]{border-color:var(--accent)}
+.strip button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.transcript{margin-top:36px}
+.slide-t{display:grid; grid-template-columns:72px minmax(0,1fr); gap:6px 16px; padding:14px 0; border-top:1px solid var(--line); cursor:pointer}
+.slide-t:hover h3{color:var(--accent-ink)}
+.slide-t .n{font-family:var(--mono); font-size:13px; color:var(--ink-2); padding-top:4px}
+.slide-t h3{font-family:var(--display); font-weight:600; font-size:20px; margin:0}
+.slide-t p{margin:0; font-size:15px; color:var(--ink-2)}
+.slide-t ul{margin:4px 0 0; padding-left:18px; font-size:15px; display:grid; gap:3px}
+.dl{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--accent-ink); text-decoration:none; border:1px solid var(--line); border-radius:8px; padding:7px 14px}
+.dl:hover{border-color:var(--accent)}
+.stage.full{position:fixed; inset:0; z-index:9; aspect-ratio:auto; background:#000}
+.stage.full img{object-fit:contain}
+nav.crumbs{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13px; margin-bottom:8px}
+nav.crumbs a{color:var(--accent-ink); text-decoration:none}
+</style>
+
+<div class="wrap">
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Lectures</a> · E9 · Multi-Agent II</nav>
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Lecture · E9 · Multi-Agent II</div>
+  <h1>Multi-agent II: When Coordination Fails</h1>
+  <p class="lede">The failure taxonomy; adversarial validation in three tiers; locks; cost-aware routing; delegation, handoff, and the contracts a marketplace would need</p>
+  <div class="weeks" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="chip">E9</span><span class="chip">27 slides</span></div>
+</header>
+
+<div class="viewer">
+  <div class="stage" id="stage"><img id="slide" src="s-01.webp" alt="Slide 1: Multi-agent II: When Coordination Fails"></div>
+  <div class="bar">
+    <button id="prev" type="button" aria-label="Previous slide">◀ Back</button>
+    <button id="next" class="primary" type="button" aria-label="Next slide">Next ▶</button>
+    <span class="count" id="count">1 / 27</span>
+    <span class="title" id="stitle">Multi-agent II: When Coordination Fails</span>
+    <span class="spacer"></span>
+    <button id="full" type="button" aria-label="Full screen">Full screen</button>
+    <a class="dl" href="e9-multi-agent-2.pdf" download>PDF</a>
+  </div>
+  <div class="strip" id="strip" role="group" aria-label="Slides"><button type="button" data-i="0" aria-label="Slide 1: Multi-agent II: When Coordination Fails"><img loading="lazy" src="s-01.webp" alt=""></button><button type="button" data-i="1" aria-label="Slide 2: Two hours, eight moves"><img loading="lazy" src="s-02.webp" alt=""></button><button type="button" data-i="2" aria-label="Slide 3: A subagent&#x27;s claim is not evidence"><img loading="lazy" src="s-03.webp" alt=""></button><button type="button" data-i="3" aria-label="Slide 4: The taxonomy: where multi-agent systems fail"><img loading="lazy" src="s-04.webp" alt=""></button><button type="button" data-i="4" aria-label="Slide 5: Claim, receipt, verdict, attestation"><img loading="lazy" src="s-05.webp" alt=""></button><button type="button" data-i="5" aria-label="Slide 6: Adversarial validation in three tiers"><img loading="lazy" src="s-06.webp" alt=""></button><button type="button" data-i="6" aria-label="Slide 7: Worked config: the adversary, the receipt, the ledger line"><img loading="lazy" src="s-07.webp" alt=""></button><button type="button" data-i="7" aria-label="Slide 8: Locks: who may work on what"><img loading="lazy" src="s-08.webp" alt=""></button><button type="button" data-i="8" aria-label="Slide 9: Routing and cost: send each task to a tier"><img loading="lazy" src="s-09.webp" alt=""></button><button type="button" data-i="9" aria-label="Slide 10: Delegation is a contract: what a handoff must carry"><img loading="lazy" src="s-10.webp" alt=""></button><button type="button" data-i="10" aria-label="Slide 11: The common mistake: the reviewer read the summary"><img loading="lazy" src="s-11.webp" alt=""></button><button type="button" data-i="11" aria-label="Slide 12: Break · 0:55–1:00"><img loading="lazy" src="s-12.webp" alt=""></button><button type="button" data-i="12" aria-label="Slide 13: Teardown: MAST, the fourteen modes"><img loading="lazy" src="s-13.webp" alt=""></button><button type="button" data-i="13" aria-label="Slide 14: MAST, read for mechanism"><img loading="lazy" src="s-14.webp" alt=""></button><button type="button" data-i="14" aria-label="Slide 15: 15×"><img loading="lazy" src="s-15.webp" alt=""></button><button type="button" data-i="15" aria-label="Slide 16: Live Design Analysis: Anthropic Research (2025)"><img loading="lazy" src="s-16.webp" alt=""></button><button type="button" data-i="16" aria-label="Slide 17: “Share context, and share full agent traces, not just individual messages.” “Actions carry implicit decisions, and conflicting decisions carry bad results.”"><img loading="lazy" src="s-17.webp" alt=""></button><button type="button" data-i="17" aria-label="Slide 18: Teardown: A2A v1.0 and delegation"><img loading="lazy" src="s-18.webp" alt=""></button><button type="button" data-i="18" aria-label="Slide 19: Teardown: what an agent marketplace would need"><img loading="lazy" src="s-19.webp" alt=""></button><button type="button" data-i="19" aria-label="Slide 20: Reference design: the ten-deep chain (2026-05-24)"><img loading="lazy" src="s-20.webp" alt=""></button><button type="button" data-i="20" aria-label="Slide 21: Reference design: the repudiations (June 2026)"><img loading="lazy" src="s-21.webp" alt=""></button><button type="button" data-i="21" aria-label="Slide 22: Reference design: the undispatched Stage 2 (2026-08-21)"><img loading="lazy" src="s-22.webp" alt=""></button><button type="button" data-i="22" aria-label="Slide 23: Evaluation lens: a strong Sortie 9"><img loading="lazy" src="s-23.webp" alt=""></button><button type="button" data-i="23" aria-label="Slide 24: Flight Card 9 brief · the planted falsehood"><img loading="lazy" src="s-24.webp" alt=""></button><button type="button" data-i="24" aria-label="Slide 25: Lab: refute a planted falsehood with a receipt"><img loading="lazy" src="s-25.webp" alt=""></button><button type="button" data-i="25" aria-label="Slide 26: The Sprint: Sortie 9"><img loading="lazy" src="s-26.webp" alt=""></button><button type="button" data-i="26" aria-label="Slide 27: A claim is a sentence. A receipt is evidence."><img loading="lazy" src="s-27.webp" alt=""></button></div>
+</div>
+
+<p class="small" style="margin-top:10px">Arrow keys step through the slides. Click a thumbnail or a transcript entry to jump. The transcript below is the slide text, for search and for screen readers; speaker notes are not published.</p>
+
+<section class="transcript" aria-label="Transcript">
+  <h2>Slide text</h2>
+  <div class="slide-t" data-i="0" role="button" tabindex="0"><div class="n">01</div><div><h3>Multi-agent II: When Coordination Fails</h3><ul><li>Evolution 9 · Lecture</li><li>The failure taxonomy; adversarial validation in three tiers; locks; cost-aware routing; delegation, handoff, and the contracts a marketplace would need</li><li>SURVEY</li><li>BUILD</li><li>GOVERN</li><li>FALSIFY</li></ul></div></div><div class="slide-t" data-i="1" role="button" tabindex="0"><div class="n">02</div><div><h3>Two hours, eight moves</h3><ul><li>The run of show</li><li>Framing</li><li>A subagent&#x27;s claim is not evidence; a receipt is</li><li>Spine</li><li>The taxonomy; claim, receipt, verdict; adversarial tiers; locks; routing and cost; delegation as a contract</li><li>Common mistake</li><li>The reviewer read the summary, not the work</li><li>Break</li><li>Five minutes</li><li>·</li><li>Teardowns</li><li>MAST (Cemri et al.); Anthropic&#x27;s system; a live Design Analysis; &#x27;Don&#x27;t build multi-agents&#x27;; A2A v1.0; AP2</li><li>Reference design</li><li>Summary laundering (05-24); the repudiations (June); the undispatched Stage 2 (08-21)</li><li>Lens and card</li><li>A strong Sortie 9; Flight Card 9 brief (corner); each card names its planted falsehood</li><li>Lab and Sprint</li><li>Self-guided lab; the Sprint, the async Go/No-Go, the Chase</li></ul></div></div><div class="slide-t" data-i="2" role="button" tabindex="0"><div class="n">03</div><div><h3>A subagent&#x27;s claim is not evidence</h3><ul><li>Adding agents adds authors of claims; it does not add evidence</li><li>A worker saying “all tests pass” produced a sentence. The harness that ran the tests produced evidence.</li><li>Two rules the spine returns to</li><li>Rule one. A claim enters the flight log only with a harness-written receipt: command, exit code, commit, output hash.<br>Rule two. The check comes from different blind spots: a second model family, then an independent subagent, then a human.</li><li>Tonight&#x27;s claim, which Sortie 9 will try to disprove</li><li>A subagent&#x27;s claim never becomes evidence without a receipt; a second-family adversary refutes a planted false claim.<br>Falsifiers: a flight-log claim with no receipt; NOT-REFUTED on the planted falsehood; a lock held by two workers or changed with no ledger event.</li></ul></div></div><div class="slide-t" data-i="3" role="button" tabindex="0"><div class="n">04</div><div><h3>The taxonomy: where multi-agent systems fail</h3><ul><li>Cemri et al. (2025): 14 failure modes in 3 categories, from 1,600+ annotated traces across 7 frameworks</li><li>FC1 · System design (44%)</li><li>FC2 · Inter-agent misalignment (32%)</li><li>FC3 · Task verification (24%)</li><li>Failure in the setup: task or role spec, stopping condition, memory.<br>Step repetition 15.7%<br>Unaware of stopping conditions 12.4%<br>Disobey task specification 11.8%</li><li>Failure at the end: the check was missing, wrong, or early.<br>Incorrect verification 9.1%<br>No or incomplete verification 8.2%<br>Premature termination 6.2%</li><li>Failure in the traffic between agents: information lost, ignored, never requested.<br>Reasoning-action mismatch 13.2%<br>Task derailment 7.4%<br>Fail to ask for clarification 6.8%</li><li>Fix location: your prompts, roles, halt rules</li><li>Fix location: contracts and handoffs</li><li>Fix location: receipts and the adversary</li><li>gzkit adds two names: summary laundering (a summary promoted to fact) and hallucinated authorization (Appendix C #7: acting on a gate nothing records).</li></ul></div></div><div class="slide-t" data-i="4" role="button" tabindex="0"><div class="n">05</div><div><h3>Claim, receipt, verdict, attestation</h3><ul><li>Four objects with four authors; only two of them are evidence</li><li>Object · Who writes it · What it proves · Where it may go</li><li>Claim · A worker model, in its result (HandoffResult status plus text: “DONE; 3/3 tests pass”) · That the worker produced this sentence. Nothing about the code. · The ledger, marked unverified. Never the flight log.</li><li>Receipt · The harness, by running the command itself: cmd, exit code, commit, output hash, time · What the command printed and returned, at that commit. · receipts/ and the ledger. The flight log cites it by path.</li><li>Adversary verdict · A second model, given claim and receipt: REFUTED or NOT-REFUTED, citing a field · Whether a model with other blind spots could break the claim. Itself a claim. · The ledger, with model id and family. The Chase checks its citation against the receipt.</li><li>Attestation · A human, by name, after reading the receipts · That a person judged the work and answers for it. · Gate 5. Never inferred, never written by an agent on the human&#x27;s behalf.</li><li>HandoffResult statuses from Sortie 8: DONE | DONE_WITH_CONCERNS | NEEDS_CONTEXT | BLOCKED. The verdict does not upgrade a claim; the receipt does.</li><li>NOT-REFUTED means “this adversary could not break it with this evidence.” It never means “verified.”</li></ul></div></div><div class="slide-t" data-i="5" role="button" tabindex="0"><div class="n">06</div><div><h3>Adversarial validation in three tiers</h3><ul><li>Independence is the property you are buying; size is not</li><li>The tiers (chapter 18)</li><li>What this costs you on OpenCode</li><li>Tier 1 · cross-vendor. A different family, different blind spots. Evaluators favor their own output (Panickssery, Bowman, &amp; Feng, 2024).<br>Tier 2 · independent subagent. Same family, fresh context, shared blind spots.<br>Tier 3 · human. The Chase, or you. Only this tier attests.</li><li>Worker on Big Pickle: adversary on an OpenCode Go model, named family (GLM, DeepSeek, Kimi, Qwen, MiniMax, MiMo).<br>Big Pickle&#x27;s family is undisclosed: write that; run two Go families.<br>No Go subscription: a free Zen model (Nemotron, MiMo). One family is “degraded mode”.</li><li>The adversary gets the claim and the receipt. Never the worker&#x27;s summary, reasoning, or the planted answer.</li></ul></div></div><div class="slide-t" data-i="6" role="button" tabindex="0"><div class="n">07</div><div><h3>Worked config: the adversary, the receipt, the ledger line</h3><ul><li>An OpenCode agent file, a harness-written receipt, and the event that records the verdict</li><li># .opencode/agents/adversary.md     (model is a different family from the worker&#x27;s)<br>---<br>description: Tries to refute one claim using only the evidence attached. Never edits, runs, or fetches.<br>mode: subagent<br>model: opencode-go/glm-5.3-flash          # worker runs on opencode-go/deepseek-v4-flash<br>permission:<br>  edit: deny<br>  bash: deny<br>  webfetch: deny<br>---<br>You receive CLAIM and EVIDENCE. Try to show the CLAIM is false using only EVIDENCE.<br>Reply with one JSON object and nothing else:<br>{&quot;verdict&quot;: &quot;REFUTED&quot; | &quot;NOT-REFUTED&quot;, &quot;cites&quot;: &quot;&lt;field or line in EVIDENCE&gt;&quot;, &quot;missing&quot;: &quot;&lt;what you lack&gt;&quot;}<br>NOT-REFUTED means you could not refute the claim with this evidence. It does not mean the claim is true.<br><br># receipts/2026-10-31T19-02-11_unittest.json          (written by the harness, never by a model)<br>{&quot;cmd&quot;: &quot;python -m unittest -v&quot;, &quot;exit_code&quot;: 1, &quot;tests_run&quot;: 3, &quot;failures&quot;: 1,<br> &quot;commit&quot;: &quot;a1b2c3d&quot;, &quot;stdout_sha256&quot;: &quot;9f2c…&quot;, &quot;ran_at&quot;: &quot;2026-10-31T19:02:11Z&quot;}<br><br># ledger event the harness appends after the adversary answers<br>{&quot;event&quot;: &quot;adversary_verdict&quot;, &quot;claim_id&quot;: &quot;c-017&quot;, &quot;model&quot;: &quot;opencode-go/glm-5.3-flash&quot;,<br> &quot;family&quot;: &quot;GLM&quot;, &quot;tier&quot;: 1, &quot;verdict&quot;: &quot;REFUTED&quot;, &quot;cites&quot;: &quot;receipts/…_unittest.json#failures&quot;}<br><br># from the shell: opencode run --agent adversary -f claim.md -f receipt.json &quot;Refute the CLAIM.&quot;</li></ul></div></div><div class="slide-t" data-i="7" role="button" tabindex="0"><div class="n">08</div><div><h3>Locks: who may work on what</h3><ul><li>A token-block lock with a TTL, and the ledger as its witness</li><li>Acquire atomically</li><li>Deny the second</li><li>Release with the token</li><li>Expire, then reclaim</li><li>Create locks/&lt;resource&gt;.lock with os.open(path, O_CREAT | O_EXCL). Exactly one caller succeeds. Write {holder, token, acquired_at, ttl_s}.<br>Ledger: lock_acquired.</li><li>A second worker&#x27;s create fails with FileExistsError. No waiting, no overwrite. It returns BLOCKED naming the holder.<br>Ledger: lock_denied.</li><li>Only the token holder may delete the lock. A wrong token is refused.<br>Ledger: lock_released.</li><li>If now &gt; acquired_at + ttl_s, the holder is presumed dead. Record the expiry, then take the lock.<br>Ledger: lock_expired, then lock_acquired.</li><li>The falsifier is not “two workers collided.” It is a lock that changed hands with no ledger event.</li></ul></div></div><div class="slide-t" data-i="8" role="button" tabindex="0"><div class="n">09</div><div><h3>Routing and cost: send each task to a tier</h3><ul><li>Route by task class, declare a budget per sortie, and record the cost of every call</li><li>Task class · Tier · Example model (verify) · Listed price in / out per 1M tokens · Why this tier</li><li>Classify, extract, format · small · opencode-go/glm-5.3-flash · $0.15 / $0.50 · A schema check catches the errors; errors are cheap.</li><li>Implement a small change · mid · opencode-go/deepseek-v4-flash · $0.15–0.30 / $0.60–1.20 (peak/off-peak) · The receipt checks the result.</li><li>Plan, review, settle a conflict · large · opencode-go/kimi-k3 · $3.00 / $15.00 · An error here reaches every worker. Kimi K3: about 110 requests per 5 hours on Go.</li><li>Adversary · other family · a family the worker is not · small tier is enough · Independence matters more than size.</li><li>Free or local · — · opencode/big-pickle; Ollama · $0 · Big Pickle data may be used to improve the model; local costs your laptop&#x27;s time.</li><li>Prices and limits from opencode.ai/docs/go, checked 09/24/2026. Go is $10/month with per-model limits per 5 hours, week, and month (20% / 50% / 100%).</li><li>RouteLLM (Ong et al., 2024): 85% lower cost on MT Bench at 95% of GPT-4&#x27;s quality. FrugalGPT (Chen, Zaharia, &amp; Zou, 2023): up to 98% lower cost. Your route table is the small version.</li></ul></div></div><div class="slide-t" data-i="9" role="button" tabindex="0"><div class="n">10</div><div><h3>Delegation is a contract: what a handoff must carry</h3><ul><li>Four things cross the boundary when one agent gives work to another; authority is not one of them</li><li>Identity</li><li>Scope</li><li>Who asks and who answers, by name and model id. A2A v1.0 signs Agent Cards; your dispatch record names worker and model.</li><li>What the worker may touch: paths, tools, its lock. Permissions come from config, never from the task text.</li><li>Result contract</li><li>Evidence obligation</li><li>The shape of what comes back (HandoffResult; ReviewResult) and the evidence each status requires. DONE without a receipt parses as NEEDS_CONTEXT.</li><li>Who produces the receipt and where it lands. A worker-written receipt is a claim with a file extension.</li><li>Authority does not cross: the user&#x27;s approval stays with the user&#x27;s host. A peer asks for it (A2A input-required, auth-required).</li></ul></div></div><div class="slide-t" data-i="10" role="button" tabindex="0"><div class="n">11</div><div><h3>The common mistake: the reviewer read the summary</h3><ul><li>Five ways a Sortie 9 passes without testing anything</li><li>The reviewer approved the summary. Nobody reviewed the work.</li><li>Narrative, not receipt. A story always coheres.<br>Same model, new prompt. That is tier 2; say so.<br>Answer leaked. The test then measures reading.<br>Refutes everything. No true-claim control, no proof (test point 4).<br>NOT-REFUTED logged as “verified.” A verdict is a claim.</li></ul></div></div><div class="slide-t" data-i="11" role="button" tabindex="0"><div class="n">12</div><div><h3>Break · 0:55–1:00</h3><ul><li>Five minutes</li><li>Your worker says “all tests pass.” What must you see before writing that in your flight log, and who wrote it?</li></ul></div></div><div class="slide-t" data-i="12" role="button" tabindex="0"><div class="n">13</div><div><h3>Teardown: MAST, the fourteen modes</h3><ul><li>Cemri et al., “Why Do Multi-Agent LLM Systems Fail?” (arXiv 2503.13657; NeurIPS 2025) · prevalence across MAST-Data</li><li>FC1 · System design · % · FC2 · Inter-agent misalignment · % · FC3 · Task verification · %</li><li>1.1 Disobey task specification · 11.8 · 2.1 Conversation reset · 2.2 · 3.1 Premature termination · 6.2</li><li>1.2 Disobey role specification · 1.5 · 2.2 Fail to ask for clarification · 6.8 · 3.2 No or incomplete verification · 8.2</li><li>1.3 Step repetition · 15.7 · 2.3 Task derailment · 7.4 · 3.3 Incorrect verification · 9.1</li><li>1.4 Loss of conversation history · 2.8 · 2.4 Information withholding · 0.85</li><li>1.5 Unaware of stopping conditions · 12.4 · 2.5 Ignored other agent&#x27;s input · 1.9</li><li>2.6 Reasoning-action mismatch · 13.2</li><li>Total · 44.2 · Total · 32.4 · Total · 23.5</li><li>Figures from the paper&#x27;s HTML (v3, 26 Oct 2025). 1,642 traces from 7 frameworks: ChatDev, MetaGPT, HyperAgent, AppWorld, AG2 (MathChat), Magentic-One, OpenManus. Human κ = 0.88; LLM annotator κ = 0.77.</li><li>Appendix C map: 2.6 neighbors #3 fabrication; 3.2 is #4 skipped cheap verification; 3.3 is summary laundering.</li></ul></div></div><div class="slide-t" data-i="13" role="button" tabindex="0"><div class="n">14</div><div><h3>MAST, read for mechanism</h3><ul><li>What the authors did about it, what it cost, and what it could not fix</li><li>Mechanism and design choice</li><li>Cost, failure mode, and your build</li><li>Mechanism. Most failures start in the setup: a vague role, no stopping rule, a misaimed check.<br>Design choice. A grounded-theory taxonomy from 150 traces, then an LLM annotator to scale labeling.<br>Interventions (ChatDev). Clearer role specification: +9.4% success. High-level verification step: +15.6% on ProgramDev.</li><li>Cost. Labeling is expensive; the LLM annotator is cheaper and agrees less (0.77 against 0.88).<br>Failure mode left. Final-stage, low-level checks alone are inadequate; better prompts did not remove categories.<br>For Sortie 9. Receipt, then adversary; neither replaces the other. Code one failure with MAST.</li><li>Appendix C: #4 skipped cheap verification and #9 metagaming the gate are what a final-stage check alone invites.</li></ul></div></div><div class="slide-t" data-i="14" role="button" tabindex="0"><div class="n">15</div><div><h3>15×</h3><ul><li>Teardown: Anthropic&#x27;s multi-agent research system (June 2025)</li><li>An orchestrator-worker system in production, read for what coordination cost</li><li>80%</li><li>90.2%</li><li>tokens used by the multi-agent system relative to a chat (single agents: about 4×)</li><li>of performance variance on BrowseComp explained by token usage alone</li><li>better than single-agent Claude Opus 4 on Anthropic&#x27;s internal research eval</li><li>Mechanism. A Claude Opus 4 lead starts Claude Sonnet 4 subagents searching in parallel; a CitationAgent ties claims to sources.<br>Failures reported. Duplicated searches and over-spawning, fixed with detailed task descriptions and effort rules. Synchronous subagents: one slow one blocks all.</li><li>Multi-agent fits breadth-first research and fits badly where all agents share one context, including most coding. Name your system&#x27;s case.</li></ul></div></div><div class="slide-t" data-i="15" role="button" tabindex="0"><div class="n">16</div><div><h3>Live Design Analysis: Anthropic Research (2025)</h3><ul><li>Built on the board from the engineering post alone; the class argues the “why” row</li><li>Component · Answer (from the June 2025 post)</li><li>Foundation · Hosted. Claude Opus 4 lead; Claude Sonnet 4 subagents.</li><li>Perception · The user&#x27;s query; search and tool results; subagents&#x27; condensed findings.</li><li>Planning &amp; reasoning · The lead decomposes the query and plans; subagents plan their own searches.</li><li>Tools &amp; orchestration · Orchestrator-worker; parallel subagents with search tools; a CitationAgent after the report.</li><li>Memory &amp; context · Plan saved to memory; context past 200,000 tokens is truncated; outputs to a filesystem.</li><li>Coordination · Synchronous: the lead waits for each set of subagents. Early: duplicated searches, too many subagents.</li><li>Evaluation &amp; feedback · LLM judge with a rubric (factual accuracy, citation accuracy, completeness); about 20 real queries; human testers.</li><li>Governance &amp; human · Board question: where does a human stand between a subagent&#x27;s finding and the report?</li><li>Runtime &amp; operations · Long-running and stateful; rainbow deployments; about 15× chat tokens.</li><li>Judgment loop · Decision: parallel subagents · Privileged: breadth, speed · Cost: ~15× tokens · Failure mode: relayed findings as fact (FC2/FC3) · Preservation: citations</li></ul></div></div><div class="slide-t" data-i="16" role="button" tabindex="0"><div class="n">17</div><div><h3>“Share context, and share full agent traces, not just individual messages.” “Actions carry implicit decisions, and conflicting decisions carry bad results.”</h3><ul><li>Counterpoint: “Don&#x27;t Build Multi-Agents” (Cognition, June 2025)</li><li>Walden Yan&#x27;s two principles, from the team that builds a coding agent</li><li>Mechanism. Two subagents on one task make decisions the other cannot see.<br>Design choice. One single-threaded agent; compress history when the window fills.<br>Against Anthropic&#x27;s post: no conflict. Research splits cleanly; coding carries decisions forward. Your adversary shares nothing with the worker.</li></ul></div></div><div class="slide-t" data-i="17" role="button" tabindex="0"><div class="n">18</div><div><h3>Teardown: A2A v1.0 and delegation</h3><ul><li>Agent2Agent reached 1.0.0 on 12 Mar 2026 (1.0.1 on 28 May); Linux Foundation project; 150+ organizations by April</li><li>What a delegation is</li><li>What 1.0 added</li><li>What stays opaque</li><li>A client agent reads the remote Agent Card (identity, skills, endpoint, auth) and sends a task. States: working, input-required, auth-required; then completed, failed, canceled, or rejected. Results return as Artifacts made of Parts.</li><li>Signed Agent Cards<br>tasks/list with filtering and paging<br>OAuth 2.0 device-code and PKCE flows<br>Multi-tenancy; protocol separated from transport bindings<br>SDKs in Python, JavaScript, Java, Go, .NET</li><li>The spec: agents collaborate “without needing access to each other&#x27;s internal state, memory, or tools.” You never see the peer&#x27;s receipts. A signed card proves the sender, not the truth of the artifact.</li><li>Design consequence: an A2A artifact enters your ledger as a claim with a verified sender. Re-run what you can; send the rest to your adversary.</li></ul></div></div><div class="slide-t" data-i="18" role="button" tabindex="0"><div class="n">19</div><div><h3>Teardown: what an agent marketplace would need</h3><ul><li>Chapter 18&#x27;s three requirements, plus the one the protocols have started to build</li><li>Identity</li><li>Authorization</li><li>Who is the agent, and who operates it. Partly built: A2A signed Agent Cards.</li><li>Proof that a human granted this agent this scope. AP2 (announced Sep 2025) uses mandates: signed, tamper-evident credentials for checkout and payment.</li><li>Attestation of work</li><li>Liability</li><li>Proof that the work was done as claimed. Not built in any protocol: no standard receipt for “tests pass” crosses an agent boundary.</li><li>Who answers when the agent is wrong. AP2 names accountability; the answer is still contracts between people.</li><li>The protocols prove who sent a claim and what the human allowed. Proving the work was done is still your harness&#x27;s job.</li></ul></div></div><div class="slide-t" data-i="19" role="button" tabindex="0"><div class="n">20</div><div><h3>Reference design: the ten-deep chain (2026-05-24)</h3><ul><li>Summary laundering: each layer&#x27;s polished summary became the next layer&#x27;s fact</li><li>A subagent&#x27;s claim is not evidence.</li><li>What happened. Ten subagents deep; summaries became the layer above&#x27;s facts.<br>What resulted. The DO IT RIGHT rules.<br>MAST reading. FC2, FC3; Appendix C #3 fabrication.</li></ul></div></div><div class="slide-t" data-i="20" role="button" tabindex="0"><div class="n">21</div><div><h3>Reference design: the repudiations (June 2026)</h3><ul><li>Gate 5 attributed to a human who never gave it; attestations for work that did not exist</li><li>The episodes (Appendix G)</li><li>The mechanism, and yours</li><li>2026-06-13. A Gate-5 attestation attributed to an operator who never gave it. ADR-0.0.71.<br>2026-06-16. Four briefs attested for nonexistent components.<br>Chapter 18 counts seven Gate-5 repudiations in June.</li><li>Failure modes. #7 hallucinated authorization (June 13); #3 fabrication (June 16). Each stage trusted the last.<br>What resulted. gz obpi repudiate appends a repudiation; the attestation stays.<br>For your system. Append a correction to a refuted PASS; never edit the old line.</li><li>An attestation an agent wrote for a human is not an attestation. Record the correction; keep the error visible.</li></ul></div></div><div class="slide-t" data-i="21" role="button" tabindex="0"><div class="n">22</div><div><h3>Reference design: the undispatched Stage 2 (2026-08-21)</h3><ul><li>Presence is not procedure: a marker file licensed work nobody dispatched or reviewed</li><li>What happened</li><li>What resulted</li><li>Your build borrows</li><li>The gate checked only that a marker file existed. A stale marker licensed about 350 lines, no dispatch, no review. Stage 2 (implement) never ran.</li><li>The rule: “A presence check answers ‘is something armed’, never ‘did the procedure run’.” The gate must read the record of the procedure.</li><li>gz obpi dispatch: a dispatch record per task (“credit is never inferred”)<br>gz obpi lock: who may work on what<br>DISPATCH_MODEL_MAP: routing by role<br>Step 4b: Codex preferred as tier-1 adversary; one vendor = degraded mode</li><li>Test point 1 is the same check: a claim with no receipt is a marker file.</li></ul></div></div><div class="slide-t" data-i="22" role="button" tabindex="0"><div class="n">23</div><div><h3>Evaluation lens: a strong Sortie 9</h3><ul><li>The Chase reads the sealed falsehood, the receipts, and the ledger slice, and nothing else</li><li>Weak</li><li>Sound</li><li>Exceptional</li><li>Worker&#x27;s model with a “critic” prompt, written up as cross-family<br>Adversary handed the summary, not the receipt<br>“Tests pass” copied into the flight log<br>NOT-REFUTED written as “verified”<br>In-process dict lock; no TTL; no ledger events<br>Cost reported as “cheap”; no per-call numbers</li><li>Falsehood named before Go; adversary never told<br>Harness receipt: command, exit code, commit, hash<br>Named second family; REFUTED cites a receipt field<br>True-claim control returns NOT-REFUTED<br>Atomic lock with TTL; each change in the ledger<br>Route table in config; cost per call under budget</li><li>Two planted falsehoods, one found only in code<br>Tier 1 and tier 2 on one claim; verdicts compared<br>Holder killed mid-task; expiry and reclaim logged in order<br>Router drops a tier at budget; switch logged<br>One MAST mode reproduced on purpose, coded in debrief</li></ul></div></div><div class="slide-t" data-i="23" role="button" tabindex="0"><div class="n">24</div><div><h3>Flight Card 9 brief · the planted falsehood</h3><ul><li>Corner of the envelope · depends on Sortie 8 PASS · Go is the Chase&#x27;s signature · every card names its planted falsehood</li><li>ENVELOPE            corner<br>DESIGN CLAIM        A subagent&#x27;s claim never becomes evidence without a receipt, and a second-family<br>                    adversary refutes a false claim planted in a worker&#x27;s result.<br>SYSTEMS UNDER TEST  worker + reviewer (Sortie 8) · receipt writer · adversary (family named) · lock table<br>                    · route table + budget · ledger<br>SUBSTRATE           repo + commit · worker model id + family · adversary model id + family · budget $___<br>DEPENDS ON          Sortie 8 PASS (HandoffResult contract; a FAIL verdict blocks)<br>PLANTED FALSEHOOD   named here, hidden from the adversary (e.g. worker reports &quot;3/3 tests pass&quot;; one fails)<br><br>TEST POINTS<br>  1  worker returns DONE + planted claim  → ledger: claim {status: unverified}; flight log unchanged<br>  2  harness runs the tests itself       → receipts/…json {cmd, exit_code, commit, sha256}; ledger: receipt<br>  3  adversary: claim + receipt only     → REFUTED, citing a receipt field; ledger: verdict {model, family}<br>  4  control: true claim + its receipt  → NOT-REFUTED; the adversary does not refute everything<br>  5  two workers request one lock        → second denied (lock_denied); TTL expiry logged, then reclaim<br>  6  every model call goes via router    → ledger: {task_class, model, tokens, cost}; sortie total ≤ budget<br><br>INSTRUMENTATION     ledger slice (claim, receipt, 2 verdicts, lock and route events) · receipts/ · cost table<br><br>PRE-REGISTERED FALSIFIERS (any ONE ⇒ FAIL)<br>  - a claim promoted to the flight log with no receipt<br>  - the adversary returns NOT-REFUTED on the planted falsehood<br>  - a lock held by two workers, or a lock change with no ledger event<br>  - passing only by telling the adversary the answer, using the worker&#x27;s model, or editing a receipt<br><br>ABORT (halt-not-fail)  adversary model unavailable or over its Go usage limit; test runner will not start<br>CHASE               signs Go in the card by the course-calendar date; after: reads receipts + ledger slice; no transcripts<br><br>SPRINT  Sortie 9 log · adversary + locks + routing · cost table · Design Analysis · AI_LOG</li></ul></div></div><div class="slide-t" data-i="24" role="button" tabindex="0"><div class="n">25</div><div><h3>Lab: refute a planted falsehood with a receipt</h3><ul><li>Self-guided · handout CIDM6333_Lab_E9_PlantedFalsehood.md · the full test points fly in the Sprint</li><li>Thirty minutes, six steps</li><li>What you commit</li><li>0–4   evolution-09/lab/: 8-line module, 3 tests (one fails), report: 3/3 pass<br>4–9   A 21-line script writes receipt.json<br>9–14  Round A: adversary gets claim only<br>14–20 Round B: claim plus receipt; check its citation<br>20–25 Control: true claim; then opencode stats<br>25–30 Worksheet, commit, ledger event</li><li>evolution-09/lab/: files, receipt.py, receipt.json<br>.opencode/agents/adversary.md (reused in the sortie)<br>evolution-09/lab/adversary-log.md: ids and families, three verdicts, citation checks, cost<br>A ledger event for the commit<br>No Go subscription: a free Zen model, named family<br>Round A: an honest adversary without evidence refutes nothing</li></ul></div></div><div class="slide-t" data-i="25" role="button" tabindex="0"><div class="n">26</div><div><h3>The Sprint: Sortie 9</h3><ul><li>Brief: CIDM6333_HW_E9_MultiAgent2.md · the Go/No-Go and the Chase review happen in the repo, in writing</li><li>Card</li><li>Chase Go</li><li>Fly</li><li>Verdict</li><li>Adapt Card 9 to your system in evolution-09/flight-card.md. Name the falsehood, both families, the budget. Commit; tag your Chase.</li><li>The Chase reads the card only and writes GO or NO-GO with one reason. No Go, no sortie.</li><li>Build the adversary, receipts, lock, route table. Fly TP1–6 in one sitting. Commit the flight log and cost table.</li><li>The Chase reads receipts and the ledger slice and writes PASS or FAIL. Then you add the Design Analysis and AI_LOG and submit.</li><li>Deliverables: Sortie 9 log · adversary + locks + routing · cost table · Design Analysis · AI_LOG.</li></ul></div></div><div class="slide-t" data-i="26" role="button" tabindex="0"><div class="n">27</div><div><h3>A claim is a sentence. A receipt is evidence.</h3><ul><li>Before Go: the card, the planted falsehood, the family that must refute it. After: a flight log where every PASS points at a receipt.</li></ul></div></div>
+</section>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:28px"><a class="dl" href="../e8-multi-agent-1/">◀ E8 · Multi-Agent I</a> <a class="dl" href="../e10-evals-as-gates/">E10 · Evals as Gates ▶</a></div>
+<footer>CIDM 6333 · Lecture · E9 · Multi-Agent II · Fall 2026</footer>
+</div>
+<script>
+(function(){
+  const T=["Multi-agent II: When Coordination Fails", "Two hours, eight moves", "A subagent's claim is not evidence", "The taxonomy: where multi-agent systems fail", "Claim, receipt, verdict, attestation", "Adversarial validation in three tiers", "Worked config: the adversary, the receipt, the ledger line", "Locks: who may work on what", "Routing and cost: send each task to a tier", "Delegation is a contract: what a handoff must carry", "The common mistake: the reviewer read the summary", "Break · 0:55–1:00", "Teardown: MAST, the fourteen modes", "MAST, read for mechanism", "15×", "Live Design Analysis: Anthropic Research (2025)", "“Share context, and share full agent traces, not just individual messages.” “Actions carry implicit decisions, and conflicting decisions carry bad results.”", "Teardown: A2A v1.0 and delegation", "Teardown: what an agent marketplace would need", "Reference design: the ten-deep chain (2026-05-24)", "Reference design: the repudiations (June 2026)", "Reference design: the undispatched Stage 2 (2026-08-21)", "Evaluation lens: a strong Sortie 9", "Flight Card 9 brief · the planted falsehood", "Lab: refute a planted falsehood with a receipt", "The Sprint: Sortie 9", "A claim is a sentence. A receipt is evidence."], N=T.length, $=id=>document.getElementById(id);
+  let i=0;
+  const strip=$("strip"), btns=[...strip.querySelectorAll("button")];
+  function go(k){
+    i=Math.max(0,Math.min(N-1,k));
+    const n=String(i+1).padStart(2,"0");
+    $("slide").src="s-"+n+".webp"; $("slide").alt="Slide "+(i+1)+": "+T[i];
+    $("count").textContent=(i+1)+" / "+N; $("stitle").textContent=T[i];
+    $("prev").disabled=i===0; $("next").disabled=i===N-1;
+    btns.forEach((b,j)=>{ if(j===i) b.setAttribute("aria-current","true"); else b.removeAttribute("aria-current"); });
+    btns[i].scrollIntoView({block:"nearest",inline:"nearest"});
+    try{ history.replaceState(null,"","#"+(i+1)); }catch(e){}
+    // preload next
+    if(i+1<N){ const im=new Image(); im.src="s-"+String(i+2).padStart(2,"0")+".webp"; }
+  }
+  $("prev").addEventListener("click",()=>go(i-1)); $("next").addEventListener("click",()=>go(i+1));
+  btns.forEach(b=>b.addEventListener("click",()=>go(+b.dataset.i)));
+  document.querySelectorAll(".slide-t").forEach(d=>{
+    const j=+d.dataset.i;
+    d.addEventListener("click",()=>{ go(j); $("stage").scrollIntoView({behavior:"smooth",block:"start"}); });
+    d.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(j); $("stage").scrollIntoView({block:"start"}); } });
+  });
+  $("stage").addEventListener("click",()=>go(i+1));
+  $("full").addEventListener("click",()=>{ const s=$("stage"); if(s.requestFullscreen) s.requestFullscreen().catch(()=>s.classList.toggle("full")); else s.classList.toggle("full"); });
+  document.addEventListener("keydown",e=>{
+    if(e.target.matches("input,select,textarea")) return;
+    if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){ go(i+1); e.preventDefault(); }
+    if(e.key==="ArrowLeft"||e.key==="PageUp"){ go(i-1); e.preventDefault(); }
+    if(e.key==="Home"){ go(0); e.preventDefault(); } if(e.key==="End"){ go(N-1); e.preventDefault(); }
+    if(e.key==="Escape") $("stage").classList.remove("full");
+  });
+  const h=parseInt(location.hash.slice(1)); go(isNaN(h)?0:h-1);
+})();
+</script>
+</body></html>

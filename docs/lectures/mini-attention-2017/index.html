@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Mini lecture · Attention (2017)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .sw-track{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .sw-knob{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="win"]:not(.on){opacity:.5}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl,.fig .el.on .stripe{fill:var(--accent-soft)}
+.fig .el.on .sw-track{stroke:var(--accent)} .fig .el.on .sw-knob{fill:var(--accent)}
+.fig .kind{cursor:pointer}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:3px 9px}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .ok{color:var(--ink); font-weight:500}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .dim{color:var(--ink-2)}
+svg.bars{width:100%; height:auto; display:block}
+.bars text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.bars .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.bars .axis{stroke:var(--line)} .bars .grid{stroke:var(--line); stroke-dasharray:2 4}
+.bars .ba{fill:var(--s-a)} .bars .bb{fill:var(--s-b)}
+.bars .thr{stroke:var(--ink); stroke-width:1.4; stroke-dasharray:5 4}
+
+/* heatmap */
+.hmwrap{overflow-x:auto}
+table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width:640px; width:100%}
+.hm th{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.04em; color:var(--ink-2); text-align:left; padding:4px 6px; vertical-align:bottom}
+.hm th.rid{font-family:var(--mono); font-weight:500; font-size:12px; text-align:center}
+.hm th.rid small{display:block; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:0}
+.hm td{font-family:var(--mono); font-size:13px; text-align:center; border-radius:4px; padding:8px 4px; font-variant-numeric:tabular-nums; min-width:62px}
+.hm td.q{font-family:var(--body); font-size:14.5px; text-align:left; background:none; min-width:220px; cursor:pointer; padding:6px 8px}
+.hm tr.sel td.q{background:var(--accent-soft); border-radius:6px}
+.hm td.q .kd{display:block; font-family:var(--display); font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+.hm td.low{color:var(--ink-2)}
+.hm td.inj{box-shadow:inset 0 0 0 3px var(--s-b); font-weight:500; color:var(--ink)}
+.hm td.gone{background:repeating-linear-gradient(45deg,var(--surface-2) 0 4px,var(--surface) 4px 8px); color:var(--ink-2)}
+.hm td.res{font-family:var(--body); font-size:14px; text-align:left; background:none; min-width:150px}
+.verdict{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.verdict.yes{color:var(--ink)} .verdict.no{color:var(--accent-ink)}
+.recs{display:grid; gap:6px}
+.rec{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:start; background:var(--surface-2); border-radius:8px; padding:8px 10px}
+.rec .meta{font-family:var(--mono); font-size:12px; color:var(--ink-2); word-break:break-word}
+.rec .txt{font-size:14.5px; grid-column:1/2}
+.rec.gone{opacity:.5}
+.rec.gone .txt{text-decoration:line-through}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.m{font-family:var(--mono); font-size:13.5px}
+.t.compact{font-size:14.5px; min-width:560px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:15px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<style>
+.viewer{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.stage{position:relative; background:#fff; aspect-ratio:16/9}
+.stage img{display:block; width:100%; height:100%; object-fit:contain}
+.bar{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--line)}
+.bar .count{font-family:var(--mono); font-size:13px; color:var(--ink-2); min-width:8ch}
+.bar .title{font-family:var(--display); font-weight:600; font-size:18px; flex:1 1 200px; min-width:0}
+.bar .spacer{flex:1}
+.strip{display:flex; gap:6px; overflow-x:auto; padding:10px 12px; border-top:1px solid var(--line); scroll-snap-type:x proximity}
+.strip button{padding:0; border:2px solid transparent; border-radius:6px; background:none; flex:0 0 auto; width:112px; scroll-snap-align:start}
+.strip button img{display:block; width:100%; border-radius:4px; border:1px solid var(--line)}
+.strip button[aria-current="true"]{border-color:var(--accent)}
+.strip button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.transcript{margin-top:36px}
+.slide-t{display:grid; grid-template-columns:72px minmax(0,1fr); gap:6px 16px; padding:14px 0; border-top:1px solid var(--line); cursor:pointer}
+.slide-t:hover h3{color:var(--accent-ink)}
+.slide-t .n{font-family:var(--mono); font-size:13px; color:var(--ink-2); padding-top:4px}
+.slide-t h3{font-family:var(--display); font-weight:600; font-size:20px; margin:0}
+.slide-t p{margin:0; font-size:15px; color:var(--ink-2)}
+.slide-t ul{margin:4px 0 0; padding-left:18px; font-size:15px; display:grid; gap:3px}
+.dl{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--accent-ink); text-decoration:none; border:1px solid var(--line); border-radius:8px; padding:7px 14px}
+.dl:hover{border-color:var(--accent)}
+.stage.full{position:fixed; inset:0; z-index:9; aspect-ratio:auto; background:#000}
+.stage.full img{object-fit:contain}
+nav.crumbs{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13px; margin-bottom:8px}
+nav.crumbs a{color:var(--accent-ink); text-decoration:none}
+</style>
+
+<div class="wrap">
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Lectures</a> · Mini lecture · Attention (2017)</nav>
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Lecture · Mini lecture · Attention (2017)</div>
+  <h1>Attention Is All You Need, read as a design document</h1>
+  <p class="lede">The 2017 paper names a constraint, makes a trade, and backs it with evidence. Every model your harness calls descends from it.</p>
+  <div class="weeks" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="chip">paper</span><span class="chip">12 slides</span></div>
+</header>
+
+<div class="viewer">
+  <div class="stage" id="stage"><img id="slide" src="s-01.webp" alt="Slide 1: Attention Is All You Need, read as a design document"></div>
+  <div class="bar">
+    <button id="prev" type="button" aria-label="Previous slide">◀ Back</button>
+    <button id="next" class="primary" type="button" aria-label="Next slide">Next ▶</button>
+    <span class="count" id="count">1 / 12</span>
+    <span class="title" id="stitle">Attention Is All You Need, read as a design document</span>
+    <span class="spacer"></span>
+    <button id="full" type="button" aria-label="Full screen">Full screen</button>
+    <a class="dl" href="mini-attention-2017.pdf" download>PDF</a>
+  </div>
+  <div class="strip" id="strip" role="group" aria-label="Slides"><button type="button" data-i="0" aria-label="Slide 1: Attention Is All You Need, read as a design document"><img loading="lazy" src="s-01.webp" alt=""></button><button type="button" data-i="1" aria-label="Slide 2: Twenty minutes, five moves"><img loading="lazy" src="s-02.webp" alt=""></button><button type="button" data-i="2" aria-label="Slide 3: The constraint: recurrence is a queue"><img loading="lazy" src="s-03.webp" alt=""></button><button type="button" data-i="3" aria-label="Slide 4: Figure 1, redrawn: two stacks and a loop"><img loading="lazy" src="s-04.webp" alt=""></button><button type="button" data-i="4" aria-label="Slide 5: Scaled dot-product attention: one line, three choices"><img loading="lazy" src="s-05.webp" alt=""></button><button type="button" data-i="5" aria-label="Slide 6: Eight heads, and word order written in waves"><img loading="lazy" src="s-06.webp" alt=""></button><button type="button" data-i="6" aria-label="Slide 7: 28.4"><img loading="lazy" src="s-07.webp" alt=""></button><button type="button" data-i="7" aria-label="Slide 8: Evidence 2: one change against a fixed base"><img loading="lazy" src="s-08.webp" alt=""></button><button type="button" data-i="8" aria-label="Slide 9: The recipe the results depend on"><img loading="lazy" src="s-09.webp" alt=""></button><button type="button" data-i="9" aria-label="Slide 10: What chat models kept: the right-hand column"><img loading="lazy" src="s-10.webp" alt=""></button><button type="button" data-i="10" aria-label="Slide 11: From the paper to your harness"><img loading="lazy" src="s-11.webp" alt=""></button><button type="button" data-i="11" aria-label="Slide 12: A design document names constraint, trade, and evidence."><img loading="lazy" src="s-12.webp" alt=""></button></div>
+</div>
+
+<p class="small" style="margin-top:10px">Arrow keys step through the slides. Click a thumbnail or a transcript entry to jump. The transcript below is the slide text, for search and for screen readers; speaker notes are not published.</p>
+
+<section class="transcript" aria-label="Transcript">
+  <h2>Slide text</h2>
+  <div class="slide-t" data-i="0" role="button" tabindex="0"><div class="n">01</div><div><h3>Attention Is All You Need, read as a design document</h3><ul><li>Mini lecture · 20 minutes · after Vaswani et al. (2017)</li><li>The 2017 paper names a constraint, makes a trade, and backs it with evidence. Every model your harness calls descends from it.</li><li>CONSTRAINT</li><li>MECHANISM</li><li>EVIDENCE</li><li>LEGACY</li><li>Explainers: ahuimanu.github.io/CIDM6333 · Figures 01, 01b, 01c</li></ul></div></div><div class="slide-t" data-i="1" role="button" tabindex="0"><div class="n">02</div><div><h3>Twenty minutes, five moves</h3><ul><li>The run of show; the clock at left is minutes into the mini lecture</li><li>The constraint</li><li>Recurrence is a queue: one step per token, in order.</li><li>The mechanism</li><li>Scaled dot-product attention, eight heads, and position written in waves.</li><li>The evidence</li><li>Quality, training cost, and one change at a time (Tables 2 and 3).</li><li>What chat models kept</li><li>The decoder column, the mask, and the loop the figure does not draw.</li><li>Why the harness engineer cares</li><li>Five lines from the paper to Evolutions 1, 3, 6, 10, and 11.</li></ul></div></div><div class="slide-t" data-i="2" role="button" tabindex="0"><div class="n">03</div><div><h3>The constraint: recurrence is a queue</h3><ul><li>Table 1 of the paper, redrawn; n is sequence length, d is the model width</li><li>Layer type · Complexity / layer · Sequential ops · Max path</li><li>Self-attention · O(n²·d) · O(1) · O(1)</li><li>Recurrent · O(n·d²) · O(n) · O(n)</li><li>Convolutional · O(k·n·d²) · O(1) · O(logₖ n)</li><li>Self-attention (restricted) · O(r·n·d) · O(1) · O(n/r)</li><li>What the authors faced<br>Recurrence reads one token per step. Each step waits for the last; a sentence cannot spread across a GPU.<br>The trade: all positions attend to each other at once. Sequential steps O(n) → O(1); compute per layer grows with n².</li><li>Self-attention is cheaper than recurrence &quot;when the sequence length n is smaller than the representation dimensionality d, which is most often the case&quot; (§4). In 2017, n was a sentence of about 30 tokens and d was 512.</li><li>O(n) → O(1)<br>sequential steps per layer, recurrent vs. self-attention</li><li>In 2026, n is your context window, far past d. The n² term is the cost you budget in E6.</li></ul></div></div><div class="slide-t" data-i="3" role="button" tabindex="0"><div class="n">04</div><div><h3>Figure 1, redrawn: two stacks and a loop</h3><ul><li>Layout, names, and color roles follow the paper; the dashed return arrow is ours (§3 says the model is auto-regressive)</li><li>Encoder (left)<br>Reads the source sentence. Every position attends to every other, in both directions.</li><li>Decoder (right)<br>Writes the translation one token per pass. Its first attention layer is masked: it can look back, never ahead.</li><li>The base model<br>N = 6 layers per stack, d_model = 512, 8 heads, about 65M parameters, 12 hours on one machine with 8 P100 GPUs.</li><li>The loop<br>&quot;At each step the model is auto-regressive, consuming the previously generated symbols as additional input when generating the next&quot; (§3).</li></ul></div></div><div class="slide-t" data-i="4" role="button" tabindex="0"><div class="n">05</div><div><h3>Scaled dot-product attention: one line, three choices</h3><ul><li>§3.2.1 and §3.2.3; the grid is computed from random vectors and shows arithmetic only</li><li>Attention(Q, K, V) = softmax( QKᵀ / √d_k ) V</li><li>Q, K, V come from one place<br>In self-attention &quot;all of the keys, values and queries come from the same place.&quot; Each is a projection of the same input.</li><li>Divide by √d_k<br>Large dot products push softmax into &quot;regions where it has extremely small gradients.&quot; Scaling keeps the weights trainable.</li><li>Mask the future<br>The decoder sets illegal connections to −∞ before softmax, so each position predicts only from earlier positions.</li><li>Rows are queries, columns are keys, each row sums to 1. The striped cells are the −∞ entries. Figure 01b lets you turn scaling off and raise d_k until each row collapses onto one key.</li><li>The mask is the one detail every chat model still uses unchanged.</li></ul></div></div><div class="slide-t" data-i="5" role="button" tabindex="0"><div class="n">06</div><div><h3>Eight heads, and word order written in waves</h3><ul><li>Figure 2 (right) redrawn, and the sinusoidal positional encoding of §3.5</li><li>Multi-head: h = 8 heads, each of width d_k = d_v = 512 / 8 = 64. Total computation matches one full-width head. Table 3 row A: one head scores 0.9 BLEU worse than the best setting, and 32 heads also drop.</li><li>Position: attention alone ignores word order, so each position adds sine and cosine waves of different wavelengths. Table 3 row E: learned positions gave nearly identical results.</li><li>Heatmap rows: positions 0–99; columns: dimensions 0–127 of 512; blue −1, amber +1.</li></ul></div></div><div class="slide-t" data-i="6" role="button" tabindex="0"><div class="n">07</div><div><h3>28.4</h3><ul><li>Evidence 1: better translations at lower training cost</li><li>Table 2, English-to-German, newstest2014; training cost is the paper&#x27;s own estimate</li><li>BLEU EN→DE (big), more than 2.0 above the best earlier result, ensembles included</li><li>3.3·10¹⁸</li><li>training FLOPs for the base model: 12 h × 8 GPUs × 9.5 TFLOPS</li><li>41.8 / 41.0</li><li>BLEU EN→FR (big): Table 2 says 41.8, the §6.1 text says 41.0</li><li>The FLOPs figure is an estimate with its method printed beside it. That is what a receipt looks like (E11).</li></ul></div></div><div class="slide-t" data-i="7" role="button" tabindex="0"><div class="n">08</div><div><h3>Evidence 2: one change against a fixed base</h3><ul><li>Table 3, English-to-German dev set (newstest2013); change in BLEU from the base model&#x27;s 25.8</li><li>What the authors concluded (§6.2)<br>&quot;bigger models are better, and dropout is very helpful in avoiding over-fitting.&quot;<br>&quot;reducing the attention key size d_k hurts model quality.&quot;</li><li>Read it as an eval gate (E10)<br>One variable per row. A fixed base. A dev set kept apart from the test set. Every row is a delta against the same baseline, which is the shape of your Sortie 10 gate.</li><li>Before you trust a row, ask what threshold you would have pre-registered. A 0.1 change is inside run-to-run noise.</li></ul></div></div><div class="slide-t" data-i="8" role="button" tabindex="0"><div class="n">09</div><div><h3>The recipe the results depend on</h3><ul><li>Equation 3 (§5.3): warm up linearly, then decay with the inverse square root of the step</li><li>lrate = d_model⁻⁰·⁵ · min(step⁻⁰·⁵, step · warmup⁻¹·⁵)</li><li>The rest of the recipe<br>Adam, β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹.<br>Dropout 0.1 on sub-layers and embeddings.<br>Label smoothing 0.1 &quot;hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.&quot;<br>100,000 steps base, 300,000 big.</li><li>A result is the architecture plus its recipe. Change the recipe and the claim no longer holds as stated.</li></ul></div></div><div class="slide-t" data-i="9" role="button" tabindex="0"><div class="n">10</div><div><h3>What chat models kept: the right-hand column</h3><ul><li>GPT (Radford et al., 2018) and its descendants drop the encoder and the encoder–decoder attention</li><li>Kept<br>Token embeddings and position<br>Masked self-attention<br>Feed-forward and Add &amp; Norm, stacked N times<br>Linear and softmax over the vocabulary</li><li>Dropped or changed<br>The encoder stack<br>Encoder–decoder attention<br>Beam search, in favor of sampling<br>Post-norm: most later models normalize before each sub-layer</li><li>One sequence. The prompt and the reply become one stream of tokens. The model reads all of it and writes the next token, then the harness or the model&#x27;s own loop appends that token and runs again.</li><li>Sampling replaced beam search, which is why the same prompt can give different answers (E10).</li></ul></div></div><div class="slide-t" data-i="10" role="button" tabindex="0"><div class="n">11</div><div><h3>From the paper to your harness</h3><ul><li>Five lines from 2017 to this course; Figure 01, Two Loops, draws the model inside your agent loop</li><li>In the paper · In this course · What it means for your sortie</li><li>Self-attention costs O(n²·d) · E6 · context budget · Every token you add to the window raises the cost of every later call.</li><li>Output probabilities end Figure 1 · E1 · E3 · the harness · A tool call is text the model wrote. Your harness runs it, after the gate.</li><li>Sampling replaced beam search · E10 · evals as gates · One run is an anecdote. Run the golden set several times; gate on the delta.</li><li>Table 3: one change, fixed base, dev set · E10 · delta gate · Pre-register the threshold, keep the test set apart, change one variable.</li><li>FLOPs = time × GPUs × TFLOPS · E11 · receipts · Print the method beside the number so your Chase can recompute it.</li><li>Figure 01: the inner loop (the model, one token per pass) sits inside the outer loop (your harness).</li><li>The paper ends at output probabilities. Everything you build in CIDM 6333 starts at that line.</li></ul></div></div><div class="slide-t" data-i="11" role="button" tabindex="0"><div class="n">12</div><div><h3>A design document names constraint, trade, and evidence.</h3><ul><li>Close · explore on your own</li><li>Figure 01 · Two Loops: the model inside the agent loop<br>Figure 01b · The 2017 Transformer: Figure 1 step by step, decoder-only switch<br>Figure 01c · The Transformer&#x27;s Evidence: Tables 2–4, the schedule, the attention pictures<br>ahuimanu.github.io/CIDM6333 · Vaswani et al. (2017), arXiv:1706.03762</li></ul></div></div>
+</section>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:28px"><a class="dl" href="../e12-deployment/">◀ E12 · Deployment</a> </div>
+<footer>CIDM 6333 · Lecture · Mini lecture · Attention (2017) · Fall 2026</footer>
+</div>
+<script>
+(function(){
+  const T=["Attention Is All You Need, read as a design document", "Twenty minutes, five moves", "The constraint: recurrence is a queue", "Figure 1, redrawn: two stacks and a loop", "Scaled dot-product attention: one line, three choices", "Eight heads, and word order written in waves", "28.4", "Evidence 2: one change against a fixed base", "The recipe the results depend on", "What chat models kept: the right-hand column", "From the paper to your harness", "A design document names constraint, trade, and evidence."], N=T.length, $=id=>document.getElementById(id);
+  let i=0;
+  const strip=$("strip"), btns=[...strip.querySelectorAll("button")];
+  function go(k){
+    i=Math.max(0,Math.min(N-1,k));
+    const n=String(i+1).padStart(2,"0");
+    $("slide").src="s-"+n+".webp"; $("slide").alt="Slide "+(i+1)+": "+T[i];
+    $("count").textContent=(i+1)+" / "+N; $("stitle").textContent=T[i];
+    $("prev").disabled=i===0; $("next").disabled=i===N-1;
+    btns.forEach((b,j)=>{ if(j===i) b.setAttribute("aria-current","true"); else b.removeAttribute("aria-current"); });
+    btns[i].scrollIntoView({block:"nearest",inline:"nearest"});
+    try{ history.replaceState(null,"","#"+(i+1)); }catch(e){}
+    // preload next
+    if(i+1<N){ const im=new Image(); im.src="s-"+String(i+2).padStart(2,"0")+".webp"; }
+  }
+  $("prev").addEventListener("click",()=>go(i-1)); $("next").addEventListener("click",()=>go(i+1));
+  btns.forEach(b=>b.addEventListener("click",()=>go(+b.dataset.i)));
+  document.querySelectorAll(".slide-t").forEach(d=>{
+    const j=+d.dataset.i;
+    d.addEventListener("click",()=>{ go(j); $("stage").scrollIntoView({behavior:"smooth",block:"start"}); });
+    d.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(j); $("stage").scrollIntoView({block:"start"}); } });
+  });
+  $("stage").addEventListener("click",()=>go(i+1));
+  $("full").addEventListener("click",()=>{ const s=$("stage"); if(s.requestFullscreen) s.requestFullscreen().catch(()=>s.classList.toggle("full")); else s.classList.toggle("full"); });
+  document.addEventListener("keydown",e=>{
+    if(e.target.matches("input,select,textarea")) return;
+    if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){ go(i+1); e.preventDefault(); }
+    if(e.key==="ArrowLeft"||e.key==="PageUp"){ go(i-1); e.preventDefault(); }
+    if(e.key==="Home"){ go(0); e.preventDefault(); } if(e.key==="End"){ go(N-1); e.preventDefault(); }
+    if(e.key==="Escape") $("stage").classList.remove("full");
+  });
+  const h=parseInt(location.hash.slice(1)); go(isNaN(h)?0:h-1);
+})();
+</script>
+</body></html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CIDM 6333 Figures</title>
+<title>CIDM 6333 Course Site</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono&display=swap">
 <style>
 :root{--bg:#F2F4F6;--surface:#fff;--ink:#15212B;--ink-2:#4F606D;--line:#B6C2CC;--accent:#B45C0C;--accent-ink:#8A4406}
@@ -26,7 +26,8 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
 <body>
 <div class="wrap">
   <div class="eyebrow">CIDM 6333 · Agentic Systems Design and Development</div>
-  <h1>Figures</h1>
+  <h1>Course materials</h1>
+  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:24px 0 0">Figures</h2>
   <p class="lede">Interactive explainers for the course, one or more for each Evolution. Each one steps through a mechanism the lecture describes. Use Next and Back, the step dots, or the arrow keys, then try the interactive panels below each figure.</p>
   <div class="list">
     <a class="card" href="figures/two-loops.html">
@@ -103,6 +104,108 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
       <span class="weeks">Figure 13 · E12</span>
       <b>Rolled Back</b>
       <span>The release path and the way back, a circuit-breaker simulator, and two ways to ship the same release.</span>
+    </a>
+    <a class="card" href="figures/three-drawers.html">
+      <span class="weeks">Figure 14 · E5 E7 Final</span>
+      <b>Three Drawers</b>
+      <span>AGENTS.md, skills, and memory as three places a fact can outlive a session, what each costs per turn, and a six-fact sorting check.</span>
+    </a>
+    <a class="card" href="figures/skill-on-demand.html">
+      <span class="weeks">Figure 15 · E5 E8 Final</span>
+      <b>Skill on Demand</b>
+      <span>One skill followed from the folder on disk to the turn it runs, the three ways it fails to run, and a trigger and frontmatter checker.</span>
+    </a>
+    <a class="card" href="figures/pilot-and-planter.html">
+      <span class="weeks">Figure 16 · E5 E7 Final</span>
+      <b>Pilot and Planter</b>
+      <span>The paired exercise: three probes, a planted memory record that contradicts the intent file, three outcomes, and the fixes from weakest to strongest.</span>
+    </a>
+  </div>
+  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0">Lectures</h2>
+  <p class="lede">All lecture decks as slide pages with a text transcript and a PDF to download. Dates live in the course calendar, not in the slides.</p>
+  <div class="list">
+    <a class="card" href="lectures/orientation/">
+      <span class="weeks">Orientation · 34 slides</span>
+      <b>Course Orientation</b>
+      <span></span>
+    </a>
+    <a class="card" href="lectures/e0-index-zero/">
+      <span class="weeks">E0 · Index Zero · 22 slides</span>
+      <b>The Human Is Index Zero</b>
+      <span>Layers of AI · the AI → Agentic AI progression · what makes a system an agent · the Degradation Pattern · the covenant and the five gates</span>
+    </a>
+    <a class="card" href="lectures/e1-agent-loop/">
+      <span class="weeks">E1 · The Agent Loop · 14 slides</span>
+      <b>The Agent Loop</b>
+      <span>From a model call to an agent: chain-of-thought, ReAct, the loop without a halt, and the loop with a ledger</span>
+    </a>
+    <a class="card" href="lectures/e2-patterns-frameworks/">
+      <span class="weeks">E2 · Patterns and Frameworks · 14 slides</span>
+      <b>Patterns and Orchestration Frameworks</b>
+      <span>Workflows versus agents; the five patterns; every framework is a theory of who owns the loop; ADR-1</span>
+    </a>
+    <a class="card" href="lectures/e3-tools-as-contracts/">
+      <span class="weeks">E3 · Tools as Contracts · 12 slides</span>
+      <b>Tools as Contracts</b>
+      <span>Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks as a membrane.</span>
+    </a>
+    <a class="card" href="lectures/e4-mcp-1/">
+      <span class="weeks">E4 · MCP I · 13 slides</span>
+      <b>MCP I: Building a Server</b>
+      <span>N×M becomes N+M; hosts, clients, servers; tools, resources, prompts; the stateless 2026 revision; one server, two clients, every call logged</span>
+    </a>
+    <a class="card" href="lectures/e5-mcp-2-security-harness/">
+      <span class="weeks">E5 · MCP II, Security, Harness · 27 slides</span>
+      <b>MCP II: Security and the Harness</b>
+      <span>Transports, authorization, scope; the threat model; A2A against MCP; instruction files and skills; harness engineering: the product is the harness</span>
+    </a>
+    <a class="card" href="lectures/e6-context-engineering/">
+      <span class="weeks">E6 · Context Engineering · 27 slides</span>
+      <b>Context Engineering</b>
+      <span>Budgets, compaction, progressive disclosure, subagents, handoffs, and layers of truth: the window is an artifact with a budget</span>
+    </a>
+    <a class="card" href="lectures/e7-memory/">
+      <span class="weeks">E7 · Memory · 29 slides</span>
+      <b>Memory: Retrieval, State, Eviction, Retention</b>
+      <span>Memory is the part of context that survives the session: what is stored, who wrote it, how it is found again, and when it is deleted</span>
+    </a>
+    <a class="card" href="lectures/e8-multi-agent-1/">
+      <span class="weeks">E8 · Multi-Agent I · 27 slides</span>
+      <b>Multi-agent I: Controller, Worker, Reviewer</b>
+      <span>Plan, do, check under every name since FIPA; roles and personas; result contracts that fail closed; two-stage review; state graphs with a human interrupt</span>
+    </a>
+    <a class="card" href="lectures/e9-multi-agent-2/">
+      <span class="weeks">E9 · Multi-Agent II · 27 slides</span>
+      <b>Multi-agent II: When Coordination Fails</b>
+      <span>The failure taxonomy; adversarial validation in three tiers; locks; cost-aware routing; delegation, handoff, and the contracts a marketplace would need</span>
+    </a>
+    <a class="card" href="lectures/e10-evals-as-gates/">
+      <span class="weeks">E10 · Evals as Gates · 27 slides</span>
+      <b>Evaluation I: Evals as Gates</b>
+      <span>Golden sets, regression deltas, judge biases, the RED witness, pre-registration; what five agent benchmarks measure and what they hide</span>
+    </a>
+    <a class="card" href="lectures/e11-observability-red-team/">
+      <span class="weeks">E11 · Observability and Red Team · 26 slides</span>
+      <b>Evaluation II: Receipts, Red Team, Safety</b>
+      <span>Traces and receipts as the black box; cost and latency; the nine modes as red-team probes; system cards as evaluation documents; guardrails at an enforcement locus</span>
+    </a>
+    <a class="card" href="lectures/e12-deployment/">
+      <span class="weeks">E12 · Deployment · 27 slides</span>
+      <b>Production Deployment</b>
+      <span>From working to operated: serving, containers, secrets, limits, scheduling, rollback, the Heavy-lane gates, and the release ceremony</span>
+    </a>
+    <a class="card" href="lectures/mini-attention-2017/">
+      <span class="weeks">Mini lecture · Attention (2017) · 12 slides</span>
+      <b>Attention Is All You Need, read as a design document</b>
+      <span>The 2017 paper names a constraint, makes a trade, and backs it with evidence. Every model your harness calls descends from it.</span>
+    </a>
+  </div>
+  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0">Exercises</h2>
+  <div class="list">
+    <a class="card" href="exercises/one-intent-three-drawers.html">
+      <span class="weeks">In class · pairs · 40 minutes</span>
+      <b>One Intent, Three Drawers</b>
+      <span>AGENTS.md, a skill, and a memory store built side by side, then three probes that show which one the model used, and a planted record that contradicts the intent.</span>
     </a>
   </div>
   <footer>Jeffry Babb · West Texas A&amp;M University · Fall 2026</footer>
