@@ -62,7 +62,7 @@
  "90.2%": "90.2%",
  "better than single-agent Opus 4 on Anthropic's internal research eval (Opus 4 lead, Sonnet 4 workers)": "better than single-agent Opus 4 on Anthropic's internal research eval (Opus 4 lead, Sonnet 4 workers)",
  "80%": "80%",
- "of performance variance on that eval explained by token usage alone": "of performance variance on that eval explained by token usage alone",
+ "of performance variance on that eval explained by token usage alone": "of performance variance on BrowseComp explained by token usage alone",
  "Three reasons to split:": "Three reasons to split:",
  "Context isolation. A worker returns a result, not its trace.": "Context isolation. A worker returns a result and keeps its trace in its own window.",
  "Independent review. The reviewer did not write the code.": "Independent review. The reviewer did not write the code.",
