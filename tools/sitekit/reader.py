@@ -40,7 +40,9 @@ CSS = """<style id="reader-css">
 .reader h2{font-size:30px;margin-bottom:4px}
 .reader .lede{margin-bottom:14px}
 .rslide{display:grid;grid-template-columns:260px minmax(0,1fr);gap:14px 22px;padding:18px 0;border-top:1px solid var(--line);align-items:start}
-.rslide img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:#fff}
+.rslide .rthumb{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:6px}
+.rslide .rthumb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.rslide img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff;display:block}
 .rslide .n{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
 .rslide h3{font-family:var(--display);font-weight:600;font-size:22px;margin:2px 0 8px;line-height:1.1}
 .rslide p{margin:0 0 8px;max-width:78ch}
@@ -50,14 +52,46 @@ CSS = """<style id="reader-css">
 @media (max-width:700px){.rslide{grid-template-columns:1fr}}
 </style>"""
 
+# --- scrubbing: the site carries no schedule, no room, no contact details, no instructor reminders ---
+SCHED = re.compile("|".join([
+    r"\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b\.?\s*\d{1,2}/\d{1,2}(/\d{2,4})?",      # Thu 10/22, Wed 11/11/2026
+    r"\b\d{1,2}/\d{2}/\d{4}\b", r"\b(0?[1-9]|1[0-2])/[0-3]\d\b(?!/)",          # 10/22/2026, 09/17
+    r"\b\d{1,2}:\d{2}\s*(a\.m\.|p\.m\.|am|pm)?(?![\d:])",                     # 4:00, 11:59 p.m., 5:46, 0:55
+    r"\bCC2\d\d[A-Z]?\b", r"\bCalendly\b", r"\bWTClass\b", r"\bDiscord\b",
+    r"\b(at|by) (six|five|noon|midnight)\b", r"\bone-thirty\b",
+    r"\btonight\b", r"\bthis week\b", r"\blast (week|Thursday|semester)\b", r"\bnext (week|Thursday)\b",
+    r"\bbefore class\b", r"\bverify on your version\b", r"\bin class\b",
+    r"\b\d{3}-\d{3}-\d{4}\b", r"[\w.]+@wtamu\.edu", r"\bLabor Day\b", r"\bcode freeze\b",
+    r"\bWednesdays?( night| evening)?\b", r"\bFriday( night)?\b", r"\bSaturday\b", r"\bSunday\b", r"\bMonday\b", r"\bTuesday\b", r"\bThursdays?\b",
+    r"\bby appointment\b", r"\boffice hours\b", r"\bT/Th\b", r"\bdue (on )?the dates\b", r"\b11:59\b",
+]), re.I)
+DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
+
+def scrub_sentence_list(text):
+    """Drop every sentence that carries schedule or instructor-only content."""
+    text = re.sub(r"\s*\[[Vv]erify[^\]]*\]", "", text)
+    text = re.sub(r"\s*\[[^\]]*\bverify\b[^\]]*\]", "", text)
+    sents = re.split(r"(?<=[.!?])\s+", text)
+    keep = [x for x in sents if not SCHED.search(x)]
+    return " ".join(keep).strip()
+
+def scrub_line(l):
+    l = re.sub(r"\s*\[[^\]]*\bverify\b[^\]]*\]", "", l, flags=re.I)
+    if DROPLINE.search(l): return ""
+    if SCHED.search(l):
+        # a bullet with a date: keep the part before the first ' · ' segment that leaks, else drop the line
+        segs = [x for x in re.split(r"\s·\s|\s\|\s", l) if not SCHED.search(x)]
+        return " · ".join(segs).strip()
+    return l
+
 def split_notes(t):
     t = t.replace("\r", "")
     m = re.search(r"\n*Cut from slide \d+[^\n]*:\s*\n", t)
     prose, cut = (t[:m.start()], t[m.end():]) if m else (t, "")
-    prose = re.sub(r"\s*\[Verify[^\]]*\]", "", prose)
-    cut = re.sub(r"\s*\[Verify[^\]]*\]", "", cut)
-    paras = [p.strip() for p in re.split(r"\s/\s|\n\s*\n", prose) if p.strip()]
-    cuts = [re.sub(r"^\s*[-•]\s*", "", l).strip() for l in cut.split("\n") if l.strip()]
+    paras = [scrub_sentence_list(p.strip()) for p in re.split(r"\s/\s|\n\s*\n", prose) if p.strip()]
+    paras = [p for p in paras if p and not DROPLINE.search(p)]
+    cuts = [scrub_line(re.sub(r"^\s*[-•]\s*", "", l).strip()) for l in cut.split("\n") if l.strip()]
+    cuts = [c for c in cuts if c and len(c) > 2]
     return paras, cuts
 
 def para_html(paras):
@@ -66,11 +100,25 @@ def para_html(paras):
 def process(path, slug):
     s = open(path, encoding="utf-8").read()
     s = re.sub(r'<style id="reader-css">.*?</style>\n?', "", s, flags=re.S)
-    s = re.sub(r'<div class="notecur".*?</div>\n?', "", s, flags=re.S)
+    s = re.sub(r'<div class="notecur".*?</div></div>\n?', "", s, flags=re.S)
     s = re.sub(r'<section class="reader".*?</section>\n?', "", s, flags=re.S)
     s = re.sub(r'<script id="reader-js">.*?</script>\n?', "", s, flags=re.S)
-    s = re.sub(r'<p class="small chapters">.*?</p>\n?', "", s, flags=re.S)
+    s = re.sub(r'<p class="small chapters"[^>]*>.*?</p>\n?', "", s, flags=re.S)
     s = s.replace(' <a class="dl" href="#read">Read</a>', "")
+    # scrub the slide-text transcript too (it was partly scrubbed at build time; finish the job)
+    def scrub_li(m):
+        raw = m.group(1)
+        plain = html.unescape(re.sub(r"<[^>]+>", " ", raw))
+        if not (SCHED.search(plain) or DROPLINE.search(plain) or re.search(r"\[[^\]]*\bverify\b[^\]]*\]", plain, re.I)):
+            return m.group(0)
+        parts = [x for x in re.split(r"<br\s*/?>", raw) if x.strip()]
+        kept = []
+        for part in parts:
+            t = html.unescape(re.sub(r"<[^>]+>", " ", part))
+            cleaned = scrub_line(t)
+            if cleaned: kept.append(html.escape(cleaned))
+        return ("<li>%s</li>" % "<br>".join(kept)) if kept else ""
+    s = re.sub(r'<li>(.*?)</li>', scrub_li, s, flags=re.S)
     pptx, evo = DECKS[slug]
     notes = NOTES[pptx]
     titles = re.search(r'const T=\[(.*?)\], N=T\.length', s, flags=re.S)
@@ -81,13 +129,14 @@ def process(path, slug):
     # css
     i = s.find("</style>"); s = s[:i] + "</style>\n" + CSS + s[i+8:]
     # current-slide note under the viewer
-    cur = '<div class="notecur" id="notecur"><div class="k">The lecture, written out · slide <span id="noteno">1</span></div><div id="notebody">%s</div></div>\n' % para_html(per[0][0])
-    m = re.search(r'</div>\n\n<p class="small" style="margin-top:10px">[^<]*</p>', s)
+    cur = '<div class="notecur" id="notecur" aria-live="polite"><div class="k">The lecture, written out · slide <span id="noteno">1</span></div><div id="notebody">%s</div></div>\n' % para_html(per[0][0])
+    m = re.search(r'<p class="small" style="margin-top:10px">.*?</p>', s, flags=re.S)
     assert m, slug
     old_p = m.group(0)
-    new_p = '</div>\n' + cur + '<p class="small" style="margin-top:10px">Arrow keys step through the slides. The panel above is the lecture written out for the slide on screen; <a href="#read">Read this lecture</a> below has all of it in order, with each slide\'s full wording. Names and systems that appear without introduction are in the <a href="../../glossary/">glossary</a>.</p>'
+    new_p = cur + '<p class="small" style="margin-top:10px">Arrow keys step through the slides. The panel above is the lecture written out for the slide on screen; <a href="#read">Read this lecture</a> below has all of it in order, with each slide\'s full wording. Names and systems that appear without introduction are in the <a href="../../glossary/">glossary</a>.</p>'
     s = s.replace(old_p, new_p, 1)
     # Read link in the bar
+    s = s.replace('<span class="count" id="count">', '<span class="count" id="count" role="status">')
     s = s.replace('<a class="dl" href="%s.pdf" download>PDF</a>' % slug, '<a class="dl" href="%s.pdf" download>PDF</a> <a class="dl" href="#read">Read</a>' % slug, 1)
     # chapters line under the header
     if evo:
@@ -102,11 +151,11 @@ def process(path, slug):
     for k, (paras, cuts) in enumerate(per):
         nn = "%02d" % (k+1)
         cut_html = ('<details><summary>The slide\'s wording in full</summary><ul>%s</ul></details>' % "".join("<li>%s</li>" % html.escape(c) for c in cuts)) if cuts else ""
-        blocks.append('<div class="rslide" id="r%d"><div><img loading="lazy" src="s-%s.webp" alt="" data-i="%d"><div class="n">slide %s</div></div><div><h3>%s</h3>%s%s</div></div>' % (k+1, nn, k, nn, html.escape(T[k] if k < len(T) else ""), para_html(paras), cut_html))
+        blocks.append('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %s in the viewer"><img loading="lazy" src="s-%s.webp" alt=""></button><div class="n">slide %s</div></div><div><h3>%s</h3>%s%s</div></div>' % (k+1, k, nn, nn, nn, html.escape(T[k] if k < len(T) else ""), para_html(paras), cut_html))
     reader = '<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes, slide by slide: what the lecture says about each slide, then the slide\'s own wording. Click a slide image to open it in the viewer above.</p>%s</section>\n' % "".join(blocks)
     s = s.replace('<section class="transcript"', reader + '<section class="transcript"', 1)
     # js: keep the current-slide panel in sync, and make reader thumbnails jump
-    js = '<script id="reader-js">(function(){const N=%s;const $=i=>document.getElementById(i);function show(k){if(!N[k])return;$("noteno").textContent=k+1;$("notebody").innerHTML=N[k];}const c=$("count");new MutationObserver(()=>{const k=parseInt(c.textContent)-1;show(k);}).observe(c,{childList:true,characterData:true,subtree:true});show(parseInt(c.textContent)-1);document.querySelectorAll(".rslide img").forEach(im=>im.addEventListener("click",()=>{const b=document.querySelector(\'#strip button[data-i="\'+im.dataset.i+\'"]\');if(b){b.click();$("stage").scrollIntoView({behavior:"smooth",block:"start"});}}));})();</script>\n' % json.dumps([para_html(p) for p, c in per])
+    js = '<script id="reader-js">(function(){const N=%s;const $=i=>document.getElementById(i);function show(k){if(!N[k])return;$("noteno").textContent=k+1;$("notebody").innerHTML=N[k];}const c=$("count");new MutationObserver(()=>{const k=parseInt(c.textContent)-1;show(k);}).observe(c,{childList:true,characterData:true,subtree:true});show(parseInt(c.textContent)-1);document.querySelectorAll(".rslide .rthumb").forEach(im=>im.addEventListener("click",()=>{const b=document.querySelector(\'#strip button[data-i="\'+im.dataset.i+\'"]\');if(b){b.click();$("stage").scrollIntoView({behavior:"smooth",block:"start"});}}));})();</script>\n' % json.dumps([para_html(p) for p, c in per])
     s = s.replace("</body></html>", js + "</body></html>")
     open(path, "w", encoding="utf-8").write(s)
     return len(per)

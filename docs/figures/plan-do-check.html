@@ -175,9 +175,17 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 </style>
 
 <div class="wrap">
-<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Figures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Figures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
 <header>
-  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 09</div>
+  <div class="eyebrow">Figure 09</div>
   <h1>Plan, Do, Check</h1>
   <p class="lede">A worker's result is a claim with a type, and a verdict counts only from a reviewer that can say no. This figure draws the controller as a state graph: implement, parse, two reviews, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to see a pair of agents collapse into one.</p>
 </header>

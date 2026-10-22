@@ -182,7 +182,9 @@ a.gl:hover{color:var(--accent-ink);border-bottom-style:solid}
 def link_lecture(path):
     s = open(path, encoding="utf-8").read()
     s = re.sub(r'<style id="gl-css">.*?</style>\n?', "", s, flags=re.S)
-    s = re.sub(r'<(?:div|details) class="names">.*?</(?:div|details)>\n?', "", s, flags=re.S)
+    s = re.sub(r'<details class="names">.*?</details>\n?', "", s, flags=re.S)
+    s = re.sub(r'<div class="names">.*?</ul></div>\n?', "", s, flags=re.S)
+    s = re.sub(r'<ul><li><a href="\.\./\.\./glossary/#[^"]*">.*?</ul></div>\n?', "", s, flags=re.S)
     s = re.sub(r'<a class="gl" href="[^"]*">(.*?)</a>', r"\1", s)
     s = re.sub(r'<a class=\\"gl\\" href=\\"[^"]*\\">(.*?)</a>', r"\1", s)  # inside the JSON array
     pairs = link_terms()

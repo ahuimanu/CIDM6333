@@ -21,11 +21,12 @@ NAV_CSS = """
 .sitenav{min-height:44px}
 nav.site{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;margin:-10px 0 18px;padding:8px 0 10px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:16.5px;letter-spacing:.06em;text-transform:uppercase}
 nav.site a{color:var(--ink-2);text-decoration:none;padding:2px 0;border-bottom:2px solid transparent}
-nav.site a:hover,nav.site a:focus-visible{color:var(--accent-ink);outline:none}
+nav.site a:hover{color:var(--accent-ink)}
+nav.site a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 nav.site a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 nav.site .brand{color:var(--ink);font-weight:700;letter-spacing:.1em;margin-right:6px}
 nav.site .brand small{display:block;font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
-@media (max-width:640px){nav.site{gap:4px 12px;font-size:14px}}
+@media (max-width:640px){nav.site{gap:4px 12px;font-size:14px} nav.site .brand{flex-basis:100%}}
 """
 
 NAV_HTML = """<nav class="site" aria-label="Site">
@@ -61,6 +62,14 @@ def process(path, rel):
     s = s.replace("<style>\n" + COMMON + "</style>\n", "")
     s = s.replace("<style>\n" + ARTICLE + "</style>\n", "")
     s = s.replace("<style>\n" + COMMON + "</style>", "")
+    # one eyebrow pattern: the crumbs carry the path, the eyebrow carries only the kind
+    s = re.sub(r'<div class="eyebrow">CIDM 6333 · Agentic Systems · Lecture · ', '<div class="eyebrow">Lecture · ', s)
+    s = re.sub(r'<div class="eyebrow">CIDM 6333 · Agentic Systems · ', '<div class="eyebrow">', s)
+    s = s.replace('<div class="eyebrow">CIDM 6333 · Textbook</div>', '<div class="eyebrow">Textbook</div>')
+    if rel == "index.html":
+        s = s.replace('<div class="eyebrow">CIDM 6333 · Agentic Systems Design and Development</div>\n', "")
+    # inline crumb rules fight the master stylesheet
+    s = re.sub(r'nav\.crumbs\{[^}]*\}\n?nav\.crumbs a\{[^}]*\}\n?', "", s)
     # assets after <body>
     assets = ('<link rel="stylesheet" href="%(r)sassets/site.css">\n<script src="%(r)sassets/htmx.min.js"></script>\n'
               '<script src="%(r)sassets/_hyperscript.min.js"></script>\n') % {"r": ROOT}
@@ -72,7 +81,7 @@ def process(path, rel):
     m = re.search(r'<div class="wrap">\s*', s)
     if not m:
         return False
-    div = '<div class="sitenav" hx-get="%sassets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="%s" _="%s"></div>\n' % (ROOT, section_of(rel), HS)
+    div = '<div class="sitenav" hx-get="%sassets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="%s" _="%s"><noscript>%s</noscript></div>\n' % (ROOT, section_of(rel), HS, NAV_HTML.strip())
     s = s[:m.end()] + div + s[m.end():]
     open(path, "w", encoding="utf-8").write(s)
     return True

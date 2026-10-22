@@ -1,5 +1,5 @@
 article{max-width:900px}
-article h1{font-size:clamp(36px,6vw,60px)}
+article h1{font-size:clamp(36px,5vw,56px)}
 article h2{margin-top:34px; font-size:30px}
 article h3{font-family:var(--display); font-weight:600; font-size:22px; margin:26px 0 6px}
 article p{margin:10px 0}
