@@ -193,14 +193,14 @@ footer{margin-top:28px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <thead><tr><th>OpenCode has</th><th>You write</th><th>Evo</th></tr></thead>
       <tbody>
         <tr><td>a default prompt</td><td class="m">AGENTS.md</td><td>E5</td></tr>
-        <tr><td>built-in tools</td><td class="m">.opencode/tools/&lt;name&gt;.ts · opencode.json → mcp</td><td>E3 · E4</td></tr>
+        <tr><td>built-in tools</td><td class="m">a Python CLI under a shell rule · a Python MCP server (opencode.json → mcp)</td><td>E3 · E4</td></tr>
         <tr><td>default permissions</td><td class="m">opencode.json → permission</td><td>E3</td></tr>
         <tr><td>the skill tool, empty</td><td class="m">.opencode/skills/&lt;name&gt;/SKILL.md</td><td>E5</td></tr>
         <tr><td>built-in commands</td><td class="m">.opencode/commands/&lt;name&gt;.md</td><td>E2</td></tr>
         <tr><td>built-in agents</td><td class="m">.opencode/agents/&lt;name&gt;.md</td><td>E2 · E8</td></tr>
         <tr><td>compaction</td><td class="m">handoff.md · opencode.json → instructions, references</td><td>E6</td></tr>
         <tr><td>nothing: no store between sessions</td><td class="m">recall.py · memory.jsonl <em>(an addition)</em></td><td>E7</td></tr>
-        <tr><td>an event bus</td><td class="m">.opencode/plugins/&lt;name&gt;.ts <em>(an addition; not tonight)</em></td><td>E10</td></tr>
+        <tr><td>an event bus</td><td class="m">.opencode/plugins/ <em>(TypeScript; the course's Python answer is decided at E10)</em></td><td>E10</td></tr>
       </tbody>
     </table>
   </div>
@@ -249,7 +249,7 @@ footer{margin-top:28px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <h2>A tool is a schema plus a gate</h2>
   <div class="body cols">
     <div>
-      <p><strong>E3.</strong> A custom tool declares <code>args</code> with a schema and an <code>execute</code>; the model sees name, description, schema every turn. That is the contract.</p>
+      <p><strong>E3.</strong> A tool is a contract: arguments, a result, exit codes. In this course a tool you write is Python: a CLI the model runs through <code>shell</code> (tonight: <code>codec.py</code>, exit 0 or 2, <code>--selftest</code> as evidence) or an MCP server (E4). OpenCode's own custom-tool files are TypeScript; we do not use them.</p>
       <pre><code>"permission": {
   "edit": "ask",
   "shell": { "*": "ask",
@@ -351,7 +351,7 @@ Why … Return exactly one ReviewResult.</code></pre>
     <div>
       <p><strong>E10.</strong> Your code inside the loop for the first time:</p>
       <ul>
-        <li><code>.opencode/plugins/</code>: a hook on <code>tool.execute.before</code> that refuses a write without a passing run</li>
+        <li>a gate in the loop that refuses a write without a passing run: OpenCode offers a plugin hook (TypeScript); the course's Python version is decided at E10</li>
         <li><code>.opencode/commands/test.md</code> with <code>!`pytest -q`</code>: the test output injected into the prompt</li>
         <li><code>permission.doom_loop</code>: the same call three times stops the loop</li>
       </ul>

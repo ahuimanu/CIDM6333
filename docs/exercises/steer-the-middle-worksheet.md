@@ -9,7 +9,6 @@ Student: · Date: 2026-10-22 · `opencode --version`: · Model id: · Codec: min
 | E1 | tool calls before the answer · first tool | · |
 | E2 | steps in the plan · round-trip rule named? | · yes/no |
 | E3 | self-test command the model ran, verbatim · prompt appeared? | · yes/no |
-| E3 (optional) | custom tool loaded? · the model called it? | yes/no/skipped · yes/no |
 | E4 | MCP server name, or none | |
 | E5 | `wc -c AGENTS.md` · skill prompt appeared? · spec lines marked met | · yes/no · /10 |
 | E6 | `read` call ran? · source the model named | no/yes · |
@@ -25,7 +24,7 @@ A: file path in your repository. B: what reads it. C: when it is read. D: the tr
 |---|---|---|---|---|---|
 | Rules | `AGENTS.md` | | | | yes/no |
 | Permissions | `opencode.json` → `permission` | | | | yes/no |
-| Custom tool | `.opencode/tools/codec.ts` | | | | yes/no/skipped |
+| Tool (Python CLI) | `evolution-08/exercise/codec.py` | | | | yes/no |
 | MCP server | `opencode.json` → `mcp` | | | | yes/no/none |
 | Skill | `.opencode/skills/codec-check/SKILL.md` | | | | yes/no |
 | Instructions | `opencode.json` → `instructions` | | | | yes/no |
