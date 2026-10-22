@@ -37,7 +37,7 @@
  "0:02–0:10": "0:02–0:10",
  "Frameworks change monthly. Each encodes a theory of where control lives: your code, the model, the vendor's harness, or a graph you draw. You choose and defend that theory.": "A new framework has arrived every year since 2022. Each encodes a theory of where control lives: your code, the model, the vendor's harness, or a graph you draw. You choose that theory and defend it.",
  "Workflows versus agents (Anthropic, Dec 2024)": "Workflows versus agents (Anthropic, Dec 2024)",
- "Workflow: the model runs along code paths you wrote. Agent: the model directs its own control flow. Most production 'agents' are workflows, and should be.": "A workflow runs the model along code paths you wrote. An agent lets the model direct its own control flow. Most production 'agents' are workflows, and should be.",
+ "Workflow: the model runs along code paths you wrote. Agent: the model directs its own control flow. Most production 'agents' are workflows, and should be.": "A workflow runs the model along code paths you wrote. An agent lets the model direct its own control flow. Anthropic's advice: use a workflow wherever the path is known in advance, and the open loop only where it is not.",
  "Tonight's claim, which Sortie 2 will try to disprove": "The statement Sortie 2 will try to disprove",
  "Same task, two patterns, identical tool traces, and the cost or quality delta ADR-1 predicted. No predicted delta in the evidence: the ADR was rationalization.": "The same task runs under two patterns with identical tool traces and the cost or quality delta ADR-1 predicted. If the predicted delta is absent from the evidence, the ADR recorded a rationalization.",
  "The five workflow patterns and the agent": "The five workflow patterns and the agent",
