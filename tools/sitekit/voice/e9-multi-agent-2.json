@@ -459,7 +459,7 @@
  "Fly": "Fly",
  "Build the adversary, receipts, lock, route table. Fly TP1–6 in one sitting. Commit the flight log and cost table.": "Build the adversary, receipts, lock, route table. Fly TP1–6 in one sitting. Commit the flight log and cost table.",
  "Verdict": "Verdict",
- "The Chase reads receipts and the ledger slice and writes PASS or FAIL. Then you add the Design Analysis and AI_LOG and submit.": "The Chase reads receipts and the ledger slice and writes PASS or FAIL. Then you add the Design Analysis and AI_LOG and submit.",
+ "The Chase reads receipts and the ledger slice and writes PASS or FAIL. Then you add the Design Analysis and AI_LOG and submit.": "The Chase reads receipts and the ledger slice and writes PASS or FAIL. Then you add the Design Analysis and AI_LOG and commit them.",
  "Deliverables: Sortie 9 log · adversary + locks + routing · cost table · Design Analysis · AI_LOG.": "Deliverables: Sortie 9 log · adversary + locks + routing · cost table · Design Analysis · AI_LOG.",
  "A claim is a sentence. A receipt is evidence.": "A claim is a sentence that a model wrote. A receipt is what the harness observed.",
  "Before Go: the card, the planted falsehood, the family that must refute it. After: a flight log where every PASS points at a receipt.": "Before Go, you commit the card with the planted falsehood and the family that must refute it. After the sortie, you commit a flight log in which every PASS points at a receipt.",

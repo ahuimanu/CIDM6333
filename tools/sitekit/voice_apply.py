@@ -33,7 +33,9 @@ def notes():
             for l in lines:
                 m = re.match(r"^(\s*[-•]\s*)(.*)$", l)
                 if m and m.group(2) in ov:
-                    new.append(m.group(1) + ov[m.group(2)]); n += 1
+                    n += 1
+                    if ov[m.group(2)] == "": continue
+                    new.append(m.group(1) + ov[m.group(2)])
                 elif m and " / " in m.group(2) and any(p in ov for p in m.group(2).split(" / ")):
                     parts = m.group(2).split(" / ")
                     n += sum(1 for p in parts if p in ov)
@@ -86,6 +88,7 @@ def transcripts(docs):
                 if a in s: s = s.replace(a, b)
         # schedule residue in transcripts of unconverted decks
         s = re.sub(r"Break · \d:\d\d–\d:\d\d", "Break", s)
+        s = re.sub(r"<li>(\s|<br>)*</li>", "", s)  # overrides set to "" drop the item
         p.write_text(s, encoding="utf-8")
         print(slug, "transcript items rewritten:", cnt, "titles:", tcnt)
 
