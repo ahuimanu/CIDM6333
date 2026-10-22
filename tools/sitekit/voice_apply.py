@@ -91,6 +91,12 @@ def transcripts(docs):
                 tcnt += 1
             for a, b in ((json.dumps(k), json.dumps(v)), (json.dumps(k, ensure_ascii=False), json.dumps(v, ensure_ascii=False))):
                 if a in s: s = s.replace(a, b)
+        # long paragraphs that sit outside <li> (table cells, panels): replace the escaped text anywhere
+        for k, v in ov.items():
+            if len(k) < 25 or v == k: continue
+            for q in (True, False):
+                ek = html.escape(k, quote=q)
+                if ek in s: s = s.replace(ek, html.escape(v, quote=q))
         # schedule residue in transcripts of unconverted decks
         s = re.sub(r"Break · \d:\d\d–\d:\d\d", "Break", s)
         s = re.sub(r"<li>(\s|<br>)*</li>", "", s)  # overrides set to "" drop the item
