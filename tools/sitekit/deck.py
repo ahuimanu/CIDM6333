@@ -13,6 +13,7 @@ import re, sys, json, html, pathlib
 from pptx import Presentation
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import reader as RD
+DROP_TITLE = RD.DROP_TITLE
 import glossary as GL
 import textbook as TB
 
@@ -82,7 +83,7 @@ def classify(slide):
         joined = " ".join(t["paras"]).strip()
         if t["t"] > 490 and t["size"] <= 8: drop.append(t); continue                    # footer, page number
         if t["l"] > 700 and t["t"] < 60 and re.match(r"^\d:\d\d", joined): drop.append(t); continue  # timing
-        if t["t"] < 60 and t["size"] >= 17 and t["bold"] and title is None: title = t; continue
+        if t["t"] < 60 and t["size"] >= 14 and t["bold"] and title is None and t["l"] < 100: title = t; continue
         if t["t"] < 60 and t["size"] <= 11 and t["h"] <= 40 and title is None and sub is None and not t["bold"]: kick = t; continue  # "Evolution 8 · Lecture"
         if title is not None and sub is None and t["t"] < 110 and t["t"] >= title["t"] and not t["bold"] and t["size"] <= 14: sub = t; continue
     body = [t for t in texts if t not in drop and t is not title and t is not sub and t is not kick]
@@ -212,6 +213,9 @@ def render_slide(slide, n, total, meta, fig, img):
             '<div class="foot"><span>CIDM 6333 · %s</span><span>%s</span></div></section>') % (
             n, img, (' data-fig="%s"' % fig) if fig else "", kick, title, ("<small>%s</small>" % sub) if sub else "", "".join(body), meta["evo"], figlink)
 
+def slide_kept(title):
+    return not DROP_TITLE.search((title or "").strip())
+
 CSS = """<style id="deck-css">
 .stage{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
 .slides{position:relative; aspect-ratio:16/9; width:100%}
@@ -296,19 +300,24 @@ def build(docs, slug):
     notes = RD.NOTES[pptx_name]
     pairs = GL.link_terms()
     total = len(slides)
-    out_slides, titles, per = [], [], []
+    keep = []
     for s in slides:
+        ttl = " ".join(s["title"]["paras"]) if s["title"] else ""
+        if DROP_TITLE.search(ttl.strip()): continue
+        keep.append(s)
+    total = len(keep)
+    out_slides, titles, per = [], [], []
+    for idx, s in enumerate(keep, 1):
         n = s["n"]; img = "s-%02d.webp" % n
-        h = render_slide(s, n, total, meta, meta["figs"].get(n), img)
+        h = render_slide(s, idx, total, meta, meta["figs"].get(n), img)
         if not h:
             continue
-        if n == 1: h = h.replace('<section class="slide"', '<section class="slide title"', 1)
-        h = GL.link_block(h, pairs, "../../glossary/")
+        if idx == 1: h = h.replace('<section class="slide"', '<section class="slide title"', 1)
         out_slides.append(h)
         titles.append(" ".join(scrub_paras(s["title"]["paras"])) if s["title"] else ("Slide %d" % n))
         paras, cuts = RD.split_notes(notes[n-1])
-        per.append((n, paras))
-    N = [GL.link_block(RD.para_html(p), pairs, "../../glossary/") for n, p in per]
+        per.append((idx, paras))
+    N = [RD.para_html(p) for n, p in per]
     nums = [n for n, p in per]
     # textbook line
     chs = TB.chapters_for_evo(meta["evo"]); dirs = TB.main_dirs()

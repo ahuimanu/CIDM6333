@@ -201,15 +201,16 @@ def link_lecture(path):
         return link_block(m.group(0), pairs, href)
     s = re.sub(r'<div class="slide-t".*?</div></div>', relink, s, flags=re.S)
     s = re.sub(r'<div class="rslide".*?</div></div>', relink, s, flags=re.S)
+    s = re.sub(r'<section class="slide[^"]*".*?</section>', relink, s, flags=re.S)
     # the current-slide panel: its paragraphs live in a JSON array inside <script id="reader-js">
     def relink_json(m):
         import json as _j
         arr = _j.loads(m.group(2))
         arr = [link_block(x, pairs, href) for x in arr]
         return m.group(1) + _j.dumps(arr) + m.group(3)
-    s = re.sub(r'(<script id="reader-js">\(function\(\)\{const N=)(\[.*?\])(;const \$=)', relink_json, s, flags=re.S)
+    s = re.sub(r'(<script id="reader-js">\(function\(\)\{const N=)(\[.*?\])(;const (?:NUMS|\$)=)', relink_json, s, flags=re.S)
     # names panel: entries mentioned anywhere in transcript+reader text
-    text = html.unescape(re.sub(r"<[^>]+>", " ", " ".join(re.findall(r'<section class="(?:transcript|reader)".*?</section>', s, flags=re.S))))
+    text = html.unescape(re.sub(r"<[^>]+>", " ", " ".join(re.findall(r'<section class="(?:transcript|reader|deck)".*?</section>', s, flags=re.S))))
     found = {}
     for pat, e in panel_terms():
         if e["slug"] in found: continue
@@ -218,7 +219,8 @@ def link_lecture(path):
         items = sorted(found.values(), key=lambda e: (CATS.index(next(c for c in CATS if c[0] == e["cat"])), e["term"].lower()))
         lis = "".join('<li><a href="%s#%s">%s</a> <span>· %s</span></li>' % (href, e["slug"], html.escape(e["term"]), html.escape(first_clause(e["what"]))) for e in items)
         panel = '<details class="names"><summary class="k">Names on these slides · %d · each links to the glossary</summary><ul>%s</ul></details>\n' % (len(items), lis)
-        s = s.replace('<div class="viewer">', panel + '<div class="viewer">', 1)
+        if '<div class="viewer">' in s: s = s.replace('<div class="viewer">', panel + '<div class="viewer">', 1)
+        else: s = s.replace('<section class="deck"', panel + '<section class="deck"', 1)
     i = s.find("</style>"); s = s[:i] + "</style>\n" + LCSS + s[i+8:]
     open(path, "w", encoding="utf-8").write(s)
     return len(found)

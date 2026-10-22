@@ -72,6 +72,9 @@ SCHED = re.compile("|".join([
     r"\bself-guided\b", r"\bChase signs\b", r"\bsigns? (Go|GO)\b", r"\brun of show\b", r"\bminutes? of (framing|spine|teardowns?)\b",
     r"\b(Framing|Spine|Teardowns|Lens and card|Lab and Sprint)\s*·", r"\bBreak\s*·", r"\bFive minutes\b", r"\bTwo hours\b",
 ]), re.I)
+# slides that are about running a session, not the subject: dropped from web decks and from the reader
+DROP_TITLE = re.compile(r"(run of show|\bmoves\b|^Break\b|\bminutes\b|^Lab( tonight)?\b|^The Sprint\b|^Sprint\b|^Homework\b|^Tonight\b|^This week\b|^Next week\b|^Agenda\b|^Logistics\b|^Housekeeping\b|^Office hours\b|^Due\b|^Calendar\b|^Schedule\b)", re.I)
+
 DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
 
 REWRITE = [(r"\bTonight's claim\b", "The claim"), (r"\bTonight's\b", "This Evolution's"), (r"\btonight's\b", "this Evolution's"),
@@ -114,6 +117,8 @@ def para_html(paras):
 
 def process(path, slug):
     s = open(path, encoding="utf-8").read()
+    if '<section class="deck"' in s:
+        return "web-native, skipped"
     s = re.sub(r'<style id="reader-css">.*?</style>\n?', "", s, flags=re.S)
     s = re.sub(r'<div class="notecur".*?</div></div>\n?', "", s, flags=re.S)
     s = re.sub(r'<section class="reader".*?</section>\n?', "", s, flags=re.S)
@@ -162,8 +167,12 @@ def process(path, slug):
         s = s.replace('<div class="viewer">', chap + '<div class="viewer">', 1)
     # reader section
     T = [html.unescape(x) for x in re.findall(r'aria-label="Slide \d+: ([^"]*)"', s)][:n_page]
+    for k in range(len(per)):
+        if k < len(T) and DROP_TITLE.search(T[k].strip()):
+            per[k] = (["This slide covered the running of the session and is not part of the lecture."], [])
     blocks = []
     for k, (paras, cuts) in enumerate(per):
+        if k < len(T) and DROP_TITLE.search(T[k].strip()): continue
         nn = "%02d" % (k+1)
         cut_html = ('<details><summary>The slide\'s wording in full</summary><ul>%s</ul></details>' % "".join("<li>%s</li>" % html.escape(c) for c in cuts)) if cuts else ""
         blocks.append('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %s in the viewer"><img loading="lazy" src="s-%s.webp" alt=""></button><div class="n">slide %s</div></div><div><h3>%s</h3>%s%s</div></div>' % (k+1, k, nn, nn, nn, html.escape(T[k] if k < len(T) else ""), para_html(paras), cut_html))
