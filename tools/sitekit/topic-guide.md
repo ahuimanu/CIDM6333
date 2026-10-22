@@ -260,7 +260,7 @@ After this chapter you can:
 
 ### 3.6 Against the governance literature
 
-- NIST AI RMF, EU AI Act, ISO 42001, frontier-lab safety frameworks and system cards. The accountability gap that the practitioner literature (Raji et al.; "Auditing Work") identifies. Where an engineering covenant fits and where it does not.
+- NIST AI RMF, EU AI Act, ISO 42001, frontier-lab safety frameworks and system cards. The accountability gap that the practitioner literature (Raji et al., 2022; Groves et al., 2024) identifies. Where an engineering covenant fits and where it does not.
 
 ## Reference design: gzkit
 
