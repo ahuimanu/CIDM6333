@@ -262,7 +262,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <g class="el" data-k="t s4"><rect class="box" x="640" y="380" width="424" height="88" rx="7"/><text class="tt" x="656" y="402">Server log</text><text class="ts" x="656" y="422">one entry per call: {ts, tool, args, outcome}</text><text class="ts" x="656" y="440">written by the server, never by a client</text><text class="ts" x="656" y="458">the log the Chase reads in Sortie 4</text></g>
     <g class="el" data-k="t s4"><path class="flow" style="marker-end:url(#arr2)" d="M1064,224 L1076,224 L1076,424 L1066,424"/></g>
 
-    <g class="el" data-k="frame"><text class="ts" x="555" y="508" text-anchor="middle">wire: JSON-RPC 2.0 · stdio tonight, Streamable HTTP later</text></g>
+    <g class="el" data-k="frame"><text class="ts" x="555" y="508" text-anchor="middle">wire: JSON-RPC 2.0 · stdio for Sortie 4, Streamable HTTP later</text></g>
   </svg>
   </div>
   <div class="archcap" aria-live="polite"><p id="archtext"></p></div>
@@ -302,7 +302,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
           <li>If <code>resultType</code> is <code>input_required</code>, the client retries the same request with <code>inputResponses</code></li>
         </ol></div>
       </div>
-      <p class="small">The sequences are this figure's arrangement of the deck's table. The deck tells the instructor to check which revision the lab's Python SDK speaks; record yours on the card's SUBSTRATE line.</p>
+      <p class="small">The sequences are this figure's arrangement of the deck's table. The deck marks the protocol revision of the lab's Python SDK for verification; record yours on the card's SUBSTRATE line.</p>
     </section>
     <section class="panel" aria-labelledby="h-dep">
       <h2 id="h-dep" style="font-size:22px">Deprecated, and beyond the core</h2>
@@ -337,7 +337,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <li><b>Dec 2025</b> Donated to the Agentic AI Foundation (Linux Foundation).</li>
         <li><b>Jul 2026</b> 2026-07-28 GA: stateless core, MRTR, deprecation policy.</li>
       </ul>
-      <p class="small">A healthy protocol ecosystem, in the deck's list, needs a versioning and deprecation policy, independent SDKs (TypeScript, Python, Go, C#; Rust in beta), a server registry with provenance, and governance that no single vendor holds. A registry without provenance is a supply chain, which E5 takes up with SmartLoader.</p>
+      <p class="small">A protocol with a healthy set of implementers needs, in the deck's list, a versioning and deprecation policy, independent SDKs (TypeScript, Python, Go, C#; Rust in beta), a server registry with provenance, and governance that no single vendor holds. A registry without provenance is a supply chain, which E5 takes up with SmartLoader.</p>
     </section>
     <section class="panel" aria-labelledby="h-human">
       <h2 id="h-human" style="font-size:22px">Where is the human?</h2>
@@ -359,7 +359,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>Script client sends a call with a bad argument. Expect the server to reject it on schema, with the rejection in the log.</li>
     </ol>
     <div class="btnrow" style="justify-content:flex-start"><button type="button" id="shows4">Show this in the diagram</button></div>
-    <p class="small"><b>Falsifiers (any one fails the sortie):</b> a tool callable from one client but not the other; a call with no server-side log entry; a schema the client accepted that the server rejected, or the reverse; a pass obtained only by disabling validation or by editing the log. Students tend to underrate the asymmetric falsifier. A tool that works from the harness and fails from the script means the harness was compensating, and the sortie has measured the compensation.</p>
+    <p class="small"><b>Falsifiers (any one fails the sortie):</b> a tool callable from one client but not the other; a call with no server-side log entry; a schema the client accepted that the server rejected, or the reverse; a pass obtained only by disabling validation or by editing the log. The asymmetric falsifier is the one to plan for. A tool that works from the harness and fails from the script means the harness was compensating, and the sortie has measured the compensation.</p>
     <p class="small"><b>Substrate:</b> repo and commit, Python SDK version, protocol revision claimed, model and route, stdio. The write tool stays behind the E3 gate and does not go on the wire. Sortie 4 depends on a Sortie 3 PASS. An SDK and protocol-revision mismatch that prevents discovery aborts the card as halt-not-fail.</p>
   </section>
 
@@ -378,9 +378,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <ul>
       <li>The graphs assume every host wants every tool. In practice a host connects to a subset, so the direct count is an upper bound.</li>
       <li>A host opens one client per server at run time, so live connections can still number N×M. The count that falls to N+M is the code someone writes and maintains.</li>
-      <li>The figure does not count the specification or the SDKs, which the ecosystem shares.</li>
+      <li>The figure does not count the specification or the SDKs, which every host and server shares.</li>
       <li>Authentication, scope, and least privilege belong to E5, along with tool poisoning, resource injection, and the confused deputy.</li>
-      <li>The deck tells the instructor to verify the storage-tiers quotation against the repository before class.</li>
+      <li>The deck marks the storage-tiers quotation for verification against the repository.</li>
     </ul>
   </section>
   <section>
@@ -434,7 +434,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"bar prom", t:"What the middle column promises", w:["E3","E4"],
      p:"The protocol makes three promises that a function signature cannot. A client can discover what a server offers before calling it. Client and server negotiate a version and capabilities, and a mismatch is an error. The same server runs over a pipe or over HTTP. Your E3 tool had a schema and a gate and none of these three."},
     {k:"*", t:"A contract that strangers can discover", w:["E4","E5"],
-     p:"A host that has never seen your server can ask what it offers, agree on a version, and call it. That is what MCP adds to last week's tool contract. E5 shows the price, when the stranger who wrote a tool description turns out to be an adversary."}
+     p:"A host that has never seen your server can ask what it offers, agree on a version, and call it. That is what MCP adds to the E3 tool contract. E5 shows the price, when the stranger who wrote a tool description turns out to be an adversary."}
   ];
 
   function ys(n){
@@ -534,7 +534,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     all:"The human, the model, and the host application all sit in the host. Each host runs one client per server, and the client speaks JSON-RPC 2.0 to the server. The server declares three primitives, and the deck sorts them by who controls each one. The human sits in the host, and the server never sees the human.",
     t:"Tools are model-controlled. The model chooses to call read_note, the host may gate the call first, and the client sends tools/call. A tool is declared with a name, a description, a JSON Schema for input, and optionally one for output. This is E3's contract on the wire, and the server logs every call.",
     r:"Resources are application-controlled. The server exposes data by URI, here ledger://events, the last fifty ledger events. The host application decides which resources enter the model's context and when. A resource is content, so E5 treats a resource that carries an instruction as an attack.",
-    p:"Prompts are user-controlled. The server offers a reusable template with arguments, and the host surfaces it as a slash command or a menu item. The human picks it. Tonight's e3-tools server offers no prompt; /what-is-attested comes from the governance-server project.",
+    p:"Prompts are user-controlled. The server offers a reusable template with arguments, and the host surfaces it as a slash command or a menu item. The human picks it. The e3-tools server in this Evolution offers no prompt; /what-is-attested comes from the governance-server project.",
     s4:"Sortie 4 flies this shape. Your harness and a twenty-line script are two independent hosts, each with its own client, calling the same read_note on one server. The server writes one log entry per call. If a call works from the harness and fails from the script, the harness was doing work the protocol should have done."
   };
   function setArch(mode){

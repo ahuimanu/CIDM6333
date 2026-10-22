@@ -36,7 +36,7 @@
 <h3>2.2 The LLM agent loop</h3>
 <ul>
 <li>Perceive (prompt, tool results) → reason (model call) → act (tool call or answer) → repeat until halt. ReAct as canonical form.</li>
-<li>Halt conditions, budgets, and why 2023 forgot them.</li>
+<li>Halt conditions, budgets, and why the systems of 2023 omitted them.</li>
 </ul>
 <h3>2.3 The nine components</h3>
 <ul>
@@ -45,11 +45,11 @@
 </ul>
 <h3>2.4 Workflows versus agents</h3>
 <ul>
-<li>Anthropic's distinction: predefined code paths vs. model-directed control. Most production "agents" are workflows, and should be.</li>
+<li>Anthropic's distinction: predefined code paths vs. model-directed control. Anthropic's own advice is to build the workflow unless the task needs the agent's flexibility, and a system marketed as an "agent" may be a workflow by this definition (exercise 2).</li>
 </ul>
 <h3>2.5 The judgment loop</h3>
 <ul>
-<li>From CIDM 6330: name the decision, the characteristics, the cost, the failure mode, the preservation mechanism. Used to close every Design Analysis.</li>
+<li>From CIDM 6330: state the decision, the characteristics, the cost, the failure mode, and the preservation mechanism. Every Design Analysis closes with it.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>

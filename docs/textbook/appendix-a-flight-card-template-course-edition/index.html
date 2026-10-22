@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/CIDM6333/assets/site.css">
 <script src="/CIDM6333/assets/htmx.min.js"></script>
 <script src="/CIDM6333/assets/_hyperscript.min.js"></script>
-<title>Appendix A — Flight Card Template (course edition)</title>
+<title>Appendix A: Flight Card Template (course edition)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -17,8 +17,8 @@
 <a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
 <a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
 </nav></noscript></div>
-<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix A</nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix A — Flight Card Template (course edition)</h1><p>Copy this block into <code>evolution-NN/flight-card.md</code> and fill every field <strong>before</strong> requesting Go. Filling in expected observables after flying is a doctrine violation.</p>
-<pre><code>FLIGHT CARD — SORTIE &lt;N&gt; : &lt;short name&gt;
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix A</nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix A: Flight Card Template (course edition)</h1><p>Copy this block into <code>evolution-NN/flight-card.md</code>. Fill every field <strong>before</strong> you request Go. Do not fill in the expected observables after the flight. Doctrine counts that as a violation.</p>
+<pre><code>FLIGHT CARD · SORTIE &lt;N&gt; : &lt;short name&gt;
 ════════════════════════════════════════════════════════════
 ENVELOPE POSITION   : &lt;center | expansion | corner&gt;
 DESIGN CLAIM        : &lt;one sentence a single observation could disprove&gt;
@@ -27,7 +27,7 @@ SUBSTRATE           : &lt;repo + commit + model/route; local or hosted&gt;
 DEPENDS ON          : &lt;prior sorties that must have passed, or &quot;none&quot;&gt;
 
 ────────────────────────────────────────────────────────────
-ENTRY CONDITIONS (go/no-go — all must hold)
+ENTRY CONDITIONS (go/no-go: all must hold)
   - clean tree; prior sortie evidence on record
   - governance artifacts current (ADR/brief for this layer exist)
   - Go recorded by the instructor at &lt;time&gt;
@@ -58,16 +58,16 @@ ABORT CRITERIA (halt-not-fail)
 ────────────────────────────────────────────────────────────
 CHASE
   - observer : &lt;peer name&gt;
-  - reads    : &lt;exact evidence slice handed over — never the narrative&gt;
+  - reads    : &lt;exact evidence slice handed over, never the narrative&gt;
   - verdict  : PASS / FAIL, authored from evidence alone
 
 ────────────────────────────────────────────────────────────
 DEBRIEF &amp; SQUAWKS
   - black box vs card : &lt;matched / diverged&gt;
-  - design signal     : sound | awkward-but-correct | wrong — why
+  - design signal     : sound | awkward-but-correct | wrong, and why
   - squawks           : &lt;each anomaly → issue # | design-feedback | card amendment | re-fly&gt;
 ════════════════════════════════════════════════════════════
-</code></pre><hr><p><a href="../ch-26-the-final-system-and-the-closeout-ceremony/">◀ 26. The Final System and the Closeout Ceremony</a> &nbsp;·&nbsp; <a href="../appendix-b-design-analysis-template/">Appendix B — Design Analysis Template ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+</code></pre><hr><p><a href="../ch-26-the-final-system-and-the-closeout-ceremony/">◀ 26. The Final System and the Closeout Ceremony</a> &nbsp;·&nbsp; <a href="../appendix-b-design-analysis-template/">Appendix B: Design Analysis Template ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
 <a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
 <a data-sec="Home" href="/CIDM6333/">Home</a>
 <a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>

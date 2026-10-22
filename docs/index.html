@@ -31,186 +31,186 @@ a.card span{color:var(--ink-2);font-size:16px}
 </nav></noscript></div>
 <h1>Course materials</h1>
   <h2 id="figures" style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:24px 0 0">Figures</h2>
-  <p class="lede">Interactive explainers for the course, one or more for each Evolution. Each one steps through a mechanism the lecture describes. Use Next and Back, the step dots, or the arrow keys, then try the interactive panels below each figure.</p>
+  <p class="lede">Each figure is an interactive page that steps through one mechanism from a lecture, and every Evolution has at least one. Step with Next and Back, the step dots, or the arrow keys. Below each figure, one or more panels (a simulator, a checker, a sorting task) let you run the mechanism yourself.</p>
   <div class="list">
     <a class="card" href="figures/two-loops.html">
       <span class="weeks">Figure 01 · E0 E1 E6 E10</span>
       <b>Two Loops</b>
-      <span>How a language model writes one token per pass inside the agent loop your harness runs, with a temperature sampler and a per-turn token cost chart.</span>
+      <span>A language model as a loop inside a loop. The inner loop writes one token per pass, the outer loop is the harness you build, and a temperature sampler and a chart of token cost per turn show what each loop costs.</span>
     </a>
     <a class="card" href="figures/transformer-2017.html">
       <span class="weeks">Figure 01b · after Vaswani et al. (2017)</span>
       <b>The 2017 Transformer</b>
-      <span>Figure 1 of Attention Is All You Need redrawn and quoted step by step, with a decoder-only switch, live attention, positional encodings, and Tables 1 and 3.</span>
+      <span>Figure 1 of Attention Is All You Need, redrawn with the paper's words set beside each part as you step through it. A switch removes the encoder to show which half the GPT lineage kept, and panels work the attention, the positional encodings, and Tables 1 and 3.</span>
     </a>
     <a class="card" href="figures/transformer-evidence.html">
       <span class="weeks">Figure 01c · E10 E6 E11</span>
       <b>The Transformer's Evidence</b>
-      <span>The paper's evidence as working charts: cost against BLEU, one-change ablations, the warmup schedule, the attention pictures, and parsing.</span>
+      <span>Weighs the evidence the 2017 paper gives for its design. The figure plots cost against BLEU, changes one thing at a time against a fixed base, and gives the warmup schedule, the attention pictures, and the parsing task a working chart each.</span>
     </a>
     <a class="card" href="figures/loop-that-halts.html">
       <span class="weeks">Figure 02 · E1</span>
       <b>The Loop That Halts</b>
-      <span>The agent loop as a state machine with an exit for every halt condition, and a budget simulator that shows the spiral when the halt check is off.</span>
+      <span>The agent loop drawn as a state machine in which every halt condition has its own labeled exit, so a run can end only through one of them. A simulator flies scripted episodes through it and shows the budget spiral when the halt check is off.</span>
     </a>
     <a class="card" href="figures/who-owns-the-loop.html">
       <span class="weeks">Figure 03 · E2</span>
       <b>Who Owns the Loop</b>
-      <span>The five workflow patterns and the agent as mechanisms, and a framework picker that shows who owns each part of the loop.</span>
+      <span>Who decides what happens next, your code or the model? The five workflow patterns and the agent are drawn as small mechanisms with each edge marked by its owner, and a picker shows which parts of the loop each framework from the E2 teardowns takes from you.</span>
     </a>
     <a class="card" href="figures/the-gate-holds.html">
       <span class="weeks">Figure 04 · E3</span>
       <b>The Gate Holds</b>
-      <span>One tool call played through model, harness, permission gate, human, tool, and ledger, for read, write, destructive, malformed, and injected calls.</span>
+      <span>Pick a tool call (read, write, destructive, malformed, or injected) and play it through the model, the harness, the permission gate, the human, the tool, and the ledger, on the path E3 prescribes.</span>
     </a>
     <a class="card" href="figures/n-plus-m.html">
       <span class="weeks">Figure 05 · E4</span>
       <b>N×M Becomes N+M</b>
-      <span>Sliders redraw direct integrations beside MCP, with hosts, clients, servers, and the three server primitives.</span>
+      <span>Move two sliders and watch N hosts and M tools cost N×M adapters without a protocol and N+M with one. The figure then lays out hosts, clients, and servers, the three server primitives, and one tool call before and after MCP.</span>
     </a>
     <a class="card" href="figures/trust-boundaries.html">
       <span class="weeks">Figure 06 · E5</span>
       <b>Trust Boundaries</b>
-      <span>The five-step MCP authorization flow, the threat model as trust boundaries, and a live hash-pin check on a tool description.</span>
+      <span>Two things cross into an MCP system from outside, a token and untrusted text. Part A steps through the five-step authorization flow the spec requires, Part B draws the threat model as the paths that text takes across a boundary, and a live panel pins a tool description to a hash and reports when it changes.</span>
     </a>
     <a class="card" href="figures/window-budget.html">
       <span class="weeks">Figure 07 · E6</span>
       <b>Window Budget</b>
-      <span>The context window by who fills it, the per-turn budget record, a compaction simulator, and the 258K exhaustion.</span>
+      <span>The context window drawn by who put each part in it, with a budget line that records what every turn cost. Run the four compaction moves on a fourteen-turn session, then watch a window reach 258K tokens and run out.</span>
     </a>
     <a class="card" href="figures/memory-is-a-claim.html">
       <span class="weeks">Figure 08 · E7</span>
       <b>Memory Is a Claim</b>
-      <span>Chunk, represent, store, score, inject: four questions against a five-record store with two retrievers, eviction, and a ledger.</span>
+      <span>A memory record is a claim with a source, and forgetting is an event. One record travels from a flight log through retrieval into the window and out again through eviction, and a retrieval lab runs the deck's four questions against a five-record store with two retrievers and a ledger.</span>
     </a>
     <a class="card" href="figures/plan-do-check.html">
       <span class="weeks">Figure 09 · E8</span>
       <b>Plan, Do, Check</b>
-      <span>Controller, worker, and reviewer as a state graph with typed results, replaying the deck's trace with a read-only or editing reviewer.</span>
+      <span>The controller as a state graph (implement, parse, two reviews, a checkpoint, a human before merge) in which a worker's result is a typed claim. Replay the deck's worked trace, then give the reviewer edit rights and see how a pair of agents becomes one agent with extra steps.</span>
     </a>
     <a class="card" href="figures/claim-receipt-verdict.html">
       <span class="weeks">Figure 10 · E9</span>
       <b>Claim, Receipt, Verdict</b>
-      <span>Who writes each record and which ones are evidence, the MAST failure matrix, and the ten-deep chain with and without receipts.</span>
+      <span>Follows the four records a multi-agent system writes about one piece of work and shows which of them count as evidence. The MAST failure matrix sorts fourteen ways coordination fails, and the ten-deep chain shows how a summary becomes a fact, with receipts and without them.</span>
     </a>
     <a class="card" href="figures/one-run-is-an-anecdote.html">
       <span class="weeks">Figure 11 · E10</span>
       <b>One Run Is an Anecdote</b>
-      <span>The delta gate from golden set to exit code, with a simulation of how often a gate that sees few runs gets it wrong.</span>
+      <span>A delta gate built so that it can fail. The golden set and the baseline are frozen, the threshold is committed before the first run, and a RED witness removes the feature and expects exit 1. The simulator counts how often a gate that sees only a few runs lets a regression through.</span>
     </a>
     <a class="card" href="figures/receipts-over-narrative.html">
       <span class="weeks">Figure 12 · E11</span>
       <b>Receipts Over Narrative</b>
-      <span>A span waterfall of one agent run where the trace catches a claim the agent's own account got wrong.</span>
+      <span>One agent run leaves two accounts, the narrative the model gives and the trace of timed spans the loop wrote. Click a span to read its attributes, set the two accounts side by side, and find the place where the trace contradicts the narrative.</span>
     </a>
     <a class="card" href="figures/rolled-back.html">
       <span class="weeks">Figure 13 · E12</span>
       <b>Rolled Back</b>
-      <span>The release path and the way back, a circuit-breaker simulator, and two ways to ship the same release.</span>
+      <span>A release is a built thing with a version and a hash, and a rollback reinstalls a thing that already exists. Step through one release, a broken one, and the way back, break a provider to watch the circuit breaker open, and compare two ways to ship the same release.</span>
     </a>
     <a class="card" href="figures/three-drawers.html">
       <span class="weeks">Figure 14 · E5 E7 Final</span>
       <b>Three Drawers</b>
-      <span>AGENTS.md, skills, and memory as three places a fact can outlive a session, what each costs per turn, and a six-fact sorting check.</span>
+      <span>Your harness has three places where a fact can outlive a session, and each charges a different price per turn. AGENTS.md is in the window every turn, a skill costs one line until it is called, and a memory record costs nothing until it scores. Sort six facts into the right drawer.</span>
     </a>
     <a class="card" href="figures/skill-on-demand.html">
       <span class="weeks">Figure 15 · E5 E8 Final</span>
       <b>Skill on Demand</b>
-      <span>One skill followed from the folder on disk to the turn it runs, the three ways it fails to run, and a trigger and frontmatter checker.</span>
+      <span>A skill is a procedure with a name, and the model sees only that name until it calls the skill tool. The figure follows one skill, flight-card, from its folder on disk to the turn it runs on, shows the three ways it fails to run, and checks your trigger wording and frontmatter.</span>
     </a>
     <a class="card" href="figures/pilot-and-planter.html">
       <span class="weeks">Figure 16 · E5 E7 Final</span>
       <b>Pilot and Planter</b>
-      <span>The paired exercise: three probes, a planted memory record that contradicts the intent file, three outcomes, and the fixes from weakest to strongest.</span>
+      <span>Two students share one repository. The Pilot writes the intent in AGENTS.md and the procedure in a skill, the Planter writes a memory record that contradicts the intent, and three probes in fresh sessions show which drawer the model used. The figure then lays out the three outcomes and ranks the fixes from weakest to strongest.</span>
     </a>
     <a class="card" href="figures/steer-the-middle.html">
       <span class="weeks">Figure 17 · E0–E8 Final</span>
       <b>Steer the Middle</b>
-      <span>Model, OpenCode, and your harness as three rings set into the narrow band of a specs–execution–V&amp;V bar; every affordance from E0 to E8 on its ring, and a place-this-affordance checker.</span>
+      <span>Three rings and one bar. The model is the inner ring, OpenCode is the loop you did not write, and the outer ring holds the files you write to steer it. The bar above the rings shows where the human's work is: wide at specs before the loop runs, wide at V&amp;V after, and narrow where the model runs. Every affordance from E0 to E8 is on its ring, and a checker asks you to place a new one.</span>
     </a>
   </div>
   <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0" id="lectures">Lectures</h2>
-  <p class="lede">All lecture decks as slide pages, each with the lecture written out from the speaker notes, a text transcript, the names on its slides linked to the glossary, and a PDF to download. Dates live in the course calendar, not in the slides.</p>
+  <p class="lede">Every lecture deck is here as a slide page. Each page carries the lecture written out from the speaker notes, a text transcript, a link from each name on the slides to its glossary entry, and a PDF to download. The slides carry no dates, so look in the course calendar for those.</p>
   <div class="list">
     <a class="card" href="lectures/orientation/">
       <span class="weeks">Orientation · 34 slides</span>
       <b>Course Orientation</b>
-      <span>How the course runs: Evolutions, Sprint and Drift, flight cards and sorties, the Chase, the two toolkit routes, and the Final System.</span>
+      <span>How the course runs, in the order a student meets each part of it. The Evolutions and the Sprint and Drift rhythm come first, then flight cards and sorties, the Chase, the two toolkit routes, and the Final System.</span>
     </a>
     <a class="card" href="lectures/e0-index-zero/">
       <span class="weeks">E0 · Index Zero · 22 slides</span>
       <b>The Human Is Index Zero</b>
-      <span>Layers of AI · the AI → Agentic AI progression · what makes a system an agent · the Degradation Pattern · the covenant and the five gates</span>
+      <span>Starts from the layers of AI and the progression from AI to agentic AI, asks what makes a system an agent, and ends with the Degradation Pattern, the covenant, and the five gates that keep the human at Index zero.</span>
     </a>
     <a class="card" href="lectures/e1-agent-loop/">
       <span class="weeks">E1 · The Agent Loop · 14 slides</span>
       <b>The Agent Loop</b>
-      <span>From a model call to an agent: chain-of-thought, ReAct, the loop without a halt, and the loop with a ledger</span>
+      <span>Builds an agent out of a single model call, by way of chain-of-thought and ReAct, and then sets the loop that has no halt beside the loop that writes a ledger.</span>
     </a>
     <a class="card" href="lectures/e2-patterns-frameworks/">
       <span class="weeks">E2 · Patterns and Frameworks · 14 slides</span>
       <b>Patterns and Orchestration Frameworks</b>
-      <span>Workflows versus agents; the five patterns; every framework is a theory of who owns the loop; ADR-1</span>
+      <span>Separates workflows from agents, lays out the five patterns, argues that every framework is a theory of who owns the loop, and ends with the build: the loop refactored into one of the patterns, with the choice recorded in ADR-1.</span>
     </a>
     <a class="card" href="lectures/e3-tools-as-contracts/">
       <span class="weeks">E3 · Tools as Contracts · 12 slides</span>
       <b>Tools as Contracts</b>
-      <span>Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks as a membrane.</span>
+      <span>Each tool is a contract with a schema, a side-effect class, a permission gate, a retry rule, and a halt, and the model is an untrusted caller of it. Hooks sit between the two as a membrane.</span>
     </a>
     <a class="card" href="lectures/e4-mcp-1/">
       <span class="weeks">E4 · MCP I · 13 slides</span>
       <b>MCP I: Building a Server</b>
-      <span>N×M becomes N+M; hosts, clients, servers; tools, resources, prompts; the stateless 2026 revision; one server, two clients, every call logged</span>
+      <span>Why MCP turns N×M integrations into N+M, then hosts, clients, and servers, the three primitives (tools, resources, prompts), and the stateless 2026 revision. The build is one server that two clients call, with every call logged.</span>
     </a>
     <a class="card" href="lectures/e5-mcp-2-security-harness/">
       <span class="weeks">E5 · MCP II, Security, Harness · 27 slides</span>
       <b>MCP II: Security and the Harness</b>
-      <span>Transports, authorization, scope; the threat model; A2A against MCP; instruction files and skills; harness engineering: the product is the harness</span>
+      <span>Transports, authorization, and scope first, then the threat model, A2A set against MCP, and instruction files and skills. The deck ends on harness engineering, under the framing sentence that the product is the harness.</span>
     </a>
     <a class="card" href="lectures/e6-context-engineering/">
       <span class="weeks">E6 · Context Engineering · 27 slides</span>
       <b>Context Engineering</b>
-      <span>Budgets, compaction, progressive disclosure, subagents, handoffs, and layers of truth: the window is an artifact with a budget</span>
+      <span>Treats the context window as an artifact with a budget, since on every turn the model knows what is in the window and nothing else. Compaction, progressive disclosure, subagents, handoffs, and the layers of truth each follow from that budget.</span>
     </a>
     <a class="card" href="lectures/e7-memory/">
       <span class="weeks">E7 · Memory · 29 slides</span>
       <b>Memory: Retrieval, State, Eviction, Retention</b>
-      <span>Memory is the part of context that survives the session: what is stored, who wrote it, how it is found again, and when it is deleted</span>
+      <span>Defines memory as the part of context that survives the session, then asks four questions of any store. What is kept, who wrote it, how is it found again, and when is it deleted.</span>
     </a>
     <a class="card" href="lectures/e8-multi-agent-1/">
       <span class="weeks">E8 · Multi-Agent I · 27 slides · web-native deck</span>
       <b>Multi-agent I: Controller, Worker, Reviewer</b>
-      <span>Plan, do, check under every name since FIPA; roles and personas; result contracts that fail closed; two-stage review; state graphs with a human interrupt</span>
+      <span>Plan, do, check has gone under several names since FIPA, and the deck traces them before it builds the controller, worker, and reviewer out of roles and personas, result contracts that fail closed, two-stage review, and a state graph with a human interrupt.</span>
     </a>
     <a class="card" href="lectures/e9-multi-agent-2/">
       <span class="weeks">E9 · Multi-Agent II · 27 slides</span>
       <b>Multi-agent II: When Coordination Fails</b>
-      <span>The failure taxonomy; adversarial validation in three tiers; locks; cost-aware routing; delegation, handoff, and the contracts a marketplace would need</span>
+      <span>Opens with the taxonomy of how multi-agent systems fail, then answers it with adversarial validation in three tiers, locks on shared work, cost-aware routing, delegation and handoff, and the contracts an agent marketplace would need.</span>
     </a>
     <a class="card" href="lectures/e10-evals-as-gates/">
       <span class="weeks">E10 · Evals as Gates · 27 slides</span>
       <b>Evaluation I: Evals as Gates</b>
-      <span>Golden sets, regression deltas, judge biases, the RED witness, pre-registration; what five agent benchmarks measure and what they hide</span>
+      <span>Golden sets, regression deltas, judge biases, the RED witness, and pre-registration make an eval into a gate. The second half reads five agent benchmarks for what each one measures and what it hides.</span>
     </a>
     <a class="card" href="lectures/e11-observability-red-team/">
       <span class="weeks">E11 · Observability and Red Team · 26 slides</span>
       <b>Evaluation II: Receipts, Red Team, Safety</b>
-      <span>Traces and receipts as the black box; cost and latency; the nine modes as red-team probes; system cards as evaluation documents; guardrails at an enforcement locus</span>
+      <span>Traces and receipts are the black box of an agent run, and cost and latency come out of it. The nine failure modes become red-team probes, system cards count as evaluation documents, and guardrails belong at an enforcement locus.</span>
     </a>
     <a class="card" href="lectures/e12-deployment/">
       <span class="weeks">E12 · Deployment · 27 slides</span>
       <b>Production Deployment</b>
-      <span>From working to operated: serving, containers, secrets, limits, scheduling, rollback, the Heavy-lane gates, and the release ceremony</span>
+      <span>Takes a system from working to operated, through serving, containers, secrets, limits, scheduling, and rollback, and ends with the Heavy-lane gates and the release ceremony that a release must pass.</span>
     </a>
     <a class="card" href="lectures/mini-attention-2017/">
       <span class="weeks">Mini lecture · Attention (2017) · 12 slides</span>
       <b>Attention Is All You Need, read as a design document</b>
-      <span>The 2017 paper names a constraint, makes a trade, and backs it with evidence. Every model your harness calls descends from it.</span>
+      <span>Reads the 2017 paper as a design document, in which the authors state a constraint, make one trade against it, and back the trade with their own tables. Every model your harness calls descends from this paper, which is why the course reads it as the first design record in the lineage.</span>
     </a>
     <a class="card" href="lectures/mini-steer-the-middle/">
       <span class="weeks">Mini lecture · Steer the Middle · 15 slides · web-only deck</span>
       <b>Steer the Middle: three rings, one bar, E0 to E8</b>
-      <span>The lecture before the follow-along exercise: the model, OpenCode, and your harness as rings; the table of what OpenCode has and what you write; the reviewer that cannot edit.</span>
+      <span>Prepares the follow-along exercise. The model, OpenCode, and your harness are drawn as three rings, a table separates what OpenCode already has from what you write, and the last slides build the reviewer that cannot edit.</span>
     </a>
   </div>
   <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0" id="exercises">Exercises</h2>
@@ -218,26 +218,26 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="exercises/one-intent-three-drawers.html">
       <span class="weeks">In class · pairs · 40 minutes</span>
       <b>One Intent, Three Drawers</b>
-      <span>AGENTS.md, a skill, and a memory store built side by side, then three probes that show which one the model used, and a planted record that contradicts the intent.</span>
+      <span>Build AGENTS.md, a skill, and a memory store side by side. Run three probes that show which one the model used. Then one partner plants a memory record that contradicts the intent file, and the pair finds out whether a stale memory can beat a rule that is in the window.</span>
     </a>
     <a class="card" href="exercises/steer-the-middle.html">
       <span class="weeks">In class · follow along · 60 minutes</span>
       <b>Steer the Middle</b>
-      <span>E0 to E8 in your own repository: locate every file on the outer ring, make it fire, record the trace, then build a reviewer agent that cannot edit and put it to the test on a codec change.</span>
+      <span>Work E0 to E8 in your own repository. Locate every file on the outer ring, make each one fire, and record the trace. Then build a reviewer agent that cannot edit and test it on a codec change.</span>
     </a>
   </div>
   <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0" id="reference">Reference</h2>
-  <p class="lede">The names the lectures use, and the book the course is written from.</p>
+  <p class="lede">A glossary of the names the lectures use, and the textbook the course is written from.</p>
   <div class="list">
     <a class="card" href="glossary/">
-      <span class="weeks">Glossary · every named thing</span>
+      <span class="weeks">Glossary · every name the lectures use</span>
       <b>Glossary</b>
-      <span>Systems, papers, protocols, companies, and the course's own vocabulary: what each is, who made it and when, why it is in the course, where to read more. Lecture transcripts link here.</span>
+      <span>Each entry covers one system, paper, protocol, company, or course term. It says what the thing is, who made it and when, why it is in the course, and where to read more. Lecture transcripts link here on a term's first mention.</span>
     </a>
     <a class="card" href="textbook/">
       <span class="weeks">Textbook · Answerable Systems · outline edition</span>
       <b>Answerable Systems</b>
-      <span>The Design, Lineage, and Governance of Agentic Software. Twenty-six chapter outlines and the appendices, mapped to the Evolutions; each lecture page links its chapters.</span>
+      <span>Subtitled The Design, Lineage, and Governance of Agentic Software. Its twenty-six chapter outlines and the appendices are mapped to the Evolutions, and each lecture page links the chapters it draws on.</span>
     </a>
   </div>
   <div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Home" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">

@@ -174,7 +174,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 11</div>
   <h1>One Run Is an Anecdote</h1>
-  <p class="lede">An evaluation that cannot fail is a ceremony, and a check you have never seen fail is not yet evidence. Step through the delta gate from the golden set to the exit code. Then use the simulator to see how often a gate that sees only a few runs lets a regression through or blocks a real improvement.</p>
+  <p class="lede">An evaluation that cannot fail proves nothing, because it would pass whatever the system did. The delta gate in this figure is built so that it can fail: a frozen golden set, a frozen baseline, a threshold rule committed before the first run, and a RED witness that removes the feature and expects exit 1. The simulator below shows how often a gate that sees only a few runs lets a regression through or blocks a real improvement, which is the reason one run is an anecdote.</p>
 </header>
 
 <div class="figwrap">
@@ -290,7 +290,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <text class="tt" x="962" y="184">Exit code</text>
       <rect class="okchip" x="962" y="198" width="106" height="30" rx="15"/><text class="mono" x="1015" y="218" text-anchor="middle">0 · GREEN</text>
       <rect class="nochip" x="962" y="238" width="106" height="30" rx="15"/><text class="mono" x="1015" y="258" text-anchor="middle">1 · RED</text>
-      <text class="ts" x="962" y="292">names the</text>
+      <text class="ts" x="962" y="292">lists the</text>
       <text class="ts" x="962" y="308">regressed ids</text>
     </g>
 
@@ -337,7 +337,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <rect class="box" x="20" y="470" width="170" height="90" rx="8"/>
       <text class="tt" x="32" y="492">RED witness</text>
       <text class="ts" x="32" y="512">remove the feature</text>
-      <text class="ts" x="32" y="528">(the named diff), or</text>
+      <text class="ts" x="32" y="528">(the removal diff), or</text>
       <text class="ts" x="32" y="544">plant a wrong answer</text>
     </g>
     <g class="el" data-k="rm2r">
@@ -406,7 +406,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <!-- ===== pass@k ===== -->
   <section class="panel" aria-labelledby="h-pk">
     <div class="eyebrow">E10 slide 6 · τ-bench (Yao et al., 2024)</div>
-    <h2 id="h-pk">pass@k asks whether it can; pass^k asks whether it will</h2>
+    <h2 id="h-pk">pass@k against pass^k</h2>
     <p class="small">pass@k is the chance that at least one of k trials succeeds, so it rises with k and flatters. pass^k is the chance that all k succeed, so it falls with k, and it is the number a user who runs the task every day experiences. The curves assume independent trials with one fixed success chance per trial.</p>
     <div class="ctrl"><label for="pt">Success chance per trial</label><input id="pt" type="range" min="5" max="100" step="1" value="70"><output id="ptout" for="pt"></output></div>
     <svg class="chart" id="pk" viewBox="0 0 520 240" role="img" aria-label="pass@k and pass^k against k from 1 to 10."></svg>
@@ -426,7 +426,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Witness 2, wrong answer planted.</b> Substitute one wrong output. The grader or judge must fail it.</li>
       <li><b>What they catch.</b> A tautological test compares the code with itself, because its expected value came from the function under test. A hollow test passes for any output, such as <code>assert result is not None</code> or a check that accepts every label. Both stay green forever and look like coverage.</li>
     </ul>
-    <p class="small">An evaluator is a system. It needs its own RED witness, or it becomes one more green light. The deck marks the <code>gz arb red</code> flags for verification against the repository.</p>
+    <p class="small">An evaluator is itself a system, so it needs its own RED witness; without one it is one more check that passes whatever it sees. The deck marks the <code>gz arb red</code> flags for verification against the repository.</p>
   </section>
 
   <!-- ===== pre-registration ===== -->
@@ -448,7 +448,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <tbody>
         <tr><td>Position</td><td>Wang et al. (2023): by swapping answer order alone, Vicuna-13B beat ChatGPT on 66 of 80 queries as judged by an LLM.</td><td>Judge every pair in both orders. Count a verdict only if both orders agree; a flip is a tie and goes to a human.</td></tr>
         <tr><td>Verbosity</td><td>Zheng et al. (2023), MT-Bench and Chatbot Arena: judges favored longer answers, including padded ones.</td><td>A rubric of yes/no questions about content; cap length or normalize before judging; one planted long-and-wrong case.</td></tr>
-        <tr><td>Self-preference</td><td>Zheng et al. (2023) name self-enhancement. Panickssery, Bowman, and Feng (2024): models recognize their own text, and self-recognition tracks self-preference. Wataoka et al. (2024): judges favor low-perplexity, familiar text.</td><td>The judge comes from a different model family than the generator. Strip model names and signatures from what the judge sees.</td></tr>
+        <tr><td>Self-preference</td><td>Zheng et al. (2023) identify self-enhancement. Panickssery, Bowman, and Feng (2024): models recognize their own text, and self-recognition tracks self-preference. Wataoka et al. (2024): judges favor low-perplexity, familiar text.</td><td>The judge comes from a different model family than the generator. Strip model names and signatures from what the judge sees.</td></tr>
         <tr><td>Injection</td><td>Wang, Mang, Cheung, Sen, and Song (UC Berkeley, Apr 2026): hidden comments in an agent's answer steered an LLM judge's score (CAR-bench).</td><td>The answer is data. Delimit it, tell the judge to ignore instructions inside it, and plant one injected case.</td></tr>
       </tbody>
     </table></div>
@@ -474,7 +474,7 @@ PASS if Q1=YES and Q2=YES and Q3=NO.</div>
           <li><b>Calibrated.</b> Ten cases you labeled by hand first; the judge must agree on at least 9, and you record which it missed.</li>
           <li><b>Planted.</b> One wrong answer written to look right, and one with an injected instruction. The judge must fail both.</li>
         </ul>
-        <p class="small">Zheng et al. (2023) found GPT-4 judges agreed with human preferences over 80% of the time, the same rate at which humans agree with each other. Agreement is the reason judges are used; the biases are the reason they are checked. A judge that passes all four checks is a grader, and its verdict is still a model's claim about a model. It can hold a gate shut. It cannot stand in for a human's signature (GZK-GOV-007: model review is Gate-4 evidence, never Gate 5).</p>
+        <p class="small">Zheng et al. (2023) found GPT-4 judges agreed with human preferences over 80% of the time, the same rate at which humans agree with each other. That agreement rate is why judges are used at all, and the biases in the table above are why each judge is checked before its verdicts count. A judge that passes all four checks is a grader, and its verdict is still a model's claim about a model, so it can hold a gate shut but cannot stand in for a human's signature (GZK-GOV-007: model review is Gate-4 evidence, never Gate 5).</p>
       </div>
     </div>
   </section>
@@ -530,7 +530,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
 </div>
 
 <section class="map" aria-labelledby="h-map">
-  <div class="eyebrow">In your sortie · Flight Card 10 (expansion) · Sprint due Wed 11/11</div>
+  <div class="eyebrow">In your sortie · Flight Card 10 (expansion)</div>
   <h2 id="h-map">The gate that fails when it should</h2>
   <p class="small" style="max-width:80ch">Design claim: the evaluation suite fails when it should; removing the feature, or planting a wrong answer, turns the gate red. Threshold, case count, predicted RED ids, and the removal diff are committed before Go, with the hash on the card.</p>
   <div class="tablewrap">
@@ -538,7 +538,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
     <thead><tr><th>Test point</th><th>What you do</th><th>Expected evidence</th><th>Part of the figure</th></tr></thead>
     <tbody>
       <tr><td>TP1</td><td>Gate on the build as it is</td><td>exit 0; results.json; delta: 0 regressions</td><td>The whole pipeline, green</td></tr>
-      <tr><td>TP2</td><td>Feature removed (the named diff)</td><td>exit 1; exactly the predicted ids RED; ledger event</td><td>RED witness loop</td></tr>
+      <tr><td>TP2</td><td>Feature removed (the removal diff)</td><td>exit 1; exactly the predicted ids RED; ledger event</td><td>RED witness loop</td></tr>
       <tr><td>TP3</td><td>Feature restored</td><td>exit 0; same ids green; delta shows the round trip</td><td>Delta vs baseline</td></tr>
       <tr><td>TP4</td><td>One planted wrong answer</td><td>Grader or judge FAILs it; the judge run in both orders agrees</td><td>Graders</td></tr>
       <tr><td>TP5</td><td>System replaced by constant stubs</td><td>No case passes under every constant (no hollow case)</td><td>Golden set</td></tr>
@@ -577,7 +577,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
       <li>Cursor. (2026, June 25). [Blog post on reward hacking in coding benchmarks]. cursor.com/blog/reward-hacking-coding-benchmarks.</li>
       <li>Wang, Mang, Cheung, Sen, &amp; Song. (2026, April 8). How we broke top AI agent benchmarks.</li>
       <li>Zhu et al. (2025). Agentic Benchmark Checklist (ABC). arXiv:2507.02825.</li>
-      <li>gzkit GZK-GOV-007, model review and Gate 5 (the week's reading); course topic guide, chapter 19.</li>
+      <li>gzkit GZK-GOV-007, model review and Gate 5 (this Evolution's reading); course topic guide, chapter 19.</li>
     </ol>
   </section>
 </div>
@@ -601,7 +601,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
   /* ---------- step-through player ---------- */
   const STEPS = [
     {k:"*", t:"From golden set to exit code", w:["E10"],
-     p:"The delta gate turns an evaluation into a decision that stops something. It runs a frozen golden set several times, compares the result with a frozen baseline case by case, applies a rule written before the first run, and exits 0 or 1. Step through each part, then try the simulator below the figure."},
+     p:"The delta gate turns an evaluation into a decision that stops something. It runs a frozen golden set several times, compares the result with a frozen baseline case by case, applies a rule written before the first run, and exits 0 or 1. The simulator below the figure shows what the distribution step costs when N is small."},
     {k:"prereg pr2g pr2t", t:"The falsifier comes first", w:["E1","E10"],
      p:"Before the first run, you commit the flight card, the golden set, the threshold, the case count, the ids you predict will go red, and the removal diff. The commit hash goes on the card, and your Chase signs that commit. A threshold or case changed after the first run is HARKing, and on Flight Card 10 it is a FAIL."},
     {k:"golden", t:"A small, frozen golden set", w:["E10"],
@@ -613,13 +613,13 @@ json.dump(cases, open('golden.json', 'w'))</div>
     {k:"r2d dist", t:"Scores form a distribution", w:["E10"],
      p:"Several runs give several scores, and their spread is the noise the gate must see past. A mean with an interval says how far the next run could land. The simulator below draws this distribution and counts how often a gate decides wrong when N is small."},
     {k:"d2delta delta base b2d", t:"Compare case by case with a frozen baseline", w:["E10"],
-     p:"The gate loads baseline.json, which you committed and froze. A regression is a case that passed in the baseline and fails now; a new pass is reported and earns nothing. An aggregate can hold steady while one requirement breaks and another improves, so the delta names each regressed id and writes delta.json."},
+     p:"The gate loads baseline.json, which you committed and froze. A regression is a case that passed in the baseline and fails now; a new pass is reported and earns nothing. An aggregate can hold steady while one requirement breaks and another improves, so the delta lists each regressed id and writes delta.json."},
     {k:"d2t thr t2e exit", t:"The rule is code, and it exits 1", w:["E10"],
-     p:"The decision is one rule written before the run. If any case regressed, or the pass rate is below the pre-registered threshold, the script calls sys.exit(1) and prints the ids that regressed. A red gate that does not name the failed case sends you to the transcript blind."},
+     p:"The decision is one rule written before the run. If any case regressed, or the pass rate is below the pre-registered threshold, the script calls sys.exit(1) and prints the ids that regressed. A red gate that does not list the failed case sends you to the transcript blind."},
     {k:"e2h hook", t:"Wire it to something that runs without you", w:["E10"],
-     p:"Call the gate from a pre-commit or pre-push hook, or from CI, so that exit 1 refuses the push. A gate you run by hand when you remember is a report. gzkit added a pre-push gate after green main was reopened eight times in nine days."},
+     p:"Call the gate from a pre-commit or pre-push hook, or from CI, so that exit 1 refuses the push. A gate you run by hand only when you remember to is a report, because nothing depends on its exit code. gzkit added a pre-push gate after green main was reopened eight times in nine days."},
     {k:"rm rm2r loop", t:"The RED witness", w:["E10"],
-     p:"A check counts only after it has been seen red. You remove the feature with the named diff, run the gate, and expect exit 1 with exactly the predicted ids red. You restore the feature and expect exit 0. You plant one wrong answer and expect the grader or judge to fail it."},
+     p:"A check counts only after it has been seen red. You remove the feature with the removal diff, run the gate, and expect exit 1 with exactly the predicted ids red. You restore the feature and expect exit 0. You plant one wrong answer and expect the grader or judge to fail it."},
     {k:"*", t:"A check you have never seen fail", w:["E10"],
      p:"Three observations falsify the Sortie 10 claim: a green gate with the feature removed, a judge that scores a planted error as correct, and a golden case that cannot fail. Every box in this pipeline has a way to stay green forever. The RED witness and pre-registration let you find it before your Chase does."}
   ];

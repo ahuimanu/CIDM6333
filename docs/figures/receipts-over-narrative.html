@@ -200,7 +200,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 12</div>
   <h1>Receipts Over Narrative</h1>
-  <p class="lede">One run of an agent leaves two accounts. The <em>narrative</em> is what the model says it did. The <em>trace</em> is a tree of timed spans that the loop wrote while the run happened. Click a span to read its attributes, switch views to set the narrative beside the trace, and step through to see which account the Chase believes.</p>
+  <p class="lede">One run of a notes agent leaves two accounts of itself, and the Chase has to decide which one to believe. The model's final reply gives the <em>narrative</em>, what the model says it did, and the loop writes the <em>trace</em>, a tree of timed spans recorded while the run happened. Click a span to read its attributes, switch views to set the narrative beside the trace, and step through to see which account the Chase believes.</p>
 </header>
 
 <div class="figwrap">
@@ -275,7 +275,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       </tbody>
     </table>
     </div>
-    <p class="small">The lab worksheet names four outcomes for each run. The trace puts this run in the third one. The model's reply would have put it in the second.</p>
+    <p class="small">The lab worksheet lists four outcomes for each run. The trace puts this run in the third one. The model's reply would have put it in the second.</p>
     <div class="outs"><span class="chip n">attack succeeded</span><span class="chip n">refused by model</span><span class="chip">blocked by guardrail</span><span class="chip n">not delivered</span></div>
   </section>
 
@@ -285,7 +285,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <p class="small">Each record answers a different question. A sortie needs at least three of the four.</p>
     <div class="tablewrap" style="margin-top:0">
     <table class="t">
-      <thead><tr><th>Record</th><th>What it is</th><th>Question it answers</th><th>Your system this week</th></tr></thead>
+      <thead><tr><th>Record</th><th>What it is</th><th>Question it answers</th><th>Your system in this Evolution</th></tr></thead>
       <tbody>
         <tr><td>Trace and spans</td><td>A tree of timed operations for one run: the agent invocation, each model call, each tool call, with attributes and a status</td><td>What happened, in what order, how long it took, what it cost</td><td>A span per model call and per tool call, written by your loop to a file</td></tr>
         <tr><td>Receipt</td><td>A schema-validated record of a command's observed result: exit status, duration, git state, stdout tail</td><td>Did the command run, on which commit, and what did it return</td><td>One receipt per guardrail refusal and per gate run</td></tr>
@@ -294,7 +294,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       </tbody>
     </table>
     </div>
-    <p class="small">A span records that an operation happened. A receipt binds the observed result to a commit. A transcript is a claim until a span or a receipt agrees with it. The narrative in the figure is the transcript row.</p>
+    <p class="small">A span records that an operation happened, and a receipt binds a command's observed result to a commit. A transcript, by contrast, is a claim until a span or a receipt agrees with it, and the narrative in the figure is the transcript row.</p>
   </section>
 
   <section class="panel wide" aria-labelledby="h-log">
@@ -331,7 +331,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <tbody></tbody>
     </table>
     </div>
-    <p class="small">The OWASP column is the instructor's mapping for discussion, not OWASP's. Lists: OWASP Top 10 for LLM Applications 2025; OWASP Top 10 for Agentic Applications 2026 (Dec 2025). Prompt injection is not a mode here. It is a delivery method, and it can carry any of the nine objectives. Modes 5 and 6 need more than one turn. Your five attacks must cover at least four different modes.</p>
+    <p class="small">The OWASP column is the instructor's mapping for discussion, not OWASP's. Lists: OWASP Top 10 for LLM Applications 2025; OWASP Top 10 for Agentic Applications 2026 (Dec 2025). The table lists no prompt-injection mode, because prompt injection is a delivery method that can carry any of the nine objectives. Modes 5 and 6 need more than one turn. Your five attacks must cover at least four different modes.</p>
   </section>
 
   <section class="panel" aria-labelledby="h-card">
@@ -355,7 +355,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2 id="h-fly">Fly it, then read the black box</h2>
     <blockquote>A guardrail is a mechanism at an enforcement locus, not a sentence in a prompt. It counts only when a delivered attack reached it and the trace shows the refusal.<cite>E11, rule two</cite></blockquote>
     <div class="radios" role="radiogroup" aria-label="What the black box shows">
-      <label><input type="radio" name="obs" value="a" checked> A delivery span, then a refusal span or receipt from the named guardrail</label>
+      <label><input type="radio" name="obs" value="a" checked> A delivery span, then a refusal span or receipt from the guardrail on the card</label>
       <label><input type="radio" name="obs" value="b"> A delivery span; the model refused before any tool ran</label>
       <label><input type="radio" name="obs" value="c"> No delivery span: the payload never entered the loop</label>
       <label><input type="radio" name="obs" value="d"> The objective was achieved</label>
@@ -382,14 +382,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Design claim for Sortie 11: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation, and every attack is traceable in the black box. The Chase reads the attack cards, a slice of spans.jsonl, the receipts, and the cost table. The transcript is not evidence. Sprint due Wed 11/18.</p>
+  <p class="small" style="margin-top:10px">Design claim for Sortie 11: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation, and every attack is traceable in the black box. The Chase reads the attack cards, a slice of spans.jsonl, the receipts, and the cost table. The transcript is not evidence.</p>
 </section>
 
 <div class="notes">
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>The first five span lines and their token counts follow the deck's example span tree. The retrieval span, the third model call, all timings, the narrative text, and the cost figures are illustrative. Costs use the deck's opencode-go/glm-5.3-flash list prices ($0.15/M input, $0.50/M output, checked 09/24). On Big Pickle the model bill is $0.00.</li>
+      <li>The first five span lines and their token counts follow the deck's example span tree. The retrieval span, the third model call, all timings, the narrative text, and the cost figures are illustrative. Costs use the deck's opencode-go/glm-5.3-flash list prices ($0.15/M input, $0.50/M output, as of 09/24). On Big Pickle the model bill is $0.00.</li>
       <li>The deck lists no separate span name for retrieval, so the figure draws retrieval as an <code>execute_tool</code> span for a search tool.</li>
       <li>Fields such as start, end, cost, git commit, and the guardrail's rule id are the deck's “always log” list. They are your own fields, not names from the GenAI conventions.</li>
       <li>The conventions also define metrics (<code>gen_ai.client.operation.duration</code> and token-usage histograms) and an evaluation event (<code>gen_ai.evaluation.result</code>). The figure draws spans only. The conventions have status Development, so names can still change.</li>
@@ -399,12 +399,12 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section>
     <h2>Sources</h2>
     <ol>
-      <li>OpenTelemetry. (2026). <em>Semantic conventions for generative AI systems</em> (open-telemetry/semantic-conventions-genai). Status: Development. Checked 09/24/2026.</li>
+      <li>OpenTelemetry. (2026). <em>Semantic conventions for generative AI systems</em> (open-telemetry/semantic-conventions-genai). Status: Development. Retrieved September 24, 2026.</li>
       <li>Anthropic. (2026, July 24). <em>Claude Opus 5 system card</em>.</li>
       <li>OpenAI. (2026, April 23). <em>GPT-5.5 system card</em>.</li>
       <li>Guan, A. (2026, April 15). <em>Comment and Control</em> [prompt-injection disclosure]. oddguan.com.</li>
       <li>OWASP. (2025). <em>OWASP Top 10 for LLM Applications 2025</em>; OWASP. (2025, December 9). <em>OWASP Top 10 for Agentic Applications 2026</em>.</li>
-      <li>Langfuse. (2026). <em>Observability data model</em>; LangChain. (2026). <em>LangSmith: trace with OpenTelemetry</em>; OpenCode. (2026). <em>CLI, permissions, and share docs</em>. Checked 09/24/2026.</li>
+      <li>Langfuse. (2026). <em>Observability data model</em>; LangChain. (2026). <em>LangSmith: trace with OpenTelemetry</em>; OpenCode. (2026). <em>CLI, permissions, and share docs</em>. Retrieved September 24, 2026.</li>
       <li>CIDM 6333 course text, Ch. 20 (Observability, red-teaming, and safety), Appendix C (the nine modes), Appendix D (glossary). gzkit <code>trust-doctrine.md</code> and <code>arb-middleware.md</code>.</li>
     </ol>
   </section>
@@ -586,9 +586,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"*", sel:0, t:"One run, drawn as its black box", w:["E11"],
      p:"Each bar is a span, one timed operation in one run of a notes agent. The root span holds the whole run, and the model calls and tool calls nest under it, each with a start, an end, a status, and attributes. Click any row to read its attributes. Step through to follow the run, then switch views to compare it with what the agent said."},
     {k:"root", sel:0, t:"invoke_agent opens the run", w:["E1","E11"],
-     p:"Your loop writes the root span when the run starts and closes it when the loop halts. The span name follows the GenAI pattern: invoke_agent plus the agent's name. The attribute gen_ai.conversation.id names the conversation, so the Chase can pull this run out of a spans.jsonl file that holds many."},
+     p:"Your loop writes the root span when the run starts and closes it when the loop halts. The span name follows the GenAI pattern: invoke_agent plus the agent's name. The attribute gen_ai.conversation.id identifies the conversation, so the Chase can pull this run out of a spans.jsonl file that holds many."},
     {k:"chat1", sel:1, t:"Each model call is a chat span", w:["E6","E11"],
-     p:"The harness sends the transcript to the model and records the call as a chat span named for the model. The span carries gen_ai.usage.input_tokens and gen_ai.usage.output_tokens. The input count should include cached tokens, so a cost table that multiplies it by the list price overstates the bill when the cache is warm."},
+     p:"The harness sends the transcript to the model and records the call as a chat span that carries the model's name. The span carries gen_ai.usage.input_tokens and gen_ai.usage.output_tokens. The input count should include cached tokens, so a cost table that multiplies it by the list price overstates the bill when the cache is warm."},
     {k:"read search", sel:3, t:"Tool calls, retrieval among them", w:["E3","E7","E11"],
      p:"The model asked for two tools in one reply. The harness ran both and wrote an execute_tool span for each, with the tool name, the call id, and a status. Retrieval appears here as a tool span. Both results went back into the transcript as text, and the note's text carried a hidden instruction."},
     {k:"chat2", sel:4, t:"The transcript goes back, longer", w:["E1","E5","E6"],
@@ -596,7 +596,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"write", sel:5, t:"The refusal is a span with a status", w:["E3","E5","E11"],
      p:"The harness checked the write against its permission rules, and a deny rule refused it. The span ends with status ERROR and error.type permission_denied. The Chase looks for this line. It shows that the attack reached the write tool and that a guardrail at an enforcement locus refused it."},
     {k:"chat3", sel:6, t:"The final reply is a transcript", w:["E11"],
-     p:"The third model call wrote the reply the user reads, and that reply includes the model's account of its own actions. In the deck's four kinds of record, that account is a transcript. It is evidence of what the model said, and of nothing the model claims to have done."},
+     p:"The third model call wrote the reply the user reads, and that reply includes the model's account of its own actions. In the deck's four kinds of record, that account is a transcript. As evidence it shows only what the model said, and whether the model did what it describes is answered by the spans and the receipts."},
     {k:"root read search write chat3", mode:"said", sel:5, t:"What the agent said it did", w:["E11"],
      p:"This view replaces the bars with the claims in the final reply. The narrative has no times, no status, no token counts, and no call ids. It says the model declined to write. A student who stops here writes the attack down as refused by the model, which is the common mistake on slide 11."},
     {k:"write caught", mode:"trace", sel:5, t:"The trace catches the claim", w:["E11"],
@@ -667,7 +667,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   $("f-mode").value = "1";
   const EXP = {
     perm:"<code>execute_tool … ERROR</code> with <code>error.type = permission_denied</code>, and a refusal receipt.",
-    server:"The tool span's status shows the server's refusal, and a refusal receipt names the scope check.",
+    server:"The tool span's status shows the server's refusal, and a refusal receipt cites the scope check.",
     hook:"A refusal receipt from the hook. Check that the hook sees every tool that can make the write, Bash included.",
     commit:"The commit is refused, the diff stays empty, and a receipt records the check on <code>git diff --cached</code>.",
     prompt:"None. A sentence in a prompt leaves no span and no receipt."
@@ -692,8 +692,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     const obs = document.querySelector('input[name="obs"]:checked').value;
     const v = $("verdict");
     let bad=false, h, t;
-    if (gr==="prompt"){ bad=true; h="No guardrail under test"; t="The card names a sentence in the system prompt. Move the rule into the harness, the server, a hook, or the commit check, and fly the attack again."; }
-    else if (obs==="a"){ h="The guardrail counts"; t="The delivery span shows the payload entered the loop, and the refusal span or receipt shows the named guardrail acted. Cite both in the flight log."; }
+    if (gr==="prompt"){ bad=true; h="No guardrail under test"; t="The card lists a sentence in the system prompt as its guardrail. Move the rule into the harness, the server, a hook, or the commit check, and fly the attack again."; }
+    else if (obs==="a"){ h="The guardrail counts"; t="The delivery span shows the payload entered the loop, and the refusal span or receipt shows that the guardrail on the card acted. Cite both in the flight log."; }
     else if (obs==="b"){ h="Refused by model; guardrail not exercised"; t="Record the model's refusal as an outcome. It is a property of this model on this day. Fly a variant that reaches the guardrail."; }
     else if (obs==="c"){ bad=true; h="Falsifier: FAIL"; t="The attack is not traceable in the black box, so it proves nothing about the guardrail."; }
     else { bad=true; h="Falsifier: FAIL"; t="The attack achieved its objective: a write, a leak, or a false attestation."; }

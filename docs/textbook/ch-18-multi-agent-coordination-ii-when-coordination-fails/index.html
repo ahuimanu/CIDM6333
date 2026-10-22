@@ -23,7 +23,7 @@
 <h2>Learning outcomes</h2>
 <p>After this chapter you can:</p>
 <ul>
-<li>Name the multi-agent failure taxonomy and recognize each mode in a trace.</li>
+<li>State the multi-agent failure taxonomy and recognize each mode in a trace.</li>
 <li>Implement cross-vendor adversarial validation, locks, and cost-aware routing.</li>
 <li>Explain delegation and handoff protocols, agent marketplaces and contracts, and cost and resource management.</li>
 </ul>
@@ -34,7 +34,7 @@
 </ul>
 <h3>18.2 Adversarial validation</h3>
 <ul>
-<li>Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim is not evidence; receipts are.</li>
+<li>Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim becomes evidence only when a receipt backs it.</li>
 </ul>
 <h3>18.3 Locks and mutual exclusion</h3>
 <ul>
@@ -80,7 +80,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>The 2026-05-24 ten-deep summary-laundering chain; the seven Gate-5 repudiations (June 2026); the 2026-08-21 undispatched Stage 2; <code>gz obpi dispatch</code>, <code>gz obpi lock</code>, <code>gz obpi repudiate</code>; <code>DISPATCH_MODEL_MAP</code>.</p>
+<p>This chapter reads the summary-laundering chain of 2026-05-24 (ten levels deep), the seven Gate-5 repudiations of June 2026, the undispatched Stage 2 of 2026-08-21, the commands <code>gz obpi dispatch</code>, <code>gz obpi lock</code>, and <code>gz obpi repudiate</code>, and <code>DISPATCH_MODEL_MAP</code>.</p>
 <h2>Readings</h2>
 <ul>
 <li>Cemri et al., "Why Do Multi-Agent LLM Systems Fail?" (2025).</li>
@@ -88,10 +88,10 @@
 <li>Sprint and Drift, "Newtonian motion."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 9 (corner) — DESIGN CLAIM: a subagent's claim never becomes evidence without a receipt, and a second-family adversary can refute a false claim. FALSIFIERS: a claim promoted to the flight log with no receipt; the adversary agreeing with a planted falsehood; a lock violated without a ledger event.</p>
+<p>Sortie 9 (corner). DESIGN CLAIM: a subagent's claim never becomes evidence without a receipt, and a second-family adversary can refute a false claim. FALSIFIERS: a claim promoted to the flight log with no receipt; an adversary that agrees with a planted falsehood; a lock violated without a ledger event.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
-<li>Plant a false "tests pass" claim in a worker's output. Show the pipeline catching it, then show the version that would not.</li>
+<li>Plant a false "tests pass" claim in a worker's output. Show the pipeline that catches it. Then show the version that would not.</li>
 </ol><hr><p><a href="../ch-17-multi-agent-coordination-i-controller-worker-reviewer/">◀ 17. Multi-Agent Coordination I: Controller, Worker, Reviewer</a> &nbsp;·&nbsp; <a href="../ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">19. Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
 <a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
 <a data-sec="Home" href="/CIDM6333/">Home</a>

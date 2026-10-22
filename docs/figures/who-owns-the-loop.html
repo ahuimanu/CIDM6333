@@ -206,7 +206,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 03</div>
   <h1>Who Owns the Loop</h1>
-  <p class="lede">Every pattern and every framework answers one design question: who decides what happens next, your code or the model? The figure draws the five workflow patterns and the agent as small mechanisms and marks each edge by its owner. Below it, pick a framework from the E2 teardowns to see which parts of the loop it takes from you.</p>
+  <p class="lede">Each pattern in the catalog, and each framework built on it, answers one design question: who decides what happens next, your code or the model? The figure draws the five workflow patterns and the agent as small mechanisms and marks each edge by its owner, so that the answer can be read off the drawing. The teardown panel below it takes the same question to eight frameworks from E2 and shows which parts of the loop each one takes from you.</p>
 </header>
 
 <div class="figwrap">
@@ -397,7 +397,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <!-- who owns the loop -->
   <section class="panel wide" aria-labelledby="h-own">
     <div class="eyebrow">Teardowns · E2 slides 7–9 · LangChain to LangGraph, Pydantic AI, role-based, vendor SDKs</div>
-    <h2 id="h-own">Pick a framework and see who owns each part of the loop</h2>
+    <h2 id="h-own">Owners of each part of the loop, by framework</h2>
     <div class="seg" role="group" aria-label="Framework" id="fws"></div>
     <div class="theory">
       <div class="eyebrow" id="fwmeta"></div>
@@ -407,7 +407,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="lanes" id="lanes"></div>
     <div class="ndrow" id="ndrow"></div>
     <div class="tablewrap" style="margin-top:0"><table class="det" id="det"></table></div>
-    <p class="small">Each owner is read from the deck's tables and speaker notes. "You" means code, types, hooks, prompts, or approvals that you or your human supply. Where the deck says nothing about a part, the figure lists it as not stated and makes no guess. The vendor SDK rows are the deck's view as of early 2026, and the deck flags them to verify, because these SDKs change monthly. The deck adds that none of the three vendor SDKs records what was attested.</p>
+    <p class="small">Pick a framework to load it. Each owner comes from the deck's tables and speaker notes. "You" means code, types, hooks, prompts, or approvals that you or your human supply. Where the deck says nothing about a part, the figure lists it as not stated and makes no guess. The vendor SDK rows are the deck's view as of early 2026, and the deck flags them to verify, because these SDKs change monthly. The deck adds that none of the three vendor SDKs records what the human attested.</p>
   </section>
 
   <section class="panel wide" aria-labelledby="h-mx">
@@ -420,8 +420,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <!-- ladder -->
   <section class="panel" aria-labelledby="h-lad">
     <div class="eyebrow">E2 slide 6 · When to keep it simple</div>
-    <h2 id="h-lad">Climb only as far as your evidence goes</h2>
-    <p class="small">The deck turns the source's advice into a ladder, and each rung becomes a row in ADR-1. Check what is true of your system.</p>
+    <h2 id="h-lad">The ladder from a single call to a framework</h2>
+    <p class="small">The deck turns the source's advice into a ladder, and each rung becomes a row in ADR-1. Each rung is justified only by the evidence the rung below produced. Check what is true of your system.</p>
     <div class="qs" id="qs">
       <label><input type="checkbox" id="q1"><span>I measured a single model call with retrieval and in-context examples.</span></label>
       <label><input type="checkbox" id="q2"><span>The task decomposes cleanly, and I can measure the gain.</span></label>
@@ -456,11 +456,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Decision.</b> Pattern plus framework, in one sentence.</li>
       <li><b>Alternatives.</b> At least three, including none / stdlib, each with what it buys and what it costs.</li>
       <li><b>Consequences.</b> Positive and negative, and the one you will measure in Sortie 2.</li>
-      <li><b>Decomposition scorecard.</b> The decision scored against the alternatives on the criteria you named.</li>
+      <li><b>Decomposition scorecard.</b> The decision scored against the alternatives on the criteria you chose.</li>
       <li><b>Feature checklist.</b> What the choice must support by E12: tools, MCP, memory, multi-agent, evals, serving.</li>
     </ol>
     <blockquote>ADRs before code. After is post-hoc rationalization.<cite>E2 deck, slide 10</cite></blockquote>
-    <p class="small">Before you record the decision, run the reference design's three forcing functions. A pre-mortem writes the story of the choice failing in week twelve. WWHTBT asks what would have to be true for the rejected alternative to have been right. Constraint archaeology traces each constraint to the PRD, the syllabus, or habit, and habit does not count.</p>
+    <p class="small">Before you record the decision, run the reference design's three forcing functions. A pre-mortem writes the story of the choice failing by E12. WWHTBT asks what would have to be true for the rejected alternative to have been right. Constraint archaeology traces each constraint to the PRD, the syllabus, or habit, and habit does not count.</p>
   </section>
 </div>
 
@@ -492,7 +492,7 @@ ABORT               framework install/runtime failure unrelated
                     to the pattern (squawk)
 CHASE               peer, from the two ledger slices and the
                     ADR only → PASS / FAIL</pre>
-      <p class="small">Card text from the E2 deck, slide 13, rewrapped to fit. The falsifier students miss is the last one: an ADR dated after the refactor commit fails the sortie, because its prediction was written after the fact.</p>
+      <p class="small">Card text from the E2 deck, slide 13, rewrapped to fit. The last falsifier is a condition on the record rather than on the run: an ADR dated after the refactor commit fails the sortie, because its prediction was written after the fact.</p>
     </div>
     <div style="display:grid; gap:12px; align-content:start">
       <div class="eyebrow">Refactor the E1 loop, keep the trace (E2 slide 5)</div>
@@ -526,7 +526,7 @@ CHASE               peer, from the two ledger slices and the
       <li>Patterns combine in real systems. A router can send one class into a chain and another into an agent. The figure draws each pattern alone.</li>
       <li>Ownership here is coarse. "You" covers very different work: drawing a graph edge, writing a Pydantic type, writing a hook, or pressing allow on a permission prompt.</li>
       <li>The figure carries no cost or quality numbers. Sortie 2 produces them, from your own two runs.</li>
-      <li>Week eight returns to the role-based frameworks with FIPA and BDI, and to orchestrator–workers with subagents. Week ten returns to evaluator–optimizer as evaluation as a gate.</li>
+      <li>E8 returns to the role-based frameworks with FIPA and BDI, and to orchestrator–workers with subagents. E10 returns to evaluator–optimizer as evaluation as a gate.</li>
       <li>The deck's ADR-0.0.2 summary and its vendor SDK table both carry verify-before-class flags. The figure repeats them as the deck states them.</li>
     </ul>
   </section>
@@ -565,21 +565,21 @@ CHASE               peer, from the two ledger slices and the
     {k:"c1", tab:0, t:"Prompt chaining", w:["E2"], ctl:"Your code owns every edge.",
      p:"Your code calls the model in a fixed sequence, and each step's output becomes the next step's input. A gate between steps is a check in code that can end the chain early. Choose it when the task decomposes and accuracy matters more than latency."},
     {k:"c2", tab:1, t:"Routing", w:["E2"], ctl:"The model picks the class. Your code owns the set of paths.",
-     p:"One model call classifies the input. Your code reads the label and dispatches the input to a specialized path, each with its own prompt or model. Choose it when the input classes are distinct enough to deserve different handling. Your E1 test points already name three classes."},
+     p:"One model call classifies the input. Your code reads the label and dispatches the input to a specialized path, each with its own prompt or model. Choose it when the input classes are distinct enough to deserve different handling. Your E1 test points already list three classes."},
     {k:"c3", tab:2, t:"Parallelization", w:["E1","E2"], ctl:"Your code splits, runs, and merges.",
      p:"Your code splits the work and runs model calls side by side. In sectioning, each call handles one independent subtask and code merges the results. In voting, the same task runs N times and code aggregates the answers. E1 called voting the first evaluator and the first cost multiplier."},
     {k:"c4", tab:3, t:"Orchestrator–workers", w:["E2","E8"], ctl:"The model plans the subtasks. Your code bounds each worker.",
-     p:"A central model breaks the task into subtasks, delegates each one to a worker, and synthesizes the results. The model chooses the subtasks at run time, so pick this pattern when they cannot be known in advance, as in large edits across files. Your code gives each worker its own budget. Week eight's subagents plug in here."},
+     p:"A central model breaks the task into subtasks, delegates each one to a worker, and synthesizes the results. The model chooses the subtasks at run time, so pick this pattern when they cannot be known in advance, as in large edits across files. Your code gives each worker its own budget. The subagents of E8 plug in here."},
     {k:"c5", tab:4, t:"Evaluator–optimizer", w:["E2","E10"], ctl:"The evaluator judges the halt. Your code caps the rounds at K.",
-     p:"One model produces a draft, and a second model critiques it against criteria. The loop repeats until the draft passes or code stops it after K rounds. The halt is now a criterion, and the producer no longer decides it alone. This is week ten's evaluation as a gate, in miniature."},
+     p:"One model produces a draft, and a second model critiques it against criteria. The loop repeats until the draft passes or code stops it after K rounds. The halt is now a criterion, and the producer no longer decides it alone. This is the evaluation gate of E10 in miniature."},
     {k:"c6", tab:5, t:"The agent", w:["E1","E2"], ctl:"The model steers. Your code holds the halts.",
      p:"The model plans, acts on tools, reads observations, and continues until it answers or a halt stops it. This is the open loop you built in E1. The catalog lists it last and recommends it least. Reach for it only when the path cannot be scripted and trust, budget, and evaluation are in place."},
     {k:"c6 c4 c5", t:"Refactor the E1 loop and keep the trace", w:["E2"], ctl:"Only control moves. The tool layer stays fixed.",
-     p:"Sortie 2 moves your E1 loop into a named pattern without touching the tool layer. As orchestrator–workers, a planner splits the task and bounded workers call the same tools in the same order. As evaluator–optimizer, a critic gates the halt and adds evaluator turns you can count. If the tool trace changes, the comparison measures nothing."},
+     p:"Sortie 2 moves your E1 loop into one of the catalog's patterns without touching the tool layer. As orchestrator–workers, a planner splits the task and bounded workers call the same tools in the same order. As evaluator–optimizer, a critic gates the halt and adds evaluator turns you can count. If the tool trace changes, the comparison measures nothing."},
     {k:"c1 c2 c3 c4 c5", t:"Keep it simple", w:["E0","E2"], ctl:"Start with the simplest pattern that works.",
      p:"The source advises you to start with the simplest pattern that works and add complexity only when it measurably helps. The deck adds that most production agents are workflows, and should be, because workflows are predictable, cheap, and testable. That advice is ADR-1's null hypothesis. The ladder below the figure walks the rungs."},
     {k:"*", t:"From patterns to frameworks", w:["E2"],
-     p:"A pattern places control for one task. A framework places control for every task you build with it. LangGraph assumes you own every edge. The Claude Agent SDK assumes the vendor owns the loop. CrewAI assumes control is a conversation among roles. Pick each framework below to see what it takes from you.",
+     p:"A pattern places control for one task, and a framework places control for every task you build with it. LangGraph assumes you own every edge. The Claude Agent SDK assumes the vendor owns the loop. CrewAI assumes control is a conversation among roles. The panel below the figure shows, for each framework, what it takes from you.",
      q:"A framework is a theory of who owns the loop. Choose one on evidence, write down what you gave up, and be ready to be wrong in the ledger.", c:"E2 deck, slide 14"}
   ];
   const TABS=["Chaining","Routing","Parallelization","Orchestrator–workers","Evaluator–optimizer","Agent"];
@@ -633,7 +633,7 @@ CHASE               peer, from the two ledger slices and the
             gov:["Y","Four halts with reasons, a ledger you write, and your attestation."],
             run:["Y","A script. Tracing and checkpoints exist only if you build them."]}},
     {id:"lc", name:"LangChain", meta:"Late 2022 · E2 slide 7",
-     theory:"The library owns the loop. It made the loop importable, and it hid the loop.",
+     theory:"The library owns the loop. It made the loop importable and, in the same step, hid it.",
      cost:"Cost: the abstraction tax. Practitioners met opaque prompts, deep class hierarchies, and behavior that changed with each release.",
      parts:{loop:["F","Chains and agents as objects, the first wrapper around the ReAct prompt."],
             plan:["FM","Hidden in the agent class; prompt-driven."],
@@ -651,7 +651,7 @@ CHASE               peer, from the two ledger slices and the
             run:["F","Persisted runs, streaming, and tracing (LangSmith)."]}},
     {id:"pai", name:"Pydantic AI", meta:"2024–25 · E2 slide 8",
      theory:"The type system owns the boundary between model and code.",
-     cost:"Cost: what the schema cannot express, the model cannot do, and small local models fail the schema more often (E3's lesson).",
+     cost:"Cost: the model can do only what the schema expresses, and small local models fail the schema more often (E3's lesson).",
      parts:{tools:["YF","Tools are plain functions you write; their schemas are derived from type hints."],
             gov:["YF","You write the Pydantic models. Every output, tool call or final result, is validated, and a malformed one is retried or rejected before it can act."]}},
     {id:"role", name:"Role-based", meta:"CAMEL · MetaGPT · AutoGen · CrewAI · 2023–24 · E2 slide 8",
@@ -744,8 +744,8 @@ CHASE               peer, from the two ledger slices and the
     let msg;
     if (!q[0]) msg="Stay on the first rung. Measure the single call first; that measurement is the baseline row in your scorecard.";
     else if (q[2] && !q[3]) msg="The path needs an agent, but trust, budget, and evaluation are missing. Finish your E1 halts and ledger before you climb.";
-    else if (r2) msg="An agent is justified. "+(r3?"A framework is justified too; name what it buys and list none / stdlib as an alternative.":"Keep the loop in the standard library, and record none / stdlib as your decision.");
-    else if (r1) msg="A workflow is justified. Write the predicted delta before the run. "+(r3?"A framework may help; name what it buys.":"No framework yet: none / stdlib.");
+    else if (r2) msg="An agent is justified. "+(r3?"A framework is justified too. State what it buys and list none / stdlib as an alternative.":"Keep the loop in the standard library, and record none / stdlib as your decision.");
+    else if (r1) msg="A workflow is justified. Write the predicted delta before the run. "+(r3?"A framework may help. State what it buys.":"No framework yet: none / stdlib.");
     else msg="The single call stands. Adding a pattern now would add cost you cannot show a gain for.";
     $("ladres").textContent=msg;
   }

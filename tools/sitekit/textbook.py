@@ -82,15 +82,16 @@ def main(docs):
         elif title.startswith("Appendix"):
             if title.startswith("Appendix H"): continue
             appendices.append((title, body))
-        elif title.startswith("CIDM 6333 — Course Topic Guide"): continue
+        elif title.startswith("CIDM 6333: Course Topic Guide") or title.startswith("CIDM 6333 — Course Topic Guide"): continue
         else: front.append((title, body))
     pages = []  # (dir, title, kind)
     for title, body in chapters:
         n = int(title.split(".")[0]); d = "ch-%02d-%s" % (n, slug(title.split(". ",1)[1]))
         pages.append((d, title, "chapter", n, body))
     for title, body in appendices:
-        letter = title.split("—")[0].strip().split()[-1]
-        d = "appendix-%s-%s" % (letter.lower(), slug(title.split("—",1)[1] if "—" in title else title))
+        sep = ":" if ": " in title else "—"
+        letter = title.split(sep)[0].strip().split()[-1]
+        d = "appendix-%s-%s" % (letter.lower(), slug(title.split(sep,1)[1] if sep in title else title))
         pages.append((d, title, "appendix", letter, body))
     # chapter pages
     for i, (d, title, kind, key, body) in enumerate(pages):
@@ -105,7 +106,7 @@ def main(docs):
             extra += '<p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-%d">this chapter\'s entries in the reading list</a></p>' % key
         body_html = "<h1>" + html.escape(title) + "</h1>" + extra + render(clean(body))
         nav = '<hr><p>' + ('<a href="../%s/">◀ %s</a>' % (prev[0], html.escape(prev[1])) if prev else "") + (" &nbsp;·&nbsp; " if prev and nxt else "") + ('<a href="../%s/">%s ▶</a>' % (nxt[0], html.escape(nxt[1])) if nxt else "") + '</p>'
-        short = ("Chapter %d" % key) if kind == "chapter" else title.split("—")[0].strip()
+        short = ("Chapter %d" % key) if kind == "chapter" else title.split(":" if ": " in title else "—")[0].strip()
         crumbs = '<a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · ' + html.escape(short)
         (out / d).mkdir(exist_ok=True)
         (out / d / "index.html").write_text(page(title, "Answerable Systems · " + ("Chapter" if kind=="chapter" else "Appendix"), body_html + nav, crumbs, 2), encoding="utf-8")
@@ -114,13 +115,13 @@ def main(docs):
     title_body = [b for t, b in front if t.startswith("Answerable")]
     intro = render(clean(title_body[0])) if title_body else ""
     intro = re.sub(r"<h2>The Design, Lineage, and Governance of Agentic Software</h2>\s*<p><strong>Jeffry Babb, PhD</strong>.*?</p>\s*<p><em>Working draft.*?</em></p>", "", intro, flags=re.S)
-    toc = ['<h2 id="contents">Contents</h2><p class="small">Every chapter is an outline edition: learning outcomes, sections, systems analyzed, the gzkit episode, readings, exercises. The prose follows.</p>']
+    toc = ['<h2 id="contents">Contents</h2><p class="small">Each chapter is published here as an outline. The outline carries the learning outcomes, the section plan, the systems analyzed, the gzkit episode, the readings, and the exercises. The full prose will follow in a later edition.</p>']
     def group(name, lo, hi):
         items = [p for p in pages if p[2]=="chapter" and lo <= p[3] <= hi]
         return '<h3>%s</h3><ol start="%d">' % (name, lo) + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t.split(". ",1)[1])) for d,t,k,key,b in items) + "</ol>"
     toc.append(group("Part I · The posture", 1, 3)); toc.append(group("Part II · The survey", 4, 9))
     toc.append(group("Part III · The build", 10, 21)); toc.append(group("Part IV · The method", 22, 26))
-    toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters name, with links.</a></p>')
+    toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters cite, with links.</a></p>')
     toc.append('<h3>Appendices</h3><ul>' + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t)) for d,t,k,key,b in pages if k=="appendix") + '</ul>')
     body = '<h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft, Fall 2026</p>' + intro + "".join(toc) + fm
     (out / "index.html").write_text(page("Answerable Systems · textbook", "CIDM 6333 · Textbook", body, '<a href="../">CIDM 6333</a> · Textbook', 1), encoding="utf-8")

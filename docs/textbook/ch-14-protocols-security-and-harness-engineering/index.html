@@ -38,7 +38,7 @@
 </ul>
 <h3>14.3 A2A and delegation</h3>
 <ul>
-<li>Agents as peers: agent cards, tasks, artifacts. What a peer is that a tool is not; where authority sits.</li>
+<li>Agents as peers: agent cards, tasks, artifacts. What distinguishes a peer from a tool, and where authority sits.</li>
 </ul>
 <h3>14.4 Instruction files and skills</h3>
 <ul>
@@ -46,7 +46,7 @@
 </ul>
 <h3>14.5 Harness engineering</h3>
 <ul>
-<li>The product is the harness. gzkit as meta-harness: one canon rendered into each vendor's surfaces. Fidelity validation; the 258K context exhaustion; drift between mirrors.</li>
+<li>The product is the harness. gzkit as a meta-harness renders one canon into each vendor's surfaces. Fidelity validation; the 258K context exhaustion; drift between mirrors.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -86,7 +86,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>docs/design/agent-control-surface-matrix.md</code>; <code>docs/governance/agents-md-doctrine.md</code> (ADR-0.0.54); <code>untrusted-content.md</code>; <code>gz validate --instructions-files-budget --invariant-coherence</code>; the corpus→rendition playback of AGENTS.md (ADR-0.0.37).</p>
+<p>The chapter's sources in gzkit are <code>docs/design/agent-control-surface-matrix.md</code>, <code>docs/governance/agents-md-doctrine.md</code> (ADR-0.0.54), <code>untrusted-content.md</code>, <code>gz validate --instructions-files-budget --invariant-coherence</code>, and the corpus→rendition playback of AGENTS.md (ADR-0.0.37).</p>
 <h2>Readings</h2>
 <ul>
 <li>Anthropic, "Effective Harnesses for Long-Running Agents."</li>
@@ -94,7 +94,7 @@
 <li>Sprint and Drift, "The cost of the wrong abstraction went to zero."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 5 (corner) — DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.</p>
+<p>Sortie 5 (corner). DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Write the AGENTS.md for your system under a 4,000-character budget. Then measure what your harness actually loads.</li>

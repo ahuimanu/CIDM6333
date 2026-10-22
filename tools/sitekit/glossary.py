@@ -164,7 +164,7 @@ article{max-width:900px}
 def build_glossary(docs):
     out = pathlib.Path(docs) / "glossary"; out.mkdir(exist_ok=True)
     toc = '<div class="gtoc">' + "".join('<a href="#cat-%s">%s</a>' % (c, n) for c, n in CATS) + "</div>"
-    body = ['<h1 id="top">Glossary</h1><p class="lede">Every name that the lectures use without stopping to introduce it: systems, papers, protocols, companies, and the course\'s own vocabulary. Each entry says what the thing is, who made it and when, why it is in this course, and where to read more. Lecture transcripts link here on a term\'s first mention; each lecture page lists the names on its slides.</p>', toc]
+    body = ['<h1 id="top">Glossary</h1><p class="lede">The lectures use many names without stopping to introduce them, and this page introduces each one. An entry covers one system, paper, protocol, company, or term of the course\'s own vocabulary, and says what the thing is, who made it and when, why it is in this course, and where to read more. Lecture transcripts link here on a term\'s first mention, and each lecture page lists the names on its slides.</p>', toc]
     for c, n in CATS:
         es = sorted([e for e in ENTRIES if e["cat"] == c], key=lambda e: e["term"].lower())
         if not es: continue

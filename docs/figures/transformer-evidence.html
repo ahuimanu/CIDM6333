@@ -199,12 +199,12 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 01c · after Vaswani et al. (2017)</div>
   <h1>The Transformer's Evidence</h1>
-  <p class="lede">Figure 01b drew the 2017 Transformer. This figure weighs the evidence the paper gives for it: a cost estimate, test-set scores, one-change ablations, a training recipe, attention pictures, and a second task. Step through the argument map with Next, the dots, or the arrow keys, then work each table in the panels below.</p>
+  <p class="lede">Figure 01b drew the 2017 Transformer. This figure weighs the six kinds of evidence the paper offers for it (a cost estimate, test-set scores, one-change ablations, a training recipe, attention pictures, and a second task) and sorts them by what each one can and cannot carry. The argument map runs step by step, and the panels below redraw each table so you can work its numbers yourself.</p>
 </header>
 
 <div class="figwrap">
   <div class="scroller">
-  <svg class="fig" id="fig" viewBox="0 0 1100 540" role="img" aria-label="Argument map of Attention Is All You Need. Six pieces of evidence point up to the paper's claim: Table 2 cost, Table 2 quality, Table 3 variations, the Equation 3 schedule, the attention figures, and Table 4 parsing. Four of them also point down to a box naming what an evaluation gate learns from the paper.">
+  <svg class="fig" id="fig" viewBox="0 0 1100 540" role="img" aria-label="Argument map of Attention Is All You Need. Six pieces of evidence point up to the paper's claim: Table 2 cost, Table 2 quality, Table 3 variations, the Equation 3 schedule, the attention figures, and Table 4 parsing. Four of them also point down to a box stating what an evaluation gate learns from the paper.">
     <defs>
       <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
       <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
@@ -356,7 +356,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel wide" id="p-t3" aria-labelledby="h-t3">
     <div class="eyebrow">Table 3, redrawn · §6.2 · E10</div>
     <h2 id="h-t3">One change at a time, against a fixed base</h2>
-    <p class="small">Each row starts from the base model and changes the settings named on the row. Unlisted settings equal the base. All scores are on the English-German development set, newstest2013, with beam search and no checkpoint averaging. Dots to the right of the dashed base line are better.</p>
+    <p class="small">Each row starts from the base model and changes the settings listed on the row. Unlisted settings equal the base. All scores are on the English-German development set, newstest2013, with beam search and no checkpoint averaging. Dots to the right of the dashed base line are better.</p>
     <div class="toprow">
       <div class="seg" role="group" aria-label="Metric">
         <button type="button" id="met-bleu" aria-pressed="true">BLEU (higher is better)</button>
@@ -414,8 +414,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <div class="scroller"><svg class="ch" id="att" viewBox="0 0 700 330" style="min-width:520px" role="img" aria-label="Schematic redraw of an appendix attention figure: the sentence's tokens in two rows, with lines from the query word in the top row to the keys the caption names in the bottom row."></svg></div>
     <blockquote id="attcap"></blockquote>
-    <p class="small"><b>This is a schematic redraw.</b> The paper does not publish the attention weights, so the lines show only the links the captions name. Line width carries no value. Both figures come from encoder self-attention in layer 5 of 6. The paper's Figure 3 also shows fainter links from <i>making</i>, and Figure 4 also shows every link for head 5; neither is drawn here.</p>
-    <div class="flag"><b>Attention weights are not explanations.</b> Jain and Wallace (2019) tested recurrent models with attention on text classification and question answering. They found that attention weights often disagreed with other measures of which inputs mattered, and that quite different attention patterns could give the same prediction. A picture of one head on one sentence is a hypothesis about the model. The paper's own captions hedge with <i>apparently</i> and <i>seems</i>.</div>
+    <p class="small"><b>This is a schematic redraw.</b> The paper does not publish the attention weights, so the lines show only the links the captions mention. Line width carries no value. Both figures come from encoder self-attention in layer 5 of 6. The paper's Figure 3 also shows fainter links from <i>making</i>, and Figure 4 also shows every link for head 5; neither is drawn here.</p>
+    <div class="flag"><b>Attention weights are not explanations.</b> Jain and Wallace (2019) tested recurrent models with attention on text classification and question answering. They found that attention weights correlated only weakly with gradient-based and leave-one-out measures of which inputs mattered, and that quite different attention patterns could give the same prediction. A picture of one head on one sentence is a hypothesis about the model. The paper's own captions hedge with <i>apparently</i> and <i>seems</i>.</div>
   </section>
 
   <!-- ===== Table 4 ===== -->
@@ -451,8 +451,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Hyperparameters were “chosen after experimentation on the development set” (newstest2013). Headline scores in Table 2 come from newstest2014.</td><td>The golden set is frozen. Changing a case after a run needs a ledger event and a reason; a case edited to pass is metagaming.</td></tr>
         <tr><td>Rows that remove capacity (h = 1, N = 2, P_drop = 0.0) make BLEU drop, so the measurement can go red.</td><td>A check counts only after it has been seen red. Remove the feature, run, and record the RED witness.</td></tr>
         <tr><td>Two metrics per row. For ε_ls = 0.0 they point in opposite directions.</td><td>One task can carry several graders. Report pass^3 beside the mean.</td></tr>
-        <tr><td>One run per row, with no spread and no seeds.</td><td>One run is an anecdote. Run every model-in-the-loop case at least 3 times and report the trial count.</td></tr>
-        <tr><td>The big row changes five settings at once, so it cannot say which change helped.</td><td>Split a multi-change commit before the gate, or the delta cannot name a cause.</td></tr>
+        <tr><td>One run per row, with no spread and no seeds.</td><td>One run is an anecdote (E10). Run every model-in-the-loop case at least 3 times and report the trial count.</td></tr>
+        <tr><td>The big row changes five settings at once, so it cannot say which change helped.</td><td>Split a multi-change commit before the gate, or the delta cannot isolate a cause.</td></tr>
       </tbody>
     </table></div>
     <p class="small">The E10 deck's test for pre-registration applies to Table 3 as well: “could the evidence have come out against you, and did you say in advance what that would look like?” Table 3 passes the first half; the paper is silent on the second.</p>
@@ -461,12 +461,12 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 
 <section class="map" aria-labelledby="h-map">
   <div class="eyebrow">Where the course attaches</div>
-  <h2 id="h-map">Three weeks read this paper as evidence</h2>
+  <h2 id="h-map">Evolutions that read this paper as evidence</h2>
   <div class="tablewrap">
   <table>
-    <thead><tr><th>Week</th><th>Part of the figure</th><th>What it teaches</th></tr></thead>
+    <thead><tr><th>Evolution</th><th>Part of the figure</th><th>What it teaches</th></tr></thead>
     <tbody>
-      <tr><td>E6 · Context engineering</td><td>Figures 3–4; the attention pictures</td><td>Each query spreads a total weight of 1 across every key. The more tokens in the window, the more pairs compete for it, which is the attention budget the deck names.</td></tr>
+      <tr><td>E6 · Context engineering</td><td>Figures 3–4; the attention pictures</td><td>Each query spreads a total weight of 1 across every key. The more tokens in the window, the more pairs compete for it, which is what the E6 deck calls the attention budget.</td></tr>
       <tr><td>E10 · Evals as gates</td><td>Table 3; dev and test sets; the threshold slider</td><td>A fixed base, one change per row, and a reported set kept apart from the tuning set. The paper's one run per row is the gap your pass^3 closes.</td></tr>
       <tr><td>E11 · Observability</td><td>Table 2's cost column; the 41.0 vs. 41.8 gap</td><td>A cost with its method printed beside it can be recomputed by a stranger, the way a receipt binds a result to a commit. A summary that disagrees with its own table is a transcript claim until the record settles it.</td></tr>
     </tbody>
@@ -826,7 +826,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     s+='<line class="axis" x1="'+x0+'" x2="'+x0+'" y1="'+top+'" y2="'+yEnd+'"/>';
     s+='<text x="'+((x0+x1)/2)+'" y="'+(yEnd+32)+'" text-anchor="middle">F1 on WSJ section 23'+(zoom?" · axis cut at 85":"")+'</text>';
     $("t4").innerHTML=s+body;
-    $("axnote").textContent = zoom ? "The axis starts at 85, so bar lengths exaggerate the gaps. Read the values, not the lengths." : "Bars start at 0, so their lengths are honest and the gaps look small.";
+    $("axnote").textContent = zoom ? "The axis starts at 85, so bar lengths exaggerate the gaps. Read the printed values rather than the bar lengths." : "Bars start at 0, so their lengths are honest and the gaps look small.";
     segPair("ax-0","ax-z", zoom?"ax-z":"ax-0");
   }
   $("ax-0").addEventListener("click",()=>{ zoom=false; renderT4(); });
@@ -836,10 +836,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   /* ================= step-through player ================= */
   const STEPS = [
     {k:"*", t:"A claim, and the tables that must carry it", w:["E10","§7"], panel:null,
-     p:"Vaswani and colleagues claim that the Transformer translates better and trains faster than earlier models. Each box below the claim is one kind of evidence the paper offers, and each arrow names what that evidence carries. Your flight card works the same way: each test point ties a claim to the observation that could refute it. Step through to weigh each box.",
+     p:"Vaswani and colleagues claim that the Transformer translates better and trains faster than earlier models. Each box below the claim is one kind of evidence the paper offers, and each arrow states what that evidence carries. Your flight card has the same structure, because each test point ties a design claim to the observation that could refute it. The steps that follow weigh each box in turn.",
      q:"For translation tasks, the Transformer can be trained significantly faster than architectures based on recurrent or convolutional layers.", c:"§7"},
     {k:"claim cost", t:"Cost is an estimate, with its method printed", w:["E11","§6.1"], panel:"p-t2",
-     p:"The authors did not measure the FLOPs in Table 2. They multiplied training time by the number of GPUs and by a rated speed per GPU, and they printed the rated speeds in a footnote. Because the method is on the page, you can recompute 3.3 × 10¹⁸ yourself in the calculator. In week 11 terms, the number comes with its receipt.",
+     p:"The authors did not measure the FLOPs in Table 2. They multiplied training time by the number of GPUs and by a rated speed per GPU, and they printed the rated speeds in a footnote. Because the method is on the page, you can recompute 3.3 × 10¹⁸ yourself in the calculator. In the terms of E11, the number comes with its receipt.",
      q:"We estimate the number of floating point operations used to train a model by multiplying the training time, the number of GPUs used, and an estimate of the sustained single-precision floating-point capacity of each GPU.", c:"§6.1"},
     {k:"claim qual", t:"English-German: the clearest win", w:["E10","§6.1"], panel:"p-t2", pair:"de",
      p:"On the English-German test set, the big model scores 28.4 BLEU against 26.36 for the best earlier ensemble. The base model, at the lowest cost in the table, also beats every earlier model and ensemble. In the scatter, both Transformer points sit high and to the left: more quality for less estimated compute.",
@@ -848,22 +848,22 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
      p:"On English-French the big model's 41.8 edges the best ensemble's 41.29 at about one fiftieth of its estimated cost. The base model's 38.1 is the lowest score on this pair. The §6.1 text gives the big model 41.0 while Table 2 gives 41.8, and the paper does not say which is right. A reader who checks only the prose or only the table misses the gap.",
      q:"On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0, outperforming all of the previously published single models, at less than 1/4 the training cost of the previous state-of-the-art model.", c:"§6.1"},
     {k:"claim abl", t:"Table 3 changes one thing at a time", w:["E10","§6.2"], panel:"p-t3",
-     p:"Each row of Table 3 starts from the same base model and changes one setting, or one coupled pair. Everything else stays fixed, so a change in BLEU can be traced to the row's setting. That is the design of your delta gate: a frozen baseline, one change, and a comparison that names what moved. Set a threshold before you look, and count how many rows clear it.",
+     p:"Each row of Table 3 starts from the same base model and changes one setting, or one coupled pair. Everything else stays fixed, so the reader can trace a change in BLEU to the row's setting. Your delta gate has the same design: a frozen baseline, one change, and a comparison that lists what moved. Set a threshold before you look, and count how many rows clear it.",
      q:"To evaluate the importance of different components of the Transformer, we varied our base model in different ways, measuring the change in performance on English-to-German translation on the development set, newstest2013.", c:"§6.2"},
     {k:"qual abl qual-dn abl-dn", t:"Tuned on one set, reported on another", w:["E10","§6.1"], panel:"p-t3 p-gate",
      p:"The authors made their choices on newstest2013 and reported their headline scores on newstest2014. Keeping the two apart stops a tuned choice from inflating the reported score. Your golden set plays the test-set role only while you leave it alone. A case edited after a run to make it pass is metagaming the gate.",
      q:"These hyperparameters were chosen after experimentation on the development set.", c:"§6.1"},
     {k:"claim sched", t:"The recipe: warm up, then decay", w:["E11","§5.3"], panel:"p-lr",
-     p:"Equation 3 raises the learning rate in a straight line for the first 4,000 steps, then lowers it with the inverse square root of the step. The schedule produces no result of its own. It is what another lab needs in order to repeat the result. Move the sliders: the peak follows warmup_steps, and a larger d_model lowers the whole curve.",
+     p:"Equation 3 raises the learning rate in a straight line for the first 4,000 steps, then lowers it with the inverse square root of the step. The schedule produces no result of its own. It is what another lab needs to repeat the result. Move the sliders: the peak follows warmup_steps, and a larger d_model lowers the whole curve.",
      q:"This corresponds to increasing the learning rate linearly for the first warmup_steps training steps, and decreasing it thereafter proportionally to the inverse square root of the step number.", c:"§5.3"},
     {k:"claim attn", t:"Attention pictures are illustrations", w:["E6","E10","§4"], panel:"p-attn",
-     p:"The appendix draws a few heads on three sentences, and the captions hedge with apparently and seems. The paper publishes no weights and no count of how often such patterns occur. Jain and Wallace (2019) later showed that attention weights can disagree with other measures of which inputs mattered. Treat these figures as a hypothesis to test in a sortie, never as a check that passed.",
+     p:"The appendix draws a few heads on three sentences, and the captions hedge with apparently and seems. The paper publishes no weights and no count of how often such patterns occur. Jain and Wallace (2019) later showed that attention weights can disagree with other measures of which inputs mattered. Treat these figures as a hypothesis to test in a sortie. A check requires a measurement, and the figures give none.",
      q:"As side benefit, self-attention could yield more interpretable models.", c:"§4"},
     {k:"claim parse", t:"A second task, lightly tuned", w:["E10","§6.3"], panel:"p-t4",
      p:"To test whether the architecture carries over, the authors trained a 4-layer Transformer on English constituency parsing. It scores 91.3 F1 on WSJ data alone and 92.7 semi-supervised. The text says it beats every earlier model except the RNN Grammar at 93.3, but Table 4 also lists a multi-task model at 93.0. Check the summary against the table.",
      q:"Our results in Table 4 show that despite the lack of task-specific tuning our model performs surprisingly well, yielding better results than all previously reported models with the exception of the Recurrent Neural Network Grammar.", c:"§6.3"},
     {k:"gate cost-dn qual-dn abl-dn attn-dn", t:"What an eval gate learns from this paper", w:["E10","E11"], panel:"p-gate",
-     p:"Three habits transfer to your Sortie 10 gate. Hold a base fixed and change one thing per comparison. Keep the cases you tune on apart from the cases you report. Put the method beside every number so your Chase can recompute it. The paper's gaps teach as much. It reports one run per row and no spread, and one headline number disagrees with its own table.",
+     p:"Three habits transfer to your Sortie 10 gate. Hold a base fixed and change one thing per comparison. Keep the cases you tune on apart from the cases you report. Put the method beside every number so your Chase can recompute it. The paper also shows two gaps your gate must close: it reports one run per row with no spread, and one headline number disagrees with its own table.",
      q:"", c:""}
   ];
 

@@ -202,7 +202,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 10</div>
   <h1>Claim, Receipt, Verdict</h1>
-  <p class="lede">A worker that says all tests pass has produced a sentence. The harness that ran the tests and wrote down the exit code has produced evidence. Step through the four records a multi-agent system writes about one piece of work, then use the failure matrix and the ten-deep chain below to see what happens when a claim travels without a receipt.</p>
+  <p class="lede">When a worker reports that all tests pass, the report proves only that the worker wrote it. The evidence is the receipt the harness writes when it runs the tests itself (the command, the exit code, the commit). This figure follows the four records a multi-agent system writes about one piece of work; the failure matrix and the ten-deep chain below show what happens when a claim travels without a receipt.</p>
 </header>
 
 <div class="figwrap">
@@ -397,20 +397,20 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="meter" id="cmeter" aria-live="polite"></div>
     <div class="chain" id="chain"></div>
     <div class="outcome" id="coutcome" aria-live="polite"></div>
-    <p class="small">MAST reading from the deck: FC2, because information passed without checking, and FC3, because the check verified the summary and never the work. In Appendix C terms it is #3 fabrication, without any single agent lying. The deck asks the instructor to verify the date, the depth, and the rule's wording against AGENTS.md before class.</p>
+    <p class="small">MAST reading from the deck: FC2, because information passed without checking, and FC3, because the check verified the summary and never the work. In Appendix C terms it is #3 fabrication, without any single agent lying. The deck marks the date, the depth, and the rule's wording for verification against AGENTS.md.</p>
   </section>
 
   <!-- ===== tiers ===== -->
   <section class="panel" aria-labelledby="h-tiers">
     <div class="eyebrow">E9 slide 6 · chapter 18</div>
     <h2 id="h-tiers">Adversarial validation in three tiers</h2>
-    <p class="small">Independence is the property you are buying. Size is not.</p>
+    <p class="small">The tier you choose buys independence from the worker's blind spots; the adversary's size has no bearing on that.</p>
     <div class="tiers">
       <div class="tier"><span class="n">Tier 1 · cross-vendor</span><p>A different model family. It does not share the worker's training data, tokenizer, or house style, so it is least likely to find the worker's mistake plausible. Model evaluators recognize and score their own generations higher than equal work from others (Panickssery, Bowman, &amp; Feng, 2024).</p></div>
-      <div class="tier"><span class="n">Tier 2 · independent subagent</span><p>Same family, fresh context, no access to the worker's transcript. Cheaper to arrange. It shares the family's blind spots.</p></div>
-      <div class="tier"><span class="n">Tier 3 · human</span><p>The Chase, or you. Slowest. The only tier that can attest.</p></div>
+      <div class="tier"><span class="n">Tier 2 · independent subagent</span><p>Same family, fresh context, no access to the worker's transcript. It is cheaper to arrange, and it shares the family's blind spots.</p></div>
+      <div class="tier"><span class="n">Tier 3 · human</span><p>The Chase, or you. This tier is the slowest, and it is the only one that can attest.</p></div>
     </div>
-    <p>On OpenCode, tier 1 is cheap this term. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a named family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
+    <p>On OpenCode, tier 1 is cheap in Fall 2026. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a published family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
     <p class="small">The adversary gets the claim and the receipt. It never gets the worker's summary, its reasoning, or the answer you planted. The deck's worked agent file denies the adversary edit, bash, and webfetch, and defines NOT-REFUTED inside the prompt, because a model left to its own words will write “verified.”</p>
   </section>
 
@@ -422,7 +422,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Acquire atomically.</b> Create <code>locks/&lt;resource&gt;.lock</code> with <code>os.open(path, O_CREAT | O_EXCL)</code>. The operating system lets exactly one caller create it. Ledger: <code>lock_acquired</code>.</li>
       <li><b>Deny the second.</b> A second worker's create fails with <code>FileExistsError</code>. It returns BLOCKED with the holder's name. Ledger: <code>lock_denied</code>.</li>
       <li><b>Release with the token.</b> Only the caller holding the token may delete the lock. Ledger: <code>lock_released</code>.</li>
-      <li><b>Expire, then reclaim.</b> If now &gt; acquired_at + ttl_s, the holder is presumed dead. The next worker records the expiry first. Ledger: <code>lock_expired</code>, then <code>lock_acquired</code>.</li>
+      <li><b>Expire, then reclaim.</b> If now &gt; acquired_at + ttl_s, the next worker treats the holder as dead and records the expiry first. Ledger: <code>lock_expired</code>, then <code>lock_acquired</code>.</li>
     </ol>
     <div class="btnrow" style="justify-content:flex-start">
       <button type="button" data-l="acq A">A acquires</button>
@@ -443,7 +443,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel wide" aria-labelledby="h-route">
     <div class="eyebrow">E9 slide 9 · chapter 18.4</div>
     <h2 id="h-route">Routing and cost: send each task to a tier</h2>
-    <p class="small">Route by task class, declare a budget per sortie, and record the cost of every call. Prices and limits are from opencode.ai/docs/go, checked 09/24/2026; the deck says to verify them again before you fly.</p>
+    <p class="small">Route by task class, declare a budget per sortie, and record the cost of every call. Prices and limits are from opencode.ai/docs/go, retrieved September 24, 2026; the deck says to verify them again before you fly.</p>
     <div class="tablewrap"><table>
       <thead><tr><th>Task class</th><th>Tier</th><th>Example model (verify)</th><th>Listed price in / out per 1M tokens</th><th>Why this tier</th></tr></thead>
       <tbody>
@@ -451,10 +451,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Implement a small change</td><td>mid</td><td class="m">opencode-go/deepseek-v4-flash</td><td class="m">$0.15–0.30 / $0.60–1.20 (peak/off-peak)</td><td>The receipt checks the result.</td></tr>
         <tr><td>Plan, review, settle a conflict</td><td>large</td><td class="m">opencode-go/kimi-k3</td><td class="m">$3.00 / $15.00</td><td>An error here reaches every worker. Kimi K3 allows about 110 requests per 5 hours on Go.</td></tr>
         <tr><td>Adversary</td><td>other family</td><td>a family the worker is not</td><td>small tier is enough</td><td>Independence matters more than size.</td></tr>
-        <tr><td>Free or local</td><td>—</td><td class="m">opencode/big-pickle; Ollama</td><td class="m">$0</td><td>Big Pickle data may be used to improve the model; local costs your laptop's time.</td></tr>
+        <tr><td>Free or local</td><td>none</td><td class="m">opencode/big-pickle; Ollama</td><td class="m">$0</td><td>OpenCode may use Big Pickle data to improve the model; local costs your laptop's time.</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Go is $10/month with dollar limits per model per 5 hours, week, and month (20% / 50% / 100% of the monthly limit). Published results for the same idea: RouteLLM (Ong et al., 2024) reported 85% lower cost on MT Bench at 95% of GPT-4's quality, and FrugalGPT (Chen, Zaharia, &amp; Zou, 2023) reported cascades that matched GPT-4 at up to 98% lower cost. Your route table is the small version.</p>
+    <p class="small">Go is $10/month with dollar limits per model per 5 hours, week, and month (20% / 50% / 100% of the monthly limit). Published results for the same idea: RouteLLM (Ong et al., 2024) reported 85% lower cost on MT Bench at 95% of GPT-4's quality, and FrugalGPT (Chen, Zaharia, &amp; Zou, 2023) reported cascades that matched GPT-4 at up to 98% lower cost. Your route table applies the same idea at the scale of one sortie.</p>
   </section>
 
   <!-- ===== counterpoint ===== -->
@@ -466,7 +466,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <blockquote>“Actions carry implicit decisions, and conflicting decisions carry bad results.”<cite>Yan (2025), principle 2</cite></blockquote>
     <p><b>Mechanism.</b> Two subagents given parts of one task make decisions the other cannot see. Yan's example: one builds a background in the wrong visual style, the other builds a bird that matches neither, and the lead cannot reconcile them.</p>
     <p><b>Design choice.</b> One single-threaded agent with continuous context, which compresses its history with a model when the window runs out.</p>
-    <p><b>Read against Anthropic's post.</b> The two do not conflict. Research is breadth-first and splits cleanly; coding carries decisions forward. Sortie 9 does not ask you to parallelize anything. It asks you to check one claim with an agent that shares nothing with the worker.</p>
+    <p><b>Read against Anthropic's post.</b> The two do not conflict. Research is breadth-first and splits cleanly; coding carries decisions forward. Sortie 9 asks you to check one claim with an agent that shares nothing with the worker, and it does not ask you to parallelize anything.</p>
   </section>
 
   <section class="panel" aria-labelledby="h-anth">
@@ -485,7 +485,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 </div>
 
 <section class="map" aria-labelledby="h-map">
-  <div class="eyebrow">In your sortie · Flight Card 9 (corner) · Sprint due Wed 11/04</div>
+  <div class="eyebrow">In your sortie · Flight Card 9 (corner)</div>
   <h2 id="h-map">Each test point checks one arrow in the figure</h2>
   <div class="tablewrap">
   <table>
@@ -555,16 +555,16 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"edit repo run", t:"The harness runs the command itself", w:["E3","E9"],
      p:"The worker's edits sit in the repository at commit a1b2c3d. The harness does not ask the worker whether the tests pass. It runs python -m unittest -v against that commit and records what the process returns. The worker's sentence plays no part in this step."},
     {k:"receipt rc2led ledger", t:"What makes a receipt", w:["E9","E11"],
-     p:"A receipt holds the command, the exit code, the commit, a hash of the output, and the time. The harness writes it to receipts/ and appends a receipt event to the ledger. A model never writes it. If the worker writes its own receipt, you have a claim with a file extension."},
+     p:"A receipt holds the command, the exit code, the commit, a hash of the output, and the time. The harness writes it to receipts/ and appends a receipt event to the ledger. A model never writes it. A receipt the worker writes for itself is a claim stored in a file, because the worker chose its contents."},
     {k:"claim receipt adv", t:"The adversary gets the claim and the receipt", w:["E9"],
-     p:"A model from a second family receives two inputs: the claim text and the receipt. It never receives the worker's summary, its reasoning, or the falsehood you planted. A reviewer handed the worker's story checks whether the story is coherent, and a fluent story always is."},
+     p:"A model from a second family receives two inputs: the claim text and the receipt. It never receives the worker's summary, its reasoning, or the falsehood you planted. A reviewer that reads the worker's summary can check only whether the summary is coherent, and a model's summary is coherent whether or not the tests passed."},
     {k:"verdict v2led ledger", t:"The verdict is a claim from a second author", w:["E9"],
-     p:"The adversary answers with one JSON object: REFUTED or NOT-REFUTED, and the receipt field it cites. This receipt shows exit_code 1, so the adversary returns REFUTED and cites the failures field. The harness logs the verdict with the model id and family. NOT-REFUTED means this adversary could not break the claim with this evidence. It never means verified."},
+     p:"The adversary answers with one JSON object: REFUTED or NOT-REFUTED, and the receipt field it cites. This receipt shows exit_code 1, so the adversary returns REFUTED and cites the failures field. The harness logs the verdict with the model id and family. NOT-REFUTED means that this adversary could not break the claim with this evidence; it does not mean verified."},
     {k:"v2h human h2g gate5", t:"A person attests at Gate 5", w:["E9","E10"],
-     p:"Your Chase reads the receipts and the ledger slice, never the transcripts, and checks that the adversary's citation points at a real field in the receipt. Only a human, by name, writes the attestation, and it goes to Gate 5. An attestation that an agent writes for a human is not an attestation."},
+     p:"Your Chase reads the receipts and the ledger slice, never the transcripts, and checks that the adversary's citation points at a real field in the receipt. Only a human, by name, writes the attestation, and it goes to Gate 5. An agent may not write it on the human's behalf, because the attestation records that a person read the receipts."},
     {k:"ledger flog", t:"The flight log cites receipts, never claims", w:["E9"],
      p:"Every PASS in your flight log points at a receipt by path. A claim with no receipt stays in the ledger, marked unverified. The first falsifier on Flight Card 9 is a claim promoted to the flight log with no receipt."},
-    {k:"*", t:"Two rules the week returns to", w:["E9"],
+    {k:"*", t:"Two rules this Evolution returns to", w:["E9"],
      p:"The first rule: a claim moves toward the flight log only with a receipt that the harness wrote. The second rule: the check comes from something that does not share the worker's blind spots, a second model family first, an independent subagent second, a human third. The panels below apply both rules to the failure taxonomy, the ten-deep chain, locks, and routing."}
   ];
   const fig = $("fig"), els = [...fig.querySelectorAll(".el")];
@@ -598,7 +598,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       catch:"The deck's fix location for FC1 is the setup itself. In the MAST paper's ChatDev tests, a clearer role specification raised success by 9.4%. Anthropic fixed its own duplicated searches and over-spawning with detailed task descriptions and explicit effort rules in the prompt. Better prompts raised success but did not remove the categories."},
     FC2:{name:"Inter-agent misalignment", total:"32.4", desc:"The failure is in the traffic between agents: information lost, ignored, or never asked for.",
       fix:"Contracts and handoffs.",
-      catch:"A handoff carries identity, scope, a result contract, and an evidence obligation. The result contract says what evidence each status requires and fails closed: DONE without a receipt parses as NEEDS_CONTEXT. If the worker writes its own receipt, you have a claim with a file extension."},
+      catch:"A handoff carries identity, scope, a result contract, and an evidence obligation. The result contract says what evidence each status requires and fails closed: DONE without a receipt parses as NEEDS_CONTEXT. A receipt the worker writes for itself does not satisfy the obligation, because the worker chose its contents."},
     FC3:{name:"Task verification", total:"23.5", desc:"The failure is at the end: the check was missing, wrong, or came too early.",
       fix:"Receipts and the adversary.",
       catch:"Your receipt is the low-level check and your second-family adversary is the second level. Neither replaces the other. The MAST authors write that sole reliance on final-stage, low-level checks is inadequate; a high-level verification step added 15.6% on ProgramDev."}
@@ -621,11 +621,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   ];
   const GZ = {
     sl:{t:"Summary laundering", ids:["2.1","2.2","2.3","2.4","2.5","2.6","3.3"],
-        d:"A summary is promoted to fact. The deck reads it as FC2 and FC3 at once, because the information passes and nobody checks it. Its home in MAST is 3.3, incorrect verification. The ten-deep chain below is the reference design's own case.",
+        d:"Each layer promotes the summary below it to fact. The deck reads it as FC2 and FC3 at once, because the information passes and nobody checks it. Its home in MAST is 3.3, incorrect verification. The ten-deep chain below is the reference design's own case.",
         f:"Receipts that travel with the claim, and an adversary that reads the receipt."},
     ha:{t:"Hallucinated authorization", ids:[],
         d:"Appendix C #7: an agent acts on a gate it believes was passed when nothing records it. MAST has no code for it. The reference design's case is 2026-06-13, when a Gate-5 attestation was attributed to an operator who never gave it.",
-        f:"A gate that reads a record. Gate 5 is a human's attestation, never inferred and never written by an agent on the human's behalf."}
+        f:"A gate that opens only on a record it reads. Gate 5 is a human's attestation, never inferred and never written by an agent on the human's behalf."}
   };
   const SCALE = 16;
   const mast = $("mast");

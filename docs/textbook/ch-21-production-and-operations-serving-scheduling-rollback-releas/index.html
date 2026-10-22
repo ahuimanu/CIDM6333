@@ -25,7 +25,7 @@
 <ul>
 <li>Package, serve, and containerize your system with secrets and rate limits handled.</li>
 <li>Run the Heavy-lane gates (docs, BDD, human) and a release ceremony with rollback.</li>
-<li>Explain long-running and background agents' operational problems.</li>
+<li>Explain the operational problems of long-running and background agents.</li>
 </ul>
 <h2>Outline</h2>
 <h3>21.1 Serving an agent</h3>
@@ -34,7 +34,7 @@
 </ul>
 <h3>21.2 Containers, secrets, limits</h3>
 <ul>
-<li>Image, config, secret injection, rate limits, budgets; never in the repo.</li>
+<li>Image, config, secret injection, rate limits, budgets; secrets never in the repo.</li>
 </ul>
 <h3>21.3 Scheduling and background agents</h3>
 <ul>
@@ -62,7 +62,7 @@
 <tr>
 <td>Background / cloud agents</td>
 <td>2025–26</td>
-<td>Operations arrive</td>
+<td>Operational problems</td>
 <td>Runtime</td>
 </tr>
 <tr>
@@ -80,14 +80,14 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>gz closeout --ceremony</code>, <code>gz patch release</code>, <code>gz validate --distribution</code>, ADR-0.0.74 (MX mode), ADR-0.0.31 (distribution invariant), the GHI #830 backfilled releases.</p>
+<p>The gzkit commands and records for this chapter are <code>gz closeout --ceremony</code>, <code>gz patch release</code>, <code>gz validate --distribution</code>, ADR-0.0.74 (MX mode), ADR-0.0.31 (the distribution invariant), and the backfilled releases of GHI #830.</p>
 <h2>Readings</h2>
 <ul>
 <li>gzkit <code>docs/examples/guide-releasing.md</code>; <code>command-doctrine.md</code>.</li>
 <li>Nygard, <em>Release It!</em> (selected chapters).</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 12 (expansion) — DESIGN CLAIM: a release can be rolled back in one governed command and the rollback is in the ledger; secrets never appear in image, log, or repo. FALSIFIERS: a rollback that needs manual steps; a secret in any artifact; a release with no attestation event.</p>
+<p>Sortie 12 (expansion). DESIGN CLAIM: one governed command rolls a release back and the rollback is in the ledger; secrets never appear in image, log, or repo. FALSIFIERS: a rollback that needs manual steps; a secret in any artifact; a release with no attestation event.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Roll back your own release. Time it. Put the number in the runbook.</li>

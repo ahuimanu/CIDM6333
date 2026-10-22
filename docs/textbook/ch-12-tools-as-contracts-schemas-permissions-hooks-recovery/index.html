@@ -34,11 +34,11 @@
 </ul>
 <h3>12.2 Permission gating</h3>
 <ul>
-<li>Read freely; write with confirmation; irreversible with attestation. The confirmation event precedes the call, in the ledger, or it did not happen.</li>
+<li>Read freely; write with confirmation; irreversible with attestation. The confirmation event is written to the ledger before the call. A confirmation that is not in the ledger does not count as one.</li>
 </ul>
 <h3>12.3 Hooks</h3>
 <ul>
-<li>Claude Code hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd); gzkit's 17. What a hook can see and what it cannot: the Bash-write bypass and the move to the commit locus (<code>git diff --cached</code>).</li>
+<li>Claude Code hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd); gzkit's 17. What a hook can see and what it cannot: the Bash-write bypass, and why gzkit relocated write-side enforcement to the commit locus (<code>git diff --cached</code>).</li>
 </ul>
 <h3>12.4 Failure and recovery</h3>
 <ul>
@@ -46,7 +46,7 @@
 </ul>
 <h3>12.5 Small models and tools</h3>
 <ul>
-<li>Why a local 8B model is the right substrate this week: brittleness makes the contract visible.</li>
+<li>Why a local 8B model is the right substrate for this Evolution: a brittle model fails wherever the tool contract is loose, so its brittleness makes the contract visible.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -98,7 +98,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>.claude/hooks/</code> as emitted by <code>gz init</code>; <code>pipeline-gate.py</code> and <code>verifier-pipe-gate.py</code>; the 2026-08-21 presence-check incident; GHI #844/#847 (write-side fences moved to the commit locus).</p>
+<p>This chapter reads <code>.claude/hooks/</code> as emitted by <code>gz init</code>, <code>pipeline-gate.py</code> and <code>verifier-pipe-gate.py</code>, the 2026-08-21 presence-check incident, and GHI #844/#847 (write-side fences moved to the commit locus).</p>
 <h2>Readings</h2>
 <ul>
 <li>Schick et al., "Toolformer."</li>
@@ -106,7 +106,7 @@
 <li>Sprint and Drift, "Get the Balance Right."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 3 (expansion) — DESIGN CLAIM: no write-tool executes without a prior confirmation event. Four test points including a prompt-injected write request. FALSIFIERS: a write with no preceding confirmation; a file change after denial; passing only by disabling the gate.</p>
+<p>Sortie 3 (expansion). DESIGN CLAIM: no write-tool executes without a prior confirmation event. Four test points including a prompt-injected write request. FALSIFIERS: a write with no preceding confirmation; a file change after denial; passing only by disabling the gate.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Implement the gate as a hook in your harness <em>and</em> as a check in your own loop. Show a write that one catches and the other misses.</li>

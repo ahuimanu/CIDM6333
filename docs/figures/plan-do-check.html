@@ -187,7 +187,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 09</div>
   <h1>Plan, Do, Check</h1>
-  <p class="lede">A worker's result is a claim with a type, and a verdict counts only from a reviewer that can say no. This figure draws the controller as a state graph: implement, parse, two reviews, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to see a pair of agents collapse into one.</p>
+  <p class="lede">Two rules from the E8 deck shape this graph. A worker's result is a typed claim, and a verdict counts only when it comes from a reviewer that cannot edit the work it judges. The controller that enforces both rules appears here as a state graph, with an implementer, a fail-closed parse, two reviewers, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to watch a pair of agents collapse into one.</p>
 </header>
 
 <div class="figwrap">
@@ -491,7 +491,7 @@ permission:
     "git diff*": allow
     "git log*": allow
 ---</pre>
-    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." A sentence in the prompt is only a request.</p>
+    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." The harness enforces the deny on every call, whereas a sentence in the prompt is a request the model may ignore.</p>
   </section>
 </div>
 
@@ -505,8 +505,8 @@ permission:
         <li><b>Load context.</b> The controller reads the brief (OBPI), its requirements, and its allowed paths. Nothing is dispatched without a brief.</li>
         <li><b>Implement.</b> One dispatch per task to the implementer persona; HandoffResult back; then two-stage review, spec reviewer then quality reviewer, each returning ReviewResult.</li>
         <li><b>Verify.</b> The controller runs the checks itself: tests, lint, the brief's verification commands. A worker's 'tests pass' is not this stage.</li>
-        <li><b>Present evidence.</b> Paths, commands, and outputs go to the human, not conclusions.</li>
-        <li><b>Sync.</b> Ledger events, brief status, and dispatch records written. The human attests; the pipeline does not.</li>
+        <li><b>Present evidence.</b> The human receives paths, commands, and outputs, and draws the conclusions.</li>
+        <li><b>Sync.</b> The pipeline writes the ledger events, the brief status, and the dispatch records. The human attests, and the pipeline never records an attestation.</li>
       </ol>
       <p class="small">The deck's sources: <code>docs/user/concepts/subagent-pipeline.md</code>, <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>, <code>.gzkit/personas/</code>. The deck marks the ADR number, stage names, and paths "verify against the repository before class."</p>
     </div>
@@ -514,7 +514,7 @@ permission:
       <h3 class="sub">HandoffResult, dispatch records, and credit</h3>
       <p>HandoffResult statuses come from ADR-0.18.0: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, BLOCKED. ReviewResult is PASS, FAIL, or CONCERNS with findings. Both are parsed fail-closed. The field names beyond status are the course's.</p>
       <blockquote>Credit is never inferred.<cite>gzkit rule, as quoted in the E8 deck, slide 21</cite></blockquote>
-      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie: if your reviewer could not run, the flight log says so and the sortie is an ABORT, not a PASS with a missing verdict.</p>
+      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie, if your reviewer could not run, the flight log says so and the sortie is recorded as an ABORT, because a PASS with no verdict on record trips the first falsifier.</p>
     </div>
   </div>
 </section>
@@ -534,14 +534,14 @@ permission:
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Pre-registered falsifiers (any one means FAIL): merged work with no ReviewResult on record for that task; a malformed result parsed as PASS or DONE; a reviewer claim accepted without the evidence it cites; passing only by loosening the parser, granting the reviewer edit, or editing the log. The Chase also re-runs one evidence command. The lab (CIDM6333_Lab_E8_Subagents.md) has you declare this read-only reviewer in OpenCode tonight; the Sprint is due Wed 10/28.</p>
+  <p class="small" style="margin-top:10px">Pre-registered falsifiers (any one means FAIL): merged work with no ReviewResult on record for that task; a malformed result parsed as PASS or DONE; a reviewer claim accepted without the evidence it cites; passing only by loosening the parser, granting the reviewer edit, or editing the log. The Chase also re-runs one evidence command. The lab (CIDM6333_Lab_E8_Subagents.md) has you declare this read-only reviewer in OpenCode in this Evolution.</p>
 </section>
 
 <div class="notes">
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>Parallel workers. This week's build is one implementer and one reviewer in sequence. Parallel work, with locks, is E9.</li>
+      <li>Parallel workers. This Evolution's build is one implementer and one reviewer in sequence. Parallel work, with locks, is E9.</li>
       <li>The cost. Anthropic's June 2025 post on its research system reports about 15 times the tokens of a chat turn for the multi-agent version, against about 4 times for a single agent. Cognition's counter-argument from the same month says to share full traces, because two workers with different implicit decisions build parts that do not fit.</li>
       <li>gzkit's Stage 3 verify and Stage 4 present evidence sit between review and the human in the reference pipeline. The graph shows the LangGraph shape from slide 9, so they are listed in the reference panel instead.</li>
       <li>The narrator, the fourth persona in the reference design, and the persona files themselves: role, traits, anti-traits, and a why sentence.</li>
@@ -559,7 +559,7 @@ permission:
       <li>Anthropic. (2025, June). <em>How we built our multi-agent research system</em>. Anthropic Engineering.</li>
       <li>Yan, W. (2025, June). <em>Don't build multi-agents</em>. Cognition.</li>
       <li>LangChain. (2026). LangGraph documentation: interrupts; multi-agent patterns.</li>
-      <li>OpenCode. (2026). Agents and permissions documentation. Anthropic. (2026). Claude Code documentation: subagents; agent teams. Checked by the deck on 09/24/2026.</li>
+      <li>OpenCode. (2026). Agents and permissions documentation. Anthropic. (2026). Claude Code documentation: subagents; agent teams. Retrieved September 24, 2026.</li>
     </ol>
   </section>
 </div>
@@ -584,7 +584,7 @@ permission:
   /* ================= main figure ================= */
   const STEPS = [
     {k:"*", t:"Plan, do, check under every name", w:["E2","E8"],
-     p:"FIPA called the roles manager and contractor, MetaGPT called them architect and engineer, and Claude Code calls them main agent and subagent. The division of labor stays the same. What keeps going missing is a check whose FAIL stops the work. This graph puts that check in code, with a human before merge."},
+     p:"FIPA called the roles manager and contractor, MetaGPT called them architect and engineer, and Claude Code calls them main agent and subagent. The division of labor stays the same. Under each name the same part goes missing: a check whose FAIL stops the work. This graph puts that check in code, with a human before merge."},
     {k:"start frame", t:"The controller loads the brief", w:["E8"],
      p:"The controller is the graph itself. It reads the brief, its requirements, and its allowed paths, and it dispatches nothing without a brief. It plans, dispatches, parses, and routes. It never implements, so it has no work of its own to defend."},
     {k:"impl", t:"The worker gets one task in a clean window", w:["E8"],
@@ -592,7 +592,7 @@ permission:
     {k:"hcard impl", t:"The result is a claim with a type", w:["E3","E8"],
      p:"The worker returns a HandoffResult with one of four statuses: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, or BLOCKED. Two of the four are ways to say 'I did not finish'. A worker with an honest way to say BLOCKED has less reason to invent DONE. Prose from a worker is never read as a status."},
     {k:"parse reject", t:"The parse fails closed", w:["E3","E8"],
-     p:"The controller parses the result against the closed status set. Invalid JSON, an unknown status, or DONE without evidence is rejected, logged, and re-dispatched with the schema, and the round counts. The deck warns that the most common bug this week is a parser that catches the exception and carries on."},
+     p:"The controller parses the result against the closed status set. Invalid JSON, an unknown status, or DONE without evidence is rejected, logged, and re-dispatched with the schema, and the round counts. The deck's common-mistakes slide lists the parser that catches the exception and carries on."},
     {k:"spec rcard", t:"The spec reviewer asks one question", w:["E8"],
      p:"A separate reviewer reads the brief and the diff, never the implementer's summary, and asks whether the change does what the brief says inside the allowed paths. It returns a ReviewResult. Every finding cites a file and line, a test id, or a diff hunk, and a verdict with no citations is rejected as malformed."},
     {k:"route blocked", t:"FAIL routes back, and the rounds are bounded", w:["E8"],
@@ -600,7 +600,7 @@ permission:
     {k:"quality", t:"Quality review runs only after spec PASS", w:["E8"],
      p:"The second reviewer asks whether the work is done well: tests present and meaningful, errors handled, no dead code. Order matters. A quality reviewer handed the wrong feature will review it carefully and pass it. One reviewer is sound for Sortie 8; two stages with separate personas is Exceptional."},
     {k:"int ckpt concerns", t:"The human sits in the graph as a node", w:["E0","E8"],
-     p:"After two cited PASS verdicts, or on CONCERNS, the graph reaches an interrupt. LangGraph's interrupt() pauses the run and the checkpointer saves state under a thread_id. The human resumes it with Command(resume=True). This is where index zero sits: a node in the graph, not a comment in the README."},
+     p:"After two cited PASS verdicts, or on CONCERNS, the graph reaches an interrupt. LangGraph's interrupt() pauses the run and the checkpointer saves state under a thread_id. The human resumes it with Command(resume=True). Index zero sits here as a node in the graph, so the run cannot reach merge without the human's resume."},
     {k:"merge end disp", t:"Merge, and write the dispatch records", w:["E8","E9"],
      p:"The controller merges only on two PASS verdicts that cite evidence, and it writes a dispatch record for each role on each task. gzkit's rule is that credit is never inferred: if no record exists for the spec reviewer, spec review did not happen, whatever any summary says."},
     {k:"spec quality impl", mode:"edit", t:"When the reviewer can edit", w:["E5","E8"],
@@ -694,17 +694,17 @@ permission:
   const TRACES = {
     ro: [
       {n:0, line:TASK, st:{round:"1 of 3"}, note:"The controller holds the brief and the allowed paths before it dispatches anything."},
-      {n:1, line:"[implement#1] -> "+I1, raw:I1, kind:"h", st:{disp:["implement"]}, note:"The worker returns a typed claim. Its evidence field names a test command and an exit code. That is still a claim until someone runs it."},
+      {n:1, line:"[implement#1] -> "+I1, raw:I1, kind:"h", st:{disp:["implement"]}, note:"The worker returns a typed claim. Its evidence field gives a test command and an exit code. That is still a claim until someone runs it."},
       {n:2, line:"[parse]       ok", raw:I1, kind:"hp", note:"The parser accepts it: valid JSON, a status from the closed set, and evidence present."},
       {n:3, line:"[review#1]    -> "+R1, raw:R1, kind:"r", st:{disp:["review"]}, note:"The reviewer read the diff and the brief, not the worker's summary. Its FAIL cites a location and the requirement that has no test."},
       {n:4, line:"[route]       fail -> implement (round 2 of 3)", st:{round:"2 of 3"}, note:"FAIL blocks the merge. The controller routes back with the finding and counts the round."},
       {n:1, line:"[implement#2] -> "+I2, raw:I2, kind:"h", st:{disp:["implement"]}, note:"The second attempt comes back as chat prose. A substring search would find nothing to object to here."},
       {n:2, line:"[parse]       REJECT not JSON  -> re-dispatch with the schema attached (round 3 of 3)", raw:I2, kind:"hp", st:{round:"3 of 3", reject:1}, note:"The parser rejects it before any review is dispatched. The controller re-dispatches once with the schema, and the round counts."},
-      {n:1, line:"[implement#3] -> "+I3, raw:I3, kind:"h", st:{disp:["implement"]}, note:"The third result names the new test file."},
+      {n:1, line:"[implement#3] -> "+I3, raw:I3, kind:"h", st:{disp:["implement"]}, note:"The third result lists the new test file."},
       {n:2, line:"[parse]       ok", raw:I3, kind:"hp", note:"It parses."},
       {n:3, line:"[review#2]    -> "+R2, raw:R2, kind:"r", st:{disp:["review"]}, note:"PASS lists what was checked, down to the test by name."},
       {n:5, line:"[interrupt]   checkpoint 7f3a  waiting for human", st:{ckpt:"7f3a"}, note:"The graph pauses and the checkpointer saves state. Nothing merges until the human resumes it."},
-      {n:6, line:"[resume]      approved by <student>  -> merge 1c9e2d4", st:{disp:["human"], merged:"1c9e2d4"}, note:"One approval, one merge commit."},
+      {n:6, line:"[resume]      approved by <student>  -> merge 1c9e2d4", st:{disp:["human"], merged:"1c9e2d4"}, note:"One approval produces one merge commit."},
       {n:6, line:"\nDISPATCH RECORDS  implement x3 (1 rejected) · review x2 · human x1\nCHASE READS       this log, both ReviewResults, git show 1c9e2d4 --stat; re-runs the test command", note:"The Chase re-runs the test command. The evidence field is a claim until someone runs it."}
     ],
     ed: [

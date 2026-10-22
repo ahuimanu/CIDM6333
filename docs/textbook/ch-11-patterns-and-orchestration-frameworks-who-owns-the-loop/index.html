@@ -38,11 +38,11 @@
 </ul>
 <h3>11.3 Writing ADR-1</h3>
 <ul>
-<li>Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. ADRs before code; after is post-hoc rationalization.</li>
+<li>Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. Write the ADR before the code. An ADR written after the code rationalizes what was already built.</li>
 </ul>
 <h3>11.4 Refactoring the loop into a pattern</h3>
 <ul>
-<li>Worked: turn the E1 loop into orchestrator–workers or evaluator–optimizer without changing the tool layer.</li>
+<li>A worked example: turn the E1 loop into orchestrator–workers or evaluator–optimizer without changing the tool layer.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -82,7 +82,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>gz plan create --kind feature --semver --lane</code>, the decomposition scorecard, forcing functions (pre-mortem, WWHTBT, constraint archaeology). ADR-0.0.2 (argparse over click; "popularity is not rationale") as the model ADR.</p>
+<p>The reference material is <code>gz plan create --kind feature --semver --lane</code>, the decomposition scorecard, and the forcing functions (pre-mortem, WWHTBT, constraint archaeology). ADR-0.0.2 (argparse over click; "popularity is not rationale") serves as the model ADR.</p>
 <h2>Readings</h2>
 <ul>
 <li>OpenAI, "A Practical Guide to Building Agents."</li>
@@ -90,7 +90,7 @@
 <li>Sprint and Drift, "Enthusiasm Is All You Need."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 2 (center) — DESIGN CLAIM: the same task runs under two patterns with identical tool traces and a measurable difference in cost or quality that the ADR predicted. FALSIFIER: the ADR's predicted consequence does not appear in the evidence.</p>
+<p>Sortie 2 (center). DESIGN CLAIM: the same task runs under two patterns with identical tool traces and a measurable difference in cost or quality that the ADR predicted. FALSIFIER: the ADR's predicted consequence does not appear in the evidence.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Write ADR-1. Have a peer red-team it with the ten challenges (So what? Scope, Alternative, Dependency, Gold standard, Timeline, Evidence, Consumer, Regression, Parity).</li>

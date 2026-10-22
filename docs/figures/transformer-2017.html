@@ -168,7 +168,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 01b · after Vaswani et al. (2017)</div>
   <h1>The 2017 Transformer</h1>
-  <p class="lede">Figure 1 of <em>Attention Is All You Need</em>, redrawn with the paper's own layout, color roles, and numbers. Step through it with the paper's words beside each part. Then switch to decoder-only to see which half of the 2017 model today's chat models kept.</p>
+  <p class="lede">This page redraws Figure 1 of <em>Attention Is All You Need</em> with the paper's own layout, color roles, and numbers, and sets the paper's words beside each part as you step through it. The switch above the figure removes the encoder, which shows which half of the 2017 model the chat models of the GPT lineage kept.</p>
 </header>
 
 <div class="figwrap">
@@ -373,18 +373,18 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <!-- positional encoding -->
   <section class="panel" aria-labelledby="h-pe">
     <div class="eyebrow">§3.5 · Positional encoding</div>
-    <h2 id="h-pe">Word order, written in waves</h2>
+    <h2 id="h-pe">Word order as sine and cosine waves</h2>
     <div class="eq">PE(pos, 2i) = sin(pos / 10000^(2i/d_model))<br>PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</div>
     <canvas id="pe" width="128" height="100" role="img" aria-label="Heatmap of sinusoidal positional encodings: rows are positions 0 to 99, columns are the first 128 of 512 dimensions; low dimensions oscillate quickly, higher dimensions slowly."></canvas>
     <div class="axisrow"><span>dimension 0</span><span>dimension 127 of 512 →</span></div>
     <div class="legend"><span><i class="sw" style="background:var(--model-line)"></i>−1</span><span><i class="sw" style="background:var(--surface-2)"></i>0</span><span><i class="sw" style="background:var(--accent)"></i>+1</span><span>rows: positions 0–99, top to bottom</span></div>
-    <p class="small">Each pair of dimensions is a sine and a cosine at its own wavelength, from 2π up to 10000·2π. Low dimensions change every position; high dimensions barely change across a sentence. The sum of this pattern and the token embedding is what enters the first layer. Many newer models encode position differently, for example by rotating queries and keys, but the problem is the same one: attention alone ignores order.</p>
+    <p class="small">Each pair of dimensions is a sine and a cosine at its own wavelength, from 2π up to 10000·2π. Low dimensions change at every position, and high dimensions barely change across a sentence. The first layer receives the sum of this pattern and the token embedding. Later models of the Llama lineage encode position by rotating the queries and keys instead, and the reason for either method is the same: attention by itself ignores order.</p>
   </section>
 
   <!-- complexity -->
   <section class="panel" aria-labelledby="h-cx">
     <div class="eyebrow">Table 1, redrawn · §4 Why self-attention</div>
-    <h2 id="h-cx">The trade the paper made, and the bill it left</h2>
+    <h2 id="h-cx">Cost per layer, by layer type</h2>
     <div class="tablewrap"><table class="t">
       <thead><tr><th>Layer type</th><th>Complexity per layer</th><th>Sequential ops</th><th>Max path length</th></tr></thead>
       <tbody>
@@ -397,7 +397,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="ctrl"><label for="dm">Model width d</label><input id="dm" type="range" min="0" max="5" step="1" value="1"><output id="dmout" for="dm">512</output></div>
     <svg class="cx" id="cx" viewBox="0 0 520 280" role="img" aria-label="Log-log chart of operations per layer against sequence length for self-attention and recurrent layers, crossing where n equals d."></svg>
     <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>self-attention, n²·d</span><span><i class="sw" style="background:var(--model-line)"></i>recurrent, n·d²</span></div>
-    <p class="small">Self-attention is cheaper than recurrence “when the sequence length n is smaller than the representation dimensionality d, which is most often the case” (§4). In 2017 n was a sentence. In 2026 n is a context window, far to the right of the crossing. Its O(1) sequential operations are why it trains in parallel on GPUs. Order of growth only; constants and kernel optimizations are ignored.</p>
+    <p class="small">Self-attention is cheaper than recurrence “when the sequence length n is smaller than the representation dimensionality d, which is most often the case” (§4). In 2017 n was a sentence. In 2026 n is a context window, far to the right of the crossing, so the trade the paper made in favor of parallel training is now paid in attention cost at every call. The O(1) sequential operations per layer are the reason self-attention trains in parallel on GPUs. The chart shows order of growth only and ignores constants and kernel optimizations.</p>
   </section>
 
   <!-- hyperparameters -->
@@ -411,7 +411,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr class="hl"><td>Big</td><td class="m">6</td><td class="m">1024</td><td class="m">4096</td><td class="m">16</td><td class="m">64</td><td class="m">0.3</td><td class="m">0.1</td><td class="m">300K</td><td class="m">213M</td><td>28.4 BLEU EN–DE, 41.8 BLEU EN–FR (WMT 2014); 3.5 days on 8 P100s</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Training: Adam with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹, and a learning rate that warms up over 4,000 steps. Vocabulary: byte-pair encoding with about 37,000 shared tokens for English–German, a 32,000 word-piece vocabulary for English–French. Decoding: beam search with a beam size of 4 and length penalty α = 0.6. For scale, 213 million parameters is small by current standards; frontier models are larger by orders of magnitude, and most labs no longer publish their sizes.</p>
+    <p class="small">Training: Adam with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹, and a learning rate that warms up over 4,000 steps. Vocabulary: byte-pair encoding with about 37,000 shared tokens for English–German, a 32,000 word-piece vocabulary for English–French. Decoding: beam search with a beam size of 4 and length penalty α = 0.6. For scale, 213 million parameters is small by current standards. Frontier models are larger by orders of magnitude, and since GPT-4 (2023) the labs that train them have stopped publishing parameter counts.</p>
   </section>
 </div>
 
@@ -422,7 +422,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>Layout, component names, and color roles follow Figure 1 and Figure 2 of the paper. Colors are re-tinted so the figure reads in light and dark themes.</li>
       <li>The dashed return arrow on the right is not in the paper. It draws the sentence in §3 that says the model is auto-regressive.</li>
       <li>The decoder-only view is not in the paper. It shows the design that GPT (Radford et al., 2018) and later chat models adopted.</li>
-      <li>The 2017 model normalizes after each residual addition (post-norm). Most later models normalize before the sub-layer (pre-norm), which trains more stably at depth.</li>
+      <li>The 2017 model normalizes after each residual addition (post-norm). GPT-2 and the models after it normalize before the sub-layer (pre-norm), which Xiong et al. (2020) show trains more stably at depth.</li>
       <li>For the same model placed inside the agent loop, see <a href="two-loops.html">Figure 01, <em>Two Loops</em></a>.</li>
     </ul>
   </section>
@@ -457,7 +457,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
      p:"The encoder on the left reads the source sentence. The decoder on the right writes the translation one token at a time. Every box is one of five parts: embeddings, attention, feed-forward, add & norm, and the linear-softmax head. Step through them in the order data flows.",
      q:"Most competitive neural sequence transduction models have an encoder-decoder structure.", c:"§3"},
     {k:"in", t:"A translation model, fed tokens", w:["§5.1","E6"],
-     p:"The 2017 model was built to translate. The source sentence enters at the bottom left; the translation so far enters at the bottom right. Both arrive as tokens from a shared subword vocabulary, the same unit your context budget counts in week six.",
+     p:"The 2017 model was built to translate. The source sentence enters at the bottom left; the translation so far enters at the bottom right. Both arrive as tokens from a shared subword vocabulary, which is the unit the window budget of E6 counts.",
      q:"Sentences were encoded using byte-pair encoding, which has a shared source-target vocabulary of about 37000 tokens.", c:"§5.1"},
     {k:"emb pe", t:"Embeddings plus positional encoding", w:["§3.4","§3.5","E7"],
      p:"Each token becomes a vector of d_model = 512 numbers. Attention by itself ignores word order, so a fixed pattern of sine and cosine waves is added to every vector. The panel below draws that pattern. One weight matrix serves both embedding layers and the final linear layer.",
@@ -466,22 +466,22 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
      p:"Every position in the source attends to every other position, in both directions. The three arrows into the box are the queries, keys, and values. All three are projections of the same input, which is why they split from one line. There are h = 8 heads, each of width 64.",
      q:"In a self-attention layer all of the keys, values and queries come from the same place.", c:"§3.2.3"},
     {k:"norm res", t:"Add & Norm: the path around each sub-layer", w:["§3.1"],
-     p:"Each sub-layer's input skips around it on the thin line and is added to its output, then normalized. Later work calls this running sum the residual stream. The 2017 model normalizes after the addition; most models since normalize before the sub-layer.",
+     p:"Each sub-layer's input skips around it on the thin line and is added to its output, then normalized. Later work calls this running sum the residual stream. The 2017 model normalizes after the addition, and the GPT line of models normalizes before the sub-layer instead (see the notes below the figure).",
      q:"The output of each sub-layer is LayerNorm(x + Sublayer(x)).", c:"§3.1"},
     {k:"ffn", t:"Position-wise feed-forward", w:["§3.3"],
      p:"A two-layer network with a ReLU between, applied to each position separately and in the same way. Its inner layer is four times wider than the model, d_ff = 2048. Attention mixes information across positions; this layer transforms each position on its own.",
      q:"FFN(x) = max(0, xW₁ + b₁)W₂ + b₂", c:"§3.3, eq. 2"},
     {k:"stack", t:"N×: the stacks", w:["§3.1","§5.2"],
-     p:"The encoder repeats its layer N = 6 times, and so does the decoder. The base model has about 65 million parameters. It trained in half a day on one machine, which is part of why the paper spread so fast.",
+     p:"The encoder repeats its layer N = 6 times, and so does the decoder. The base model has about 65 million parameters and trained in half a day on one machine with eight GPUs.",
      q:"We trained the base models for a total of 100,000 steps or 12 hours.", c:"§5.2"},
     {k:"mattn in", t:"Masked self-attention in the decoder", w:["§3.1","§3.2.3"],
-     p:"The decoder's first attention layer can only look back. Scores for later positions are set to minus infinity before the softmax, so they get zero weight. Together with the one-position shift at the input, this forces each position to predict the next token. Every chat model still uses this mask.",
+     p:"The decoder's first attention layer can only look back. Scores for later positions are set to minus infinity before the softmax, so they get zero weight. Together with the one-position shift at the input, this forces each position to predict the next token. The decoder-only chat models keep this mask, because next-token prediction is the task they are trained on.",
      q:"This masking, combined with fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on the known outputs at positions less than i.", c:"§3.1"},
     {k:"cross encout", t:"Encoder–decoder attention", w:["§3.2.3"],
      p:"Here the decoder consults the source sentence. Its queries come from the translation so far; its keys and values come from the encoder's output. This is the only link between the two stacks, and it is the part that decoder-only models remove.",
      q:"The queries come from the previous decoder layer, and the memory keys and values come from the output of the encoder.", c:"§3.2.3"},
     {k:"lin soft probs", t:"Linear, softmax, output probabilities", w:["§3.4","§6.1","E10"],
-     p:"A linear layer turns the decoder's last vector into one score per vocabulary entry, and softmax turns the scores into probabilities. The paper chose output tokens with beam search. Chat models usually sample instead, which is why their output varies from run to run.",
+     p:"A linear layer turns the decoder's last vector into one score per vocabulary entry, and softmax turns the scores into probabilities. The paper chose output tokens with beam search. A chat model draws one token from the distribution at a set temperature instead, which is why its output varies from run to run.",
      q:"We used beam search with a beam size of 4 and length penalty α = 0.6.", c:"§6.1"},
     {k:"loop in probs", t:"The loop the paper describes but does not draw", w:["§3","E1"],
      p:"Figure 1 has no arrow from the top back to the bottom, but decoding needs one. The chosen token is appended to the outputs, shifted right, and the decoder runs again. This is the inner loop of Figure 01, Two Loops.",
@@ -490,7 +490,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
      p:"GPT (Radford et al., 2018) and its descendants drop the encoder and the encoder–decoder attention. The prompt and the reply form one sequence that runs through the right-hand column: embeddings, masked attention, feed-forward, add & norm, linear, softmax. Use the switch above the figure to compare.",
      q:"", c:""},
     {k:"probs", t:"Where the course begins", w:["E1","E3"],
-     p:"The paper's figure ends at output probabilities. Everything CIDM 6333 builds starts after that line: reading the reply, gating the tool call, feeding the result back, and deciding when to halt.",
+     p:"The paper's figure ends at output probabilities. Everything CIDM 6333 builds starts after that line. The harness reads the reply, gates the tool call, feeds the result back, and decides when to halt.",
      q:"", c:""}
   ];
 

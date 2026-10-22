@@ -30,7 +30,7 @@
 <h2>Outline</h2>
 <h3>15.1 The window as an artifact</h3>
 <ul>
-<li>What is in it: instructions, history, tool results, retrieved memory. Measure it. Budget it.</li>
+<li>What is in it: instructions, history, tool results, retrieved memory. Measure the window, then budget it.</li>
 </ul>
 <h3>15.2 Compaction and progressive disclosure</h3>
 <ul>
@@ -42,7 +42,7 @@
 </ul>
 <h3>15.4 Layers of truth</h3>
 <ul>
-<li>L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 &gt; L1 &gt; L3; L3 can never block a gate. Frontmatter can lie; the ledger is the truth.</li>
+<li>L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 &gt; L1 &gt; L3; L3 can never block a gate. Frontmatter can carry a false status; the ledger is the record a gate consults.</li>
 </ul>
 <h3>15.5 Intent preservation as the design goal</h3>
 <ul>
@@ -86,7 +86,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>docs/governance/state-doctrine.md</code> (ADR-0.0.9); <code>gz handoff create/resume</code>; <code>scripts/session_orientation.py</code>; <code>.gzkit/handoffs/rulings.jsonl</code>; the 2026-04-26 stale-clone incident; ADR-0.0.37 and ADR-0.0.54.</p>
+<p>The reference material is <code>docs/governance/state-doctrine.md</code> (ADR-0.0.9), <code>gz handoff create/resume</code>, <code>scripts/session_orientation.py</code>, <code>.gzkit/handoffs/rulings.jsonl</code>, the 2026-04-26 stale-clone incident, and ADR-0.0.37 with ADR-0.0.54.</p>
 <h2>Readings</h2>
 <ul>
 <li>Anthropic, "Effective Context Engineering for AI Agents."</li>
@@ -94,7 +94,7 @@
 <li>Sprint and Drift, "Woven."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 6 (expansion) — DESIGN CLAIM: a handoff written at session end lets a fresh session resume with no loss of intent (measured: the next action taken is the one the handoff named). FALSIFIERS: the fresh session asks a question the handoff answered; an L3 view contradicts the ledger and wins.</p>
+<p>Sortie 6 (expansion). DESIGN CLAIM: a handoff written at session end lets a fresh session resume with no loss of intent (measured: the next action taken is the one the handoff specified). FALSIFIERS: the fresh session asks a question the handoff answered; an L3 view contradicts the ledger and wins.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Compute your system's context budget per turn for a week. Where did it go?</li>

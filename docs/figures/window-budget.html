@@ -186,7 +186,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 07</div>
   <h1>Window Budget</h1>
-  <p class="lede">On every turn the model knows what is in the window and nothing else. E6 treats the window as <em>an artifact with a budget</em>: you know what is in it and who put it there, you log what each turn cost, and you decide what compaction may lose before it runs. Step through the figure, then run the four compaction moves on a session and watch the stacks shrink.</p>
+  <p class="lede">On every turn the model knows what is in the window and nothing else, so E6 treats the window as <em>an artifact with a budget</em>. Under that treatment you know what is in the window and who put it there, you log what each turn cost, and you decide what compaction may lose before it runs. The figure draws those three obligations through one session, from the rows of the window to the ledger record and the compactor. Compaction is the operation the budget exists to trigger, and the simulator runs its four moves on a fourteen-turn session, with the stacks shrinking as each move is added.</p>
 </header>
 
 <div class="figwrap">
@@ -424,8 +424,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <div class="scroller"><svg class="hbar" id="hbar" viewBox="0 0 640 150" role="img" aria-label="Horizontal bars drawn to scale: about 258 thousand tokens of startup context against about one thousand tokens for a 4,000-character AGENTS.md."></svg></div>
     <p class="small">Drawn to scale. The second bar converts 4,000 characters to tokens with the deck's characters ÷ 4 rule, so it is an estimate, about 1,000 tokens. OpenAI's ~100 lines has no token count in the deck and is not drawn.</p>
-    <p><b>The incident.</b> The rendered instruction surface, AGENTS.md plus imported doctrine, grew until a Codex session's startup context was on the order of 258K tokens before the first user turn. The symptoms: compaction on turn one, rules near the end of the file ignored, and a harness that could not hold the task and the rules at once. The file had become the encyclopedia.</p>
-    <p><b>The rule that replaced it.</b> Map, not encyclopedia (ADR-0.0.54). The file names where each kind of truth lives and what must hold on every turn. A budget is declared and validated (<code>gz validate --instructions-files-budget</code>). Procedures move to skills, enforcement moves to hooks, and derivable facts are deleted. The measure is what the harness loads at startup, not the file's length.</p>
+    <p><b>The incident.</b> The rendered instruction surface, AGENTS.md plus imported doctrine, grew until a Codex session's startup context was on the order of 258K tokens before the first user turn. The symptoms were compaction on turn one, rules near the end of the file ignored, and a harness that could not hold the task and the rules at once. The file had become an encyclopedia, which is the shape ADR-0.0.54 rejects.</p>
+    <p><b>The rule that replaced it.</b> Map, not encyclopedia (ADR-0.0.54). The file states where each kind of truth lives and what must hold on every turn. The repository declares a budget and validates it (<code>gz validate --instructions-files-budget</code>). Procedures move to skills, enforcement moves to hooks, and derivable facts are deleted. The budget is measured by what the harness loads at startup. A file's length on disk is a different number.</p>
     <p class="small">The deck flags this case for checking: verify the figure, the harness, and the date against the insights corpus. OpenAI's team reached the same rule from the other direction, about a hundred lines used as a map. Your E5 Sprint re-measured the 09/17 file the same way, by what the harness loaded.</p>
   </section>
 
@@ -437,7 +437,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="cards">
       <div class="card"><h3 class="sub">Skills</h3><p>The name and description sit in context; the body loads when the skill is invoked. E5 moved procedures out of AGENTS.md into skills; E6 counts what that saved.</p></div>
       <div class="card"><h3 class="sub">Deferred tools</h3><p>Only MCP tool names enter context until a task needs one (Claude Code default).</p><span class="n">Cursor A/B, Jan 2026: 46.9% fewer agent tokens in runs that called an MCP tool</span></div>
-      <div class="card"><h3 class="sub">Just-in-time retrieval</h3><p>Keep identifiers, not contents: a path, a query, a ledger event id. Load the content at runtime with a tool. A handoff points at evidence and does not paste it.</p></div>
+      <div class="card"><h3 class="sub">Just-in-time retrieval</h3><p>Keep identifiers rather than contents (a path, a query, a ledger event id) and load the content at runtime with a tool. A handoff points at evidence and does not paste it.</p></div>
       <div class="card"><h3 class="sub">Subagents</h3><p>The verbose work stays in the child's window, and a summary returns.</p><span class="n">often 1,000–2,000 tokens (Anthropic) · the summary is a claim (E9)</span></div>
     </div>
   </section>
@@ -452,7 +452,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <div class="hand" id="hand"></div>
     <div class="verdict" id="hoverdict" aria-live="polite"></div>
-    <p class="small">The test of a handoff: a stranger with no transcript takes the action you named first, and asks nothing you already answered. The machinery around it: a session-start advisement that loads the handoff before turn one (Claude Code's SessionStart hook), a rulings store so settled decisions stay settled, and an exit bookmark. The seven-section text is an illustrative skeleton.</p>
+    <p class="small">A handoff passes its test when a stranger with no transcript takes the action it lists first and asks nothing it already answered. Three pieces of machinery surround it: a session-start advisement that loads the handoff before turn one (Claude Code's SessionStart hook), a rulings store so settled decisions stay settled, and an exit bookmark. The seven-section text is an illustrative skeleton.</p>
   </section>
 
   <!-- ===== layers ===== -->
@@ -468,14 +468,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       </tbody>
     </table></div>
     <blockquote>Frontmatter can lie; the ledger is the truth.<cite>gzkit state doctrine, docs/governance/state-doctrine.md (ADR-0.0.9) [verify path and ADR number]</cite></blockquote>
-    <p class="small">Precedence runs L2 &gt; L1 &gt; L3. A compaction summary is L3: it may inform the next turn, and it may not overrule the ledger. A handoff your agent drafted is L3 until you check it against the ledger. OpenCode's session totals add every turn's cache reads (issue #30649), so its counter may be a lifetime sum; the window is one call's input [verify on your version].</p>
+    <p class="small">Precedence runs L2 &gt; L1 &gt; L3. A compaction summary is L3, so it may inform the next turn and it may not overrule the ledger. A handoff your agent drafted is L3 until you check it against the ledger. OpenCode's session totals add every turn's cache reads (issue #30649), so its counter may be a lifetime sum, while the window is one call's input [verify on your version].</p>
   </section>
 </div>
 
 <section class="map" aria-labelledby="h-map">
   <div class="eyebrow">In your sortie</div>
-  <h2 id="h-map">Flight Card 6 flies this figure: the handoff</h2>
-  <p class="small" style="max-width:75ch">Expansion. Design claim: a handoff written at session end lets a fresh session resume with no loss of intent; the fresh session's first action is the one the handoff named. To force test point 2 inside one session, set a low turn budget for the sortie, for example 8,000 or 16,000 tokens, and say so on the card.</p>
+  <h2 id="h-map">Flight Card 6, the handoff</h2>
+  <p class="small" style="max-width:75ch">Expansion. Design claim: a handoff written at session end lets a fresh session resume with no loss of intent; the fresh session's first action is the one the handoff listed. To force test point 2 inside one session, set a low turn budget for the sortie, for example 8,000 or 16,000 tokens, and say so on the card.</p>
   <div class="tablewrap">
   <table>
     <thead><tr><th>Test point</th><th>Part of the figure</th><th>What must show</th></tr></thead>
@@ -485,11 +485,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <tr><td>3 · handoff written</td><td>Session end → handoff.md (step 9)</td><td>handoff.md in seven sections + a handoff_written event with its hash.</td></tr>
       <tr><td>4 · fresh resume</td><td>Fresh session B, no transcript (step 9)</td><td>First action == NEXT STEP 1; zero questions the handoff answered; session_resumed event.</td></tr>
       <tr><td>5 · stale L3 view</td><td>Layers of truth (step 10)</td><td>B follows the ledger; the conflict is logged; L3 blocks nothing.</td></tr>
-      <tr><td>Lab, 6:00–6:30</td><td>The whole figure, in OpenCode</td><td><code>opencode export</code>, a per-turn table from <code>budget.py</code>, a handoff by hand, and a <code>/new</code> session that states its first action. Commit the table, not the raw export.</td></tr>
+      <tr><td>Lab</td><td>The whole figure, in OpenCode</td><td><code>opencode export</code>, a per-turn table from <code>budget.py</code>, a handoff by hand, and a <code>/new</code> session that states its first action. Commit the table and leave the raw export out of the repo.</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Pre-registered falsifiers, any one of which fails the sortie: B asks a question the handoff answered or takes an action it did not name; an L3 view contradicts the ledger and wins; any call has no budget record, or a compaction has no event; the pass came from pasting A's transcript into B or editing the handoff after B starts. Go: the Chase signs in the repo by Mon 10/12, 11:59 p.m. The Sprint is due Wed 10/14.</p>
+  <p class="small" style="margin-top:10px">Four pre-registered falsifiers, any one of which fails the sortie: B asks a question the handoff answered or takes an action the handoff did not list; an L3 view contradicts the ledger and wins; any call has no budget record, or a compaction has no event; the pass came from pasting A's transcript into B or editing the handoff after B starts. The Chase signs in the repo before the Sprint is due.</p>
 </section>
 
 <p class="closer">Intent that lives only in the window dies with the window.</p>
@@ -511,7 +511,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>Anthropic. (2025, September 29). <em>Effective context engineering for AI agents</em>. Anthropic Engineering.</li>
       <li>Young, J. (2025, November 26). <em>Effective harnesses for long-running agents</em>. Anthropic Engineering.</li>
       <li>Anthropic. (2025). <em>Managing context on the Claude Developer Platform</em>.</li>
-      <li>Anthropic. (2026). <em>Claude Code docs: Explore the context window; Commands; Hooks; Memory</em>. code.claude.com/docs. Checked 09/24/2026.</li>
+      <li>Anthropic. (2026). <em>Claude Code docs: Explore the context window; Commands; Hooks; Memory</em>. code.claude.com/docs. Retrieved September 24, 2026.</li>
       <li>Liu, N. F., et al. (2024). Lost in the middle: How language models use long contexts. <em>TACL, 12</em>, 157–173.</li>
       <li>Chroma. (2025, July 14). <em>Context rot</em>.</li>
       <li>LangChain. (2025, July 2). <em>Context engineering for agents</em>.</li>
@@ -542,13 +542,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   /* ---------- player ---------- */
   const STEPS = [
     {k:"*", t:"The window is an artifact with a budget", w:["E6"],
-     p:"On every turn the model knows what is in the window and nothing else; what is in it by accident still costs attention. The figure shows who puts each kind of text in the window, the record your loop writes after each call, and what the loop does when a turn crosses the budget. Two rules run through it: measure the window on every turn, and put what must survive in a file."},
+     p:"On every turn the model knows what is in the window and nothing else, and what is in it by accident still costs attention. The rows on the left are the kinds of text and the parties that write them. The column on the right is the record your loop writes after each call and the compactor that runs when a turn crosses the budget. Two rules run through the whole figure: measure the window on every turn, and put what must survive in a file."},
     {k:"harness", t:"The harness writes the system prompt and tool definitions", w:["E3","E4","E6"],
      p:"OpenCode writes the system prompt and the tool definitions before your first word. They grow with every tool you enable and every MCP server you add; Claude Code keeps MCP tools as names only while they are deferred. After /compact, Claude Code reloads both. Your E4 server's schemas sit in this row."},
     {k:"you skills", t:"You write the instruction files and the skills", w:["E5","E6"],
      p:"AGENTS.md, CLAUDE.md, and rules grow with every line you add, and imports load in full. They reload from disk after compaction. Skill descriptions sit in the window while a skill's body waits until it is invoked. After /compact, Claude Code does not reload the skill listing, and it re-injects invoked skill bodies at 5,000 tokens each at most."},
     {k:"hist", t:"You and the model write the history", w:["E1","E6"],
-     p:"Every turn adds your message and the model's reply. History is the row that compaction replaces with one structured summary. A rule you typed in chat on turn three becomes whatever the summarizer chose to write about it. The deck names this mistake the chat is the memory, failure mode #5, correction fails."},
+     p:"Every turn adds your message and the model's reply. History is the row that compaction replaces with one structured summary. A rule you typed in chat on turn three becomes whatever the summarizer chose to write about it. The deck calls this mistake the chat is the memory, failure mode #5, correction fails."},
     {k:"tools ret", t:"The tools and your code fill the rest", w:["E3","E6","E7"],
      p:"Tool results grow with every call, and one log file can be tens of thousands of tokens. After /compact in Claude Code the full outputs are gone, and up to five recently modified files are re-read. Retrieved memory and notes are whatever your code chose to load, and only your code reloads them. Codex and OpenCode publish no such list, so the lab measures theirs."},
     {k:"call rec ledger", t:"One budget record per turn", w:["E6","E11"],
@@ -560,7 +560,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"out skills ret", t:"Load later, or load elsewhere", w:["E5","E6","E9"],
      p:"Progressive disclosure keeps tokens out of the window until they earn a place. Skill bodies wait on disk, deferred tools enter as names, a handoff carries pointers to evidence, and a subagent does the verbose work in its own window and returns a summary. Each lookup can fail, so the loop logs it. A subagent's summary is a claim, which is E9's rule arriving early."},
     {k:"handoff l1", t:"Handoffs: writing for a stranger", w:["E6"],
-     p:"At session end, session A writes handoff.md in seven sections and records a handoff_written event. Fresh session B reads the handoff, the L1 files, and the ledger before turn one, with no transcript. B passes when its first action is the one the handoff named and it asks nothing the handoff answered. Pasting A's transcript into B falsifies the claim."},
+     p:"At session end, session A writes handoff.md in seven sections and records a handoff_written event. Fresh session B reads the handoff, the L1 files, and the ledger before turn one, with no transcript. B passes when its first action is the one the handoff listed and it asks nothing the handoff answered. Pasting A's transcript into B falsifies the design claim, because B then resumes from the transcript and the handoff has carried nothing."},
     {k:"l1 ledger l3", t:"Layers of truth", w:["E6"],
      p:"L1 canon is Markdown written by people and changed by commit. L2 ledger is the append-only events the system wrote when things happened. L3 derived is anything computed from them, including the compaction summary and the TUI's token counter. Precedence runs L2 over L1 over L3, and an L3 view can never block a gate."},
     {k:"*", t:"Intent that lives only in the window dies with the window", w:["E6","E7"],
@@ -778,7 +778,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     const v = $("hoverdict"); v.classList.toggle("bad", !seven);
     v.textContent = seven
       ? "Fresh session B: its first action is NEXT STEP 1, it asks nothing the handoff answered, and it logs session_resumed. Test point 4 passes."
-      : "Fresh session B: no next action, no names on decisions, no evidence. It reconstructs intent from the code, and guesses. Falsifier: B asks a question the handoff should have answered, or takes an action it did not name.";
+      : "Fresh session B: no next action, no names on decisions, no evidence. It reconstructs intent from the code, and guesses. Falsifier: B asks a question the handoff should have answered, or takes an action the handoff did not list.";
   }
   $("ho-diary").addEventListener("click",()=>setHand("diary"));
   $("ho-seven").addEventListener("click",()=>setHand("seven"));

@@ -42,7 +42,7 @@
 </ul>
 <h3>13.4 A governance server</h3>
 <ul>
-<li>The reference design's missing piece: <code>gz status</code>, <code>gz validate</code>, the ledger, and receipts as MCP tools and resources; "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.</li>
+<li>The reference design has no MCP server. This section builds the one it lacks: <code>gz status</code>, <code>gz validate</code>, the ledger, and receipts exposed as MCP tools and resources, with "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.</li>
 </ul>
 <h3>13.5 Design Analysis of the ecosystem</h3>
 <ul>
@@ -86,7 +86,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>Doctrine: <code>docs/governance/storage-tiers.md</code> ("no external protocol may become a prerequisite for core governance operations"); the pool ADR sketching an MCP context server; the campaign review scoring MCP "absent and un-designed." The student project: an MCP server over gz verbs and the ledger.</p>
+<p>The doctrine is in <code>docs/governance/storage-tiers.md</code> ("no external protocol may become a prerequisite for core governance operations"). The pool ADR sketches an MCP context server, and the campaign review scores MCP "absent and un-designed." The student project is an MCP server over gz verbs and the ledger.</p>
 <h2>Readings</h2>
 <ul>
 <li>Model Context Protocol specification.</li>
@@ -94,7 +94,7 @@
 <li>Sprint and Drift, "Stop the presses, hail the autoloom."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 4 (center) — DESIGN CLAIM: every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side. FALSIFIERS: a tool callable from one client but not the other; a call with no server-side log; a schema the client accepted that the server rejected.</p>
+<p>Sortie 4 (center). DESIGN CLAIM: every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side. FALSIFIERS: a tool callable from one client but not the other; a call with no server-side log; a schema the client accepted that the server rejected.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Build the governance MCP server. Ask your harness "what is attested in this repo?" and check its answer against the ledger.</li>

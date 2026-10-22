@@ -92,7 +92,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>ADR-0.18.0; <code>docs/user/concepts/subagent-pipeline.md</code>; <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>; <code>.gzkit/personas/</code>; the <code>--single-driver --reason</code> honesty flag.</p>
+<p>The pipeline is specified in ADR-0.18.0 and <code>docs/user/concepts/subagent-pipeline.md</code> and implemented in <code>src/gzkit/roles.py</code> and <code>pipeline_dispatch.py</code>. The personas live in <code>.gzkit/personas/</code>. The <code>--single-driver --reason</code> honesty flag completes the set.</p>
 <h2>Readings</h2>
 <ul>
 <li>gzkit <code>subagent-pipeline.md</code>.</li>
@@ -100,7 +100,7 @@
 <li>Sprint and Drift, "Optimism's flames."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 8 (expansion) — DESIGN CLAIM: no implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. FALSIFIERS: merged work with no ReviewResult; a malformed result parsed as PASS; the reviewer's claim accepted without the evidence it cites.</p>
+<p>Sortie 8 (expansion). DESIGN CLAIM: no implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. FALSIFIERS: merged work with no ReviewResult; a malformed result parsed as PASS; the reviewer's claim accepted without the evidence it cites.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Give your reviewer a persona with anti-traits. Then remove them and measure the verdicts.</li>

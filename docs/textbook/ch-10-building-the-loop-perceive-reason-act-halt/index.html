@@ -30,15 +30,15 @@
 <h2>Outline</h2>
 <h3>10.1 The minimal loop</h3>
 <ul>
-<li>Messages, a model call, a tool-or-answer decision, an observation, repeat. Structured output via Pydantic. Stop: final answer, budget, max turns, error.</li>
+<li>Messages, a model call, a tool-or-answer decision, an observation, repeat. Structured output through Pydantic. The loop stops on a final answer, an exhausted budget, the max-turn count, or an error.</li>
 </ul>
 <h3>10.2 Two foundations</h3>
 <ul>
-<li>Hosted API vs. Ollama's endpoint; same loop, different capability; measure both.</li>
+<li>Hosted API vs. Ollama's endpoint: the same loop runs against both with a different capability behind it. Measure both.</li>
 </ul>
 <h3>10.3 Governing it from the first commit</h3>
 <ul>
-<li>gz init; the PRD interview; the ledger's first events. Why the PRD is WHAT, not HOW.</li>
+<li>gz init; the PRD interview; the ledger's first events. Why the PRD states the WHAT and leaves the HOW to later decisions.</li>
 </ul>
 <h3>10.4 What can go wrong on day one</h3>
 <ul>
@@ -70,14 +70,14 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>gz init</code>, <code>gz prd</code>, the interview transcript, <code>prd_created</code> in the ledger. gzkit's own PRD (PRD-GZKIT-1.0.0) as a worked example.</p>
+<p>This chapter works from <code>gz init</code>, <code>gz prd</code>, the interview transcript, and the <code>prd_created</code> event in the ledger. gzkit's own PRD (PRD-GZKIT-1.0.0) serves as the worked example.</p>
 <h2>Readings</h2>
 <ul>
 <li>Anthropic, "Building Effective Agents."</li>
 <li>gzkit <code>docs/examples/guide-prd.md</code>; <code>docs/examples/tutorial-first-project.md</code> (with the CLI corrections in Appendix F).</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 1 (center) — DESIGN CLAIM: the loop halts on every input class (answerable, unanswerable, adversarial) within budget, and every turn is in the ledger. FALSIFIERS: a run exceeding the turn budget; a halt with no ledger event; a "final answer" produced without a reasoning turn.</p>
+<p>Sortie 1 (center). DESIGN CLAIM: the loop halts on every input class (answerable, unanswerable, adversarial) within budget, and every turn is in the ledger. FALSIFIERS: a run exceeding the turn budget; a halt with no ledger event; a "final answer" produced without a reasoning turn.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Build the loop twice: once with your chosen SDK, once with only the HTTP API. Record what the SDK hid.</li>

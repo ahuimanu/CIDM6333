@@ -18,14 +18,14 @@
 <a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
 <a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
 </nav></noscript></div>
-<nav class="crumbs"><a href="../">CIDM 6333</a> · Exercises</nav><div class="eyebrow">In-class exercise</div><article><h1>In-class exercise — Steer the middle</h1>
+<nav class="crumbs"><a href="../">CIDM 6333</a> · Exercises</nav><div class="eyebrow">In-class exercise</div><article><h1>In-class exercise: Steer the middle</h1>
 <p><strong>CIDM 6333 · In class, follow along at the screen, each student in their own repository · 60 minutes · Harness: OpenCode · Model: Big Pickle (<code>opencode/big-pickle</code>) or any OpenCode Go model (<code>opencode-go/…</code>)</strong>
-<strong>Builds on:</strong> everything from E0 to E7, and the codec you built at the screen last week. <strong>Feeds:</strong> Sortie 8 (controller, worker, reviewer), the Final System, where the harness that builds your MVP is the outer ring of tonight's figure.</p>
-<p><strong>Figure for this exercise:</strong> <a href="https://ahuimanu.github.io/CIDM6333/figures/steer-the-middle.html">Figure 17 · Steer the Middle</a>. The lecture walks it from the inside out; this exercise walks it from E0 to E8 in your repository. Figures <a href="https://ahuimanu.github.io/CIDM6333/figures/plan-do-check.html">09</a>, <a href="https://ahuimanu.github.io/CIDM6333/figures/three-drawers.html">14</a>, and <a href="https://ahuimanu.github.io/CIDM6333/figures/skill-on-demand.html">15</a> are the E8 and E5 items up close.</p>
+<strong>Builds on:</strong> everything from E0 to E7, and the codec you built at the screen in the previous Evolution. <strong>Feeds:</strong> Sortie 8 (controller, worker, reviewer) and the Final System, where the harness that builds your MVP is the outer ring of the figure for this exercise.</p>
+<p><strong>Figure for this exercise:</strong> <a href="https://ahuimanu.github.io/CIDM6333/figures/steer-the-middle.html">Figure 17 · Steer the Middle</a>. The lecture walks the figure from the inside out. This exercise walks it from E0 to E8 in your repository. Figures <a href="https://ahuimanu.github.io/CIDM6333/figures/plan-do-check.html">09</a>, <a href="https://ahuimanu.github.io/CIDM6333/figures/three-drawers.html">14</a>, and <a href="https://ahuimanu.github.io/CIDM6333/figures/skill-on-demand.html">15</a> are the E8 and E5 items up close.</p>
 <p><strong>Files for this exercise</strong> (all on the course site; the steps fetch them with <code>curl</code>): <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-spec.md">codec-spec.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec.py">codec.py</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md">codec-check SKILL.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/reviewer.md">reviewer.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/steer-the-middle-worksheet.md">worksheet.md</a></p>
-<p><strong>How to submit:</strong> push the exit ticket to your own repository (under your name) in the CIDM6333 organization on GitHub. The repository is the submission; do not upload files to Canvas. A commit that is on a laptop and not pushed is not submitted.</p>
+<p><strong>How to submit:</strong> push the exit ticket to your own repository (under your name) in the CIDM6333 organization on GitHub. The repository is the submission. Do not upload files to Canvas. A commit that is on a laptop and not pushed is not submitted.</p>
 <h2>Why this exercise</h2>
-<p>Your system is three rings. The model is inside: one window in, one answer out, nothing kept. OpenCode is the middle: the loop that builds the window, calls the model, gates the tool call, runs it, and repeats. Your harness is the outer ring: the files you write to steer the middle. Most of those files are your version of something OpenCode already does by default.</p>
+<p>Figure 17 draws your system as three rings. The model sits inside the inner ring, where it takes one window in, gives one answer out, and keeps nothing. OpenCode is the middle ring, in other words the loop that builds the window, calls the model, gates the tool call, runs it, and repeats. Your harness is the outer ring, the files you write to steer the middle. Each row of the table below pairs something OpenCode already does by default with the file you write to replace or extend it, and gives the Evolution in which that file was introduced.</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -78,17 +78,17 @@
 <tr>
 <td>an event bus</td>
 <td><code>.opencode/plugins/&lt;name&gt;.ts</code></td>
-<td>E10, not tonight</td>
+<td>E10, not this Evolution</td>
 </tr>
 </tbody>
 </table></div>
-<p>Tonight you walk that table from the top of the course to this week. For each row you locate the file in your repository, name what reads it and when, make it fire, and record the trace. A row you cannot fill is a finding. A row you fill tonight for the first time is the thing to commit.</p>
-<p>The last row you build is new: a reviewer agent that cannot edit. That is E8's claim in one file. The deny in its permission block enforces; the anti-trait in its persona explains; the verdict it returns is a typed claim that cites a location.</p>
-<h2>The claim this exercise tests</h2>
-<p>Every item on the outer ring of your harness has a file, a reader, a moment it is read, and a trace that it was read. For the reviewer in particular: it returns one ReviewResult, it did not change a file, and when asked to fix the code it refuses or is refused.</p>
-<p>If a row has no trace, or the reviewer edits, you have a finding for the Sortie 8 card. Record it as it came back.</p>
-<h2>How tonight runs</h2>
-<p>The instructor drives at the screen. You do each step on your own laptop as it is shown, then compare your screen with the one at the front. There is nothing to print; this page stays open beside OpenCode, and you can replay it alone afterwards. Each step has three parts: <strong>do</strong>, <strong>see</strong>, <strong>record</strong>. Record on the worksheet, one line per step.</p>
+<p>In this Evolution you walk that table from E1 to E8. For each row you locate the file in your repository, state what reads it and when, make it fire, and record the trace. If you cannot fill a row, record that as a finding. If you fill a row for the first time in this Evolution, that file is the one to commit.</p>
+<p>The last row you build is new to your repository: a reviewer agent that cannot edit. The E8 lecture argues that a reviewer which can change the code it judges will pass its own fix. This one file carries that argument into your harness. The deny in its permission block enforces the rule, the anti-trait in its persona states the rule to the model, and the verdict it returns is a typed claim that cites a location.</p>
+<h2>What this exercise tests</h2>
+<p>This exercise tests one statement about the outer ring: every item on it has a file, a reader, a moment it is read, and a trace that it was read. For the reviewer the statement is more specific. The reviewer returns one ReviewResult, it changes no file, and when asked to fix the code it refuses or the permission block refuses for it.</p>
+<p>If a row has no trace, or the reviewer edits, you have a finding for the Sortie 8 card. Write down what came back, verbatim.</p>
+<h2>How the exercise runs</h2>
+<p>The instructor drives at the screen. You do each step on your own laptop as it is shown, then compare your screen with the one at the front. There is nothing to print. This page stays open beside OpenCode, and you can replay it alone afterwards. Each step has three parts: <strong>do</strong>, <strong>see</strong>, <strong>record</strong>. Record on the worksheet, one line per step.</p>
 <h2>Steps (60 minutes)</h2>
 <h3>0–5 · Set up</h3>
 <p>In your repository root:</p>
@@ -99,7 +99,7 @@ curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-spec.md -o codec-
 curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/steer-the-middle-worksheet.md -o worksheet.md
 cd ../..
 </code></pre>
-<p>If your codec from last week is in the repository, copy it to <code>evolution-08/exercise/codec.py</code>. If it is not, or it has no <code>--selftest</code>, fetch the reference version:</p>
+<p>If your codec from the previous Evolution is in the repository, copy it to <code>evolution-08/exercise/codec.py</code>. If it is not, or it has no <code>--selftest</code>, fetch the reference version:</p>
 <pre><code class="language-bash">curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec.py -o evolution-08/exercise/codec.py
 python3 evolution-08/exercise/codec.py --selftest
 </code></pre>
@@ -108,13 +108,13 @@ python3 evolution-08/exercise/codec.py --selftest
 <p><strong>Do:</strong> open OpenCode in the repository root. Type <code>/new</code>, then:</p>
 <pre><code>What is in this repository? Name three files and say what each one is for.
 </code></pre>
-<p><strong>See:</strong> the TUI shows the loop running: one tool-call line per call (<code>glob</code>, <code>read</code>, <code>read</code>…), then an answer. Those lines are the middle ring at work. The model did not read the files; the loop ran <code>read</code> and put the text in the next window.</p>
+<p><strong>See:</strong> the TUI shows the loop at work, one tool-call line per call (<code>glob</code>, <code>read</code>, <code>read</code>…), then an answer. Those lines are the middle ring. The model did not read the files. The loop ran <code>read</code> and put the text in the next window.</p>
 <p><strong>Record:</strong> how many tool calls ran before the answer, and the name of the first tool.</p>
 <h3>9–13 · E2 · Plan and build are two agents</h3>
 <p><strong>Do:</strong> press <strong>Tab</strong>. The agent name in the TUI changes from <code>build</code> to <code>plan</code>. Send:</p>
 <pre><code>Plan how to add a hex scheme to evolution-08/exercise/codec.py so that it meets codec-spec.md. List the steps. Do not edit anything.
 </code></pre>
-<p><strong>See:</strong> <code>plan</code> reads the files and writes steps. It cannot edit: OpenCode's built-in <code>plan</code> agent denies edits outside <code>~/.opencode/plan/</code>. The pattern from E2 (plan, then do) is two agent definitions with different permissions. Press <strong>Tab</strong> again to return to <code>build</code>.</p>
+<p><strong>See:</strong> <code>plan</code> reads the files and writes steps. It cannot edit, because OpenCode's built-in <code>plan</code> agent denies edits outside <code>~/.opencode/plan/</code>. The pattern from E2 (plan, then do) is two agent definitions with different permissions. Press <strong>Tab</strong> again to return to <code>build</code>.</p>
 <p><strong>Record:</strong> the number of steps in the plan, and whether step 4 of the spec (round trip) appears in them.</p>
 <h3>13–20 · E3 · Tools as contracts, and the gate</h3>
 <p><strong>Do:</strong> create or edit <code>opencode.json</code> in the repository root so that it contains at least this:</p>
@@ -127,12 +127,12 @@ python3 evolution-08/exercise/codec.py --selftest
   }
 }
 </code></pre>
-<p>Every edit and most shell commands will now ask. The prompt is the trace that the gate held. Then <code>/new</code> and send:</p>
+<p>Every edit, and every shell command that is not on the allowlist, will now ask. The permission prompt is the trace that the gate held. Then <code>/new</code> and send:</p>
 <pre><code>Run the codec self-test and tell me the result. Do not change any file.
 </code></pre>
-<p><strong>See:</strong> the model calls <code>shell</code> with the self-test command. Because that exact command is on the allowlist, it runs without asking; any other command asks. The tool call line shows the command; the answer quotes <code>PASS</code>.</p>
+<p><strong>See:</strong> the model calls <code>shell</code> with the self-test command. Because that exact command is on the allowlist, it runs without asking. Any other command asks. The tool call line shows the command, and the answer quotes <code>PASS</code>.</p>
 <p><strong>Record:</strong> the command the model ran, verbatim, and whether a permission prompt appeared.</p>
-<p><strong>The contract, in Python; the shim, in TypeScript.</strong> The codec's CLI is the contract: positional arguments, <code>encode</code> or <code>decode</code>, exit 0 on success, exit 2 on a bad scheme or direction, <code>--selftest</code> as the evidence. OpenCode's custom-tool file format is TypeScript, so a tool of your own is a ten-line <code>.ts</code> shim that declares the schema and calls the Python. All logic stays in <code>codec.py</code>.</p>
+<p><strong>The contract is in Python and the shim is in TypeScript.</strong> The codec's command line is the contract. It takes positional arguments and <code>encode</code> or <code>decode</code>, exits 0 on success, exits 2 on a bad scheme or direction, and offers <code>--selftest</code> as the evidence. OpenCode's custom-tool file format is TypeScript, so a tool of your own is a ten-line <code>.ts</code> shim that declares the schema and calls the Python. All logic stays in <code>codec.py</code>.</p>
 <p><strong>If there is time (optional, 3 minutes):</strong> create <code>.opencode/tools/codec.ts</code>:</p>
 <pre><code class="language-ts">import { tool } from &quot;@opencode-ai/plugin&quot;
 export default tool({
@@ -147,15 +147,15 @@ export default tool({
   },
 })
 </code></pre>
-<p>Restart OpenCode, <code>/new</code>, and send <code>Use the codec tool to rot13-encode the word Pickle.</code> The model sees the tool's name, description, and schema every turn; the schema is the contract, and the Python does the work. If the file does not load, skip it; the permission step above is the part that matters tonight.</p>
+<p>Restart OpenCode, <code>/new</code>, and send <code>Use the codec tool to rot13-encode the word Pickle.</code> The model sees the tool's name, description, and schema every turn. The schema is the contract, and the Python does the work. If the file does not load, skip it. The permission step above is the part this exercise depends on.</p>
 <h3>20–23 · E4 · MCP: locate, do not build</h3>
 <p><strong>Do:</strong></p>
 <pre><code class="language-bash">grep -n '&quot;mcp&quot;' opencode.json || echo &quot;no mcp block&quot;
 </code></pre>
-<p><strong>See:</strong> either the <code>mcp</code> block from the E4 teardown, naming a server, or <code>no mcp block</code>. An MCP server's tools reach the model the same way a custom tool does; the difference is whose text the descriptions are (Figure 06).</p>
+<p><strong>See:</strong> either the <code>mcp</code> block from the E4 teardown, with a server in it, or <code>no mcp block</code>. An MCP server's tools reach the model the same way a custom tool does. The difference is who wrote the descriptions (Figure 06).</p>
 <p><strong>Record:</strong> the server name, or <code>none</code>. Either is a complete row.</p>
 <h3>23–31 · E5 · Rules and a skill</h3>
-<p><strong>Do, part one.</strong> Open <code>AGENTS.md</code>. Its first sentence must state what the system is and what it must never do; write it now if it does not. Add one line:</p>
+<p><strong>Do, part one.</strong> Open <code>AGENTS.md</code>. Its first sentence must state what the system is and what it must never do. If it does not, write that sentence now. Add one line:</p>
 <pre><code>- Codec: evolution-08/exercise/codec.py. Spec: evolution-08/exercise/codec-spec.md. Run `python3 evolution-08/exercise/codec.py --selftest` before saying any codec change is done.
 </code></pre>
 <p>Run <code>wc -c AGENTS.md</code>. Stay under 4,000.</p>
@@ -163,12 +163,12 @@ export default tool({
 <pre><code class="language-bash">mkdir -p .opencode/skills/codec-check
 curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md -o .opencode/skills/codec-check/SKILL.md
 </code></pre>
-<p>Its <code>name</code> is <code>codec-check</code> and must match the folder. Its body is three steps: run the self-test, read the spec, report each spec line as met or not met with the line number.</p>
+<p>Its <code>name</code> is <code>codec-check</code> and must match the folder. Its body gives the steps: run the self-test, read the spec, report each spec line as met or not met with the evidence, and count the lines met.</p>
 <p><strong>Do, part three.</strong> <code>/new</code>, then:</p>
 <pre><code>Check the codec against its spec and report.
 </code></pre>
-<p><strong>See:</strong> a permission prompt for the <code>codec-check</code> skill (you set <code>permission.skill</code> to <code>ask</code>). Allow it. The model loads the body only now; until this turn it saw one line, the name and description. Then it runs the self-test (allowed) and reads the spec.</p>
-<p><strong>Record:</strong> <code>wc -c AGENTS.md</code>; whether the skill prompt appeared; how many of the ten spec lines the report marked as met.</p>
+<p><strong>See:</strong> a permission prompt for the <code>codec-check</code> skill (you set <code>permission.skill</code> to <code>ask</code>). Allow it. The model loads the body only now. Until this turn it saw one line, the name and description. Then it runs the self-test (allowed) and reads the spec.</p>
+<p><strong>Record:</strong> <code>wc -c AGENTS.md</code>, whether the skill prompt appeared, and how many of the ten spec lines the report marked as met.</p>
 <h3>31–35 · E6 · What rides along</h3>
 <p><strong>Do:</strong> add the spec to <code>opencode.json</code> as an instruction file:</p>
 <pre><code class="language-json">&quot;instructions&quot;: [&quot;evolution-08/exercise/codec-spec.md&quot;]
@@ -176,41 +176,41 @@ curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md -o
 <p>(Inside the top-level object, beside <code>permission</code>.) Then <code>/new</code> and send:</p>
 <pre><code>Without reading any file: which schemes must the codec support, and what is the round-trip rule? Name your source.
 </code></pre>
-<p><strong>See:</strong> the answer comes with no <code>read</code> tool call, because the spec is joined to <code>AGENTS.md</code> and rides every turn. That is the E6 trade: a file in <code>instructions</code> costs its length on every turn and is never missed; a file the model must <code>read</code> costs nothing until asked and can be skipped.</p>
-<p><strong>Record:</strong> whether a <code>read</code> call ran (it should not), and the source the model named.</p>
+<p><strong>See:</strong> the answer comes with no <code>read</code> tool call, because the spec is joined to <code>AGENTS.md</code> and rides every turn. That is the trade E6 described. A file in <code>instructions</code> costs its length on every turn and is never missed. A file the model must <code>read</code> costs nothing until asked, and the model can skip it.</p>
+<p><strong>Record:</strong> whether a <code>read</code> call ran (it should not), and the source the model gave.</p>
 <h3>35–39 · E7 · One record, soon stale</h3>
 <p><strong>Do:</strong> if you have <code>evolution-07/lab/recall.py</code>, file one dated fact:</p>
 <pre><code class="language-bash">printf '# Codec status\n\nAs of 2026-10-22 the codec supports rot13 and base64. Hex is not implemented.\n' &gt; evolution-08/exercise/m-codec.md
 uv run --no-project --python 3.14 evolution-07/lab/recall.py add evolution-08/exercise/m-codec.md --retain-until 2026-10-29
 </code></pre>
-<p>If you do not have <code>recall.py</code>, write the same file and skip the <code>add</code>; record <code>no retriever</code>.</p>
-<p><strong>See:</strong> the record id. It is true now. In ten minutes, after hex is added, it is stale, and nothing in the loop knows. That is the drawer from last week (Figure 14): memory is a claim with a date, and the loop does not open the drawer by itself.</p>
+<p>If you do not have <code>recall.py</code>, write the same file and skip the <code>add</code>. Record <code>no retriever</code>.</p>
+<p><strong>See:</strong> the record id. The record is true now. In ten minutes, after you add hex, it is stale, and nothing in the loop knows. That is the memory drawer from E7 (Figure 14): a record is a fact that was true on a date, and the loop does not open the drawer by itself.</p>
 <p><strong>Record:</strong> the record id, or <code>no retriever</code>.</p>
 <h3>39–55 · E8 · A reviewer that cannot edit</h3>
 <p><strong>Do, part one.</strong> Create the reviewer:</p>
 <pre><code class="language-bash">mkdir -p .opencode/agents
 curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/reviewer.md -o .opencode/agents/reviewer.md
 </code></pre>
-<p>Open it. The frontmatter is the mechanism: <code>mode: subagent</code>, <code>edit: deny</code>, <code>shell</code> allowed only for <code>git diff</code>, <code>git log</code>, and the self-test. The body is the persona from the E8 lecture: one role, observable traits, anti-traits, and the why. The last line asks for exactly one ReviewResult JSON object. Restart OpenCode so the agent loads.</p>
+<p>Open it. The frontmatter is the mechanism. It sets <code>mode: subagent</code> and <code>edit: deny</code>, and it allows <code>shell</code> only for <code>git diff</code>, <code>git log</code>, <code>git status</code>, and the self-test. The body is the persona from the E8 lecture, with one role, observable traits, anti-traits, and the reason behind them. The last line asks for exactly one ReviewResult JSON object. Restart OpenCode so the agent loads.</p>
 <p><strong>Do, part two.</strong> In <code>build</code>, <code>/new</code>, send:</p>
 <pre><code>Add a hex scheme to evolution-08/exercise/codec.py so that it meets every line of evolution-08/exercise/codec-spec.md, including selftest coverage. Run the self-test. Do not commit.
 </code></pre>
-<p><strong>See:</strong> permission prompts for each edit (allow them), then the self-test with <code>PASS hex</code>. If the model declares done without running the self-test, that is a finding: the rule is in <code>AGENTS.md</code>, and the model read it, and nothing made it obey.</p>
+<p><strong>See:</strong> permission prompts for each edit (allow them), then the self-test with <code>PASS hex</code>. If the model declares done without running the self-test, record that as a finding. The rule is in <code>AGENTS.md</code>, the model read it, and nothing in the loop made it obey.</p>
 <p><strong>Do, part three.</strong> Send:</p>
 <pre><code>@reviewer Review the uncommitted change to evolution-08/exercise/codec.py against evolution-08/exercise/codec-spec.md. Return one ReviewResult JSON object.
 </code></pre>
-<p><strong>See:</strong> the task-tool line in the TUI: the primary agent hands the brief to the reviewer, which runs in its own window and returns one message. The message is a JSON object with <code>verdict</code> (PASS, FAIL, or CONCERNS), <code>findings</code> (each with a location), and <code>checked</code>. Run <code>git status</code>: only <code>codec.py</code> changed, by the worker, not by the reviewer.</p>
+<p><strong>See:</strong> the task-tool line in the TUI. The primary agent hands the brief to the reviewer, which runs in its own window and returns one message. The message is a JSON object with <code>verdict</code> (PASS, FAIL, or CONCERNS), <code>findings</code> (each with a location), and <code>checked</code>. Run <code>git status</code>. It lists <code>codec.py</code> as the only changed file, and the worker made that change before the review.</p>
 <p><strong>Do, part four.</strong> Send:</p>
 <pre><code>@reviewer Fix the problem you found.
 </code></pre>
-<p><strong>See:</strong> either a refusal (the anti-trait) or a denied edit (the permission). Both are the right outcome. An edit that goes through is the finding of the night: a reviewer that can fix the code passes its own fix (E8 lecture, slide 11, row five).</p>
-<p><strong>Record:</strong> the verdict; the number of findings and whether each has a location; what <code>git status</code> shows; and what happened on "fix it."</p>
+<p><strong>See:</strong> either a refusal (the anti-trait) or a denied edit (the permission). Both are the right outcome. If an edit goes through, record it as the main finding of this exercise. A reviewer that can fix the code passes its own fix (E8 lecture, slide 11, row five).</p>
+<p><strong>Record:</strong> the verdict, the number of findings and whether each has a location, what <code>git status</code> shows, and what happened on "fix it."</p>
 <h3>55–60 · Close</h3>
-<p>The memory record from E7 now says hex is not implemented. It is wrong, and it will still score if asked. Evict it or supersede it:</p>
+<p>The memory record from the E7 step says hex is not implemented. That record is now wrong, and the retriever will still score it if asked. Evict it or supersede it:</p>
 <pre><code class="language-bash">uv run --no-project --python 3.14 evolution-07/lab/recall.py evict --today 2026-10-30
 </code></pre>
-<p>(The record's <code>retain_until</code> is 2026-10-29; <code>--today</code> past that date removes it and logs the eviction. Skip if you have no retriever.)</p>
-<p>Fill the last worksheet column: for each row, was the file in your repository before tonight? Then commit:</p>
+<p>(The record's <code>retain_until</code> is 2026-10-29, so a <code>--today</code> past that date removes it and logs the eviction. Skip this if you have no retriever.)</p>
+<p>Fill the last worksheet column: for each row, was the file in your repository before this exercise? Then commit:</p>
 <pre><code class="language-bash">git add -A
 git commit -m &quot;E8 exercise: steer the middle; reviewer agent; hex scheme&quot;
 git push
@@ -223,7 +223,7 @@ git push
 <li><code>evolution-08/exercise/</code>: <code>codec.py</code> with hex and a passing <code>--selftest</code>, <code>codec-spec.md</code>, <code>worksheet.md</code> filled in, <code>m-codec.md</code>, and the reviewer's ReviewResult pasted into <code>review.json</code>.</li>
 <li>If you have a retriever: <code>memory.jsonl</code> and <code>memory-ledger.jsonl</code> after the eviction.</li>
 </ul>
-<p><strong>For Sortie 8 and the Final System:</strong> tonight's reviewer judged one diff against one spec. Sortie 8 makes the controller do the dispatching, parse the result with no default branch, and route FAIL back with a bound on rounds. The Final System's V&amp;V has to show the same four facts for every outer-ring file: where it is, what reads it, when, and the trace.</p>
+<p><strong>For Sortie 8 and the Final System:</strong> the reviewer in this exercise judged one diff against one spec. Sortie 8 makes the controller do the dispatching, parse the result with no default branch, and route FAIL back with a bound on rounds. The Final System's V&amp;V has to show the same four facts for every outer-ring file: where it is, what reads it, when, and the trace.</p>
 <h2>Data rules</h2>
 <ul>
 <li>No keys, tokens, passwords, or <code>.env</code> contents in <code>AGENTS.md</code>, any skill, any agent file, or the memory store. Read a file before you send it.</li>
@@ -233,7 +233,7 @@ git push
 <hr />
 <h2>Sources</h2>
 <ul>
-<li>OpenCode documentation, checked 10/22/2026: <em>Rules</em> (https://opencode.ai/docs/rules/), <em>Permissions</em> (https://opencode.ai/docs/permissions/), <em>Custom Tools</em> (https://opencode.ai/docs/custom-tools/), <em>Agent Skills</em> (https://opencode.ai/docs/skills/), <em>Agents</em> (https://opencode.ai/docs/agents/), <em>Commands</em> (https://opencode.ai/docs/commands/), <em>Plugins</em> (https://opencode.ai/docs/plugins/), <em>References</em> (https://opencode.ai/docs/references/).</li>
+<li>OpenCode documentation, retrieved October 22, 2026: <em>Rules</em> (https://opencode.ai/docs/rules/), <em>Permissions</em> (https://opencode.ai/docs/permissions/), <em>Custom Tools</em> (https://opencode.ai/docs/custom-tools/), <em>Agent Skills</em> (https://opencode.ai/docs/skills/), <em>Agents</em> (https://opencode.ai/docs/agents/), <em>Commands</em> (https://opencode.ai/docs/commands/), <em>Plugins</em> (https://opencode.ai/docs/plugins/), <em>References</em> (https://opencode.ai/docs/references/).</li>
 <li>The E8 lecture: slide 6 (persona), slide 7 (ReviewResult and the fail-closed parse), slide 10 (a reviewer that cannot edit), slide 11 (common mistakes).</li>
 <li>The E7 memory handout, <code>CIDM6333_Lab_E7_Memory.md</code>, for <code>recall.py</code> and its commands.</li>
 </ul></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Exercises" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">

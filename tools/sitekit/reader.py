@@ -77,7 +77,7 @@ DROP_TITLE = re.compile(r"(run of show|\bmoves\b|^Break\b|\bminutes\b|^Lab( toni
 
 DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
 
-REWRITE = [(r"\bTonight's claim\b", "The claim"), (r"\bTonight's\b", "This Evolution's"), (r"\btonight's\b", "this Evolution's"),
+REWRITE = [(r"\bTonight's claim\b", "This Evolution's design claim"), (r"\bTonight's\b", "This Evolution's"), (r"\btonight's\b", "this Evolution's"),
            (r"\bthis week's\b", "this Evolution's"), (r"\bThis week's\b", "This Evolution's"), (r"\bnext week\b", "the next Evolution"), (r"\blast week\b", "the previous Evolution")]
 def rewrite(text):
     for a, b in REWRITE: text = re.sub(a, b, text)
@@ -153,7 +153,7 @@ def process(path, slug):
     m = re.search(r'<p class="small" style="margin-top:10px">.*?</p>', s, flags=re.S)
     assert m, slug
     old_p = m.group(0)
-    new_p = cur + '<p class="small" style="margin-top:10px">Arrow keys step through the slides. The panel above is the lecture written out for the slide on screen; <a href="#read">Read this lecture</a> below has all of it in order, with each slide\'s full wording. Names and systems that appear without introduction are in the <a href="../../glossary/">glossary</a>.</p>'
+    new_p = cur + '<p class="small" style="margin-top:10px">Arrow keys step through the slides. The panel above is the lecture written out for the slide on screen. <a href="#read">Read this lecture</a>, below, has the whole lecture in slide order, with each slide\'s full wording. Names and systems that appear without introduction are in the <a href="../../glossary/">glossary</a>.</p>'
     s = s.replace(old_p, new_p, 1)
     # Read link in the bar
     s = s.replace('<span class="count" id="count">', '<span class="count" id="count" role="status">')
@@ -169,14 +169,14 @@ def process(path, slug):
     T = [html.unescape(x) for x in re.findall(r'aria-label="Slide \d+: ([^"]*)"', s)][:n_page]
     for k in range(len(per)):
         if k < len(T) and DROP_TITLE.search(T[k].strip()):
-            per[k] = (["This slide covered the running of the session and is not part of the lecture."], [])
+            per[k] = (["This slide covered how the session ran and is not part of the lecture."], [])
     blocks = []
     for k, (paras, cuts) in enumerate(per):
         if k < len(T) and DROP_TITLE.search(T[k].strip()): continue
         nn = "%02d" % (k+1)
         cut_html = ('<details><summary>The slide\'s wording in full</summary><ul>%s</ul></details>' % "".join("<li>%s</li>" % html.escape(c) for c in cuts)) if cuts else ""
         blocks.append('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %s in the viewer"><img loading="lazy" src="s-%s.webp" alt=""></button><div class="n">slide %s</div></div><div><h3>%s</h3>%s%s</div></div>' % (k+1, k, nn, nn, nn, html.escape(T[k] if k < len(T) else ""), para_html(paras), cut_html))
-    reader = '<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes, slide by slide: what the lecture says about each slide, then the slide\'s own wording. Click a slide image to open it in the viewer above.</p>%s</section>\n' % "".join(blocks)
+    reader = '<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes follow here slide by slide. Under each slide is what the lecture says about it, and then the slide\'s own wording. Click a slide image to open it in the viewer above.</p>%s</section>\n' % "".join(blocks)
     s = s.replace('<section class="transcript"', reader + '<section class="transcript"', 1)
     # js: keep the current-slide panel in sync, and make reader thumbnails jump
     js = '<script id="reader-js">(function(){const N=%s;const $=i=>document.getElementById(i);function show(k){if(!N[k])return;$("noteno").textContent=k+1;$("notebody").innerHTML=N[k];}const c=$("count");new MutationObserver(()=>{const k=parseInt(c.textContent)-1;show(k);}).observe(c,{childList:true,characterData:true,subtree:true});show(parseInt(c.textContent)-1);document.querySelectorAll(".rslide .rthumb").forEach(im=>im.addEventListener("click",()=>{const b=document.querySelector(\'#strip button[data-i="\'+im.dataset.i+\'"]\');if(b){b.click();$("stage").scrollIntoView({behavior:"smooth",block:"start"});}}));})();</script>\n' % json.dumps([para_html(p) for p, c in per])

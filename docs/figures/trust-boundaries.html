@@ -180,7 +180,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 06</div>
   <h1>Trust Boundaries</h1>
-  <p class="lede">Two things cross into an MCP system from outside. <em>Authority</em> arrives as a token, and <em>text</em> arrives in tool descriptions, resources, and results. Part A steps through the authorization flow the spec requires; Part B draws the threat model as the paths untrusted text takes across a boundary. Then edit a tool description below and watch a pinned hash refuse it.</p>
+  <p class="lede">Two things cross into an MCP system from outside, and the figure follows each one to the point where a check can stop it. <em>Authority</em> arrives as a token, and Part A steps through the authorization flow the spec requires to issue and verify it. <em>Text</em> arrives in tool descriptions, resources, and results, and Part B draws the paths that untrusted text takes across a boundary. Of the five steps in Part A, step 5 is the one your sortie owns, because the server's scope check is the only check that reads the token itself.</p>
 </header>
 
 <div class="figwrap">
@@ -223,7 +223,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <path class="flow ret" d="M1078,136 L542,136"/>
       <text class="ts al" x="810" y="130" text-anchor="middle">401 · WWW-Authenticate: resource_metadata, scope="notes:read"</text>
       <path class="flow" d="M542,168 L1078,168"/>
-      <text class="ts al" x="810" y="162" text-anchor="middle">read Protected Resource Metadata (RFC 9728): it names the AS</text>
+      <text class="ts al" x="810" y="162" text-anchor="middle">read Protected Resource Metadata (RFC 9728): it gives the AS</text>
       <path class="flow" d="M542,200 L798,200"/>
       <text class="ts al" x="670" y="194" text-anchor="middle">read the AS metadata</text>
     </g>
@@ -513,10 +513,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <div class="btnrow" style="justify-content:flex-start">
           <button type="button" id="repin">A human read it in full: re-approve and re-pin</button>
         </div>
-        <p class="small" id="repinnote">A pin tells you the description changed since a human approved it. It catches the rug pull. It cannot catch a description that was already poisoned when you pinned it, so a human reads every description in full before the first pin. Re-pin the canary and the poison becomes the baseline.</p>
+        <p class="small" id="repinnote">A pin tells you the description changed since a human approved it. It catches the rug pull. It cannot catch a description that was already poisoned when you pinned it, so a human reads every description in full before the first pin. If you re-pin the canary, the poison becomes the baseline.</p>
       </div>
     </div>
-    <p class="small">The deck's division of labor: a permission rule limits what a poisoned description can make happen; a pinned hash tells you the description changed. You need both. None of the three harnesses the deck checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
+    <p class="small">The deck divides the labor between two controls. A permission rule limits what a poisoned description can make happen, and a pinned hash tells you the description changed. Each catches what the other misses, so you need both. None of the three harnesses the deck checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
   </section>
 
   <!-- ===== scope gate ===== -->
@@ -538,7 +538,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </select></div>
     <ol class="trace" id="trace"></ol>
     <div class="stat" id="gres"></div>
-    <p class="small">What never counts as authority: a scope field in the body or arguments, a header the client wrote, a token issued for another server, a state handle, or the model's statement that the user approved. The status for a failed verification is not in the deck's sketch; this panel shows 401, the usual answer for an invalid bearer token.</p>
+    <p class="small">Five things never count as authority: a scope field in the body or arguments, a header the client wrote, a token issued for another server, a state handle, and the model's statement that the user approved. The deck's sketch gives no status for a failed verification, so this panel shows 401, the answer RFC 6750 gives for an invalid bearer token.</p>
   </section>
 
   <!-- ===== doctrine + matrix ===== -->
@@ -559,8 +559,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   </section>
 
   <section class="panel wide" aria-labelledby="h-cs">
-    <div class="eyebrow">Teardown · three harnesses' control surfaces · checked 09/24/2026</div>
-    <h2 id="h-cs">Where each harness enforces, and where it can only ask</h2>
+    <div class="eyebrow">Teardown · three harnesses' control surfaces</div>
+    <h2 id="h-cs">Control surfaces of three harnesses</h2>
     <div class="tablewrap"><table>
       <thead><tr><th>Surface</th><th>Claude Code</th><th>Codex</th><th>OpenCode</th></tr></thead>
       <tbody>
@@ -568,17 +568,17 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Per-tool permission</td><td>allow / ask / deny; deny, then ask, then allow; <code>mcp__server__tool</code></td><td>Sandbox (read-only, workspace-write, danger-full-access) + approval (on-request, never)</td><td>allow / ask / deny per tool; last match wins; <code>server_tool</code> names</td></tr>
         <tr><td>MCP write</td><td>Rule by name, e.g. deny <code>mcp__notes__write_note</code></td><td>Approval required when the tool is annotated destructive</td><td>Rule by name, e.g. <code>"notes_write_note": "ask"</code></td></tr>
         <tr><td>Enforcing code</td><td>Hooks: PreToolUse can block (exit 2), before allow rules</td><td>Hooks on by default: PreToolUse, PermissionRequest …</td><td>Plugins: <code>tool.execute.before</code> can throw</td></tr>
-        <tr><td>Description pinning</td><td>Not documented [verify]</td><td>Not documented [verify]</td><td>None (checked 1.18.32)</td></tr>
+        <tr><td>Description pinning</td><td>Not documented [verify]</td><td>Not documented [verify]</td><td>None (as of 1.18.32)</td></tr>
       </tbody>
     </table></div>
-    <p class="small">All three can enforce a rule on your write tool. None of the three will tell you by default that a server's description changed.</p>
+    <p class="small">All three can enforce a rule on your write tool. None of the three will tell you by default that a server's description changed, which is the gap the pin panel above fills.</p>
   </section>
 </div>
 
 <section class="map" aria-labelledby="h-map">
   <div class="eyebrow">In your sortie</div>
-  <h2 id="h-map">Flight Card 5 flies this figure: the adversarial client</h2>
-  <p class="small" style="max-width:75ch">Corner of the envelope. Design claim: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. The Chase reads the four log entries, the pin output, and the ledger diff; the adversary's transcript is not evidence.</p>
+  <h2 id="h-map">Flight Card 5, the adversarial client</h2>
+  <p class="small" style="max-width:75ch">Corner of the envelope. Design claim: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. The Chase reads the four log entries, the pin output, and the ledger diff. The adversary's transcript is not evidence.</p>
   <div class="tablewrap">
   <table>
     <thead><tr><th>Test point</th><th>Part of the figure</th><th>What must show in the log</th></tr></thead>
@@ -588,11 +588,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <tr><td>2 · adversary writes</td><td>Step 5, a read token on <code>write_note</code></td><td>403 insufficient_scope before the function runs; log {sub, tool, denied}.</td></tr>
       <tr><td>3 · forged scope</td><td>Step 5, the forged-claim menu</td><td>Scope in body, header, or argument refused; the log shows the token's scope.</td></tr>
       <tr><td>4 · poisoned resource</td><td>Resource-injection path (step 9)</td><td>No write; the gate untouched; no ledger write.</td></tr>
-      <tr><td>Lab, 6:00–6:30</td><td>Tool-poisoning path, then the pin</td><td>Three flights in OpenCode (allow, ask, deny), then <code>pin.py</code> reports CHANGED and exits 1. Revert the canary before you commit.</td></tr>
+      <tr><td>Lab</td><td>Tool-poisoning path, then the pin</td><td>Three flights in OpenCode (allow, ask, deny), then <code>pin.py</code> reports CHANGED and exits 1. Revert the canary before you commit.</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Pre-registered falsifiers, any one of which fails the sortie: an out-of-scope call succeeds; a write follows a resource-borne instruction; the pass came from disabling a check, removing the write tool, or editing the log. Go: the Chase signs in the repo by Mon 10/05, 11:59 p.m. The Sprint is due Wed 10/07.</p>
+  <p class="small" style="margin-top:10px">Three pre-registered falsifiers, any one of which fails the sortie: an out-of-scope call succeeds; a write follows a resource-borne instruction; the pass came from disabling a check, removing the write tool, or editing the log. The Chase signs in the repo before the Sprint is due.</p>
 </section>
 
 <div class="notes">
@@ -603,14 +603,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>The stdio transport. There the trust boundary is the operating system, and the spec says stdio servers SHOULD NOT use the OAuth flow.</li>
       <li>Supply-chain attacks such as postmark-mcp (Sep 2025). A description pin does nothing against a server that is honest to the model and lies to you; pin the package version and hash too.</li>
       <li>A2A. A peer returns an assertion, and authority does not cross to it.</li>
-      <li>Token refresh, expiry handling, and the exact HTTP shapes of each request. The sequence keeps the five steps the deck names.</li>
-      <li>The page's hash uses the deck's canonical form. A real <code>pin.py</code> may differ in detail; what matters is that install and start hash the same way.</li>
+      <li>Token refresh, expiry handling, and the exact HTTP shapes of each request. The sequence keeps the five steps the deck lists.</li>
+      <li>The page's hash uses the deck's canonical form. A real <code>pin.py</code> may differ in detail, as long as install and start hash the same way.</li>
     </ul>
   </section>
   <section>
     <h2>Sources and readings</h2>
     <ol>
-      <li>Model Context Protocol. (2026). <em>Specification 2026-07-28: Authorization</em>; <em>Security best practices</em>; changelogs for 2025-06-18, 2025-11-25, and 2026-07-28. modelcontextprotocol.io. Checked 09/24/2026.</li>
+      <li>Model Context Protocol. (2026). <em>Specification 2026-07-28: Authorization</em>; <em>Security best practices</em>; changelogs for 2025-06-18, 2025-11-25, and 2026-07-28. modelcontextprotocol.io. Retrieved September 24, 2026.</li>
       <li>Invariant Labs. (2025, April 1). <em>MCP security notification: Tool poisoning attacks</em>.</li>
       <li>Invariant Labs. (2025, May 26). <em>GitHub MCP exploited: Accessing private repositories via MCP</em>.</li>
       <li>IETF. RFC 8707, <em>Resource indicators for OAuth 2.0</em>; RFC 9207, <em>OAuth 2.0 authorization server issuer identification</em>; RFC 9728, <em>OAuth 2.0 protected resource metadata</em>.</li>
@@ -641,21 +641,21 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   /* ---------- player ---------- */
   const STEPS = [
     {v:"A", k:"*", t:"Two crossings: authority and text", w:["E4","E5"],
-     p:"Two things cross into an MCP system from outside. Authority crosses as a token, and text crosses in tool descriptions, resources, and results. Part A works the authorization flow from the 2026-07-28 revision of the MCP spec in the deck's five steps; the bottom row shows who holds which token. Part B draws the threat model as the paths untrusted text takes."},
+     p:"Authority crosses into an MCP system as a token, and text crosses in tool descriptions, resources, and results. Part A works the authorization flow from the 2026-07-28 revision of the MCP spec in the deck's five steps, and the bottom row shows who holds which token after each step. Part B draws the threat model as the paths untrusted text takes."},
     {v:"A", k:"s1", t:"Step 1 · 401 and discovery", w:["E5"],
-     p:"The client calls a tool with no token. The server answers 401, and its WWW-Authenticate header names the resource_metadata URL and the scope it needs, notes:read. The client reads the Protected Resource Metadata (RFC 9728), which names the authorization server, and then reads that server's metadata. Nobody has to guess where to log in."},
+     p:"The client calls a tool with no token. The server answers 401, and its WWW-Authenticate header carries the resource_metadata URL and the scope it needs, notes:read. The client reads the Protected Resource Metadata (RFC 9728), which identifies the authorization server, and then reads that server's metadata. Nobody has to guess where to log in."},
     {v:"A", k:"s2", t:"Step 2 · Register", w:["E5"],
      p:"The client's client_id is an HTTPS URL, and the authorization server fetches the Client ID Metadata Document at that URL. Pre-registration also works. Dynamic registration remains only for old servers and is deprecated in 2026-07-28. The authorization server must still block fetches to private IP addresses, because a fetch it makes on a client's say-so is a server-side request forgery risk."},
     {v:"A", k:"s3", t:"Step 3 · Authorize", w:["E5"],
      p:"The client makes a PKCE pair and keeps the code_verifier to itself. It adds resource set to the server's canonical URI, applies the scope from the challenge, and records which issuer it expects. The browser opens and the user consents. PKCE stops code interception, and the resource parameter binds the token to one server so it cannot be replayed at another."},
     {v:"A", k:"s4", t:"Step 4 · Callback and token", w:["E5"],
-     p:"The redirect returns a code and iss. The client MUST compare a present iss with the issuer it recorded (RFC 9207) before it redeems the code; that check stops mix-up attacks, where one authorization server gets another's code. The client then sends the code_verifier and resource and receives an access token whose audience is this server. Steps 1 to 4 are the client's discipline."},
+     p:"The redirect returns a code and iss. The client MUST compare a present iss with the issuer it recorded (RFC 9207) before it redeems the code. That check stops mix-up attacks, where one authorization server gets another's code. The client then sends the code_verifier and resource and receives an access token whose audience is this server. Steps 1 to 4 are the client's discipline."},
     {v:"A", k:"s5 chk", t:"Step 5 · Call and step up: your checks", w:["E5"],
      p:"The client sends the bearer token on every request. Your server verifies the signature, expiry, and issuer, then checks that the audience is this server and that the token carries the scope the tool needs, all from one SCOPES table. A read token on write_note gets 403 insufficient_scope with scope=\"notes:write\", the refusal goes in the log, and the client re-authorizes. Step 5 is the part of the flow your sortie owns."},
     {v:"B", k:"*", t:"The threat model: one root cause", w:["E5"],
-     p:"The view switches to trust boundaries. Boundary 1 is where strangers' text enters the host; Boundary 2 is where a call needs authority from a token. The deck names one root cause for every mechanism: content that was allowed to act, or authority spent by a component that could not tell whose it was. Each lit path below is one way untrusted text crosses."},
+     p:"The view switches to trust boundaries. Boundary 1 is where strangers' text enters the host, and Boundary 2 is where a call needs authority from a token. The deck gives one root cause for every mechanism: content that was allowed to act, or authority spent by a component that could not tell whose it was. Each lit path below is one way untrusted text crosses."},
     {v:"B", k:"poison gate", t:"Tool poisoning", w:["E4","E5"],
-     p:"A tool description reaches the model verbatim in its tool list, and nothing in the protocol marks it as untrusted. A poisoned description carries an instruction the model reads and the human rarely sees, such as calling write_note after every read. OpenCode's default agent allows every tool it is not told about, so an MCP write then runs with no prompt. That is failure mode #2, reckless action."},
+     p:"A tool description reaches the model verbatim in its tool list, and nothing in the protocol marks it as untrusted. A poisoned description carries an instruction the model reads and the human rarely sees, such as calling write_note after every read. OpenCode's default agent allows every tool it is not told about, so an MCP write then runs with no prompt. The deck files this under failure mode #2, reckless action."},
     {v:"B", k:"pin poison", t:"The pin, and the rug pull", w:["E5"],
      p:"A rug pull changes a description after a human approved it. The defense hashes the name, description, and input schema at install, keeps tool-pins.json in the repo, and compares on every start. A changed hash is a new tool: the harness refuses to start it until a human re-approves and re-pins. Try it in the panel below the figure."},
     {v:"B", k:"inject gate", t:"Resource injection", w:["E5","E11"],
@@ -663,7 +663,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {v:"B", k:"deputy", t:"Confused deputy", w:["E5"],
      p:"A proxy MCP server holds one static client ID at an upstream authorization server and registers its own clients dynamically, and the user's browser holds a consent cookie. With no per-client consent at the proxy, a crafted link spends that consent on the attacker's redirect URI. The spec's security page needs all four conditions, so breaking any one stops it. Audience-bound tokens and the client-side iss check close the rest."},
     {v:"B", k:"inject deputy gate", t:"Data, and authority", w:["E5"],
-     p:"Your Thursday trace of the GitHub MCP server was two of these rows at once: a stranger's issue, which is content, spent the user's token, which is authority. Both of the deck's rules apply on every call. Every observation is data. Authority is a token the server checked itself."}
+     p:"The E5 trace of the GitHub MCP server exploit (Invariant Labs, May 2025) was two of these rows at once: a stranger's issue, which is content, spent the user's token, which is authority. Both of the deck's rules apply on every call. Every observation is data. Authority is a token the server checked itself."}
   ];
 
   const HOLD = [

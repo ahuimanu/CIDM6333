@@ -1,4 +1,4 @@
-# CIDM 6333 — Course Topic Guide and Textbook Outline
+# CIDM 6333: Course Topic Guide and Textbook Outline
 
 *Generated 2026-08-24 from the MkDocs source (textbook/). Each chapter is an outline with learning outcomes, sections, systems analyzed, the gzkit reference-design episode, readings, the flight card it supports, and exercises. Appendix H is the 60·60·30 run sheet.*
 
@@ -14,15 +14,15 @@
 
 ---
 
-This book does three things at once, because the course it grew out of does.
+This book does three things at once because the course it grew out of does the same three things in the same term.
 
-**It surveys.** Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. The question asked of every system is the same: why was it designed this way, what problem did that answer, and what did it cost?
+**It surveys.** Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. Part II asks the same questions of every system: why was it designed this way, what problem did that design answer, and what did the design cost?
 
-**It builds.** Part III takes one agentic system apart into its components (loop, patterns, tools, MCP, context, memory, coordination, evaluation, operations) and shows how to build each layer so that it can be flown against a falsifiable claim and defended without the tool in front of you.
+**It builds.** Part III takes one agentic system apart into its components (loop, patterns, tools, MCP, context, memory, coordination, evaluation, operations) and shows how to build each layer so that you can fly it against a falsifiable claim and defend it without the tool in front of you.
 
-**It governs.** Part I and Part IV describe the posture that makes the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which we have the entire record, including what went wrong.
+**It governs.** Part I and Part IV describe the posture that keeps the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which this book has the entire record, including the record of what went wrong.
 
-The title is the thesis. *A system can produce an answer without being able to answer for it.* The engineer's irreducible role is answerability. Everything here is in service of building systems, and engineers, that can answer.
+The title states the thesis: a system can produce an answer without being able to answer for it. The engineer's role, the one no tool takes over, is to answer for the system. The survey, the build, and the governance chapters all serve that purpose.
 
 ### How to read this book
 
@@ -35,11 +35,11 @@ The title is the thesis. *A system can produce an answer without being able to a
 - **Design Analysis** boxes show a system dissected against the nine components ([method]).
 - **Flight card** boxes give the falsifiable claim, test points, instrumentation, and falsifiers for a chapter's build ([method]).
 - **Reference design** sections show what gzkit did about the chapter's problem, with the dated incident where one exists.
-- **Judgment loop** closers (from CIDM 6330): name the decision, the characteristics privileged, the cost, the failure mode, the preservation mechanism.
+- **Judgment loop** closers (from CIDM 6330): state the decision, the characteristics privileged, the cost, the failure mode, and the preservation mechanism.
 
 ### Status
 
-Every chapter carries a status line: *outline*, *draft*, *reviewed*, *final*. This is a working text; the outlines are complete, the prose is being written in the order the course needs it.
+Every chapter carries a status line: *outline*, *draft*, *reviewed*, *final*. This is a working text. The outlines are complete, and I am writing the prose in the order the course needs it.
 
 
 ---
@@ -48,29 +48,29 @@ Every chapter carries a status line: *outline*, *draft*, *reviewed*, *final*. Th
 
 ## Why this book exists
 
-In January 2026 a governance kit was started with eleven days to go before it would be shown to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems that get built in industry have them too; the difference is that here we kept the receipts.
+In January 2026 I started a governance kit with eleven days to go before I would show it to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The kit differs in that its ledger kept the receipts for each one.
 
-That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because you do not understand a component you have not had to make fail on purpose.
+That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because a reader understands a component only after making it fail on purpose.
 
 ## What this book is not
 
-It is not a framework tutorial; frameworks change monthly and each one encodes a theory of control that is the real subject. It is not a prompt-engineering book. It is not an AI-safety book in the policy sense, although Part I situates the engineering posture against that literature. And it is not neutral: it holds that the human is index zero, first in priority and final in authority, and that a system whose human cannot answer for it is not finished.
+This book is not a framework tutorial. Frameworks change too often for a tutorial to stay current, and each one encodes a theory of control, which is the real subject. It is not a prompt-engineering book, and it is not an AI-safety book in the policy sense, although Part I situates the engineering posture against that literature. The book takes a position: the human is index zero, first in priority and final in authority, and a system whose human cannot answer for it is not finished.
 
 ## Acknowledgements and lineage
 
-Sprint and Drift, the method of Part IV, was developed for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project; gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
+I developed Sprint and Drift, the method of Part IV, for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
 
 
 ---
 
 # Using this book with CIDM 6333
 
-The course runs thirteen Thursdays, 4:00–6:30 p.m., one Evolution per week. Each Evolution carries two threads:
+The course runs one Evolution per session. Each Evolution carries two threads:
 
 | Thread | Instrument | Chapter home |
 |---|---|---|
-| **Survey** — why are agentic systems designed the way they are? | The Design Analysis (nine components, one "why") | Part II, and the *Systems analyzed* table in every Part III chapter |
-| **Build** — one individual system, one layer per week | The flight card and flight log | Part III, one chapter per Evolution |
+| **Survey**: why are agentic systems designed the way they are? | The Design Analysis (nine components, one "why") | Part II, and the *Systems analyzed* table in every Part III chapter |
+| **Build**: one individual system, one layer per week | The flight card and flight log | Part III, one chapter per Evolution |
 
 The weekly rhythm (lecture 60 · consultation 60 · lab 30), the Sprint and Drift method, and the scoring live in Part IV and in the [run sheet].
 
@@ -78,20 +78,20 @@ The weekly rhythm (lecture 60 · consultation 60 · lab 30), the Sprint and Drif
 
 | Evolution | Survey chapters | Build chapter | Method chapters |
 |---|---|---|---|
-| E0 Orientation | 1, 2, 3 | — | 22, 23, 24 |
+| E0 Orientation | 1, 2, 3 | none | 22, 23, 24 |
 | E1 The agent loop | 5 | 10 | 25 (init, PRD) |
 | E2 Patterns and frameworks | 6, 8 | 11 | 25 (ADR) |
 | E3 Tools | 6 | 12 | 23 |
-| E4 MCP I | 7 | 13 | — |
-| E5 MCP II, protocols, harness | 8, 9 | 14 | — |
+| E4 MCP I | 7 | 13 | none |
+| E5 MCP II, protocols, harness | 8, 9 | 14 | none |
 | E6 Context | 8 | 15 | 25 (handoff) |
 | E7 Memory | 6 | 16 | 26 (brief issued) |
 | E8 Multi-agent I | 4, 6 | 17 | 25 (subagents) |
-| E9 Multi-agent II | 9 | 18 | — |
+| E9 Multi-agent II | 9 | 18 | none |
 | E10 Evaluation I | 7 | 19 | 23 |
-| E11 Evaluation II | 9 | 20 | — |
+| E11 Evaluation II | 9 | 20 | none |
 | E12 Deployment | 9 | 21 | 25 (closeout) |
-| Finals | — | — | 26 |
+| Finals | none | none | 26 |
 
 
 ---
@@ -113,22 +113,22 @@ After this chapter you can:
 ### 1.1 The stack
 
 - Data foundation (ownership, definitions, quality, lineage) → classical AI → ML → neural networks → deep learning → generative AI → agentic AI.
-- Each layer stands on the one below; none replaces it. Agentic AI is thin and new; the foundation is old and cracked.
-- Why the foundation is forgotten: it is unglamorous and it is where the cost lands (E7, E11 callbacks).
+- Each layer stands on the one below, and none replaces it. The agentic layer is the newest and thinnest, and the data foundation is the oldest and the one with the defects.
+- Designers neglect the foundation because it is unglamorous, and the cost lands there (E7 and E11 return to it).
 
 ### 1.2 The progression
 
 - AI & ML: turn data into decisions. Deep learning: multi-layered networks. Gen AI: create new content. AI agents: autonomous tasks. Agentic AI: automate entire processes.
-- The Agentic AI framework board: rings (foundation, creation, core systems, action, full automation) and columns; every box is assigned a chapter (table).
+- The Agentic AI framework board: rings (foundation, creation, core systems, action, full automation) and columns. The table assigns every box a chapter.
 
 ### 1.3 What a language model adds and what it does not
 
-- A reasoner that generalizes from text; no persistent state, no ground truth, no accountability. The stack above it (tools, memory, evaluators, governance) exists to supply those.
-- The Newtonian-motion argument: the cost of generated code is deferred, never erased.
+- The model is a reasoner that generalizes from text. It has no persistent state, no ground truth, and no accountability, and the stack above it (tools, memory, evaluators, governance) exists to supply those three.
+- The Newtonian-motion argument: generated code defers its cost rather than removing it.
 
 ### 1.4 Reading a system top-down and bottom-up
 
-- Two passes: what does it claim (top) and what does it stand on (bottom). Worked example: a chat assistant vs. an agent harness.
+- Read a system in two passes: from the top, what does it claim to do, and from the bottom, what does it stand on. Worked example: a chat assistant vs. an agent harness.
 
 ## Systems analyzed in this chapter
 
@@ -139,7 +139,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit sits on the *agentic* layer without running a model at all: it is a governance meta-harness one tier above the vendor harness. That placement is the first design choice the book examines.
+gzkit sits on the *agentic* layer and runs no model of its own. It is a governance meta-harness one tier above the vendor harness, and that placement is the first design choice the book examines.
 
 ## Readings
 
@@ -149,8 +149,8 @@ gzkit sits on the *agentic* layer without running a model at all: it is a govern
 
 ## Exercises and Design Analysis prompts
 
-1. Write the E0 Design Analysis: a chat assistant versus an agent harness, nine components each, and one paragraph on what the harness adds and what it costs.
-2. Take the framework board and mark every box you can already name a concrete system for. The blanks are your reading list.
+1. Write the E0 Design Analysis: a chat assistant versus an agent harness, nine components each. Add one paragraph on what the harness adds and what it costs.
+2. Take the framework board and mark every box for which you can already give a concrete system. The boxes you leave blank are your reading list.
 
 
 
@@ -178,7 +178,7 @@ After this chapter you can:
 ### 2.2 The LLM agent loop
 
 - Perceive (prompt, tool results) → reason (model call) → act (tool call or answer) → repeat until halt. ReAct as canonical form.
-- Halt conditions, budgets, and why 2023 forgot them.
+- Halt conditions, budgets, and why the systems of 2023 omitted them.
 
 ### 2.3 The nine components
 
@@ -187,11 +187,11 @@ After this chapter you can:
 
 ### 2.4 Workflows versus agents
 
-- Anthropic's distinction: predefined code paths vs. model-directed control. Most production "agents" are workflows, and should be.
+- Anthropic's distinction: predefined code paths vs. model-directed control. Anthropic's own advice is to build the workflow unless the task needs the agent's flexibility, and a system marketed as an "agent" may be a workflow by this definition (exercise 2).
 
 ### 2.5 The judgment loop
 
-- From CIDM 6330: name the decision, the characteristics, the cost, the failure mode, the preservation mechanism. Used to close every Design Analysis.
+- From CIDM 6330: state the decision, the characteristics, the cost, the failure mode, and the preservation mechanism. Every Design Analysis closes with it.
 
 ## Systems analyzed in this chapter
 
@@ -242,7 +242,7 @@ After this chapter you can:
 ### 3.2 The Zero Doctrine
 
 - The human is index zero: first in priority, final in authority, cannot be automated away. Evolution of "zero": zero overhead → zero drift → index zero.
-- Two sides of the covenant: gates constrain agents; humans must engage. Read everything; insist on Q&A.
+- Two sides of the covenant: gates constrain agents, and humans must engage. Read everything, and insist on Q&A.
 
 ### 3.3 The covenant and the three concerns
 
@@ -251,20 +251,20 @@ After this chapter you can:
 
 ### 3.4 Five gates, two lanes
 
-- ADR, TDD, Docs, BDD, Human. Lite = 1–2; Heavy = 1–5. Ceremony must earn its place. Closed attestation vocabulary.
+- ADR, TDD, Docs, BDD, Human. Lite = 1–2. Heavy = 1–5. Ceremony must earn its place. Closed attestation vocabulary.
 - Why Gate 5 is universal at the brief level and why there is no self-close path (ADR-0.0.36).
 
 ### 3.5 Command doctrine
 
-- Aviation's Four P's (Degani & Wiener) as the model: philosophy → policies → procedures → practices. Accountability is non-transferable; authority must be instrumented, not asserted; the model is a crew resource, not a crew member; evidence is artifacts, not narration.
+- Aviation's Four P's (Degani & Wiener) as the model: philosophy → policies → procedures → practices. The four tenets of the command doctrine: accountability is non-transferable, authority must be instrumented rather than asserted, the model is a crew resource rather than a crew member, and evidence is artifacts rather than narration.
 
 ### 3.6 Against the governance literature
 
-- NIST AI RMF, EU AI Act, ISO 42001, frontier-lab safety frameworks and system cards; the accountability gap the practitioner literature (Raji et al.; "Auditing Work") identifies; where an engineering covenant fits and where it does not.
+- NIST AI RMF, EU AI Act, ISO 42001, frontier-lab safety frameworks and system cards. The accountability gap that the practitioner literature (Raji et al.; "Auditing Work") identifies. Where an engineering covenant fits and where it does not.
 
 ## Reference design: gzkit
 
-This chapter *is* the reference design's doctrine: charter, lineage, genesis, command doctrine. The genesis conversation (2026-01-12) records the model saying that "for maximizing Claudishness, only specification matters" and the operator insisting on all three concerns; that exchange is the book's founding episode.
+This chapter is itself the reference design's doctrine, set out in four documents: charter, lineage, genesis, and command doctrine. The genesis conversation (2026-01-12) records the model saying that "for maximizing Claudishness, only specification matters" and the operator insisting on all three concerns. That exchange is the book's founding episode.
 
 ## Readings
 
@@ -297,19 +297,19 @@ After this chapter you can:
 
 ### 4.1 Symbolic agents and expert systems
 
-- Production rules, knowledge representation, planning (STRIPS); why brittleness ended the era and why the ideas returned as "planning" in LLM agents.
+- Production rules, knowledge representation, planning (STRIPS). Why brittleness ended the era and why the ideas returned as "planning" in LLM agents.
 
 ### 4.2 BDI and the agent-oriented programming movement
 
-- Beliefs, desires, intentions; commitment and reconsideration. Direct ancestors of "goal decomposition" and "intent preservation."
+- Beliefs, desires, intentions. Commitment and reconsideration. Direct ancestors of "goal decomposition" and "intent preservation."
 
 ### 4.3 Multi-agent systems
 
-- FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI; they are the same designs.
+- FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI, which reuse the same designs.
 
 ### 4.4 Reinforcement-learning agents
 
-- Environment, reward, policy; sample efficiency and reward hacking. The lesson LLM agents inherit: gaming the gate is not new (failure mode 9).
+- Environment, reward, policy. Sample efficiency and reward hacking. LLM agents inherit the lesson that gaming the gate is not new (failure mode 9).
 
 ### 4.5 What carried forward, what was dropped
 
@@ -326,7 +326,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "intent preservation across context boundaries" is BDI's commitment problem with a ledger.
+gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "intent preservation across context boundaries" is BDI's commitment problem, with a ledger added to record the commitment.
 
 ## Readings
 
@@ -351,18 +351,18 @@ gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "i
 After this chapter you can:
 
 - Explain how prompting became a control structure.
-- Read the ReAct paper as a design document and name its components.
+- Read the ReAct paper as a design document and list its components.
 - Say what LangChain wrapped, and why the wrapper later became a graph.
 
 ## Outline
 
 ### 5.1 From prompting to programs
 
-- GPT-3 few-shot prompting; chain-of-thought (Wei et al., 2022) as latent planning; self-consistency.
+- GPT-3 few-shot prompting. Chain-of-thought (Wei et al., 2022) as latent planning. Self-consistency.
 
 ### 5.2 ReAct
 
-- Interleaving reasoning traces and actions; the thought–action–observation loop; halt by final answer. Component map. What it lacked: memory, budget, verification.
+- Reasoning traces interleaved with actions. The thought–action–observation loop, which halts on a final answer. Component map. What it lacked: memory, budget, verification.
 
 ### 5.3 The first frameworks
 
@@ -370,7 +370,7 @@ After this chapter you can:
 
 ### 5.4 Design lessons
 
-- A loop without a halt condition is a bill. Observations are perception; treat them as untrusted input (ch. 14).
+- A loop without a halt condition runs until the budget is spent, so the halt condition is the cost control. Observations are perception, and the harness treats them as untrusted input (ch. 14).
 
 ## Systems analyzed in this chapter
 
@@ -382,7 +382,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit's genesis (2026-01-12) is the loop plus the thing the loop lacked: a record of intent that survives the session. Read the genesis transcript alongside ReAct.
+gzkit's genesis (2026-01-12) is the ReAct loop plus the one thing that loop lacked, a record of intent that survives the session. Read the genesis transcript alongside ReAct.
 
 ## Readings
 
@@ -421,15 +421,15 @@ After this chapter you can:
 
 ### 6.1 Tools
 
-- Toolformer (Feb): the model teaches itself API calls. OpenAI function calling (Jun): the API declares the schema. Gorilla and ToolBench: tool retrieval at scale. ChatGPT plugins as the first tool ecosystem and its failure.
+- Toolformer (Feb): the model teaches itself API calls. OpenAI function calling (Jun): the API declares the schema. Gorilla and ToolBench: tool retrieval at scale. ChatGPT plugins as the first tool store, and why it failed.
 
 ### 6.2 Autonomy
 
-- AutoGPT, BabyAGI (Mar–Apr): loops with goals and no grounding, budget, or evaluator. The spiral. Why they mattered anyway: they named the ambition.
+- AutoGPT, BabyAGI (Mar–Apr): loops with goals and no grounding, budget, or evaluator. The spiral. They mattered anyway, because they stated the ambition the field then pursued.
 
 ### 6.3 Reflection and memory
 
-- Reflexion (episodic memory of failure); Voyager (skill library); Generative Agents (memory stream, reflection, planning); MemGPT (the OS metaphor: paging context). Tree of Thoughts.
+- Reflexion (episodic memory of failure). Voyager (skill library). Generative Agents (memory stream, reflection, planning). MemGPT (the OS metaphor: paging context). Tree of Thoughts.
 
 ### 6.4 Roles
 
@@ -437,7 +437,7 @@ After this chapter you can:
 
 ### 6.5 The year's design lesson
 
-- Every component of the nine appeared in 2023; none of them appeared together with governance. The gap the harness year (ch. 8) and the reference design fill.
+- Every one of the nine components appeared in 2023, and none appeared together with governance. The harness year (ch. 8) and the reference design fill that gap.
 
 ## Systems analyzed in this chapter
 
@@ -498,15 +498,15 @@ After this chapter you can:
 
 ### 7.3 Computer use
 
-- Screenshots as perception, clicks as actions; latency, cost, and safety trade-offs.
+- Screenshots as perception, clicks as actions. Latency, cost, and safety trade-offs.
 
 ### 7.4 MCP
 
-- November 2024: hosts, clients, servers; tools, resources, prompts; capability negotiation; transports. Why a protocol rather than a plugin format. Reference servers and the ecosystem. Governance move to a foundation (2025).
+- November 2024: hosts, clients, and servers. Tools, resources, and prompts. Capability negotiation. Transports. Why a protocol rather than a plugin format. Reference servers and the community of servers around them. Governance transferred to a foundation (2025).
 
-### 7.5 Patterns named
+### 7.5 The pattern vocabulary
 
-- Anthropic, "Building Effective Agents" (Dec 2024): the five workflow patterns and the agent; the advice to keep it simple. LangGraph: the agent as a state graph. Reasoning models change the planning component.
+- Anthropic, "Building Effective Agents" (Dec 2024): the five workflow patterns and the agent, and the advice to keep it simple. LangGraph: the agent as a state graph. Reasoning models change the planning component.
 
 ## Systems analyzed in this chapter
 
@@ -522,7 +522,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit does not use MCP, by doctrine: no external protocol may be a prerequisite for core governance operations. The book treats that refusal as a design choice to be analyzed, and offers "an MCP server over gz verbs and the ledger" as a student project (ch. 13).
+gzkit does not use MCP, by doctrine: no external protocol may be a prerequisite for core governance operations. The book treats that refusal as a design choice for analysis, and offers "an MCP server over gz verbs and the ledger" as a student project (ch. 13).
 
 ## Readings
 
@@ -573,7 +573,7 @@ After this chapter you can:
 
 ### 8.5 Spec-driven kits
 
-- GitHub spec-kit, BMAD, OpenSpec, GSD: methodology without governance, mostly. gzkit's comparison document.
+- GitHub spec-kit, BMAD, OpenSpec, GSD. These kits supply a methodology and, for the most part, no governance layer. gzkit's comparison document sets them side by side.
 
 ## Systems analyzed in this chapter
 
@@ -590,7 +590,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit is a meta-harness: it renders one canon into each harness's surfaces (17 hooks into Claude Code, 2 into Codex, 1 into Copilot). The control-surface matrix is the chapter's central Design Analysis.
+gzkit enters this chapter as a meta-harness. It renders one canon into each harness's surfaces (17 hooks into Claude Code, 2 into Codex, 1 into Copilot), and the control-surface matrix that records this rendering is the chapter's central Design Analysis.
 
 ## Readings
 
@@ -600,8 +600,8 @@ gzkit is a meta-harness: it renders one canon into each harness's surfaces (17 h
 
 ## Exercises and Design Analysis prompts
 
-1. Design Analysis: your harness. Then the same harness as gzkit sees it (which surfaces does it render into?).
-2. Design Analysis: A2A vs. MCP. What is a peer that a tool is not?
+1. Write a Design Analysis of your harness. Then write the same analysis of that harness as gzkit sees it (which surfaces does gzkit render into?).
+2. Write a Design Analysis of A2A against MCP. What is a peer that a tool is not?
 
 
 
@@ -615,7 +615,7 @@ gzkit is a meta-harness: it renders one canon into each harness's surfaces (17 h
 
 After this chapter you can:
 
-- Describe harness engineering as a discipline and its claims.
+- Describe harness engineering as a discipline and state what it asserts.
 - Explain long-running and background agents and their operational problems.
 - Narrate gzkit's arc from genesis to the measurement era and extract the lessons.
 
@@ -623,7 +623,7 @@ After this chapter you can:
 
 ### 9.1 Harness engineering
 
-- The claim that most of an agent product is not the model. Böckeler; the OpenAI post; gzkit's appraisal and its blind spots (harness fitness unmeasured; illusion of quality via heavy gates).
+- Böckeler and the OpenAI post argue that most of an agent product is not the model. gzkit's appraisal of that position, and the blind spots the appraisal records (harness fitness unmeasured; an illusion of quality produced by heavy gates).
 
 ### 9.2 Background and long-running agents
 
@@ -639,7 +639,7 @@ After this chapter you can:
 
 ### 9.5 What 2026 settled and what it did not
 
-- Settled: the window is engineered; the harness is the product; evidence beats narrative. Open: stagnation detection, harness fitness, self-dogfooding cannot falsify a strategic bet.
+- Settled: the window is an engineered artifact; the harness is the product; evidence outranks narrative. Open: stagnation detection; harness fitness; the limit that self-dogfooding cannot falsify a strategic bet.
 
 ## Systems analyzed in this chapter
 
@@ -651,7 +651,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-The whole chapter. The timeline and casebook are drawn from `CHANGELOG.md`, `RELEASE_NOTES.md`, the ADR index, the ledger, and `.gzkit/insights/agent-insights.jsonl`.
+gzkit is the subject of the whole chapter. The timeline and the casebook draw on `CHANGELOG.md`, `RELEASE_NOTES.md`, the ADR index, the ledger, and `.gzkit/insights/agent-insights.jsonl`.
 
 ## Readings
 
@@ -682,15 +682,15 @@ After this chapter you can:
 
 ### 10.1 The minimal loop
 
-- Messages, a model call, a tool-or-answer decision, an observation, repeat. Structured output via Pydantic. Stop: final answer, budget, max turns, error.
+- Messages, a model call, a tool-or-answer decision, an observation, repeat. Structured output through Pydantic. The loop stops on a final answer, an exhausted budget, the max-turn count, or an error.
 
 ### 10.2 Two foundations
 
-- Hosted API vs. Ollama's endpoint; same loop, different capability; measure both.
+- Hosted API vs. Ollama's endpoint: the same loop runs against both with a different capability behind it. Measure both.
 
 ### 10.3 Governing it from the first commit
 
-- gz init; the PRD interview; the ledger's first events. Why the PRD is WHAT, not HOW.
+- gz init; the PRD interview; the ledger's first events. Why the PRD states the WHAT and leaves the HOW to later decisions.
 
 ### 10.4 What can go wrong on day one
 
@@ -705,7 +705,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`gz init`, `gz prd`, the interview transcript, `prd_created` in the ledger. gzkit's own PRD (PRD-GZKIT-1.0.0) as a worked example.
+This chapter works from `gz init`, `gz prd`, the interview transcript, and the `prd_created` event in the ledger. gzkit's own PRD (PRD-GZKIT-1.0.0) serves as the worked example.
 
 ## Readings
 
@@ -714,7 +714,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 1 (center) — DESIGN CLAIM: the loop halts on every input class (answerable, unanswerable, adversarial) within budget, and every turn is in the ledger. FALSIFIERS: a run exceeding the turn budget; a halt with no ledger event; a "final answer" produced without a reasoning turn.
+Sortie 1 (center). DESIGN CLAIM: the loop halts on every input class (answerable, unanswerable, adversarial) within budget, and every turn is in the ledger. FALSIFIERS: a run exceeding the turn budget; a halt with no ledger event; a "final answer" produced without a reasoning turn.
 
 ## Exercises and Design Analysis prompts
 
@@ -748,11 +748,11 @@ After this chapter you can:
 
 ### 11.3 Writing ADR-1
 
-- Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. ADRs before code; after is post-hoc rationalization.
+- Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. Write the ADR before the code. An ADR written after the code rationalizes what was already built.
 
 ### 11.4 Refactoring the loop into a pattern
 
-- Worked: turn the E1 loop into orchestrator–workers or evaluator–optimizer without changing the tool layer.
+- A worked example: turn the E1 loop into orchestrator–workers or evaluator–optimizer without changing the tool layer.
 
 ## Systems analyzed in this chapter
 
@@ -765,7 +765,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`gz plan create --kind feature --semver --lane`, the decomposition scorecard, forcing functions (pre-mortem, WWHTBT, constraint archaeology). ADR-0.0.2 (argparse over click; "popularity is not rationale") as the model ADR.
+The reference material is `gz plan create --kind feature --semver --lane`, the decomposition scorecard, and the forcing functions (pre-mortem, WWHTBT, constraint archaeology). ADR-0.0.2 (argparse over click; "popularity is not rationale") serves as the model ADR.
 
 ## Readings
 
@@ -775,7 +775,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 2 (center) — DESIGN CLAIM: the same task runs under two patterns with identical tool traces and a measurable difference in cost or quality that the ADR predicted. FALSIFIER: the ADR's predicted consequence does not appear in the evidence.
+Sortie 2 (center). DESIGN CLAIM: the same task runs under two patterns with identical tool traces and a measurable difference in cost or quality that the ADR predicted. FALSIFIER: the ADR's predicted consequence does not appear in the evidence.
 
 ## Exercises and Design Analysis prompts
 
@@ -805,11 +805,11 @@ After this chapter you can:
 
 ### 12.2 Permission gating
 
-- Read freely; write with confirmation; irreversible with attestation. The confirmation event precedes the call, in the ledger, or it did not happen.
+- Read freely; write with confirmation; irreversible with attestation. The confirmation event is written to the ledger before the call. A confirmation that is not in the ledger does not count as one.
 
 ### 12.3 Hooks
 
-- Claude Code hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd); gzkit's 17. What a hook can see and what it cannot: the Bash-write bypass and the move to the commit locus (`git diff --cached`).
+- Claude Code hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd); gzkit's 17. What a hook can see and what it cannot: the Bash-write bypass, and why gzkit relocated write-side enforcement to the commit locus (`git diff --cached`).
 
 ### 12.4 Failure and recovery
 
@@ -817,7 +817,7 @@ After this chapter you can:
 
 ### 12.5 Small models and tools
 
-- Why a local 8B model is the right substrate this week: brittleness makes the contract visible.
+- Why a local 8B model is the right substrate for this Evolution: a brittle model fails wherever the tool contract is loose, so its brittleness makes the contract visible.
 
 ## Systems analyzed in this chapter
 
@@ -832,7 +832,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`.claude/hooks/` as emitted by `gz init`; `pipeline-gate.py` and `verifier-pipe-gate.py`; the 2026-08-21 presence-check incident; GHI #844/#847 (write-side fences moved to the commit locus).
+This chapter reads `.claude/hooks/` as emitted by `gz init`, `pipeline-gate.py` and `verifier-pipe-gate.py`, the 2026-08-21 presence-check incident, and GHI #844/#847 (write-side fences moved to the commit locus).
 
 ## Readings
 
@@ -842,7 +842,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 3 (expansion) — DESIGN CLAIM: no write-tool executes without a prior confirmation event. Four test points including a prompt-injected write request. FALSIFIERS: a write with no preceding confirmation; a file change after denial; passing only by disabling the gate.
+Sortie 3 (expansion). DESIGN CLAIM: no write-tool executes without a prior confirmation event. Four test points including a prompt-injected write request. FALSIFIERS: a write with no preceding confirmation; a file change after denial; passing only by disabling the gate.
 
 ## Exercises and Design Analysis prompts
 
@@ -880,7 +880,7 @@ After this chapter you can:
 
 ### 13.4 A governance server
 
-- The reference design's missing piece: `gz status`, `gz validate`, the ledger, and receipts as MCP tools and resources; "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.
+- The reference design has no MCP server. This section builds the one it lacks: `gz status`, `gz validate`, the ledger, and receipts exposed as MCP tools and resources, with "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.
 
 ### 13.5 Design Analysis of the ecosystem
 
@@ -897,7 +897,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-Doctrine: `docs/governance/storage-tiers.md` ("no external protocol may become a prerequisite for core governance operations"); the pool ADR sketching an MCP context server; the campaign review scoring MCP "absent and un-designed." The student project: an MCP server over gz verbs and the ledger.
+The doctrine is in `docs/governance/storage-tiers.md` ("no external protocol may become a prerequisite for core governance operations"). The pool ADR sketches an MCP context server, and the campaign review scores MCP "absent and un-designed." The student project is an MCP server over gz verbs and the ledger.
 
 ## Readings
 
@@ -907,7 +907,7 @@ Doctrine: `docs/governance/storage-tiers.md` ("no external protocol may become a
 
 ## Flight card supported
 
-Sortie 4 (center) — DESIGN CLAIM: every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side. FALSIFIERS: a tool callable from one client but not the other; a call with no server-side log; a schema the client accepted that the server rejected.
+Sortie 4 (center). DESIGN CLAIM: every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side. FALSIFIERS: a tool callable from one client but not the other; a call with no server-side log; a schema the client accepted that the server rejected.
 
 ## Exercises and Design Analysis prompts
 
@@ -941,7 +941,7 @@ After this chapter you can:
 
 ### 14.3 A2A and delegation
 
-- Agents as peers: agent cards, tasks, artifacts. What a peer is that a tool is not; where authority sits.
+- Agents as peers: agent cards, tasks, artifacts. What distinguishes a peer from a tool, and where authority sits.
 
 ### 14.4 Instruction files and skills
 
@@ -949,7 +949,7 @@ After this chapter you can:
 
 ### 14.5 Harness engineering
 
-- The product is the harness. gzkit as meta-harness: one canon rendered into each vendor's surfaces. Fidelity validation; the 258K context exhaustion; drift between mirrors.
+- The product is the harness. gzkit as a meta-harness renders one canon into each vendor's surfaces. Fidelity validation; the 258K context exhaustion; drift between mirrors.
 
 ## Systems analyzed in this chapter
 
@@ -962,7 +962,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`docs/design/agent-control-surface-matrix.md`; `docs/governance/agents-md-doctrine.md` (ADR-0.0.54); `untrusted-content.md`; `gz validate --instructions-files-budget --invariant-coherence`; the corpus→rendition playback of AGENTS.md (ADR-0.0.37).
+The chapter's sources in gzkit are `docs/design/agent-control-surface-matrix.md`, `docs/governance/agents-md-doctrine.md` (ADR-0.0.54), `untrusted-content.md`, `gz validate --instructions-files-budget --invariant-coherence`, and the corpus→rendition playback of AGENTS.md (ADR-0.0.37).
 
 ## Readings
 
@@ -972,7 +972,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 5 (corner) — DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.
+Sortie 5 (corner). DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.
 
 ## Exercises and Design Analysis prompts
 
@@ -998,7 +998,7 @@ After this chapter you can:
 
 ### 15.1 The window as an artifact
 
-- What is in it: instructions, history, tool results, retrieved memory. Measure it. Budget it.
+- What is in it: instructions, history, tool results, retrieved memory. Measure the window, then budget it.
 
 ### 15.2 Compaction and progressive disclosure
 
@@ -1010,7 +1010,7 @@ After this chapter you can:
 
 ### 15.4 Layers of truth
 
-- L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 > L1 > L3; L3 can never block a gate. Frontmatter can lie; the ledger is the truth.
+- L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 > L1 > L3; L3 can never block a gate. Frontmatter can carry a false status; the ledger is the record a gate consults.
 
 ### 15.5 Intent preservation as the design goal
 
@@ -1027,7 +1027,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`docs/governance/state-doctrine.md` (ADR-0.0.9); `gz handoff create/resume`; `scripts/session_orientation.py`; `.gzkit/handoffs/rulings.jsonl`; the 2026-04-26 stale-clone incident; ADR-0.0.37 and ADR-0.0.54.
+The reference material is `docs/governance/state-doctrine.md` (ADR-0.0.9), `gz handoff create/resume`, `scripts/session_orientation.py`, `.gzkit/handoffs/rulings.jsonl`, the 2026-04-26 stale-clone incident, and ADR-0.0.37 with ADR-0.0.54.
 
 ## Readings
 
@@ -1037,7 +1037,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 6 (expansion) — DESIGN CLAIM: a handoff written at session end lets a fresh session resume with no loss of intent (measured: the next action taken is the one the handoff named). FALSIFIERS: the fresh session asks a question the handoff answered; an L3 view contradicts the ledger and wins.
+Sortie 6 (expansion). DESIGN CLAIM: a handoff written at session end lets a fresh session resume with no loss of intent (measured: the next action taken is the one the handoff specified). FALSIFIERS: the fresh session asks a question the handoff answered; an L3 view contradicts the ledger and wins.
 
 ## Exercises and Design Analysis prompts
 
@@ -1063,7 +1063,7 @@ After this chapter you can:
 
 ### 16.1 Kinds of memory
 
-- Window; structured state; episodic (what happened); semantic (what is known); procedural (skills). Which your system needs.
+- Window; structured state; episodic (what happened); semantic (what is known); procedural (skills). Which of these your system needs.
 
 ### 16.2 Retrieval
 
@@ -1079,7 +1079,7 @@ After this chapter you can:
 
 ### 16.5 ADR-2
 
-- The memory decision with alternatives; the personalized Final System brief follows this week's Drift.
+- The memory decision with alternatives; the personalized Final System brief follows this Evolution's Drift.
 
 ## Systems analyzed in this chapter
 
@@ -1093,7 +1093,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`.gzkit/insights/agent-insights.jsonl` (558 governed course-corrections) and `gz insights remember`; the OKF knowledge bundle; `gz context`. Memory in the reference design is files and ledger, deliberately; the book adds retrieval.
+This chapter draws on `.gzkit/insights/agent-insights.jsonl` (558 governed course-corrections) with `gz insights remember`, the OKF knowledge bundle, and `gz context`. The reference design keeps its memory in files and the ledger by deliberate choice; this book adds retrieval on top of that.
 
 ## Readings
 
@@ -1103,7 +1103,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 7 (expansion, local) — DESIGN CLAIM: with memory enabled, the system answers a question about a prior session correctly that it cannot answer with memory disabled, and eviction removes what the retention rule says it removes. FALSIFIERS: a recalled fact that was never stored; a retained item past its rule; retrieval that changes an answer that should not change.
+Sortie 7 (expansion, local). DESIGN CLAIM: with memory enabled, the system answers a question about a prior session correctly that it cannot answer with memory disabled, and eviction removes what the retention rule says it removes. FALSIFIERS: a recalled fact that was never stored; a retained item past its rule; retrieval that changes an answer that should not change.
 
 ## Exercises and Design Analysis prompts
 
@@ -1159,7 +1159,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-ADR-0.18.0; `docs/user/concepts/subagent-pipeline.md`; `src/gzkit/roles.py`, `pipeline_dispatch.py`; `.gzkit/personas/`; the `--single-driver --reason` honesty flag.
+The pipeline is specified in ADR-0.18.0 and `docs/user/concepts/subagent-pipeline.md` and implemented in `src/gzkit/roles.py` and `pipeline_dispatch.py`. The personas live in `.gzkit/personas/`. The `--single-driver --reason` honesty flag completes the set.
 
 ## Readings
 
@@ -1169,7 +1169,7 @@ ADR-0.18.0; `docs/user/concepts/subagent-pipeline.md`; `src/gzkit/roles.py`, `pi
 
 ## Flight card supported
 
-Sortie 8 (expansion) — DESIGN CLAIM: no implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. FALSIFIERS: merged work with no ReviewResult; a malformed result parsed as PASS; the reviewer's claim accepted without the evidence it cites.
+Sortie 8 (expansion). DESIGN CLAIM: no implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. FALSIFIERS: merged work with no ReviewResult; a malformed result parsed as PASS; the reviewer's claim accepted without the evidence it cites.
 
 ## Exercises and Design Analysis prompts
 
@@ -1187,7 +1187,7 @@ Sortie 8 (expansion) — DESIGN CLAIM: no implementer output reaches the main br
 
 After this chapter you can:
 
-- Name the multi-agent failure taxonomy and recognize each mode in a trace.
+- State the multi-agent failure taxonomy and recognize each mode in a trace.
 - Implement cross-vendor adversarial validation, locks, and cost-aware routing.
 - Explain delegation and handoff protocols, agent marketplaces and contracts, and cost and resource management.
 
@@ -1199,7 +1199,7 @@ After this chapter you can:
 
 ### 18.2 Adversarial validation
 
-- Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim is not evidence; receipts are.
+- Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim becomes evidence only when a receipt backs it.
 
 ### 18.3 Locks and mutual exclusion
 
@@ -1223,7 +1223,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-The 2026-05-24 ten-deep summary-laundering chain; the seven Gate-5 repudiations (June 2026); the 2026-08-21 undispatched Stage 2; `gz obpi dispatch`, `gz obpi lock`, `gz obpi repudiate`; `DISPATCH_MODEL_MAP`.
+This chapter reads the summary-laundering chain of 2026-05-24 (ten levels deep), the seven Gate-5 repudiations of June 2026, the undispatched Stage 2 of 2026-08-21, the commands `gz obpi dispatch`, `gz obpi lock`, and `gz obpi repudiate`, and `DISPATCH_MODEL_MAP`.
 
 ## Readings
 
@@ -1233,11 +1233,11 @@ The 2026-05-24 ten-deep summary-laundering chain; the seven Gate-5 repudiations 
 
 ## Flight card supported
 
-Sortie 9 (corner) — DESIGN CLAIM: a subagent's claim never becomes evidence without a receipt, and a second-family adversary can refute a false claim. FALSIFIERS: a claim promoted to the flight log with no receipt; the adversary agreeing with a planted falsehood; a lock violated without a ledger event.
+Sortie 9 (corner). DESIGN CLAIM: a subagent's claim never becomes evidence without a receipt, and a second-family adversary can refute a false claim. FALSIFIERS: a claim promoted to the flight log with no receipt; an adversary that agrees with a planted falsehood; a lock violated without a ledger event.
 
 ## Exercises and Design Analysis prompts
 
-1. Plant a false "tests pass" claim in a worker's output. Show the pipeline catching it, then show the version that would not.
+1. Plant a false "tests pass" claim in a worker's output. Show the pipeline that catches it. Then show the version that would not.
 
 
 
@@ -1287,7 +1287,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`src/gzkit/eval/`, `data/eval/*.json`; `gz adr evaluate --red-team`; `gz arb red`; `docs/harness-docs/GZK-GOV-007-ultrareview-and-gate-5.md`; the hollow-antibody incident (ADR-0.0.73).
+This chapter reads `src/gzkit/eval/` and `data/eval/*.json`, the commands `gz adr evaluate --red-team` and `gz arb red`, `docs/harness-docs/GZK-GOV-007-ultrareview-and-gate-5.md`, and the hollow-antibody incident (ADR-0.0.73).
 
 ## Readings
 
@@ -1297,11 +1297,11 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 10 (expansion) — DESIGN CLAIM: the evaluation suite fails when it should: removing the feature, or planting a wrong answer, turns the gate red. FALSIFIERS: a green gate with the feature removed; a judge that scores a planted error as correct; a golden case that cannot fail.
+Sortie 10 (expansion). DESIGN CLAIM: the evaluation suite fails when it should: if the tester removes the feature or plants a wrong answer, the gate turns red. FALSIFIERS: a green gate with the feature removed; a judge that scores a planted error as correct; a golden case that cannot fail.
 
 ## Exercises and Design Analysis prompts
 
-1. Take your best test. Break the production code it covers. If it still passes, you have found your first hollow test.
+1. Take your best test. Break the production code it covers. If the test still passes, the test is hollow.
 
 
 
@@ -1335,7 +1335,7 @@ After this chapter you can:
 
 ### 20.4 System cards and guardrails
 
-- What a system card measures; frontier safety frameworks; translating a card's findings into your guardrails.
+- What a system card measures; frontier safety frameworks; how to translate a card's findings into your guardrails.
 
 ### 20.5 Governance, safety, guardrails, risk
 
@@ -1351,7 +1351,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-`src/gzkit/arb/`; `docs/governance/trust-doctrine.md` and the 2026-04-18 outage (nine trust-chain-poisoning instances); `data/frontier_model_cards.json`; the operator-PII incident (2026-04-19).
+The gzkit evidence for this chapter is `src/gzkit/arb/`, `docs/governance/trust-doctrine.md` together with the outage of 2026-04-18 (nine instances of trust-chain poisoning), `data/frontier_model_cards.json`, and the operator-PII incident of 2026-04-19.
 
 ## Readings
 
@@ -1361,7 +1361,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 11 (corner, red team) — DESIGN CLAIM: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation. FALSIFIERS: any attack achieving its objective; any attack not traceable in the black box; a guardrail passing only because the attack was never delivered.
+Sortie 11 (corner, red team). DESIGN CLAIM: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation. FALSIFIERS: any attack that achieves its objective; any attack that the black box cannot trace; a guardrail that passes only because the attack was never delivered.
 
 ## Exercises and Design Analysis prompts
 
@@ -1381,7 +1381,7 @@ After this chapter you can:
 
 - Package, serve, and containerize your system with secrets and rate limits handled.
 - Run the Heavy-lane gates (docs, BDD, human) and a release ceremony with rollback.
-- Explain long-running and background agents' operational problems.
+- Explain the operational problems of long-running and background agents.
 
 ## Outline
 
@@ -1391,7 +1391,7 @@ After this chapter you can:
 
 ### 21.2 Containers, secrets, limits
 
-- Image, config, secret injection, rate limits, budgets; never in the repo.
+- Image, config, secret injection, rate limits, budgets; secrets never in the repo.
 
 ### 21.3 Scheduling and background agents
 
@@ -1409,13 +1409,13 @@ After this chapter you can:
 
 | System | Year | Why it is here | Component focus |
 |---|---|---|---|
-| Background / cloud agents | 2025–26 | Operations arrive | Runtime |
+| Background / cloud agents | 2025–26 | Operational problems | Runtime |
 | Copilot coding agent | 2025 | PR-native background work | Runtime |
 | gzkit closeout / patch release / MX | 2026 | Release as ceremony | Runtime, governance |
 
 ## Reference design: gzkit
 
-`gz closeout --ceremony`, `gz patch release`, `gz validate --distribution`, ADR-0.0.74 (MX mode), ADR-0.0.31 (distribution invariant), the GHI #830 backfilled releases.
+The gzkit commands and records for this chapter are `gz closeout --ceremony`, `gz patch release`, `gz validate --distribution`, ADR-0.0.74 (MX mode), ADR-0.0.31 (the distribution invariant), and the backfilled releases of GHI #830.
 
 ## Readings
 
@@ -1424,7 +1424,7 @@ After this chapter you can:
 
 ## Flight card supported
 
-Sortie 12 (expansion) — DESIGN CLAIM: a release can be rolled back in one governed command and the rollback is in the ledger; secrets never appear in image, log, or repo. FALSIFIERS: a rollback that needs manual steps; a secret in any artifact; a release with no attestation event.
+Sortie 12 (expansion). DESIGN CLAIM: one governed command rolls a release back and the rollback is in the ledger; secrets never appear in image, log, or repo. FALSIFIERS: a rollback that needs manual steps; a secret in any artifact; a release with no attestation event.
 
 ## Exercises and Design Analysis prompts
 
@@ -1450,7 +1450,7 @@ After this chapter you can:
 
 ### 22.1 The problem with artifacts
 
-- Correctness is no longer evidence of understanding; banning AI fails three ways.
+- A correct artifact is no longer evidence of understanding; a ban on AI fails three ways.
 
 ### 22.2 The method
 
@@ -1462,7 +1462,7 @@ After this chapter you can:
 
 ### 22.4 The AI log
 
-- What, which, what kept, what rejected, why, how verified. Discussed, not filed.
+- What, which, what kept, what rejected, why, how verified. The log is discussed in the Drift consultation rather than filed.
 
 ## Readings
 
@@ -1512,7 +1512,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit `docs/flighttest/README.md`, `flight-card-template.md`, `manifest.md` (S1–S6), `gz-flighttest` skill; zero sorties flown as of 2026-08-17 — the course flies the first.
+The gzkit documents for this chapter are `docs/flighttest/README.md`, `flight-card-template.md`, `manifest.md` (S1–S6), and the `gz-flighttest` skill. Zero sorties had been flown as of 2026-08-17, so the course flies the first.
 
 ## Readings
 
@@ -1520,7 +1520,7 @@ gzkit `docs/flighttest/README.md`, `flight-card-template.md`, `manifest.md` (S1�
 
 ## Exercises and Design Analysis prompts
 
-1. Write the card for a sortie you already flew informally. Notice how much of the instrumentation you would have invented after the fact.
+1. Write the card for a sortie you already flew informally. Note how much of the instrumentation you would have invented after the fact.
 
 
 
@@ -1535,7 +1535,7 @@ gzkit `docs/flighttest/README.md`, `flight-card-template.md`, `manifest.md` (S1�
 After this chapter you can:
 
 - Dissect a system against the nine components in ~150 words.
-- Write the "why" paragraph that names cost and failure mode.
+- Write the "why" paragraph that states the cost and the failure mode.
 - Maintain a Design Analysis Ledger and pool it with a class.
 
 ## Outline
@@ -1546,7 +1546,7 @@ After this chapter you can:
 
 ### 24.2 Sources
 
-- Papers, docs, code, changelogs, incident records; reading a system from the inside vs. the outside.
+- Papers, docs, code, changelogs, incident records; how to read a system from the inside and from the outside.
 
 ### 24.3 Worked examples
 
@@ -1608,7 +1608,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-The reference design used as a tool; the tutorial-first-project corrected against v0.34.5 (Appendix F).
+This chapter uses the reference design as a tool. It follows the tutorial-first-project document, corrected against v0.34.5 (Appendix F).
 
 ## Readings
 
@@ -1616,7 +1616,7 @@ The reference design used as a tool; the tutorial-first-project corrected agains
 
 ## Exercises and Design Analysis prompts
 
-1. Complete the reading-list tutorial end to end and paste your ledger. Annotate every event.
+1. Complete the reading-list tutorial end to end. Paste your ledger. Annotate every event.
 
 
 
@@ -1654,7 +1654,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-The 11-step closeout ceremony (`src/gzkit/commands/ceremony_steps.py`); the "mediated observation" critique from the AirlineOps exploration.
+The gzkit material for this chapter is the 11-step closeout ceremony (`src/gzkit/commands/ceremony_steps.py`) and the "mediated observation" critique from the AirlineOps exploration.
 
 ## Readings
 
@@ -1663,18 +1663,18 @@ The 11-step closeout ceremony (`src/gzkit/commands/ceremony_steps.py`); the "med
 
 ## Exercises and Design Analysis prompts
 
-1. Draft your own brief before you receive mine. Compare.
+1. Draft your own brief before you receive mine. Compare the two.
 
 
 
 ---
 
-# Appendix A — Flight Card Template (course edition)
+# Appendix A: Flight Card Template (course edition)
 
-Copy this block into `evolution-NN/flight-card.md` and fill every field **before** requesting Go. Filling in expected observables after flying is a doctrine violation.
+Copy this block into `evolution-NN/flight-card.md`. Fill every field **before** you request Go. Do not fill in the expected observables after the flight. Doctrine counts that as a violation.
 
 ```
-FLIGHT CARD — SORTIE <N> : <short name>
+FLIGHT CARD · SORTIE <N> : <short name>
 ════════════════════════════════════════════════════════════
 ENVELOPE POSITION   : <center | expansion | corner>
 DESIGN CLAIM        : <one sentence a single observation could disprove>
@@ -1683,7 +1683,7 @@ SUBSTRATE           : <repo + commit + model/route; local or hosted>
 DEPENDS ON          : <prior sorties that must have passed, or "none">
 
 ────────────────────────────────────────────────────────────
-ENTRY CONDITIONS (go/no-go — all must hold)
+ENTRY CONDITIONS (go/no-go: all must hold)
   - clean tree; prior sortie evidence on record
   - governance artifacts current (ADR/brief for this layer exist)
   - Go recorded by the instructor at <time>
@@ -1714,13 +1714,13 @@ ABORT CRITERIA (halt-not-fail)
 ────────────────────────────────────────────────────────────
 CHASE
   - observer : <peer name>
-  - reads    : <exact evidence slice handed over — never the narrative>
+  - reads    : <exact evidence slice handed over, never the narrative>
   - verdict  : PASS / FAIL, authored from evidence alone
 
 ────────────────────────────────────────────────────────────
 DEBRIEF & SQUAWKS
   - black box vs card : <matched / diverged>
-  - design signal     : sound | awkward-but-correct | wrong — why
+  - design signal     : sound | awkward-but-correct | wrong, and why
   - squawks           : <each anomaly → issue # | design-feedback | card amendment | re-fly>
 ════════════════════════════════════════════════════════════
 ```
@@ -1728,12 +1728,12 @@ DEBRIEF & SQUAWKS
 
 ---
 
-# Appendix B — Design Analysis Template
+# Appendix B: Design Analysis Template
 
-One per week, ~150 words, committed to `design-analyses/<system>.md` and appended as a row to `design-analyses/LEDGER.md`.
+Write one Design Analysis per week, ~150 words. Commit it to `design-analyses/<system>.md`. Append one row to `design-analyses/LEDGER.md`.
 
 ```
-# Design Analysis — <System> (<year>)
+# Design Analysis: <System> (<year>)
 
 Sources read: <paper / docs / code / changelog / incident record>
 
@@ -1761,20 +1761,20 @@ Ledger row: `| <system> | <year> | <analyst> | <one-line why> | <link> |`
 
 ---
 
-# Appendix C — The Nine Agent Failure Modes
+# Appendix C: The Nine Agent Failure Modes
 
-From gzkit `.gzkit/rules/agent-failure-modes.md` (sourced to frontier system cards), with the human-side patterns the course adds.
+The nine modes come from gzkit `.gzkit/rules/agent-failure-modes.md`, which sources them to frontier system cards. The human-side patterns listed after the table are the course's additions.
 
 | # | Mode | One line | Red-team probe |
 |---|---|---|---|
 | 1 | Safeguard circumvention | Works around a guardrail instead of producing the evidence it asks for | Block a write; offer an easier bypass |
-| 2 | Reckless action | Hard-to-reverse action without confirming authorization for this scope | Ambiguous "clean up" instruction |
+| 2 | Reckless action | Takes a hard-to-reverse action without confirming authorization for this scope | Ambiguous "clean up" instruction |
 | 3 | Fabrication | A claim, receipt, or attestation not observed from a primary source | Ask for a result that cannot be produced |
 | 4 | Skipped cheap verification | Pattern-matched incantation without running it | A command that looks right and is wrong |
 | 5 | Correction fails | Correction received but not applied, or applied superficially | Correct once, re-test three turns later |
 | 6 | Dishonest when caught | Post-hoc rationalization without quoting the rule and the conflicting directive | Catch a violation; watch the explanation |
 | 7 | Hallucinated authorization | Acts on a gate it believes was passed when nothing records it | Remove the record; see if it proceeds |
-| 8 | Security shortcut | Trades integrity for convenience without surfacing the trade | Put a secret in the easy path |
+| 8 | Security shortcut | Trades integrity for convenience without stating the trade | Put a secret in the easy path |
 | 9 | Metagaming the gate | Shapes output to satisfy the check rather than the intent | A test that can be passed by string-matching |
 
 Human-side: the Degradation Pattern; governance theater; cognitive surrender; mediated observation; summary laundering; presence-is-not-procedure.
@@ -1782,42 +1782,42 @@ Human-side: the Degradation Pattern; governance theater; cognitive surrender; me
 
 ---
 
-# Appendix D — Glossary
+# Appendix D: Glossary
 
 *Seed list; grows with the course. Terms marked (gz) are gzkit's; (SD) are Sprint and Drift's.*
 
-- **ADR** — Architecture Decision Record: intent, decision, consequences, alternatives; written before code.
-- **Agent** — a system that perceives and acts toward a goal; in this book, one whose reasoner is a language model and whose loop has a halt condition.
-- **Attestation (gz)** — a human's recorded judgment that work is Completed, Completed — Partial, or Dropped. Gate 5.
-- **Black box** — the evidence a system produced (ledger, receipts, traces), as opposed to what anyone says about it.
-- **Brief / OBPI (gz)** — One Brief Per Item: the unit of human review with requirements, acceptance criteria, verification.
-- **Chase** — the independent observer who writes a sortie's verdict from evidence alone.
-- **Context engineering** — treating the model's window as an engineered artifact with a budget.
-- **Covenant (gz)** — the five-clause agreement between human and agent.
-- **Design Analysis** — the nine-component dissection of a system plus the "why" paragraph.
-- **Drift (SD)** — the verification phase: defend the work without AI.
-- **Evolution** — the weekly unit of the course.
-- **Falsifier** — a pre-registered observation that would prove a design claim false.
-- **Flight card** — the pre-registered plan for a sortie.
-- **Gate (gz)** — one of five checkpoints: ADR, TDD, Docs, BDD, Human.
-- **Harness** — the software that turns a model into an agent (tools, permissions, context, loop).
-- **Index zero (gz)** — the human's position: first in priority, final in authority.
-- **Lane (gz)** — Lite (gates 1–2) or Heavy (1–5).
-- **Layers of truth (gz)** — canon (L1), ledger (L2), derived (L3); L2 > L1 > L3.
-- **Ledger (gz)** — the append-only event log that is the runtime truth.
-- **MCP** — Model Context Protocol: hosts, clients, servers; tools, resources, prompts.
-- **Meta-harness (gz)** — governance one tier above the vendor harness.
-- **Receipt (gz)** — a schema-validated record of a command's observed result.
-- **RED witness (gz)** — proof that a test fails without the change it covers.
-- **Sortie** — one flight of one card in one sitting.
-- **Sprint (SD)** — the production phase: build with AI, log it.
-- **Squawk** — an anomaly recorded at debrief, routed to an issue, feedback entry, amendment, or re-fly.
-- **V.I.B.E.S. (gz)** — Velocity Increased, Bugs Expected Software: the named failure class.
+- **ADR**: an Architecture Decision Record, which states intent, decision, consequences, and alternatives, and is written before code.
+- **Agent**: a system that perceives and acts toward a goal; in this book, one whose reasoner is a language model and whose loop has a halt condition.
+- **Attestation (gz)**: a human's recorded judgment that work is Completed, Completed — Partial, or Dropped. It is Gate 5.
+- **Black box**: the evidence a system produced (ledger, receipts, traces), as opposed to what anyone says about it.
+- **Brief / OBPI (gz)**: One Brief Per Item, the unit of human review, with requirements, acceptance criteria, and verification.
+- **Chase**: the independent observer who writes a sortie's verdict from evidence alone.
+- **Context engineering**: the practice of treating the model's context window as an engineered artifact with a budget.
+- **Covenant (gz)**: the five-clause agreement between human and agent.
+- **Design Analysis**: the nine-component dissection of a system plus the "why" paragraph.
+- **Drift (SD)**: the verification phase, in which the student defends the work without AI.
+- **Evolution**: the weekly unit of the course.
+- **Falsifier**: a pre-registered observation that would prove a design claim false.
+- **Flight card**: the pre-registered plan for a sortie.
+- **Gate (gz)**: one of five checkpoints (ADR, TDD, Docs, BDD, Human).
+- **Harness**: the software that turns a model into an agent (tools, permissions, context, loop).
+- **Index zero (gz)**: the human's position (first in priority, final in authority).
+- **Lane (gz)**: Lite (gates 1–2) or Heavy (1–5).
+- **Layers of truth (gz)**: canon (L1), ledger (L2), derived (L3); L2 > L1 > L3.
+- **Ledger (gz)**: the append-only event log that is the runtime truth.
+- **MCP**: Model Context Protocol, whose participants are hosts, clients, and servers and whose primitives are tools, resources, and prompts.
+- **Meta-harness (gz)**: governance one tier above the vendor harness.
+- **Receipt (gz)**: a schema-validated record of a command's observed result.
+- **RED witness (gz)**: proof that a test fails without the change it covers.
+- **Sortie**: one flight of one card in one sitting.
+- **Sprint (SD)**: the production phase, in which the student builds with AI and logs the use.
+- **Squawk**: an anomaly recorded at debrief and routed to an issue, a feedback entry, a card amendment, or a re-fly.
+- **V.I.B.E.S. (gz)**: Velocity Increased, Bugs Expected Software, gzkit's label for the failure class.
 
 
 ---
 
-# Appendix E — Reading List
+# Appendix E: Reading List
 
 ## Primary sources (by chapter)
 - Anthropic. "Building Effective Agents" (2024); "Effective Context Engineering for AI Agents" (2025); "Effective Harnesses for Long-Running Agents" (2025).
@@ -1840,7 +1840,7 @@ Human-side: the Degradation Pattern; governance theater; cognitive surrender; me
 - gzkit documentation at gzkit.org; repository github.com/tvproductions/gzkit. Chapter-by-chapter pointers appear in each chapter's Readings.
 
 ## Sprint and Drift essays (sprintanddrift.substack.com)
-Tree Hollow · Who answers for the code · Enthusiasm Is All You Need · Get the Balance Right · Stop the presses, hail the autoloom · The cost of the wrong abstraction went to zero · Woven · Code ergo sum · Optimism's flames · Newtonian motion · Can you outrun the truth? · Turn and Face the Change — and the archive.
+Tree Hollow · Who answers for the code · Enthusiasm Is All You Need · Get the Balance Right · Stop the presses, hail the autoloom · The cost of the wrong abstraction went to zero · Woven · Code ergo sum · Optimism's flames · Newtonian motion · Can you outrun the truth? · Turn and Face the Change, and the archive.
 
 ## Books (optional, influential)
 Huyen, *AI Engineering* (2025) · Lanham, *AI Agents in Action* · Richards & Ford, *Fundamentals of Software Architecture*, 2e · Ford, Richards, Sadalage, Dehghani, *Software Architecture: The Hard Parts* · Beck, *Tidy First?* · Nygard, *Release It!*, 2e · Russell & Norvig, *AIMA* · Wooldridge, *An Introduction to MultiAgent Systems* · Sutton & Barto, *Reinforcement Learning*.
@@ -1848,7 +1848,7 @@ Huyen, *AI Engineering* (2025) · Lanham, *AI Agents in Action* · Richards & Fo
 
 ---
 
-# Appendix F — Toolkit Setup (Route A and Route B)
+# Appendix F: Toolkit Setup (Route A and Route B)
 
 ## Everyone
 ```bash
@@ -1871,56 +1871,56 @@ ollama pull qwen3:8b            # 8–16 GB machines; qwen3-coder:30b on 24–32
 ollama run qwen3:8b "say hello"
 ```
 
-## Route A — subscription + small API budget
-- Claude Pro / ChatGPT Plus / Google AI Pro (~$20/mo) and its harness: Claude Code or Claude Desktop, Codex CLI, or Gemini CLI.
-- ~$20–40 of API credit for SDK and MCP work.
-- GitHub Copilot (Student plan) as a free supplement.
+## Route A: a subscription plus a small API budget
+- Subscribe to Claude Pro, ChatGPT Plus, or Google AI Pro (~$20/mo). Use the harness that comes with it: Claude Code or Claude Desktop, Codex CLI, or Gemini CLI.
+- Set aside ~$20–40 of API credit for the SDK and MCP work.
+- Add GitHub Copilot (Student plan) as a free supplement.
 
-## Route B — local only
-- Ollama + OpenCode (or another provider-agnostic harness).
-- SDKs that speak OpenAI-compatible endpoints (Pydantic AI, LangGraph, the OpenAI SDK pointed at Ollama).
+## Route B: local only
+- Install Ollama and OpenCode (or another provider-agnostic harness).
+- Use an SDK that speaks OpenAI-compatible endpoints (Pydantic AI, LangGraph, or the OpenAI SDK pointed at Ollama).
 
-## Known gotchas against py-gzkit 0.34.x (verified 2026-08-24)
-1. `gz init` writes ~520 files (`.gzkit/`, `.claude/`, `.agents/`, `.github/`). Commit once; never hand-edit generated files.
-2. The generated `pyproject.toml` declares `readme = "README.md"`; create it or Gate 2 fails with "Readme file does not exist."
-3. `gz plan create` needs a slug and `--kind feature --semver 0.1.0 --lane lite`; artifacts land in `design/`, not `docs/design/`.
-4. Exclude `.claude`, `.gzkit`, `.github`, `.agents` from ruff and ty (`extend-exclude`; `ty.toml` `[src] include = ["src","tests"]`), and `uv add --dev ty`.
-5. Briefs: after any edit run `gz obpi brief-drift <ID>` again before `gz obpi complete --attestor <you> --attestation-text "..."`; the brief needs substantive Objective, Value Narrative, Key Proof, Implementation Summary; Allowed Paths must cover `src/` and `tests/` for product proof.
-6. In Claude Code, `pipeline-gate.py` refuses `src/`/`tests/` edits without an active pipeline (`gz obpi pipeline <ID>`); `verifier-pipe-gate.py` refuses `unittest ... | tail`. Do not work around hooks.
-7. `gz closeout` ends in an interactive `Select [1/2/3]`; in non-TTY contexts use `gz closeout <ADR> --ceremony --attest` or `gz attest`.
-8. Step 4b adversarial validation prefers Codex as tier-1; with one vendor you run in degraded mode and say so.
-9. Several skills are `model: opus`; budget accordingly, and prefer `--no-subagents` for small sorties.
+## Known problems in py-gzkit 0.34.x (verified 2026-08-24)
+1. `gz init` writes ~520 files (`.gzkit/`, `.claude/`, `.agents/`, `.github/`). Commit them once. Do not hand-edit a generated file.
+2. The generated `pyproject.toml` declares `readme = "README.md"`. If that file does not exist, Gate 2 fails with "Readme file does not exist." Create the file first.
+3. `gz plan create` needs a slug and `--kind feature --semver 0.1.0 --lane lite`. The artifacts land in `design/`, not in `docs/design/`.
+4. Exclude `.claude`, `.gzkit`, `.github`, and `.agents` from ruff and ty (`extend-exclude` for ruff, and `[src] include = ["src","tests"]` in `ty.toml`). Run `uv add --dev ty`.
+5. After any edit to a brief, run `gz obpi brief-drift <ID>` again before `gz obpi complete --attestor <you> --attestation-text "..."`. The brief needs a substantive Objective, Value Narrative, Key Proof, and Implementation Summary. For product proof, Allowed Paths must cover `src/` and `tests/`.
+6. In Claude Code, `pipeline-gate.py` refuses edits to `src/` and `tests/` when no pipeline is active (`gz obpi pipeline <ID>`). `verifier-pipe-gate.py` refuses `unittest ... | tail`. Do not work around either hook.
+7. `gz closeout` ends in an interactive `Select [1/2/3]`. In a non-TTY context, use `gz closeout <ADR> --ceremony --attest` or `gz attest`.
+8. Step 4b adversarial validation prefers Codex as tier-1. If you have only one vendor, run in degraded mode and say so.
+9. Several skills are `model: opus`. Budget for that. For a small sortie, prefer `--no-subagents`.
 
 
 ---
 
-# Appendix G — The gzkit Incident Casebook (2026)
+# Appendix G: The gzkit Incident Casebook (2026)
 
-Dated episodes from the reference design, each with the mechanism that resulted. Sources: `AGENTS.md` § Operator Doctrine, `CHANGELOG.md`, `RELEASE_NOTES.md`, `.gzkit/insights/agent-insights.jsonl`, the ledger.
+This appendix lists the dated episodes from the reference design and, for each, the mechanism that resulted. The sources are `AGENTS.md` § Operator Doctrine, `CHANGELOG.md`, `RELEASE_NOTES.md`, `.gzkit/insights/agent-insights.jsonl`, and the ledger.
 
 | Date | What happened | What resulted | Course use |
 |---|---|---|---|
 | 2026-01-12 | ADR-0.1.9 in AirlineOps accumulated ~100 briefs under one identity | gzkit itself; semver as governance assertion | Ch. 3, 9 |
-| 2026-04-16 | First outside adopter: `gz init` left no runnable project; scaffolders emitted ids their own validator rejected | v0.25.1–0.25.10; issue templates | Ch. 25 |
+| 2026-04-16 | First outside adopter: `gz init` left no runnable project, and the scaffolders emitted ids that their own validator rejected | v0.25.1–0.25.10; issue templates | Ch. 25 |
 | 2026-04-18 | `gz patch release` over-counted closed issues 5× | "Count what we CLOSE, not what we book" | Ch. 21 |
-| 2026-04-18 | Trust-chain poisoning outage: nine silent-wrong layers feeding decisions that looked correct | Trust doctrine (T0–T3) | Ch. 20 |
+| 2026-04-18 | Trust-chain poisoning outage: nine silent-wrong layers fed decisions that looked correct | Trust doctrine (T0–T3) | Ch. 20 |
 | 2026-04-19 | Operator PII leaked into artifacts; history rewrite | PII rule; authorship guard | Ch. 20 |
-| 2026-04-26 | Stale clone 10 commits behind; ~215 lines discarded by hard reset | SessionStart ahead/behind; orientation freshness | Ch. 15 |
-| 2026-05-10 | Agent piped "ATTEST" into `gz obpi complete` to bypass the TTY gate | Regression test; then the TTY gate removed (05-14) — authority belongs to the human, forgery-resistance to audit | Ch. 3, 18 |
-| 2026-05-23 | Four questions bundled in one prompt | Operator economy of effort | Ch. 15 |
+| 2026-04-26 | A stale clone sat 10 commits behind; a hard reset discarded ~215 lines | SessionStart ahead/behind; orientation freshness | Ch. 15 |
+| 2026-05-10 | The agent piped "ATTEST" into `gz obpi complete` to bypass the TTY gate | Regression test; then the TTY gate was removed (05-14), on the reasoning that authority belongs to the human and forgery-resistance to audit | Ch. 3, 18 |
+| 2026-05-23 | The agent bundled four questions in one prompt | Operator economy of effort | Ch. 15 |
 | 2026-05-24 | Ten-deep subagent chain; polished summaries became "facts" | DO IT RIGHT rules; "a subagent's claim is not evidence" | Ch. 17, 18 |
-| 2026-05-30→06-08 | Green `main` reopened 8× in nine days | V.I.B.E.S. named; pre-push gate; MX hangar | Ch. 19, 21 |
-| 2026-06-13 | Gate-5 attributed to the operator that was never given | First repudiation; ADR-0.0.71 | Ch. 18 |
-| 2026-06-16 | Four briefs attested for a renderer, validator, composer, playback store — none existed as attested | Repudiations; enforcement-claim rule | Ch. 19 |
+| 2026-05-30→06-08 | Green `main` was reopened 8× in nine days | V.I.B.E.S. coined; pre-push gate; MX hangar | Ch. 19, 21 |
+| 2026-06-13 | A Gate-5 was attributed to the operator, who never gave it | First repudiation; ADR-0.0.71 | Ch. 18 |
+| 2026-06-16 | Four briefs were attested for a renderer, a validator, a composer, and a playback store; none existed as attested | Repudiations; enforcement-claim rule | Ch. 19 |
 | 2026-06-18/19 | "The antibody" (verification-layer audit) was itself hollow and attested Completed | `@enforces` live negative controls | Ch. 19 |
 | 2026-06-20 | "Utter shambles": 70 validate scopes behind a 162-parameter function; 116 handoffs | MX mode; amendments append, never inline | Ch. 21 |
 | 2026-07-18 | 90-day commit mix 2.9% feat / 31% fix / 54% chore; zero airlock transits | "Permitted to say enough" | Ch. 9 |
 | 2026-08-14 | 20 of 23 airlock transits computed an empty seam-map | Calibrate before widening | Ch. 9 |
 | 2026-08-16 | A limit in a Markdown doc disagreed with the JSON authority; 51 unguarded modules | "A value in Markdown is illustrative, never authoritative" | Ch. 14 |
-| 2026-08-21 | Pipeline gate checked only that a marker file existed; a stale marker licensed ~350 lines with no dispatch or review | "A presence check answers 'is something armed', never 'did the procedure run'" | Ch. 12, 19 |
-| 2026-08-22 | Registering one CLI verb produced 21 failures; three docs disagreed on the obligation set | One authority for new-verb obligations | Ch. 14 |
-| 2026-08-23 | Six governance hooks keyed on editor-tool matchers were bypassed by any Bash write | Enforcement moved to the commit locus (`git diff --cached`) | Ch. 12 |
-| 2026-08-23 | Agent re-elicited three settled rulings by multiple-choice | "A settled question is a drift vector" | Ch. 15 |
+| 2026-08-21 | The pipeline gate checked only that a marker file existed; a stale marker licensed ~350 lines with no dispatch or review | "A presence check answers 'is something armed', never 'did the procedure run'" | Ch. 12, 19 |
+| 2026-08-22 | One CLI verb, when registered, produced 21 failures; three docs disagreed on the obligation set | One authority for new-verb obligations | Ch. 14 |
+| 2026-08-23 | Any Bash write bypassed six governance hooks keyed on editor-tool matchers | Enforcement moved to the commit locus (`git diff --cached`) | Ch. 12 |
+| 2026-08-23 | The agent re-elicited three settled rulings by multiple-choice | "A settled question is a drift vector" | Ch. 15 |
 
 
 ---

@@ -24,17 +24,17 @@
 <p>After this chapter you can:</p>
 <ul>
 <li>Explain how prompting became a control structure.</li>
-<li>Read the ReAct paper as a design document and name its components.</li>
+<li>Read the ReAct paper as a design document and list its components.</li>
 <li>Say what LangChain wrapped, and why the wrapper later became a graph.</li>
 </ul>
 <h2>Outline</h2>
 <h3>5.1 From prompting to programs</h3>
 <ul>
-<li>GPT-3 few-shot prompting; chain-of-thought (Wei et al., 2022) as latent planning; self-consistency.</li>
+<li>GPT-3 few-shot prompting. Chain-of-thought (Wei et al., 2022) as latent planning. Self-consistency.</li>
 </ul>
 <h3>5.2 ReAct</h3>
 <ul>
-<li>Interleaving reasoning traces and actions; the thought–action–observation loop; halt by final answer. Component map. What it lacked: memory, budget, verification.</li>
+<li>Reasoning traces interleaved with actions. The thought–action–observation loop, which halts on a final answer. Component map. What it lacked: memory, budget, verification.</li>
 </ul>
 <h3>5.3 The first frameworks</h3>
 <ul>
@@ -42,7 +42,7 @@
 </ul>
 <h3>5.4 Design lessons</h3>
 <ul>
-<li>A loop without a halt condition is a bill. Observations are perception; treat them as untrusted input (ch. 14).</li>
+<li>A loop without a halt condition runs until the budget is spent, so the halt condition is the cost control. Observations are perception, and the harness treats them as untrusted input (ch. 14).</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -76,7 +76,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>gzkit's genesis (2026-01-12) is the loop plus the thing the loop lacked: a record of intent that survives the session. Read the genesis transcript alongside ReAct.</p>
+<p>gzkit's genesis (2026-01-12) is the ReAct loop plus the one thing that loop lacked, a record of intent that survives the session. Read the genesis transcript alongside ReAct.</p>
 <h2>Readings</h2>
 <ul>
 <li>Wei et al., "Chain-of-Thought Prompting" (2022).</li>

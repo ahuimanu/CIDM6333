@@ -30,19 +30,19 @@
 <h2>Outline</h2>
 <h3>4.1 Symbolic agents and expert systems</h3>
 <ul>
-<li>Production rules, knowledge representation, planning (STRIPS); why brittleness ended the era and why the ideas returned as "planning" in LLM agents.</li>
+<li>Production rules, knowledge representation, planning (STRIPS). Why brittleness ended the era and why the ideas returned as "planning" in LLM agents.</li>
 </ul>
 <h3>4.2 BDI and the agent-oriented programming movement</h3>
 <ul>
-<li>Beliefs, desires, intentions; commitment and reconsideration. Direct ancestors of "goal decomposition" and "intent preservation."</li>
+<li>Beliefs, desires, intentions. Commitment and reconsideration. Direct ancestors of "goal decomposition" and "intent preservation."</li>
 </ul>
 <h3>4.3 Multi-agent systems</h3>
 <ul>
-<li>FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI; they are the same designs.</li>
+<li>FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI, which reuse the same designs.</li>
 </ul>
 <h3>4.4 Reinforcement-learning agents</h3>
 <ul>
-<li>Environment, reward, policy; sample efficiency and reward hacking. The lesson LLM agents inherit: gaming the gate is not new (failure mode 9).</li>
+<li>Environment, reward, policy. Sample efficiency and reward hacking. LLM agents inherit the lesson that gaming the gate is not new (failure mode 9).</li>
 </ul>
 <h3>4.5 What carried forward, what was dropped</h3>
 <ul>
@@ -86,7 +86,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "intent preservation across context boundaries" is BDI's commitment problem with a ledger.</p>
+<p>gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "intent preservation across context boundaries" is BDI's commitment problem, with a ledger added to record the commitment.</p>
 <h2>Readings</h2>
 <ul>
 <li>Russell &amp; Norvig, chs. 2, 11 (planning), and a multi-agent chapter.</li>

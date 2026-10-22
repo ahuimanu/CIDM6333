@@ -39,7 +39,7 @@ textarea{min-height:5.2em; resize:vertical; line-height:1.45}
 <header>
   <div class="eyebrow">Figure 15</div>
   <h1>Skill on Demand</h1>
-  <p class="lede">A skill is a procedure with a name. OpenCode finds it on disk. At the start of a session the model sees only its name and a short description. The full text loads only when the model calls the <code>skill</code> tool. This figure follows one skill, <em>flight-card</em>, from its folder to the turn it runs on, and shows three ways it fails to run.</p>
+  <p class="lede">One skill, <em>flight-card</em>, travels here from its folder on disk to the turn the model runs it, and the last three steps show how it fails to run. OpenCode finds the skill file when a session starts, and from then on the model sees only its name and a short description. The full text enters the context window only when the model calls the <code>skill</code> tool, which is what keeps a procedure cheap on the turns that do not need it.</p>
 </header>
 
 <div class="figwrap">
@@ -366,9 +366,9 @@ textarea{min-height:5.2em; resize:vertical; line-height:1.45}
   <section>
     <h2>Where this is tested</h2>
     <ul>
-      <li>10/22 in-class exercise, Probe 2: set <code>permission.skill</code> to <code>ask</code>, make the request, and photograph the prompt. The prompt is the proof that the skill was called.</li>
+      <li>In-class exercise, Probe 2: set <code>permission.skill</code> to <code>ask</code>, make the request, and photograph the prompt. The prompt is the proof that the skill was called.</li>
       <li>E5 Sprint, "AGENTS.md and skills under budget": the procedure leaves AGENTS.md, one pointer line stays, and the 4,000-character budget holds.</li>
-      <li>Final System: the harness must act on the brief. A skill the model never calls is a procedure the system does not have.</li>
+      <li>Final System: the harness must act on the brief. A skill the model never calls adds nothing to the harness, so the V&amp;V must show the call.</li>
     </ul>
   </section>
   <section>
@@ -399,10 +399,10 @@ textarea{min-height:5.2em; resize:vertical; line-height:1.45}
 
   /* ================= step-through player ================= */
   const STEPS = [
-    {k:"*", t:"A skill is a procedure with a name", w:["E5","E8","Final"],
-     p:"OpenCode finds skill files on disk when a session starts. The model then sees only each skill's name and a short description. The full steps load on the turn the model calls the skill, and go away with that turn. This figure follows one skill, flight-card, from its folder to the turn it runs on, and ends with three ways it fails."},
-    {k:"disk", t:"A skill lives on disk in a named folder", w:["E5"],
-     p:"The file is .opencode/skills/flight-card/SKILL.md. The folder name is the skill's name. OpenCode also looks in .claude/skills/ and .agents/skills/, and in ~/.config/opencode/skills/ for every project. It looks upward from the working folder to the git root. The file has a short header and a body. The body here is five steps. Step 5 says stop before committing."},
+    {k:"*", t:"A procedure that loads only when it is called", w:["E5","E8","Final"],
+     p:"OpenCode finds skill files on disk when a session starts, and the model then sees only each skill's name and a short description. The full steps load on the turn the model calls the skill and go away with that turn. The figure follows one skill, flight-card, from its folder to the turn it runs on, and the last three steps show how it fails."},
+    {k:"disk", t:"A skill lives on disk in a folder with its name", w:["E5"],
+     p:"The file is .opencode/skills/flight-card/SKILL.md, and the folder name is the skill's name. OpenCode also looks in .claude/skills/ and .agents/skills/, and in ~/.config/opencode/skills/ for every project, searching upward from the working folder to the git root. The file has a short header and a body, and the body here is five steps, the last of which says stop before committing."},
     {k:"disk", t:"The header is the contract", w:["E5"],
      p:"The name in the header must match the folder name: lowercase letters, digits, and single hyphens, 1 to 64 characters. The description is 1 to 1,024 characters. These two lines are all the model sees until it calls the skill. So the description must use the words a user would say. Test a name in the Frontmatter check panel below."},
     {k:"index win", t:"At session start only the list is in context", w:["E5"],
@@ -410,15 +410,15 @@ textarea{min-height:5.2em; resize:vertical; line-height:1.45}
     {k:"user win", t:"The user asks", w:["E5","E8"],
      p:"The user types: Start a flight card for sortie 7. Stop before committing. The request goes into the window as the user turn. AGENTS.md is there too, loaded in full as on every turn. In this repository it holds one pointer line: Flight cards: call the flight-card skill. The model now has the request, the pointer, and the list."},
     {k:"decide win", t:"The model matches the request to a description and calls the skill", w:["E5","E8"],
-     p:"The model reads the request and the list as plain text. The description says use when asked to write, start, or file a flight card. The request says start a flight card. So the model calls the skill tool with the name flight-card. Nothing in OpenCode makes this choice; the model does. The Will it trigger panel below shows which words help."},
-    {k:"gate", t:"The permission prompt makes the call visible", w:["E5","10/22"],
-     p:"permission.skill in opencode.json can be allow, ask, or deny, per pattern. With ask, a prompt appears on screen naming the skill, and waits. Allow loads the steps. Deny refuses them, and the model carries on without them. The 10/22 exercise sets ask on purpose: the prompt on screen is the proof that the skill was called."},
+     p:"The model reads the request and the list as plain text. The description says use when asked to write, start, or file a flight card. The request says start a flight card. So the model calls the skill tool with the name flight-card. The choice is the model's, because OpenCode only lists the skills and runs the tool call the model asks for. The Will it trigger panel below shows which words help."},
+    {k:"gate", t:"The permission prompt makes the call visible", w:["E5","Exercise"],
+     p:"permission.skill in opencode.json can be allow, ask, or deny, per pattern. With ask, a prompt that shows the skill's name appears on screen and waits. Allow loads the steps. Deny refuses them, and the model carries on without them. The in-class exercise sets ask on purpose, because the prompt on screen is the proof that the skill was called."},
     {k:"load win", t:"The steps load for this turn only", w:["E5","E8"],
      p:"On allow, OpenCode reads SKILL.md and hands the model the full text. The five steps are now in the window next to the request. They stay for the rest of this turn. They are not added to AGENTS.md, so the next session starts again with only the list. The proof that they loaded: the model quotes a step word for word."},
     {k:"run ledger win", t:"The model follows the steps and stops where the skill says", w:["E8","Final"],
      p:"The model works through steps 1 to 5. It states the design claim, lists the falsifiers, flies the sortie, records the results, and writes the ledger lines. Step 5 says stop before committing, so nothing is committed. The ledger records the call, the permission answer, and the turn. The proof is a flight card in the repository and a clean git log."},
     {k:"f-never decide", t:"Failure: never called", w:["E5","Final"],
-     p:"The skill is on disk and in the list, but the model writes the card its own way and never calls it. The usual cause is a description that does not use the words the user says. Use when asked to write, start, or file a flight card names three verbs. Produces flight cards names none. Fix the description, then ask again."},
+     p:"The skill is on disk and in the list, but the model writes the card its own way and never calls it. In this figure the cause is a description that does not use the words the user says. Use when asked to write, start, or file a flight card gives the model three verbs to match, and Produces flight cards gives it none. Fix the description, then ask again."},
     {k:"f-hidden disk index", t:"Failure: hidden", w:["E5"],
      p:"The skill never makes the list. The name in the header does not match the folder, has a capital letter or a double hyphen, or the header is broken. OpenCode skips the file, so the model cannot call what it cannot see. Check with ls for the folder, and check the skill tool's list for the entry. The panel below runs the name rules."},
     {k:"f-leftover disk win", t:"Failure: a leftover copy in AGENTS.md", w:["E5","Final"],

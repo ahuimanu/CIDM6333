@@ -88,48 +88,23 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
 <div class="slides" id="slides" tabindex="0" aria-label="Slides; use the arrow keys">
 
 <section class="slide title">
-  <div class="kick">Mini lecture · Evolution 8 · follow-along night</div>
+  <div class="kick">Mini lecture · Evolution 8 · follow-along session</div>
   <h2>Steer the middle<small>Three rings, one bar, and every file you have written since E0</small></h2>
   <div class="body">
-    <p>The model is inside. OpenCode is the middle. Your harness is the outer ring, and it is mostly your version of what OpenCode already does by default.</p>
-    <p>One hour of this. Then one hour at the keyboard, each of you in your own repository, following the screen.</p>
+    <p>The model sits in the inner ring. OpenCode is the middle ring. Your harness is the outer ring, and most of it is your own version of what OpenCode already does by default.</p>
+    <p>This lecture comes first. The exercise follows at the keyboard, each student in their own repository, following the screen.</p>
   </div>
   <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>Figure 17 · the exercise page</span></div>
 </section>
 
 <section class="slide">
-  <div class="kick">Run of show</div>
-  <h2>Two hours, two halves</h2>
-  <div class="body cols">
-    <div>
-      <p><strong>Hour one · lecture</strong></p>
-      <ul>
-        <li>This deck: the rings, the bar, and the table of pairs</li>
-        <li>Figure 17, from the inside out, then E0 to E8</li>
-        <li>The E8 deck, out of order: slides 3, 6, 7, 10, 11, 12</li>
-      </ul>
-    </div>
-    <div>
-      <p><strong>Hour two · at the keyboard</strong></p>
-      <ul>
-        <li>Follow the screen, your own repository, one step at a time</li>
-        <li>Each step: do, see, record</li>
-        <li>Ends with a reviewer agent that cannot edit, and a verdict on a diff</li>
-        <li>Push before you leave; the repository is the submission</li>
-      </ul>
-    </div>
-  </div>
-  <div class="foot"><span>Nothing is printed. The exercise page stays open beside OpenCode.</span><span>2</span></div>
-</section>
-
-<section class="slide">
   <div class="kick">The model · inner ring</div>
-  <h2>One window in, one answer out, nothing kept</h2>
+  <h2>The window, the reply, and no state between calls</h2>
   <div class="body cols">
     <div>
       <p><code>opencode/big-pickle</code> (or any OpenCode Go model) reads a window of text and writes a reply, one token per pass.</p>
-      <p>It keeps nothing between calls. The next turn starts from a window the harness builds again.</p>
-      <p class="callout">You cannot change this ring. You can only change what goes into the window and what happens to what comes out.</p>
+      <p>The model keeps nothing between calls. The next turn starts from a window that the harness builds again.</p>
+      <p class="callout">You cannot change this ring. You can change only what the harness puts into the window and what the harness does with the reply.</p>
     </div>
     <div>
       <p>What the window holds on a turn (E6):</p>
@@ -142,7 +117,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       </ul>
     </div>
   </div>
-  <div class="foot"><span>Figures 01, 07</span><span>3</span></div>
+  <div class="foot"><span>Figures 01, 07</span><span>1</span></div>
 </section>
 
 <section class="slide">
@@ -150,8 +125,8 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
   <h2>The loop you did not write</h2>
   <div class="body cols">
     <div>
-      <p>OpenCode builds the window, calls the model, parses the tool call, checks the permission, runs the tool, and loops. E1's loop, shipped.</p>
-      <p>It ships with defaults for everything you will steer:</p>
+      <p>OpenCode builds the window, calls the model, parses the tool call, checks the permission, runs the tool, and loops. This is the loop you drew in E1, shipped as a product.</p>
+      <p>OpenCode ships with a default for everything you will steer:</p>
       <ul>
         <li>built-in tools: <code>read</code>, <code>edit</code>, <code>shell</code>, <code>webfetch</code>, <code>glob</code>, <code>grep</code></li>
         <li>built-in agents: <code>build</code>, <code>plan</code>, <code>general</code>, <code>explore</code>, <code>scout</code></li>
@@ -161,15 +136,15 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
     <div>
       <ul>
         <li>a default system prompt</li>
-        <li>default permissions: most <code>allow</code>; <code>.env</code> denied; <code>doom_loop</code> and <code>external_directory</code> ask</li>
+        <li>default permissions: most <code>allow</code>, with <code>.env</code> denied and <code>doom_loop</code> and <code>external_directory</code> set to ask</li>
         <li>the <code>skill</code> tool, empty until you fill it</li>
         <li>compaction: a summary the model writes when the window fills</li>
         <li>an event bus that plugins can hook</li>
       </ul>
-      <p class="callout">Its trace is its own: the agent name in the TUI, the tool-call line, the permission prompt.</p>
+      <p class="callout">OpenCode leaves a trace of its own in the agent name in the TUI, the tool-call line, and the permission prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>OpenCode docs, checked 10/22/2026</span><span>4</span></div>
+  <div class="foot"><span>OpenCode docs</span><span>2</span></div>
 </section>
 
 <section class="slide">
@@ -187,27 +162,27 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
         <tr><td>built-in agents</td><td class="m">.opencode/agents/&lt;name&gt;.md</td><td>E2 · E8</td></tr>
         <tr><td>compaction</td><td class="m">handoff.md · opencode.json → instructions, references</td><td>E6</td></tr>
         <tr><td>nothing: no store between sessions</td><td class="m">recall.py · memory.jsonl <em>(an addition)</em></td><td>E7</td></tr>
-        <tr><td>an event bus</td><td class="m">.opencode/plugins/&lt;name&gt;.ts, a hook that calls your Python <em>(an addition; not tonight)</em></td><td>E10</td></tr>
+        <tr><td>an event bus</td><td class="m">.opencode/plugins/&lt;name&gt;.ts, a hook that calls your Python <em>(an addition, not in this exercise)</em></td><td>E10</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="foot"><span>Each outer item sits radially outside the thing it steers</span><span>5</span></div>
+  <div class="foot"><span>Each outer item sits radially outside the thing it steers</span><span>3</span></div>
 </section>
 
 <section class="slide">
   <div class="kick">The bar</div>
-  <h2>The widths are where the human's work is</h2>
+  <h2>The bar and its three widths</h2>
   <div class="body">
     <div class="bar">
       <div>Specs and planning<span>what is wanted, written before the loop runs: pitch, brief, PRD, AGENTS.md, plan, handoff</span></div>
       <div class="mid">Execution<span>the three rings</span></div>
       <div>Evaluation, validation, verification<span>what checks the output: tests, reviewer, the Chase, ledger, the gate</span></div>
     </div>
-    <p>All three rings sit inside the narrow band. The model's part of the work is the thin part; the human owns both wide ends.</p>
-    <p class="callout">This is E0's Degradation Pattern drawn as a shape. When the wide ends shrink, the system stops being answerable, and nothing in the rings notices.</p>
-    <p>Tonight's exercise walks the figure left to right, and ends with you in the right band, reading a reviewer's verdict against a diff.</p>
+    <p>All three rings sit inside the narrow band. The model does its work there, and the human writes both wide ends.</p>
+    <p class="callout">This bar is E0's Degradation Pattern drawn as a shape. When the wide ends shrink, the system stops being answerable, and no component in the three rings reports the shrinkage.</p>
+    <p>This Evolution's exercise walks the figure from left to right and ends with you in the right band, reading a reviewer's verdict against a diff.</p>
   </div>
-  <div class="foot"><span>E0 · index zero</span><span>6</span></div>
+  <div class="foot"><span>E0 · index zero</span><span>4</span></div>
 </section>
 
 <section class="slide embed">
@@ -220,23 +195,23 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
   <h2>Human, loop, and two agents</h2>
   <div class="body cols">
     <div>
-      <p><strong>E0.</strong> A human writes what is wanted before the loop runs, and a human judges what came back. Nothing in the rings yet.</p>
-      <p><strong>E1.</strong> The loop is the middle ring. Its one visible trace is the tool-call line: <code>glob</code>, <code>read</code>, <code>read</code>, then an answer. The model did not read the files; the loop did, and put the text in the next window.</p>
+      <p><strong>E0.</strong> A human writes what is wanted before the loop runs, and a human judges what came back. The rings hold nothing yet.</p>
+      <p><strong>E1.</strong> The loop is the middle ring. Its one visible trace is the tool-call line: <code>glob</code>, <code>read</code>, <code>read</code>, then an answer. The model did not read the files. The loop read them and put the text in the next window.</p>
     </div>
     <div>
       <p><strong>E2.</strong> Who owns the loop? OpenCode answers with two primary agents. <code>build</code> can edit. <code>plan</code> denies edits outside <code>~/.opencode/plan/</code>. <strong>Tab</strong> switches. The pattern you drew in E2 is now a permission difference between two agent definitions.</p>
-      <p class="callout">Tonight: count the tool calls on one question; plan hex in <code>plan</code>, then build it in <code>build</code>.</p>
+      <p class="callout">In this exercise, count the tool calls on one question. Then plan hex in <code>plan</code> and build it in <code>build</code>.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 02, 03</span><span>8</span></div>
+  <div class="foot"><span>Figures 02, 03</span><span>5</span></div>
 </section>
 
 <section class="slide">
   <div class="kick">E3 · E4</div>
-  <h2>A tool is a schema plus a gate</h2>
+  <h2>Tools, schemas, and the permission gate</h2>
   <div class="body cols">
     <div>
-      <p><strong>E3.</strong> A tool is a contract: arguments, a result, exit codes. Tonight the contract is <code>codec.py</code>'s CLI: arguments, exit 0 or 2, <code>--selftest</code> as evidence. A custom tool is a ten-line <code>.ts</code> shim in <code>.opencode/tools/</code> that declares the schema and calls the Python; all logic stays in Python.</p>
+      <p><strong>E3.</strong> A tool is a contract that fixes its arguments, its result, and its exit codes. In this exercise the contract is the command line of <code>codec.py</code>, which takes arguments, exits 0 or 2, and offers <code>--selftest</code> as evidence. A custom tool is a ten-line <code>.ts</code> shim in <code>.opencode/tools/</code> that declares the schema and calls the Python, so that all logic stays in Python.</p>
       <pre><code>"permission": {
   "edit": "ask",
   "shell": { "*": "ask",
@@ -244,57 +219,57 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
              "python3 …/codec.py --selftest": "allow" },
   "skill": { "*": "ask" }
 }</code></pre>
-      <p>The gate is <code>opencode.json → permission</code>: allow, ask, or deny per tool and per pattern; the last matching rule wins.</p>
+      <p>The gate is <code>opencode.json → permission</code>. It sets allow, ask, or deny per tool and per pattern, and the last matching rule wins.</p>
     </div>
     <div>
-      <p><strong>E4.</strong> An MCP server's tools reach the model the same way: name, description, schema in the window; the permission engine at call time.</p>
-      <p>The difference is the trust boundary (Figure 06): the server's descriptions are someone else's text. Tonight you only locate the <code>mcp</code> block and record what it exposes.</p>
-      <p class="callout">The permission prompt is the trace that the gate held. Tonight most things ask, on purpose, so the room sees it.</p>
+      <p><strong>E4.</strong> An MCP server's tools reach the model the same way. The name, description, and schema go into the window, and the permission engine checks each call.</p>
+      <p>The difference is the trust boundary (Figure 06), because the server's descriptions are text that someone else wrote. In this exercise you only locate the <code>mcp</code> block and record what it exposes.</p>
+      <p class="callout">The permission prompt is the trace that the gate held. In this exercise the permission file sets most tools to ask, on purpose, so that everyone in the room sees the prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 04, 05, 06</span><span>9</span></div>
+  <div class="foot"><span>Figures 04, 05, 06</span><span>6</span></div>
 </section>
 
 <section class="slide">
   <div class="kick">E5 · E6 · the three drawers, revisited</div>
-  <h2>What rides every turn, what loads on call, what gets squeezed</h2>
+  <h2>What rides every turn, what loads on call, what is compacted</h2>
   <div class="body">
     <table>
-      <thead><tr><th>Item</th><th>When the model sees it</th><th>Tonight's trace</th></tr></thead>
+      <thead><tr><th>Item</th><th>When the model sees it</th><th>Trace in this exercise</th></tr></thead>
       <tbody>
-        <tr><td class="m">AGENTS.md</td><td>every turn, in full (budget 4,000 characters)</td><td>a fresh session answers the standing-intent question and names the file</td></tr>
+        <tr><td class="m">AGENTS.md</td><td>every turn, in full (budget 4,000 characters)</td><td>a fresh session answers the standing-intent question and gives the file's name</td></tr>
         <tr><td class="m">opencode.json → instructions</td><td>every turn, joined to AGENTS.md</td><td>the spec answered with no <code>read</code> call</td></tr>
-        <tr><td class="m">.opencode/skills/codec-check/SKILL.md</td><td>name and description every turn; body when the model calls the skill tool</td><td>the skill permission prompt</td></tr>
+        <tr><td class="m">.opencode/skills/codec-check/SKILL.md</td><td>name and description every turn, and the body when the model calls the skill tool</td><td>the skill permission prompt</td></tr>
         <tr><td class="m">handoff.md</td><td>once, when the next session is told to read it</td><td>the <code>read</code> call</td></tr>
-        <tr><td>compaction</td><td>the model's own summary when the window fills</td><td>the compaction notice; you did not write it</td></tr>
+        <tr><td>compaction</td><td>the model's own summary when the window fills</td><td>the compaction notice, which you did not write</td></tr>
       </tbody>
     </table>
-    <p class="callout">Two of last week's three drawers are on this slide. The third is memory, next.</p>
+    <p class="callout">Two of the three drawers from the previous Evolution are on this slide. The third drawer, memory, is on the next slide.</p>
   </div>
-  <div class="foot"><span>Figures 07, 14, 15</span><span>10</span></div>
+  <div class="foot"><span>Figures 07, 14, 15</span><span>7</span></div>
 </section>
 
 <section class="slide">
   <div class="kick">E7</div>
-  <h2>Memory is a claim with a date</h2>
+  <h2>The memory record and its date</h2>
   <div class="body cols">
     <div>
       <p>OpenCode keeps no store between sessions. <code>recall.py</code> and <code>memory.jsonl</code> are an addition with no counterpart on the middle ring.</p>
-      <p>A record enters the window only when the retriever scores it above the threshold. The model reads it as fact.</p>
+      <p>A record enters the window only when the retriever scores it above the threshold. The model then reads the record as fact.</p>
     </div>
     <div>
-      <p>Tonight you file one record at 35 minutes:</p>
+      <p>At step 8 you file one record:</p>
       <pre><code>As of 2026-10-22 the codec supports
 rot13 and base64. Hex is not implemented.</code></pre>
-      <p>At 55 minutes hex exists and the record is wrong. Nothing in the loop knows. The retention date and <code>evict</code> are the mechanism; the sentence "data, not instructions" is a request.</p>
-      <p class="callout">The drawer does not open itself, and it does not close itself either.</p>
+      <p>At step 9 hex exists and the record is wrong. No step in the loop compares the record with the code. The retention date and <code>evict</code> are the mechanism that removes a stale record, and the sentence "data, not instructions" is a request to the model that the mechanism does not enforce.</p>
+      <p class="callout">The retriever decides when a record enters the window. Only evict or the retention date removes the record from the store.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 08, 14, 16</span><span>11</span></div>
+  <div class="foot"><span>Figures 08, 14, 16</span><span>8</span></div>
 </section>
 
 <section class="slide">
-  <div class="kick">E8 · the thing you build tonight</div>
+  <div class="kick">E8 · what you build in this exercise</div>
   <h2>A reviewer that cannot edit</h2>
   <div class="body cols">
     <div>
@@ -318,60 +293,60 @@ Why … Return exactly one ReviewResult.</code></pre>
     <div>
       <p><code>.opencode/agents/reviewer.md</code> is your version of a built-in agent, placed radially outside <code>build</code> and <code>plan</code>.</p>
       <ul>
-        <li>The <strong>deny</strong> enforces. The <strong>anti-trait</strong> explains. Both, in that order.</li>
-        <li><code>build</code> invokes it through the task tool, or you call it with <code>@reviewer</code>. It runs in its own window and returns one message.</li>
-        <li>The message is a typed claim: <code>verdict</code>, <code>findings</code> with a location, <code>checked</code>.</li>
+        <li>Write both lines. The <strong>deny</strong> line stops an edit at the permission engine, and the <strong>anti-trait</strong> line tells the model the reason.</li>
+        <li><code>build</code> invokes the reviewer through the task tool, or you call it with <code>@reviewer</code>. It runs in its own window and returns one message.</li>
+        <li>The message is a typed claim with three fields: <code>verdict</code>, <code>findings</code> with a location, and <code>checked</code>.</li>
       </ul>
-      <p class="callout">The test: ask it to fix the bug. Refused by persona, or denied by permission. An edit that goes through is the finding of the night.</p>
+      <p class="callout">The test is to ask the reviewer to fix the bug. The persona should refuse, and if it does not, the permission engine should deny the edit. An edit that goes through is the finding of this exercise.</p>
     </div>
   </div>
-  <div class="foot"><span>E8 deck slides 6, 7, 10, 11 · Figure 09 · docs use <code>shell</code>, not <code>bash</code></span><span>12</span></div>
+  <div class="foot"><span>E8 deck slides 6, 7, 10, 11 · Figure 09 · docs use <code>shell</code>, not <code>bash</code></span><span>9</span></div>
 </section>
 
 <section class="slide">
   <div class="kick">E9 · E10 · greyed on the figure</div>
-  <h2>Not tonight: the mechanisms in the loop</h2>
+  <h2>Mechanisms in the loop, deferred</h2>
   <div class="body cols">
     <div>
-      <p><strong>E9.</strong> What happens when the reviewer and the worker disagree, and a second reviewer with a different question. The controller routes FAIL back with a bound on rounds, then BLOCKED to the human.</p>
+      <p><strong>E9.</strong> E9 covers what happens when the reviewer and the worker disagree, and adds a second reviewer with a different question. The controller routes FAIL back to the worker with a bound on rounds, then sends BLOCKED to the human.</p>
     </div>
     <div>
-      <p><strong>E10.</strong> Your code inside the loop for the first time:</p>
+      <p><strong>E10.</strong> E10 puts your code inside the loop for the first time:</p>
       <ul>
         <li><code>.opencode/plugins/</code>: a hook on <code>tool.execute.before</code> that calls a Python checker and refuses a write without a passing run</li>
         <li><code>.opencode/commands/test.md</code> with <code>!`pytest -q`</code>: the test output injected into the prompt</li>
         <li><code>permission.doom_loop</code>: the same call three times stops the loop</li>
       </ul>
-      <p class="callout">These are the answers to last week's Probe 3 question: a mechanism in the loop, not a sentence in the prompt.</p>
+      <p class="callout">Each of the three answers the previous Evolution's Probe 3 question with a mechanism in the loop rather than a sentence in the prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 10, 11</span><span>13</span></div>
+  <div class="foot"><span>Figures 10, 11</span><span>10</span></div>
 </section>
 
 <section class="slide">
-  <div class="kick">Hour two</div>
-  <h2>Sixty minutes, ten steps, your own repository</h2>
+  <div class="kick">The exercise</div>
+  <h2>Ten steps, your own repository</h2>
   <div class="body cols">
     <div>
       <ol>
-        <li>0–5 · set up: spec, worksheet, codec with <code>--selftest</code></li>
-        <li>5–9 · E1: one question, count the tool calls</li>
-        <li>9–13 · E2: Tab to <code>plan</code>, plan hex, Tab back</li>
-        <li>13–20 · E3: <code>permission</code>; the self-test runs without asking</li>
-        <li>20–23 · E4: locate the <code>mcp</code> block, or record none</li>
+        <li>Set up: spec, worksheet, codec with <code>--selftest</code></li>
+        <li>E1: one question, count the tool calls</li>
+        <li>E2: Tab to <code>plan</code>, plan hex, Tab back</li>
+        <li>E3: <code>permission</code>, so that the self-test runs without asking</li>
+        <li>E4: locate the <code>mcp</code> block, or record none</li>
       </ol>
     </div>
     <div>
       <ol start="6">
-        <li>23–31 · E5: the codec line in <code>AGENTS.md</code>; the <code>codec-check</code> skill; the skill prompt</li>
-        <li>31–35 · E6: the spec as an instruction; answered with no read</li>
-        <li>35–39 · E7: one dated record</li>
-        <li>39–55 · E8: the reviewer; build adds hex; <code>@reviewer</code>; "fix it"</li>
-        <li>55–60 · evict the stale record; worksheet; commit; push</li>
+        <li>E5: the codec line in <code>AGENTS.md</code>, the <code>codec-check</code> skill, and the skill prompt</li>
+        <li>E6: the spec as an instruction, answered with no read</li>
+        <li>E7: one dated record</li>
+        <li>E8: the reviewer, then build adds hex, then <code>@reviewer</code>, then "fix it"</li>
+        <li>Evict the stale record, fill the worksheet, commit, push</li>
       </ol>
     </div>
   </div>
-  <div class="foot"><span>Each step: do · see · record. The exercise page has the exact text to type.</span><span>14</span></div>
+  <div class="foot"><span>Each step: do · see · record. The exercise page has the exact text to type.</span><span>11</span></div>
 </section>
 
 <section class="slide">
@@ -387,11 +362,11 @@ Why … Return exactly one ReviewResult.</code></pre>
       </ul>
     </div>
     <div>
-      <p>The worksheet's last column: was each file in your repository before tonight? A row you filled tonight for the first time is the thing to commit. A row with no trace is the finding.</p>
-      <p class="callout">For the Final System: the harness that builds your MVP is the outer ring. Your V&amp;V shows, for every file on it, what reads it, when, and the trace.</p>
+      <p>The worksheet's last column asks whether each file was in your repository before this exercise. A row you filled for the first time in this exercise marks a file to commit. A row with no trace is the finding.</p>
+      <p class="callout">For the Final System, the harness that builds your MVP is the outer ring. Your V&amp;V shows, for every file on that ring, what reads the file, when it reads it, and the trace that it left.</p>
     </div>
   </div>
-  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>15</span></div>
+  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>12</span></div>
 </section>
 
 </div>

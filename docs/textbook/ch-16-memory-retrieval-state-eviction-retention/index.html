@@ -30,7 +30,7 @@
 <h2>Outline</h2>
 <h3>16.1 Kinds of memory</h3>
 <ul>
-<li>Window; structured state; episodic (what happened); semantic (what is known); procedural (skills). Which your system needs.</li>
+<li>Window; structured state; episodic (what happened); semantic (what is known); procedural (skills). Which of these your system needs.</li>
 </ul>
 <h3>16.2 Retrieval</h3>
 <ul>
@@ -46,7 +46,7 @@
 </ul>
 <h3>16.5 ADR-2</h3>
 <ul>
-<li>The memory decision with alternatives; the personalized Final System brief follows this week's Drift.</li>
+<li>The memory decision with alternatives; the personalized Final System brief follows this Evolution's Drift.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -92,7 +92,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>.gzkit/insights/agent-insights.jsonl</code> (558 governed course-corrections) and <code>gz insights remember</code>; the OKF knowledge bundle; <code>gz context</code>. Memory in the reference design is files and ledger, deliberately; the book adds retrieval.</p>
+<p>This chapter draws on <code>.gzkit/insights/agent-insights.jsonl</code> (558 governed course-corrections) with <code>gz insights remember</code>, the OKF knowledge bundle, and <code>gz context</code>. The reference design keeps its memory in files and the ledger by deliberate choice; this book adds retrieval on top of that.</p>
 <h2>Readings</h2>
 <ul>
 <li>Lewis et al., "Retrieval-Augmented Generation" (2020).</li>
@@ -100,7 +100,7 @@
 <li>Sprint and Drift, "Code ergo sum."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 7 (expansion, local) — DESIGN CLAIM: with memory enabled, the system answers a question about a prior session correctly that it cannot answer with memory disabled, and eviction removes what the retention rule says it removes. FALSIFIERS: a recalled fact that was never stored; a retained item past its rule; retrieval that changes an answer that should not change.</p>
+<p>Sortie 7 (expansion, local). DESIGN CLAIM: with memory enabled, the system answers a question about a prior session correctly that it cannot answer with memory disabled, and eviction removes what the retention rule says it removes. FALSIFIERS: a recalled fact that was never stored; a retained item past its rule; retrieval that changes an answer that should not change.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Poison your own memory store with one false fact and record how far it propagates.</li>

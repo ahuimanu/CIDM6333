@@ -157,7 +157,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 01</div>
   <h1>Two Loops</h1>
-  <p class="lede">A language model is a loop inside a loop. The <em>inner loop</em> is the network writing one token per pass. The <em>outer loop</em> is the harness you build: it assembles the context, reads the reply, runs the tool, and decides when to stop. Step through the figure with Next, the dots, or the arrow keys.</p>
+  <p class="lede">A language model in an agent runs as a loop inside a loop. The <em>inner loop</em> is the network, which writes one token per pass. The <em>outer loop</em> is the harness you build, which assembles the context, reads the reply, runs the tool, and decides when to stop. The figure draws both loops and marks where each Evolution of the course works on them.</p>
 </header>
 
 <div class="figwrap">
@@ -354,13 +354,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <button id="clear" type="button">Clear</button>
     </div>
     <div class="draws" id="draws">No draws yet.</div>
-    <p class="small">At temperature 0 the sampler always takes the top score, so the output repeats. Above 0, the same prompt gives different answers. That is why one run of an eval is an anecdote.</p>
+    <p class="small">At temperature 0 the sampler always takes the top score, so the output repeats. Above 0, the same prompt gives different answers, so one run of an eval is an anecdote (E10) and a score needs several runs.</p>
   </section>
 
   <section class="panel" aria-labelledby="h-cost">
     <div class="eyebrow">Steps 1, 6 and 12, up close · E1 · E6 · E11</div>
-    <h2 id="h-cost">The bill the outer loop runs up</h2>
-    <p class="small">The model keeps nothing between calls, so every turn resends the whole transcript. Each bar is one call. The grey part repeats the previous call exactly and can be served from a prompt cache; the amber part is new. The figures are illustrative; prices and cache rules differ by provider.</p>
+    <h2 id="h-cost">Input tokens per call across a session</h2>
+    <p class="small">The model keeps nothing between calls, so every turn resends the whole transcript. Each bar is one call. The grey part repeats the previous call exactly, and a prompt cache can serve it; the amber part is new. The figures are illustrative, and prices and cache rules differ by provider.</p>
     <div class="ctrl"><label for="add">Tokens added per turn</label><input id="add" type="range" min="500" max="6000" step="250" value="2000"><output id="addout" for="add">2,000</output></div>
     <div class="ctrl"><label for="turns">Turns before halt</label><input id="turns" type="range" min="2" max="30" step="1" value="12"><output id="turnsout" for="turns">12</output></div>
     <svg class="cost" id="cost" viewBox="0 0 520 250" role="img" aria-label="Bar chart of input tokens sent per call, growing each turn."></svg>
@@ -371,16 +371,16 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 
 <section class="map" aria-labelledby="h-map">
   <div class="eyebrow">Where the course attaches</div>
-  <h2 id="h-map">Each week works on one part of this figure</h2>
+  <h2 id="h-map">Parts of the figure, by Evolution</h2>
   <div class="tablewrap">
   <table>
-    <thead><tr><th>Week</th><th>Part of the figure</th><th>What the mechanism explains</th></tr></thead>
+    <thead><tr><th>Evolution</th><th>Part of the figure</th><th>What the mechanism explains</th></tr></thead>
     <tbody>
       <tr><td>E1 · Agent loop</td><td>Outer loop; halt box</td><td>Every turn resends a longer transcript. A loop without a halt condition keeps growing the bill.</td></tr>
       <tr><td>E3 · Tools as contracts</td><td>Parse; permission gate</td><td>A tool call is text the model wrote. Only the harness can run it, so the harness checks it first.</td></tr>
       <tr><td>E5 · MCP security</td><td>Tool result in the context window</td><td>Tool output sits in the same window as the instructions. Text in a result can pose as an instruction.</td></tr>
       <tr><td>E6 · Context engineering</td><td>Context window; attention; KV cache</td><td>The budget is counted in tokens. Attention cost grows with length. A stable prefix can be cached.</td></tr>
-      <tr><td>E7 · Memory</td><td>Embedding; fixed weights</td><td>The weights do not change during a session. Memory must be written back into the window, often by retrieval over embeddings.</td></tr>
+      <tr><td>E7 · Memory</td><td>Embedding; fixed weights</td><td>The weights do not change during a session. Your code must write memory back into the window, for example by retrieval over embeddings.</td></tr>
       <tr><td>E10 · Evals as gates</td><td>Softmax · sample</td><td>The same input can give different outputs. A score needs several runs.</td></tr>
       <tr><td>E11 · Observability</td><td>Tokens in and out of each call</td><td>Tokens per call are the unit of cost and latency in a trace.</td></tr>
     </tbody>
@@ -426,29 +426,29 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 (function(){
   const STEPS = [
     {k:"*", t:"Two loops, one inside the other", w:["E0","E1"],
-     p:"A language model runs a loop of its own inside the agent loop you build. The inner loop, in the blue box, produces one token per pass through the network. The outer loop, the harness around it, turns a finished reply into a tool call or an answer and feeds the result back. Step through to see what each part does and which week of the course depends on it."},
+     p:"A language model runs a loop of its own inside the agent loop you build. The inner loop, in the blue box, produces one token per pass through the network. The outer loop, the harness around it, turns a finished reply into a tool call or an answer and feeds the result back. Each step below shows what one part does and which Evolution of the course depends on it."},
     {k:"ctx in", t:"The harness builds the context window", w:["E6"],
      p:"Before every model call, the harness assembles the whole transcript: the system prompt, AGENTS.md and skills, the tool schemas, the user's message, earlier replies, and every tool result so far. The model keeps nothing between calls. Everything it will know on this call must be in this window, and all of it is sent again each time."},
     {k:"tok", t:"The tokenizer cuts text into tokens", w:["E6","E11"],
      p:"The tokenizer splits the text into tokens, which are often pieces of words rather than whole words, and maps each one to an integer from a fixed vocabulary. Tokens are the unit of the context limit, of latency, and of the bill. When the course counts a budget, it counts tokens."},
     {k:"emb", t:"Each token becomes a vector", w:["E7"],
-     p:"An embedding table turns each token ID into a vector, a list of thousands of numbers. Information about each token's position is mixed in, because the rest of the network would otherwise not know word order. Retrieval in week seven uses the same idea: a separate embedding model turns a passage into a vector, so that passages with similar meaning sit close together."},
+     p:"An embedding table turns each token ID into a vector, a list of thousands of numbers. The model adds information about each token's position to the vector, because the rest of the network would otherwise not know word order. Retrieval in E7 uses the same idea. A separate embedding model turns a passage into a vector, so that passages with similar meaning sit close together."},
     {k:"block attn rail", t:"Attention looks back at earlier tokens", w:["E6"],
-     p:"In each block, masked self-attention lets every position gather information from the positions before it, weighted by how relevant each one scores. Masked means a position can look back but never ahead. This is the only place where tokens exchange information, so it is where long context costs most: processing a whole prompt grows roughly with the square of its length. Models also tend to use material at the start and end of a long window better than material in the middle."},
+     p:"In each block, masked self-attention lets every position gather information from the positions before it, weighted by how relevant each one scores. Masked means a position can look back but never ahead. This is the only place where tokens exchange information, so it is where long context costs most, because the work of processing a whole prompt grows roughly with the square of its length. Liu et al. (2024) also found that models use material at the start and end of a long window better than material in the middle."},
     {k:"block mlp rail", t:"Blocks repeat, adding to a residual stream", w:["E7"],
      p:"After attention, a feed-forward network, the MLP, transforms each position on its own. Both steps add their output back into a running vector for each position, called the residual stream. A model stacks this block dozens of times. The weights in every block were fixed when training ended. Nothing in this box learns from your session."},
     {k:"kv attn", t:"The KV cache avoids recomputing the past", w:["E6","E11"],
-     p:"Attention needs a key and a value for every earlier token. The model stores them in a KV cache, so producing the next token does not reprocess the whole prefix. Providers extend the idea across calls with prompt caching: when the start of the transcript is identical to the last call, that part is served from cache at lower cost and latency. That is why stable content belongs at the front of the window."},
+     p:"Attention needs a key and a value for every earlier token. The model stores them in a KV cache, so producing the next token does not reprocess the whole prefix. Providers extend the idea across calls with prompt caching. When the start of the transcript is identical to the last call, the provider serves that part from cache at lower cost and latency. For this reason stable content belongs at the front of the window."},
     {k:"unemb samp chip", t:"Scores become probabilities, and one token is drawn", w:["E10"],
      p:"The unembedding turns the final vector into a score for every entry in the vocabulary. Softmax turns the scores into probabilities, and a sampler draws one token. Temperature and top-p shape that draw. Because the draw is random, the same input can produce a different output. Try it in the sampler below the figure."},
     {k:"chip loop tok", t:"The inner loop: append and run again", w:["E1"],
-     p:"The chosen token is appended to the sequence, and the pass runs again to produce the next one. The model writes one token per pass until it emits a stop token or reaches its output limit. Thinking tokens, when a model has them, come out of this same loop."},
+     p:"The loop appends the chosen token to the sequence, and the pass runs again to produce the next one. The model writes one token per pass until it emits a stop token or reaches its output limit. Thinking tokens, when a model has them, come out of this same loop."},
     {k:"exit parse", t:"The harness reads the reply", w:["E3"],
      p:"When the model stops, its reply leaves the inner loop as text. The harness parses it. If the reply matches the tool-call format, it is a request to call a tool. The model has not run anything. It has only written a request, which is why the course treats the model as an untrusted caller."},
     {k:"gate tool", t:"The gate, then the tool", w:["E3","E4","E5"],
-     p:"The harness checks the request against its permission rules, and asks the human when the rules say to, before anything runs. Only then does it call the tool: a file write, an API, or an MCP server. The side effect happens here, in code you wrote, not in the model."},
+     p:"The harness checks the request against its permission rules, and asks the human when the rules say to, before anything runs. Only then does it call the tool: a file write, an API, or an MCP server. The side effect happens in this harness code. The model has only written the text that requested it."},
     {k:"result route ctx", t:"The result goes back in as text", w:["E5","E6"],
-     p:"The tool's output is appended to the transcript as the next observation, and the outer loop begins again with a longer window. The model reads that output in the same window as its instructions. Text inside a tool result can pose as an instruction, which is the root of prompt injection and tool poisoning."},
+     p:"The harness appends the tool's output to the transcript as the next observation, and the outer loop begins again with a longer window. The model reads that output in the same window as its instructions. Text inside a tool result can pose as an instruction, which is the root of prompt injection and tool poisoning."},
     {k:"parse halt", t:"The halt check", w:["E1"],
      p:"If the reply is a final answer, the loop halts. It must also halt when a turn budget, a cost budget, or an error says so. Without a halt condition, every pass through the outer loop resends a longer transcript, and the bill grows with it, as the chart below the figure shows."},
     {k:"*", t:"What each loop supplies", w:["E0"],

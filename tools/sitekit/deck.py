@@ -38,6 +38,21 @@ def shape_fill(sh):
 
 def para_text(p): return "".join(r.text for r in p.runs)
 
+# Voice overrides: tools/sitekit/voice/<slug>.json maps a slide paragraph (or table cell) as extracted from the pptx
+# to its revised wording (the humaniser / STE / scholarly-voice pass of Oct 22, 2026). The pptx stays the source of
+# layout; the JSON is the source of the words. Keys that no longer match any paragraph are reported at build time.
+VOICE = {}
+VOICE_HIT = set()
+def load_voice(slug):
+    global VOICE
+    p = HERE / "voice" / (slug + ".json")
+    VOICE = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    VOICE_HIT.clear()
+def ov(t):
+    if t in VOICE and VOICE[t] != t:
+        VOICE_HIT.add(t); return VOICE[t]
+    return t
+
 def is_code_box(paras, fonts):
     if any(f and "Courier" in f for f in fonts): return True
     lines = [para_text(p) for p in paras if para_text(p).strip()]
@@ -54,7 +69,7 @@ def extract(pptx_path):
             L, T, W, H = px(sh.left), px(sh.top), px(sh.width), px(sh.height)
             if sh.has_table:
                 tb = sh.table
-                rows = [[c.text for c in r.cells] for r in tb.rows]
+                rows = [[ov(c.text) for c in r.cells] for r in tb.rows]
                 tables.append({"l": L, "t": T, "w": W, "h": H, "rows": rows})
                 continue
             if not sh.has_text_frame:
@@ -69,8 +84,8 @@ def extract(pptx_path):
             fonts = [r.font.name for x in paras for r in x.runs]
             sizes = [r.font.size.pt for x in paras for r in x.runs if r.font.size]
             bold = any(r.font.bold for x in paras for r in x.runs)
-            runs = [[(r.text, bool(r.font.bold)) for r in x.runs] for x in paras]
-            texts.append({"l": L, "t": T, "w": W, "h": H, "paras": [para_text(x) for x in paras], "runs": runs, "size": max(sizes) if sizes else 11,
+            runs = [[(r.text, bool(r.font.bold)) for r in x.runs] if ov(para_text(x)) == para_text(x) else [(ov(para_text(x)), False)] for x in paras]
+            texts.append({"l": L, "t": T, "w": W, "h": H, "paras": [ov(para_text(x)) for x in paras], "runs": runs, "size": max(sizes) if sizes else 11,
                           "bold": bold, "allbold": all(r.font.bold for x in paras for r in x.runs if r.text.strip()), "code": is_code_box(paras, fonts), "fill": fill, "name": sh.name})
         out.append({"n": n, "texts": texts, "panels": panels, "tables": tables})
     return out
@@ -296,7 +311,10 @@ def build(docs, slug):
     pptx_name = RD.DECKS[slug][0]
     pptx = PPTX_DIR / "Lecture" / pptx_name
     if not pptx.exists(): pptx = PPTX_DIR / "Fall 2026" / "Orientation" / pptx_name
+    load_voice(slug)
     slides = [classify(s) for s in extract(pptx)]
+    miss = [k for k in VOICE if k not in VOICE_HIT and VOICE[k] != k]
+    if miss: print("voice overrides with no matching paragraph (%d):" % len(miss), *[repr(m[:60]) for m in miss], sep="\n  ")
     notes = RD.NOTES[pptx_name]
     pairs = GL.link_terms()
     total = len(slides)
@@ -356,8 +374,8 @@ def build(docs, slug):
 </div>
 </section>
 <div class="notecur" id="notecur" aria-live="polite"><div class="k">The lecture, written out · slide <span id="noteno">1</span></div><div id="notebody"></div></div>
-<p class="small" style="margin-top:10px">Arrow keys step through the slides. "As presented" shows the slide image from the original deck; "Figure" opens the interactive figure a slide refers to. The panel above is the lecture written out for the slide on screen; <a href="#read">Read this lecture</a> below has all of it in order. Names that appear without introduction link to the <a href="../../glossary/">glossary</a>.</p>
-<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes, slide by slide. Click a slide image to open it in the viewer above.</p>%(reader)s</section>
+<p class="small" style="margin-top:10px">Arrow keys step through the slides. "As presented" shows the slide image from the original deck, and "Figure" opens the interactive figure a slide refers to. The panel above is the lecture written out for the slide on screen. <a href="#read">Read this lecture</a>, below, has the whole lecture in slide order. Names that appear without introduction link to the <a href="../../glossary/">glossary</a>.</p>
+<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes follow here slide by slide, each under its slide. Click a slide image to open it in the viewer above.</p>%(reader)s</section>
 <footer>CIDM 6333 · Lecture · %(evo)s · Fall 2026</footer>
 </div>
 <script id="reader-js">(function(){const N=%(N)s;const NUMS=%(NUMS)s;const $=i=>document.getElementById(i);

@@ -214,7 +214,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 13</div>
   <h1>Rolled Back</h1>
-  <p class="lede">A release is a built thing with a version and a hash. A rollback reinstalls a thing that already exists. Step through one release, a broken release, and the way back. Then switch to <em>rollback by rebuild</em> and watch the version string stay right while the hash goes wrong.</p>
+  <p class="lede">The way back is the part of a release that Sortie 12 tests, so this figure follows one release from a clean commit to a deploy environment, breaks the next release, and rolls back. A rollback on this path reinstalls an artifact that already exists and whose hash the release record holds. Step through the release path, then switch to <em>rollback by rebuild</em> and watch the version string stay right while the hash goes wrong.</p>
 </header>
 
 <div class="figwrap">
@@ -532,7 +532,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <p class="small">Lite ran gates 1–2 all term. The Final System runs gates 1–5. Gates 3–5 are the ones a release adds.</p>
     <ul style="margin:0; padding-left:20px; display:grid; gap:6px; font-size:15.5px">
       <li><b>Docs.</b> The README, the runbook, and the release notes describe the release that exists. A command in the docs that fails when pasted is a gate failure.</li>
-      <li><b>BDD.</b> Scenarios for the external contract, what a caller of /runs or a user of the CLI can rely on. Executed, not just written.</li>
+      <li><b>BDD.</b> Scenarios for the external contract, what a caller of /runs or a user of the CLI can rely on. The scenarios run, because a scenario that is only written proves nothing about the contract.</li>
       <li><b>Human.</b> A person attests Completed, Completed — Partial, or Dropped. The attestation is a ledger event. The agent never records it for you.</li>
       <li><b>Release notes and changelog.</b> The changelog is every change, for maintainers. Release notes are what a user must know to upgrade and to roll back.</li>
     </ul>
@@ -591,7 +591,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Falsifiers, any one of which fails the sortie: a rollback that needs a manual step or restores a hash other than hash_N; the canary found in any artifact; a release with no attestation event; a pass obtained by editing the ledger, skipping the smoke check, or deleting the defect. If the container engine will not run, that is an abort for the container path, and you fly the wheel path. Code freeze Mon 11/23, 11:59 p.m.</p>
+  <p class="small" style="margin-top:10px">Falsifiers, any one of which fails the sortie: a rollback that needs a manual step or restores a hash other than hash_N; the canary found in any artifact; a release with no attestation event; a pass obtained by editing the ledger, skipping the smoke check, or deleting the defect. If the container engine will not run, that is an abort for the container path, and you fly the wheel path.</p>
 </section>
 
 <div class="notes">
@@ -609,8 +609,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2>Sources</h2>
     <ol>
       <li>Nygard, M. T. (2018). <em>Release it! Design and deploy production-ready software</em> (2nd ed.). Pragmatic Bookshelf. (“Stability Antipatterns” and “Stability Patterns.”)</li>
-      <li>FastAPI. (2026). <em>FastAPI in containers: Docker</em>; <em>Run a server manually</em>. fastapi.tiangolo.com. Checked 09/24/2026.</li>
-      <li>Astral. (2026). <em>uv: building and publishing a package</em>. docs.astral.sh. Checked 09/24/2026.</li>
+      <li>FastAPI. (2026). <em>FastAPI in containers: Docker</em>; <em>Run a server manually</em>. fastapi.tiangolo.com. Retrieved September 24, 2026.</li>
+      <li>Astral. (2026). <em>uv: building and publishing a package</em>. docs.astral.sh. Retrieved September 24, 2026.</li>
       <li>GitHub. (2026). <em>About Copilot cloud agent</em>; <em>Risks and mitigations</em>; changelog of 2026-04-01. docs.github.com.</li>
       <li>Anthropic. (2026). <em>Claude Code on the web</em>; <em>Routines</em>; <em>GitHub Actions</em>. code.claude.com/docs.</li>
       <li>OpenAI. (2026). <em>Codex cloud</em> and <em>internet access</em>. developers.openai.com.</li>
@@ -648,7 +648,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 
   const STEPS = [
     {k:"*", m:"rd", t:"Release, break, roll back", w:["E12"],
-     p:"The top row is the release path: a clean commit, a build, an artifact with a hash, a release event, and a deploy environment that serves it. Below it sit the released artifacts and the ledger. Step through one good release, one broken release, and two ways back. The deck's claim is that you have not released it until you have rolled it back."},
+     p:"The top row draws the release path, from a clean commit through a build to an artifact with a hash, a release event, and a deploy environment that serves it. Below it sit the released artifacts and the ledger. Step through one good release, one broken release, and two ways back. The deck argues that you have not released it until you have rolled it back."},
     {k:"commit build", m:"rd", t:"Build from a clean commit", w:["E12"],
      p:"You build the release from a clean commit with uv build, or with docker build if your laptop runs a container engine. A dirty tree or an image tagged latest leaves no way to trace the artifact back to its source. The deck lists both as the wrong place for an artifact to come from."},
     {k:"artifact", m:"rd", t:"The hash is the release", w:["E12"],
@@ -660,7 +660,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"bad l2 store", m:"rd", t:"Release N+1 fails its smoke check", w:["E10","E12"],
      p:"You bump to 0.1.1, plant a defect, build, and release. The smoke check fails, and the ledger records the release as ok:false. The released 0.1.0 wheel still sits in a place no build can overwrite. That kept file is what the next step reinstalls."},
     {k:"store rollback l3 serve", m:"rd", t:"Rollback redeploys the prior artifact", w:["E12"],
-     p:"One command takes the 0.1.0 wheel named in the release record, checks its SHA-256 against the release event, and reinstalls it. The lab script did this in 0.1 s. The rollback line in the ledger names the same hash as the release it restores, and /health reports 0.1.0 again."},
+     p:"One command takes the 0.1.0 wheel listed in the release record, checks its SHA-256 against the release event, and reinstalls it. The lab script did this in 0.1 s. The rollback line in the ledger carries the same hash as the release it restores, and /health reports 0.1.0 again."},
     {k:"rebuild", m:"rb", t:"The common mistake: rollback by rebuild", w:["E12"],
      p:"Here the version is set back to 0.1.0 and uv build runs again. The new wheel has the same file name and different bytes, and it overwrites the released file at the same path. In the deck's run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of the same relcheck 0.1.0."},
     {k:"l3 serve store", m:"rb", t:"Only the hash shows the difference", w:["E12"],
@@ -833,8 +833,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         ["Roll back", [], ["reinstall the prior wheel file","from the release record;","check its SHA-256 first"]]
       ], key:2,
       ptr:{name:"dist/myagent-0.1.1-py3-none-any.whl", a:"wheel bytes A · sha256 recorded", b:"wheel bytes B · new sha256", aGone:"bytes A overwritten unless kept apart", lab:"a file name points at bytes"},
-      note:"Works on every laptop in the room. No daemon, no admin rights.",
-      rb:"Built again under the same version, the file at the same path holds new bytes. The release record still names hash A, so a rollback that checks the hash refuses the new file. In the deck's lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of one version."
+      note:"Works on a laptop with no container engine, because it needs no daemon and no admin rights.",
+      rb:"Built again under the same version, the file at the same path holds new bytes. The release record still records hash A, so a rollback that checks the hash refuses the new file. In the deck's lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of one version."
     },
     c:{ st:[
         ["Build", ["docker build -t","myagent:0.1.1 ."], ["or podman build"]],
@@ -881,11 +881,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       s += svgText(400,py+58,"ts","moved",null);
       s += '<path class="ptr" d="M820,'+(py-1)+' L764,'+(py-1)+'" style="stroke-dasharray:4 3"/>';
       s += svgText(826,py-12,"ts","the release record",null);
-      s += svgText(826,py+4,"ts","still names this",null);
+      s += svgText(826,py+4,"ts","still lists this",null);
     } else {
       s += '<path class="ptr" d="M320,'+(py+20)+' L390,'+(py+20)+' L390,'+(py-1)+' L456,'+(py-1)+'"/>';
       s += svgText(826,py-4,"ts","the release record",null);
-      s += svgText(826,py+12,"ts","names this",null);
+      s += svgText(826,py+12,"ts","lists this",null);
       s += '<path class="ptr" d="M820,'+(py-1)+' L764,'+(py-1)+'" style="stroke-dasharray:4 3"/>';
     }
     $("ship").innerHTML = s;

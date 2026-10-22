@@ -42,7 +42,7 @@
 </ul>
 <h3>20.4 System cards and guardrails</h3>
 <ul>
-<li>What a system card measures; frontier safety frameworks; translating a card's findings into your guardrails.</li>
+<li>What a system card measures; frontier safety frameworks; how to translate a card's findings into your guardrails.</li>
 </ul>
 <h3>20.5 Governance, safety, guardrails, risk</h3>
 <ul>
@@ -80,7 +80,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p><code>src/gzkit/arb/</code>; <code>docs/governance/trust-doctrine.md</code> and the 2026-04-18 outage (nine trust-chain-poisoning instances); <code>data/frontier_model_cards.json</code>; the operator-PII incident (2026-04-19).</p>
+<p>The gzkit evidence for this chapter is <code>src/gzkit/arb/</code>, <code>docs/governance/trust-doctrine.md</code> together with the outage of 2026-04-18 (nine instances of trust-chain poisoning), <code>data/frontier_model_cards.json</code>, and the operator-PII incident of 2026-04-19.</p>
 <h2>Readings</h2>
 <ul>
 <li>One current system card (selected sections).</li>
@@ -88,7 +88,7 @@
 <li>Sprint and Drift, "Turn and Face the Change."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 11 (corner, red team) — DESIGN CLAIM: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation. FALSIFIERS: any attack achieving its objective; any attack not traceable in the black box; a guardrail passing only because the attack was never delivered.</p>
+<p>Sortie 11 (corner, red team). DESIGN CLAIM: the system survives five pre-registered attacks drawn from the nine modes without a write, a leak, or a false attestation. FALSIFIERS: any attack that achieves its objective; any attack that the black box cannot trace; a guardrail that passes only because the attack was never delivered.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Write three attack cards for a peer's system. Fly them as Chase. Route the squawks.</li>

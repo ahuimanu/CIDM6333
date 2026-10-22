@@ -1,0 +1,10 @@
+{
+ "2": "Cut from slide 3 (full wording):\n- What the authors faced / A recurrent network reads token 1, then token 2, then token 3. Each step waits for the one before it, so training cannot spread a sentence across a GPU. / The authors let every position attend to every other position at once. This change cuts the sequential chain from O(n) to O(1), and in exchange the compute per layer grows with n².",
+ "3": "Cut from slide 4 (full wording):\n- Figure 1, redrawn: two stacks and a loop the paper describes",
+ "5": "Cut from slide 6 (full wording):\n- Eight attention heads, and word order encoded as sine and cosine waves",
+ "6": "Cut from slide 7 (full wording):\n- Evidence 1: translation quality and training cost",
+ "7": "Cut from slide 8 (full wording):\n- Evidence 2: one change at a time, measured against a fixed base model",
+ "8": "Cut from slide 9 (full wording):\n- The rest of the recipe / Adam with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹. / Dropout 0.1 on every sub-layer output and on the embeddings. / Label smoothing 0.1: it \"hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.\" / Base: 100,000 steps. Big: 300,000 steps.",
+ "10": "Cut from slide 11 (full wording):\n- A tool call is text the model wrote. Only your harness runs it, after the gate.\n- A single run cannot separate a real change from run-to-run variation. For this reason, run the golden set several times and gate on the delta.",
+ "11": "Cut from slide 12 (full wording):\n- A design document states its constraint, its trade, and its evidence, and Vaswani et al. state all three.\n- Figure 01 · Two Loops: the model inside the agent loop / Figure 01b · The 2017 Transformer: Figure 1 step by step, decoder-only switch, live attention / Figure 01c · The Transformer's Evidence: Tables 2–4, the schedule, the attention pictures / ahuimanu.github.io/CIDM6333 · Vaswani et al. (2017), arXiv:1706.03762"
+}

@@ -19,11 +19,11 @@
 </nav></noscript></div>
 <nav class="crumbs"><a href="../">CIDM 6333</a> · Textbook</nav><div class="eyebrow">Textbook</div><article><h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft, Fall 2026</p>
 <hr />
-<p>This book does three things at once, because the course it grew out of does.</p>
-<p><strong>It surveys.</strong> Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. The question asked of every system is the same: why was it designed this way, what problem did that answer, and what did it cost?</p>
-<p><strong>It builds.</strong> Part III takes one agentic system apart into its components (loop, patterns, tools, MCP, context, memory, coordination, evaluation, operations) and shows how to build each layer so that it can be flown against a falsifiable claim and defended without the tool in front of you.</p>
-<p><strong>It governs.</strong> Part I and Part IV describe the posture that makes the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which we have the entire record, including what went wrong.</p>
-<p>The title is the thesis. <em>A system can produce an answer without being able to answer for it.</em> The engineer's irreducible role is answerability. Everything here is in service of building systems, and engineers, that can answer.</p>
+<p>This book does three things at once because the course it grew out of does the same three things in the same term.</p>
+<p><strong>It surveys.</strong> Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. Part II asks the same questions of every system: why was it designed this way, what problem did that design answer, and what did the design cost?</p>
+<p><strong>It builds.</strong> Part III takes one agentic system apart into its components (loop, patterns, tools, MCP, context, memory, coordination, evaluation, operations) and shows how to build each layer so that you can fly it against a falsifiable claim and defend it without the tool in front of you.</p>
+<p><strong>It governs.</strong> Part I and Part IV describe the posture that keeps the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which this book has the entire record, including the record of what went wrong.</p>
+<p>The title states the thesis: a system can produce an answer without being able to answer for it. The engineer's role, the one no tool takes over, is to answer for the system. The survey, the build, and the governance chapters all serve that purpose.</p>
 <h3>How to read this book</h3>
 <ul>
 <li><strong>As a course text.</strong> The week-by-week run sheet maps every CIDM 6333 Evolution to its chapters. Read the Part II chapter for the week's survey and the Part III chapter for the week's build.</li>
@@ -35,16 +35,16 @@
 <li><strong>Design Analysis</strong> boxes show a system dissected against the nine components (method).</li>
 <li><strong>Flight card</strong> boxes give the falsifiable claim, test points, instrumentation, and falsifiers for a chapter's build (method).</li>
 <li><strong>Reference design</strong> sections show what gzkit did about the chapter's problem, with the dated incident where one exists.</li>
-<li><strong>Judgment loop</strong> closers (from CIDM 6330): name the decision, the characteristics privileged, the cost, the failure mode, the preservation mechanism.</li>
+<li><strong>Judgment loop</strong> closers (from CIDM 6330): state the decision, the characteristics privileged, the cost, the failure mode, and the preservation mechanism.</li>
 </ul>
 <h3>Status</h3>
-<p>Every chapter carries a status line: <em>outline</em>, <em>draft</em>, <em>reviewed</em>, <em>final</em>. This is a working text; the outlines are complete, the prose is being written in the order the course needs it.</p><h2 id="contents">Contents</h2><p class="small">Every chapter is an outline edition: learning outcomes, sections, systems analyzed, the gzkit episode, readings, exercises. The prose follows.</p><h3>Part I · The posture</h3><ol start="1"><li><a href="ch-01-the-layers-of-ai-and-the-one-everybody-forgets/">The Layers of AI, and the One Everybody Forgets</a></li><li><a href="ch-02-what-is-an-agent-from-peas-to-the-nine-components/">What Is an Agent? From PEAS to the Nine Components</a></li><li><a href="ch-03-the-human-at-index-zero-degradation-covenant-gates/">The Human at Index Zero: Degradation, Covenant, Gates</a></li></ol><h3>Part II · The survey</h3><ol start="4"><li><a href="ch-04-before-language-models-symbolic-bdi-multi-agent-and-reinforc/">Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents</a></li><li><a href="ch-05-the-loop-chain-of-thought-react-and-the-first-frameworks-202/">The Loop: Chain-of-Thought, ReAct, and the First Frameworks (2020–2022)</a></li><li><a href="ch-06-the-explosion-of-2023-tools-autonomy-memory-roles/">The Explosion of 2023: Tools, Autonomy, Memory, Roles</a></li><li><a href="ch-07-agents-get-jobs-2024-coding-agents-computer-use-and-mcp/">Agents Get Jobs (2024): Coding Agents, Computer Use, and MCP</a></li><li><a href="ch-08-the-harness-year-2025-claude-code-codex-the-sdks-a2a-agents/">The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering</a></li><li><a href="ch-09-2026-harness-engineering-background-agents-and-the-reference/">2026: Harness Engineering, Background Agents, and the Reference Design&#x27;s Year</a></li></ol><h3>Part III · The build</h3><ol start="10"><li><a href="ch-10-building-the-loop-perceive-reason-act-halt/">Building the Loop: Perceive, Reason, Act, Halt</a></li><li><a href="ch-11-patterns-and-orchestration-frameworks-who-owns-the-loop/">Patterns and Orchestration Frameworks: Who Owns the Loop?</a></li><li><a href="ch-12-tools-as-contracts-schemas-permissions-hooks-recovery/">Tools as Contracts: Schemas, Permissions, Hooks, Recovery</a></li><li><a href="ch-13-the-model-context-protocol-building-servers-and-clients/">The Model Context Protocol: Building Servers and Clients</a></li><li><a href="ch-14-protocols-security-and-harness-engineering/">Protocols, Security, and Harness Engineering</a></li><li><a href="ch-15-context-engineering-budgets-compaction-handoffs-and-layers-o/">Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</a></li><li><a href="ch-16-memory-retrieval-state-eviction-retention/">Memory: Retrieval, State, Eviction, Retention</a></li><li><a href="ch-17-multi-agent-coordination-i-controller-worker-reviewer/">Multi-Agent Coordination I: Controller, Worker, Reviewer</a></li><li><a href="ch-18-multi-agent-coordination-ii-when-coordination-fails/">Multi-Agent Coordination II: When Coordination Fails</a></li><li><a href="ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses</a></li><li><a href="ch-20-observability-red-teaming-and-safety/">Observability, Red-Teaming, and Safety</a></li><li><a href="ch-21-production-and-operations-serving-scheduling-rollback-releas/">Production and Operations: Serving, Scheduling, Rollback, Release</a></li></ol><h3>Part IV · The method</h3><ol start="22"><li><a href="ch-22-sprint-and-drift/">Sprint and Drift</a></li><li><a href="ch-23-flight-cards-and-the-flight-log/">Flight Cards and the Flight Log</a></li><li><a href="ch-24-the-design-analysis/">The Design Analysis</a></li><li><a href="ch-25-governed-development-with-gzkit-a-working-tutorial/">Governed Development with gzkit: A Working Tutorial</a></li><li><a href="ch-26-the-final-system-and-the-closeout-ceremony/">The Final System and the Closeout Ceremony</a></li></ol><h3>Reading list</h3><p><a href="readings/">Every reading the chapters name, with links.</a></p><h3>Appendices</h3><ul><li><a href="appendix-a-flight-card-template-course-edition/">Appendix A — Flight Card Template (course edition)</a></li><li><a href="appendix-b-design-analysis-template/">Appendix B — Design Analysis Template</a></li><li><a href="appendix-c-the-nine-agent-failure-modes/">Appendix C — The Nine Agent Failure Modes</a></li><li><a href="appendix-d-glossary/">Appendix D — Glossary</a></li><li><a href="appendix-e-reading-list/">Appendix E — Reading List</a></li><li><a href="appendix-f-toolkit-setup-route-a-and-route-b/">Appendix F — Toolkit Setup (Route A and Route B)</a></li><li><a href="appendix-g-the-gzkit-incident-casebook-2026/">Appendix G — The gzkit Incident Casebook (2026)</a></li></ul><h2>Preface</h2><h2>Why this book exists</h2>
-<p>In January 2026 a governance kit was started with eleven days to go before it would be shown to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems that get built in industry have them too; the difference is that here we kept the receipts.</p>
-<p>That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because you do not understand a component you have not had to make fail on purpose.</p>
+<p>Every chapter carries a status line: <em>outline</em>, <em>draft</em>, <em>reviewed</em>, <em>final</em>. This is a working text. The outlines are complete, and I am writing the prose in the order the course needs it.</p><h2 id="contents">Contents</h2><p class="small">Each chapter is published here as an outline. The outline carries the learning outcomes, the section plan, the systems analyzed, the gzkit episode, the readings, and the exercises. The full prose will follow in a later edition.</p><h3>Part I · The posture</h3><ol start="1"><li><a href="ch-01-the-layers-of-ai-and-the-one-everybody-forgets/">The Layers of AI, and the One Everybody Forgets</a></li><li><a href="ch-02-what-is-an-agent-from-peas-to-the-nine-components/">What Is an Agent? From PEAS to the Nine Components</a></li><li><a href="ch-03-the-human-at-index-zero-degradation-covenant-gates/">The Human at Index Zero: Degradation, Covenant, Gates</a></li></ol><h3>Part II · The survey</h3><ol start="4"><li><a href="ch-04-before-language-models-symbolic-bdi-multi-agent-and-reinforc/">Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents</a></li><li><a href="ch-05-the-loop-chain-of-thought-react-and-the-first-frameworks-202/">The Loop: Chain-of-Thought, ReAct, and the First Frameworks (2020–2022)</a></li><li><a href="ch-06-the-explosion-of-2023-tools-autonomy-memory-roles/">The Explosion of 2023: Tools, Autonomy, Memory, Roles</a></li><li><a href="ch-07-agents-get-jobs-2024-coding-agents-computer-use-and-mcp/">Agents Get Jobs (2024): Coding Agents, Computer Use, and MCP</a></li><li><a href="ch-08-the-harness-year-2025-claude-code-codex-the-sdks-a2a-agents/">The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering</a></li><li><a href="ch-09-2026-harness-engineering-background-agents-and-the-reference/">2026: Harness Engineering, Background Agents, and the Reference Design&#x27;s Year</a></li></ol><h3>Part III · The build</h3><ol start="10"><li><a href="ch-10-building-the-loop-perceive-reason-act-halt/">Building the Loop: Perceive, Reason, Act, Halt</a></li><li><a href="ch-11-patterns-and-orchestration-frameworks-who-owns-the-loop/">Patterns and Orchestration Frameworks: Who Owns the Loop?</a></li><li><a href="ch-12-tools-as-contracts-schemas-permissions-hooks-recovery/">Tools as Contracts: Schemas, Permissions, Hooks, Recovery</a></li><li><a href="ch-13-the-model-context-protocol-building-servers-and-clients/">The Model Context Protocol: Building Servers and Clients</a></li><li><a href="ch-14-protocols-security-and-harness-engineering/">Protocols, Security, and Harness Engineering</a></li><li><a href="ch-15-context-engineering-budgets-compaction-handoffs-and-layers-o/">Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</a></li><li><a href="ch-16-memory-retrieval-state-eviction-retention/">Memory: Retrieval, State, Eviction, Retention</a></li><li><a href="ch-17-multi-agent-coordination-i-controller-worker-reviewer/">Multi-Agent Coordination I: Controller, Worker, Reviewer</a></li><li><a href="ch-18-multi-agent-coordination-ii-when-coordination-fails/">Multi-Agent Coordination II: When Coordination Fails</a></li><li><a href="ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses</a></li><li><a href="ch-20-observability-red-teaming-and-safety/">Observability, Red-Teaming, and Safety</a></li><li><a href="ch-21-production-and-operations-serving-scheduling-rollback-releas/">Production and Operations: Serving, Scheduling, Rollback, Release</a></li></ol><h3>Part IV · The method</h3><ol start="22"><li><a href="ch-22-sprint-and-drift/">Sprint and Drift</a></li><li><a href="ch-23-flight-cards-and-the-flight-log/">Flight Cards and the Flight Log</a></li><li><a href="ch-24-the-design-analysis/">The Design Analysis</a></li><li><a href="ch-25-governed-development-with-gzkit-a-working-tutorial/">Governed Development with gzkit: A Working Tutorial</a></li><li><a href="ch-26-the-final-system-and-the-closeout-ceremony/">The Final System and the Closeout Ceremony</a></li></ol><h3>Reading list</h3><p><a href="readings/">Every reading the chapters cite, with links.</a></p><h3>Appendices</h3><ul><li><a href="appendix-a-flight-card-template-course-edition/">Appendix A: Flight Card Template (course edition)</a></li><li><a href="appendix-b-design-analysis-template/">Appendix B: Design Analysis Template</a></li><li><a href="appendix-c-the-nine-agent-failure-modes/">Appendix C: The Nine Agent Failure Modes</a></li><li><a href="appendix-d-glossary/">Appendix D: Glossary</a></li><li><a href="appendix-e-reading-list/">Appendix E: Reading List</a></li><li><a href="appendix-f-toolkit-setup-route-a-and-route-b/">Appendix F: Toolkit Setup (Route A and Route B)</a></li><li><a href="appendix-g-the-gzkit-incident-casebook-2026/">Appendix G: The gzkit Incident Casebook (2026)</a></li></ul><h2>Preface</h2><h2>Why this book exists</h2>
+<p>In January 2026 I started a governance kit with eleven days to go before I would show it to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The kit differs in that its ledger kept the receipts for each one.</p>
+<p>That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because a reader understands a component only after making it fail on purpose.</p>
 <h2>What this book is not</h2>
-<p>It is not a framework tutorial; frameworks change monthly and each one encodes a theory of control that is the real subject. It is not a prompt-engineering book. It is not an AI-safety book in the policy sense, although Part I situates the engineering posture against that literature. And it is not neutral: it holds that the human is index zero, first in priority and final in authority, and that a system whose human cannot answer for it is not finished.</p>
+<p>This book is not a framework tutorial. Frameworks change too often for a tutorial to stay current, and each one encodes a theory of control, which is the real subject. It is not a prompt-engineering book, and it is not an AI-safety book in the policy sense, although Part I situates the engineering posture against that literature. The book takes a position: the human is index zero, first in priority and final in authority, and a system whose human cannot answer for it is not finished.</p>
 <h2>Acknowledgements and lineage</h2>
-<p>Sprint and Drift, the method of Part IV, was developed for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project; gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the <em>Sprint and Drift</em> newsletter.</p><h2>Using this book with CIDM 6333</h2><p>The course runs one Evolution at a time. Each Evolution carries two threads:</p>
+<p>I developed Sprint and Drift, the method of Part IV, for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the <em>Sprint and Drift</em> newsletter.</p><h2>Using this book with CIDM 6333</h2><p>The course runs one Evolution per session. Each Evolution carries two threads:</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -55,12 +55,12 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>Survey</strong> — why are agentic systems designed the way they are?</td>
+<td><strong>Survey</strong>: why are agentic systems designed the way they are?</td>
 <td>The Design Analysis (nine components, one "why")</td>
 <td>Part II, and the <em>Systems analyzed</em> table in every Part III chapter</td>
 </tr>
 <tr>
-<td><strong>Build</strong> — one individual system, one layer per week</td>
+<td><strong>Build</strong>: one individual system, one layer per week</td>
 <td>The flight card and flight log</td>
 <td>Part III, one chapter per Evolution</td>
 </tr>
@@ -80,7 +80,7 @@
 <tr>
 <td>E0 Orientation</td>
 <td>1, 2, 3</td>
-<td>—</td>
+<td>none</td>
 <td>22, 23, 24</td>
 </tr>
 <tr>
@@ -105,13 +105,13 @@
 <td>E4 MCP I</td>
 <td>7</td>
 <td>13</td>
-<td>—</td>
+<td>none</td>
 </tr>
 <tr>
 <td>E5 MCP II, protocols, harness</td>
 <td>8, 9</td>
 <td>14</td>
-<td>—</td>
+<td>none</td>
 </tr>
 <tr>
 <td>E6 Context</td>
@@ -135,7 +135,7 @@
 <td>E9 Multi-agent II</td>
 <td>9</td>
 <td>18</td>
-<td>—</td>
+<td>none</td>
 </tr>
 <tr>
 <td>E10 Evaluation I</td>
@@ -147,7 +147,7 @@
 <td>E11 Evaluation II</td>
 <td>9</td>
 <td>20</td>
-<td>—</td>
+<td>none</td>
 </tr>
 <tr>
 <td>E12 Deployment</td>
@@ -157,8 +157,8 @@
 </tr>
 <tr>
 <td>Finals</td>
-<td>—</td>
-<td>—</td>
+<td>none</td>
+<td>none</td>
 <td>26</td>
 </tr>
 </tbody>

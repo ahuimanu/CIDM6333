@@ -31,22 +31,22 @@
 <h3>1.1 The stack</h3>
 <ul>
 <li>Data foundation (ownership, definitions, quality, lineage) → classical AI → ML → neural networks → deep learning → generative AI → agentic AI.</li>
-<li>Each layer stands on the one below; none replaces it. Agentic AI is thin and new; the foundation is old and cracked.</li>
-<li>Why the foundation is forgotten: it is unglamorous and it is where the cost lands (E7, E11 callbacks).</li>
+<li>Each layer stands on the one below, and none replaces it. The agentic layer is the newest and thinnest, and the data foundation is the oldest and the one with the defects.</li>
+<li>Designers neglect the foundation because it is unglamorous, and the cost lands there (E7 and E11 return to it).</li>
 </ul>
 <h3>1.2 The progression</h3>
 <ul>
 <li>AI &amp; ML: turn data into decisions. Deep learning: multi-layered networks. Gen AI: create new content. AI agents: autonomous tasks. Agentic AI: automate entire processes.</li>
-<li>The Agentic AI framework board: rings (foundation, creation, core systems, action, full automation) and columns; every box is assigned a chapter (table).</li>
+<li>The Agentic AI framework board: rings (foundation, creation, core systems, action, full automation) and columns. The table assigns every box a chapter.</li>
 </ul>
 <h3>1.3 What a language model adds and what it does not</h3>
 <ul>
-<li>A reasoner that generalizes from text; no persistent state, no ground truth, no accountability. The stack above it (tools, memory, evaluators, governance) exists to supply those.</li>
-<li>The Newtonian-motion argument: the cost of generated code is deferred, never erased.</li>
+<li>The model is a reasoner that generalizes from text. It has no persistent state, no ground truth, and no accountability, and the stack above it (tools, memory, evaluators, governance) exists to supply those three.</li>
+<li>The Newtonian-motion argument: generated code defers its cost rather than removing it.</li>
 </ul>
 <h3>1.4 Reading a system top-down and bottom-up</h3>
 <ul>
-<li>Two passes: what does it claim (top) and what does it stand on (bottom). Worked example: a chat assistant vs. an agent harness.</li>
+<li>Read a system in two passes: from the top, what does it claim to do, and from the bottom, what does it stand on. Worked example: a chat assistant vs. an agent harness.</li>
 </ul>
 <h2>Systems analyzed in this chapter</h2>
 <div class="tw"><table>
@@ -74,7 +74,7 @@
 </tbody>
 </table></div>
 <h2>Reference design: gzkit</h2>
-<p>gzkit sits on the <em>agentic</em> layer without running a model at all: it is a governance meta-harness one tier above the vendor harness. That placement is the first design choice the book examines.</p>
+<p>gzkit sits on the <em>agentic</em> layer and runs no model of its own. It is a governance meta-harness one tier above the vendor harness, and that placement is the first design choice the book examines.</p>
 <h2>Readings</h2>
 <ul>
 <li>Sprint and Drift, "Tree Hollow."</li>
@@ -83,8 +83,8 @@
 </ul>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
-<li>Write the E0 Design Analysis: a chat assistant versus an agent harness, nine components each, and one paragraph on what the harness adds and what it costs.</li>
-<li>Take the framework board and mark every box you can already name a concrete system for. The blanks are your reading list.</li>
+<li>Write the E0 Design Analysis: a chat assistant versus an agent harness, nine components each. Add one paragraph on what the harness adds and what it costs.</li>
+<li>Take the framework board and mark every box for which you can already give a concrete system. The boxes you leave blank are your reading list.</li>
 </ol><hr><p><a href="../ch-02-what-is-an-agent-from-peas-to-the-nine-components/">2. What Is an Agent? From PEAS to the Nine Components ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
 <a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
 <a data-sec="Home" href="/CIDM6333/">Home</a>
