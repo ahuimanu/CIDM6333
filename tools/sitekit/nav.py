@@ -19,12 +19,12 @@ ARTICLE = (HERE / "article.css").read_text(encoding="utf-8")
 NAV_CSS = """
 /* ---------- site navigation (shared fragment, assets/nav.html) ---------- */
 .sitenav{min-height:44px}
-nav.site{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;margin:-10px 0 18px;padding:8px 0 10px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+nav.site{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;margin:-10px 0 18px;padding:8px 0 10px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:16.5px;letter-spacing:.06em;text-transform:uppercase}
 nav.site a{color:var(--ink-2);text-decoration:none;padding:2px 0;border-bottom:2px solid transparent}
 nav.site a:hover,nav.site a:focus-visible{color:var(--accent-ink);outline:none}
 nav.site a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 nav.site .brand{color:var(--ink);font-weight:700;letter-spacing:.1em;margin-right:6px}
-nav.site .brand small{display:block;font-weight:500;font-size:11px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
+nav.site .brand small{display:block;font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
 @media (max-width:640px){nav.site{gap:4px 12px;font-size:14px}}
 """
 

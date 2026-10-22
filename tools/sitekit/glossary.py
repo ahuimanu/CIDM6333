@@ -184,6 +184,7 @@ def link_lecture(path):
     s = re.sub(r'<style id="gl-css">.*?</style>\n?', "", s, flags=re.S)
     s = re.sub(r'<(?:div|details) class="names">.*?</(?:div|details)>\n?', "", s, flags=re.S)
     s = re.sub(r'<a class="gl" href="[^"]*">(.*?)</a>', r"\1", s)
+    s = re.sub(r'<a class=\\"gl\\" href=\\"[^"]*\\">(.*?)</a>', r"\1", s)  # inside the JSON array
     pairs = link_terms()
     href = "../../glossary/"
     # link inside transcript blocks and reader blocks
@@ -191,6 +192,13 @@ def link_lecture(path):
         return link_block(m.group(0), pairs, href)
     s = re.sub(r'<div class="slide-t".*?</div></div>', relink, s, flags=re.S)
     s = re.sub(r'<div class="rslide".*?</div></div>', relink, s, flags=re.S)
+    # the current-slide panel: its paragraphs live in a JSON array inside <script id="reader-js">
+    def relink_json(m):
+        import json as _j
+        arr = _j.loads(m.group(2))
+        arr = [link_block(x, pairs, href) for x in arr]
+        return m.group(1) + _j.dumps(arr) + m.group(3)
+    s = re.sub(r'(<script id="reader-js">\(function\(\)\{const N=)(\[.*?\])(;const \$=)', relink_json, s, flags=re.S)
     # names panel: entries mentioned anywhere in transcript+reader text
     text = html.unescape(re.sub(r"<[^>]+>", " ", " ".join(re.findall(r'<section class="(?:transcript|reader)".*?</section>', s, flags=re.S))))
     found = {}

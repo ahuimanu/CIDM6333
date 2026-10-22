@@ -22,11 +22,11 @@
   --s-a:#3F9AD6; --s-b:#D47A22;
 }
 *{box-sizing:border-box}
-body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:18.5px; line-height:1.55; margin:0}
 .wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
-.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:var(--ink-2)}
 h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
-h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:30px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
 h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
 .lede{max-width:66ch; color:var(--ink); margin:0}
 .lede em{font-style:italic}
@@ -71,11 +71,11 @@ svg.fig{display:block; width:100%; min-width:860px; height:auto}
 
 /* ---------- player ---------- */
 .player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
-.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
-.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap .stepno{font-family:var(--mono); font-size:13.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:27px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
 .cap p{margin:0; max-width:70ch}
 .cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
-.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.chip{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
 .controls{display:grid; gap:10px; justify-items:end; min-width:250px}
 .btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
 button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
@@ -89,7 +89,7 @@ select{font-size:13.5px; padding:5px 8px; max-width:250px}
 .dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
 .dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
 .dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
-.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+.vnote{font-size:14px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
 @media (max-width:760px){
   .player{grid-template-columns:1fr}
   .controls{justify-items:start; min-width:0}
@@ -102,7 +102,7 @@ select{font-size:13.5px; padding:5px 8px; max-width:250px}
 .panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
 .panel.wide{grid-column:1/-1}
 .panel p{margin:0}
-.small{font-size:14px; color:var(--ink-2)}
+.small{font-size:15.5px; color:var(--ink-2)}
 .ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
 .ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
 .ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
@@ -156,42 +156,42 @@ table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width
 /* ---------- table ---------- */
 section.map{margin-top:36px}
 .tablewrap{overflow-x:auto; margin-top:10px}
-table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:16.5px}
 .t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
 .t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
 .t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
 .t td.m{font-family:var(--mono); font-size:13.5px}
-.t.compact{font-size:14.5px; min-width:560px}
+.t.compact{font-size:15.5px; min-width:560px}
 .t.compact td{padding:7px 10px}
 .notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
-.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:16px}
 .notes h2{font-size:22px}
-ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:15px}
-footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
-article{max-width:860px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:16px}
+footer{margin-top:40px; font-size:14px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+article{max-width:900px}
 article h1{font-size:clamp(36px,6vw,60px)}
 article h2{margin-top:34px; font-size:30px}
 article h3{font-family:var(--display); font-weight:600; font-size:22px; margin:26px 0 6px}
 article p{margin:10px 0}
 article ul,article ol{padding-left:22px; display:grid; gap:5px}
 article code{font-family:var(--mono); font-size:.88em; background:var(--surface-2); padding:1px 5px; border-radius:4px}
-article pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.5}
+article pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:14.5px; line-height:1.5}
 article pre code{background:none; padding:0; font-size:inherit}
-article table{border-collapse:collapse; width:100%; margin:12px 0; font-size:15px}
-article th{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--ink-2); text-align:left; padding:8px 10px; border-bottom:1.5px solid var(--ink-2)}
+article table{border-collapse:collapse; width:100%; margin:12px 0; font-size:16.5px}
+article th{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13.5px; color:var(--ink-2); text-align:left; padding:8px 10px; border-bottom:1.5px solid var(--ink-2)}
 article td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
 .tw{overflow-x:auto}
 article hr{border:0; border-top:1px solid var(--line); margin:30px 0}
 article a{color:var(--accent-ink)}
-nav.crumbs{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13px; margin-bottom:8px}
+nav.crumbs{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:14px; margin-bottom:8px}
 nav.crumbs a{color:var(--accent-ink); text-decoration:none}
 
 /* ---------- site navigation (shared fragment, assets/nav.html) ---------- */
 .sitenav{min-height:44px}
-nav.site{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;margin:-10px 0 18px;padding:8px 0 10px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+nav.site{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;margin:-10px 0 18px;padding:8px 0 10px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:16.5px;letter-spacing:.06em;text-transform:uppercase}
 nav.site a{color:var(--ink-2);text-decoration:none;padding:2px 0;border-bottom:2px solid transparent}
 nav.site a:hover,nav.site a:focus-visible{color:var(--accent-ink);outline:none}
 nav.site a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 nav.site .brand{color:var(--ink);font-weight:700;letter-spacing:.1em;margin-right:6px}
-nav.site .brand small{display:block;font-weight:500;font-size:11px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
+nav.site .brand small{display:block;font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
 @media (max-width:640px){nav.site{gap:4px 12px;font-size:14px}}
