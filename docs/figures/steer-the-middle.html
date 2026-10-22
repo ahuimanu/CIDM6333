@@ -177,13 +177,23 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 </style>
 <style>
 /* ---------- figure 17 additions ---------- */
+.wrap{max-width:min(1720px,97vw); padding-block:16px 48px}
+header{grid-template-columns:auto minmax(0,1fr); column-gap:36px; align-items:center; margin-bottom:14px}
+header .eyebrow{grid-column:1; grid-row:1}
+header h1{grid-column:1; grid-row:2; font-size:clamp(34px,3.6vw,52px); margin:2px 0 0}
+header .lede{grid-column:2; grid-row:1/3; font-size:16px; max-width:none}
+@media (max-width:900px){ header{grid-template-columns:1fr} header .lede{grid-column:1; grid-row:3} }
+.figwrap{margin-inline:auto}
+.lede{max-width:80ch}
+.panels,section.map,.notes{max-width:1180px; margin-inline:auto}
+
 .fig .ring-model{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
 .fig .ring-oc{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.3}
 .fig .ring-ours{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
 .fig .el.on .ring-model,.fig .el.on .ring-oc,.fig .el.on .ring-ours{stroke:var(--accent); stroke-width:2.4}
 .fig .rname{font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; fill:var(--ink-2)}
-.fig .ri{font-size:11.5px; font-weight:600; fill:var(--ink)}
-.fig .ro{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .ri{font-size:12.5px; font-weight:600; fill:var(--ink)}
+.fig .ro{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
 .fig .tie{stroke:var(--ink-2); stroke-width:1.2}
 .fig .el.on .tie{stroke:var(--accent); stroke-width:2}
 .fig .band{fill:var(--surface-2); stroke:var(--line); stroke-width:1.3}
@@ -194,7 +204,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 .fig .el.on .brk{stroke:var(--accent); stroke-width:2}
 .fig .col{font-size:12px; fill:var(--ink)}
 .fig .colm{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
-.fig .cols{font-size:11px; fill:var(--ink-2)}
+.fig .cols{font-size:11.5px; fill:var(--ink-2)}
 .fig .evo{font-size:10px; font-weight:600; letter-spacing:.08em; fill:var(--accent-ink)}
 .fig .rowbg{fill:var(--surface); stroke:var(--line); stroke-width:1}
 .fig .el.on .rowbg{stroke:var(--accent); stroke-width:2; fill:var(--accent-soft)}
@@ -421,7 +431,7 @@ body.embed .wrap{padding:8px 8px 16px}
     {evo:"E3", m:"codec.py --selftest · tests", s:"the round-trip property, run, with an exit code", k:"selftest e3 tools"},
     {evo:"E8", m:".opencode/agents/reviewer.md", s:"edit: deny; returns one ReviewResult JSON", k:"reviewer e8 pair-agents ours-agents"},
     {evo:"E9", m:"a second reviewer; the disagreement", s:"not tonight", k:"ghost e9", ghost:true},
-    {evo:"E10", m:".opencode/plugins/ → tool.execute.before → .py", s:"a hook that calls a Python checker; refuses a write without a passing run", k:"ghost e10 pair-hooks", ghost:true},
+    {evo:"E10", m:".opencode/plugins/ → tool.execute.before → .py", s:"calls a Python checker before any write", k:"ghost e10 pair-hooks", ghost:true},
     {evo:"E10", m:"/test command with !`pytest -q`", s:"injects the test output into the prompt", k:"ghost e10 commands", ghost:true},
     {evo:"E10", m:"permission.doom_loop", s:"the same call three times stops the loop", k:"ghost e10 pair-perm", ghost:true}
   ];
