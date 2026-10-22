@@ -1,0 +1,21 @@
+{
+ "Sixty minutes, five moves": "Sixty minutes, five parts",
+ "The problem was combinatorial before it was technical": "The combinatorial cost before the protocol",
+ "Discovery: a client asks what a server offers before calling. Negotiation: versions and capabilities stated; a mismatch is an error. Transport independence: a pipe on your laptop, HTTP on a host you do not control. Your E3 tool had none of these.": "Discovery: a client asks what a server offers before calling. Negotiation: client and server state versions and capabilities; a mismatch is an error. Transport independence: a pipe on your laptop, HTTP on a host you do not control. Your E3 tool had none of these.",
+ "Tonight's claim, which Sortie 4 will try to disprove": "The statement Sortie 4 will try to disprove",
+ "Every declared tool is discoverable, callable, and schema-validated from two independent clients; every call is logged server-side. Works from the harness but not the script? The harness did the protocol's work, and you have measured it.": "Every declared tool is discoverable, callable, and schema-validated from two independent clients; every call is logged server-side. If a tool works from the harness but not from the script, the harness did the protocol's work, and you have measured that work.",
+ "Templates the server offers the user: a named workflow with arguments, surfaced as a slash command.": "Templates the server offers the user: a workflow with a name and arguments, surfaced as a slash command.",
+ "Negotiated, not assumed.": "Negotiated on every request.",
+ "What changed at general availability, and what it does to the server you build tonight": "What changed at general availability, and what it does to the server you build this Evolution",
+ "Source: modelcontextprotocol.io, 2026-07-28 changelog (GA July 28, 2026; Tier 1 SDKs shipped same day). Verify the lab's Python SDK version against this table before class.": "Source: modelcontextprotocol.io, 2026-07-28 changelog (GA July 28, 2026; Tier 1 SDKs shipped same day). Check the Python SDK version you pinned against this table before you build.",
+ "Ask the human by returning, not by calling back; every result carries `resultType`": "The server asks the human by returning a result instead of calling back; every result carries `resultType`",
+ "`server/discover` — mandatory RPC advertising versions, capabilities, identity; usable as a back-compat probe on stdio": "`server/discover`: mandatory RPC advertising versions, capabilities, identity; usable as a back-compat probe on stdio",
+ "`subscriptions/listen` — one long-lived POST stream for opted-in list-changed notifications": "`subscriptions/listen`: one long-lived POST stream for opted-in list-changed notifications",
+ "The four moves of the lab, in order": "The four steps of the lab, in order",
+ "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests, not permissions.": "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests only; no message on it grants permission.",
+ "Governance is delegated to the host by design; E5 shows that trust misplaced.": "The protocol delegates governance to the host by design; E5 shows what happens when the host's trust is misplaced.",
+ "What a healthy protocol ecosystem needs": "What a healthy protocol needs around it",
+ "storage-tiers.md — 'no external protocol may become a prerequisite for core governance operations'": "storage-tiers.md: 'no external protocol may become a prerequisite for core governance operations'",
+ "Prerequisites, not presence. A server above the core adds a way in, not a dependency.": "The doctrine forbids prerequisites and allows presence. A server above the core adds a way in without adding a dependency.",
+ "Put one tool on the wire, let two clients find it, and let the server keep the only log that counts. Consultation: Sortie 3 verdicts and your server's first tool in one sentence.": "Put one tool on the wire, let two clients find it, and let the server keep the log the Chase reads. Consultation: Sortie 3 verdicts and your server's first tool in one sentence."
+}

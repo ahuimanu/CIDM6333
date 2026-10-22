@@ -1,0 +1,13 @@
+{
+ "The model does not call your function. It emits text asking to. Every step from that text to the effect is yours.": "The model does not call your function. It emits text that asks for the call. Every step from that text to the effect runs in your code.",
+ "Why a local 8B model this week": "Why a local 8B model this Evolution",
+ "A frontier model hides the contract. A small local model breaks it in ten turns: malformed JSON, invented arguments, tools that do not exist.": "A frontier model honors the contract, so you never see it enforced. A small local model breaks it in ten turns: malformed JSON, invented arguments, tools that do not exist.",
+ "Tonight's claim, which Sortie 3 will try to disprove": "The design claim Sortie 3 will try to disprove",
+ "read: runs freely. write: needs a confirmation event. irreversible: needs an attestation. Declared on the tool, not inferred.": "read: runs freely. write: needs a confirmation event. irreversible: needs an attestation. The tool declares its class; the gate never guesses it from the name.",
+ "A write retried is a second write. Exhausting a timeout or a retry budget is a halt.": "A write retried is a second write. When a timeout or a retry budget runs out, the loop halts.",
+ "2. Binding. Confirm names tool and arguments; a blanket 'yes' is a disabled gate.": "2. Binding. Confirm states tool and arguments; a blanket 'yes' is a disabled gate.",
+ "A structured error naming the problem": "A structured error that states the problem",
+ "Gorilla retrieved API docs at inference; ToolBench built 16,000 real APIs and a retriever.": "Gorilla retrieved API docs at inference; ToolBench collected 16,000 real APIs and a retriever.",
+ "Presence is not procedure (08-21); hooks bypassed by Bash writes (08-23); the move to the commit locus": "Presence is not procedure (08-21); hooks bypassed by Bash writes (08-23); fences moved to the commit locus",
+ "A gate passed an artifact that existed but was empty. Presence was verified; procedure was not. Fix: check the record of the procedure, not the output.": "A gate passed an artifact that existed but was empty. The gate verified presence and skipped procedure. Fix: check the record of the procedure (the ledger event) rather than the output."
+}

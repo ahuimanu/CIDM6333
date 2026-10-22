@@ -58,6 +58,11 @@ def transcripts(docs):
         ov = load(slug)
         if not ov: continue
         cnt = 0
+        # values applied on an earlier run: map them to the current value so later edits propagate
+        prevp = HERE / "voice" / ".applied" / (slug + ".json")
+        prev = json.loads(prevp.read_text(encoding="utf-8")) if prevp.exists() else {}
+        stale = {prev[k]: ov[k] for k in ov if k in prev and prev[k] != ov[k] and prev[k] != k}
+        ov = dict(ov); ov.update(stale)
         def li(m):
             nonlocal cnt
             raw = m.group(1)
@@ -90,6 +95,8 @@ def transcripts(docs):
         s = re.sub(r"Break · \d:\d\d–\d:\d\d", "Break", s)
         s = re.sub(r"<li>(\s|<br>)*</li>", "", s)  # overrides set to "" drop the item
         p.write_text(s, encoding="utf-8")
+        prevp.parent.mkdir(exist_ok=True)
+        prevp.write_text(json.dumps(load(slug), indent=1, ensure_ascii=False), encoding="utf-8")
         print(slug, "transcript items rewritten:", cnt, "titles:", tcnt)
 
 # Literal fixes for slide text that the per-paragraph keys do not reach (headings with inline markup,

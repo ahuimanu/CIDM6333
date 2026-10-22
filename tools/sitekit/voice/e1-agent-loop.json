@@ -47,7 +47,7 @@
  "GPT-3 few-shot (2020)": "GPT-3 few-shot (2020)",
  "Examples in the prompt steer the completion. The prompt is data.": "Examples in the prompt steer the completion, so the prompt works as data.",
  "Chain-of-thought (Wei et al., 2022)": "Chain-of-thought (Wei et al., 2022)",
- "'Let's think step by step.' Reasoning becomes an artifact you can read.": "'Let's think step by step.' The model emits its reasoning as text you can read.",
+ "'Let's think step by step.' Reasoning becomes an artifact you can read.": "'Let's think step by step' (Kojima et al., 2022). The model emits its reasoning as text you can read.",
  "Self-consistency (2022)": "Self-consistency (2022)",
  "Sample several chains, vote. The first evaluator, and the first cost multiplier.": "Sample several chains and vote. This is the first evaluator, and it multiplies cost by the sample count.",
  "ReAct (Yao et al., 2022)": "ReAct (Yao et al., 2022)",

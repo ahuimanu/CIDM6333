@@ -40,6 +40,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 ## Chapter 5: The Loop
 
 - Wei, J., et al. (2022). *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* NeurIPS 2022. https://arxiv.org/abs/2201.11903
+- Kojima, T., Gu, S. S., Reid, M., Matsuo, Y., & Iwasawa, Y. (2022). *Large Language Models are Zero-Shot Reasoners.* https://arxiv.org/abs/2205.11916 (the source of "Let's think step by step")
 - Yao et al. (2022). *ReAct.* https://arxiv.org/abs/2210.03629
 - Anthropic (2024). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents
 - Babb, J. (2026). *Who answers for the code.* https://sprintanddrift.substack.com/p/who-answers-for-the-code
