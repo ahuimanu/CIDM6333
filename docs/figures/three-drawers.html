@@ -6,7 +6,7 @@
 <title>Three Drawers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* ---------- figure 14 additions ---------- */
 .fig .seg{stroke:var(--surface); stroke-width:1}
@@ -74,13 +74,13 @@
       <text class="tt" x="32" y="92">AGENTS.md</text>
       <text class="tag" x="260" y="92" text-anchor="end">L1 · CANON</text>
       <text class="ts" x="32" y="112">the whole file, every turn</text>
-      <text class="ts" x="32" y="128">budget 4,000 chars · a map, not an encyclopedia</text>
+      <text class="ts" x="32" y="128" textLength="234" lengthAdjust="spacingAndGlyphs">budget 4,000 chars · a map, not an encyclopedia</text>
       <text class="ts" x="32" y="146">the model reads it; nothing makes it obey</text>
       <path class="rail" d="M270,115 L400,115 L400,60"/>
     </g>
     <g class="el ghost" data-k="pasted">
       <rect class="stripe" x="150" y="134" width="112" height="18" rx="4"/>
-      <text class="mono" x="206" y="147" text-anchor="middle">+ pasted procedure</text>
+      <text class="mono" x="206" y="147" text-anchor="middle" textLength="124" lengthAdjust="spacingAndGlyphs">+ pasted procedure</text>
     </g>
 
     <!-- drawer 2: skill -->
@@ -102,7 +102,7 @@
     <g class="el" data-k="skill-body perm">
       <rect class="kvbox" x="294" y="243" width="112" height="32" rx="6"/>
       <text class="ts" x="350" y="256" text-anchor="middle">permission.skill</text>
-      <text class="mono" x="350" y="269" text-anchor="middle">ask · allow · deny</text>
+      <text class="mono" x="350" y="269" text-anchor="middle" textLength="102" lengthAdjust="spacingAndGlyphs">ask · allow · deny</text>
     </g>
     <g class="el" data-k="skill-body skill-index drawer-s">
       <text class="ts" x="32" y="290">header: name = folder name · description</text>
@@ -114,21 +114,21 @@
       <text class="tt" x="32" y="352">memory.jsonl</text>
       <text class="tag" x="260" y="352" text-anchor="end">L3 · DERIVED</text>
       <text class="mono" x="32" y="372">m-0007 · written 2026-10-05</text>
-      <text class="mono" x="32" y="385">keep until 2026-12-15 · Sortie 5 FAIL</text>
+      <text class="mono" x="32" y="385" textLength="234" lengthAdjust="spacingAndGlyphs">keep until 2026-12-15 · Sortie 5 FAIL</text>
       <path class="rail" d="M270,380 L292,380"/>
     </g>
     <g class="el" data-k="stale memory">
       <rect class="stripe" x="28" y="396" width="234" height="26" rx="4"/>
       <text class="mono" x="32" y="407">m-0012 · written 2026-09-10</text>
-      <text class="mono" x="32" y="419">keep until 2026-10-01 · past its date</text>
+      <text class="mono" x="32" y="419" textLength="226" lengthAdjust="spacingAndGlyphs">keep until 2026-10-01 · past its date</text>
     </g>
 
     <!-- retriever gate -->
     <g class="el" data-k="retriever memory">
       <rect class="kvbox" x="294" y="355" width="126" height="50" rx="6"/>
       <text class="ts" x="357" y="373" text-anchor="middle">retriever: a gate</text>
-      <text class="mono" x="357" y="388" text-anchor="middle">score ≥ threshold?</text>
-      <text class="mono" x="357" y="399" text-anchor="middle">only hits get through</text>
+      <text class="mono" x="357" y="388" text-anchor="middle" textLength="112" lengthAdjust="spacingAndGlyphs">score ≥ threshold?</text>
+      <text class="mono" x="357" y="399" text-anchor="middle" textLength="116" lengthAdjust="spacingAndGlyphs">only hits get through</text>
       <path class="rail" d="M420,380 L432,380 L432,106"/>
     </g>
 
@@ -295,7 +295,7 @@
       const a=g("agents "+tk); a.appendChild(r("seg seg-agents",x,y,w,SEGH.agents)); a.appendChild(p("drop","M"+(x+8)+",60 L"+(x+8)+","+(top-5))); root.appendChild(a); y+=SEGH.agents; total+=CH.agents;
       const gh=g("pasted","ghost"); gh.appendChild(r("seg seg-ghost",x,y,w,22)); root.appendChild(gh);
       const si=g("skill-index "+tk); si.appendChild(r("seg seg-index",x,y,w,SEGH.index)); si.appendChild(p("drop thin","M"+(x+20)+",78 L"+(x+20)+","+(top-5))); root.appendChild(si); y+=SEGH.index; total+=CH.index;
-      if (BODY_ON.includes(i)){ const sb=g("skill-body "+tk); sb.appendChild(r("seg seg-body",x,y,w,SEGH.body)); sb.appendChild(t("mono",x+w/2,y+SEGH.body/2+4,"skill body","middle")); sb.appendChild(p("drop","M"+(x+32)+",92 L"+(x+32)+","+(top-5))); root.appendChild(sb); y+=SEGH.body; total+=CH.body; }
+      if (BODY_ON.includes(i)){ const sb=g("skill-body "+tk); sb.appendChild(r("seg seg-body",x,y,w,SEGH.body)); sb.appendChild((e=>{e.setAttribute("textLength",w-8);e.setAttribute("lengthAdjust","spacingAndGlyphs");return e})(t("mono",x+w/2,y+SEGH.body/2+4,"skill body","middle"))); sb.appendChild(p("drop","M"+(x+32)+",92 L"+(x+32)+","+(top-5))); root.appendChild(sb); y+=SEGH.body; total+=CH.body; }
       if (MEM_ON.includes(i)){ const m=g("memory "+tk); m.appendChild(r("seg seg-mem",x,y,w,SEGH.mem)); m.appendChild(t("mono",x+w/2,y+SEGH.mem/2+4,"MEMORY","middle")); m.appendChild(p("drop","M"+(x+46)+",106 L"+(x+46)+","+(top-5))); root.appendChild(m); y+=SEGH.mem; total+=CH.mem; }
       const u=g("turn "+tk); u.appendChild(r("seg seg-turn",x,y,w,SEGH.turn)); root.appendChild(u); y+=SEGH.turn; total+=CH.turn;
       const c=g("win "+tk); c.appendChild(t("cnt",x+w/2,top+228,"~"+fmt(total),"middle")); root.appendChild(c);

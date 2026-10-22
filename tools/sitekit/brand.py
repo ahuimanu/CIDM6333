@@ -46,13 +46,19 @@ VALUES = {
 }
 SANS = '"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif'
 FONTS = [
-    ('"Barlow Condensed","Arial Narrow",Arial,sans-serif', SANS),
+    ('"Barlow Condensed","Arial Narrow",Arial,sans-serif', SANS),  # original display stack -> replaced below by DISPLAY_NEW
     ('"Source Serif 4",Georgia,"Times New Roman",serif', SANS),
-    ("'Barlow Condensed'", '"Avenir Next"'), ('"Barlow Condensed"', '"Avenir Next"'),
     ("'Source Serif 4'", '"Avenir Next"'), ('"Source Serif 4"', '"Avenir Next"'),
 ]
 GFONT = re.compile(r"https://fonts\.googleapis\.com/css2\?family=[^\"']*")
-GFONT_NEW = "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+GFONT_NEW = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+# Display type (headings, labels, and all SVG figure text) stays condensed: the figures' fixed-width
+# labels were laid out for a condensed face, and a regular-width face spills out of their boxes.
+# Barlow Condensed comes first because the figure geometry was measured in it; Avenir Next Condensed
+# (the brand family's condensed cut) is the fallback. Body text is Avenir Next.
+DISPLAY_OLD = '--display:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif'
+DISPLAY_MID = '--display:"Avenir Next Condensed","Barlow Condensed","Arial Narrow",sans-serif'
+DISPLAY_NEW = '--display:"Barlow Condensed","Avenir Next Condensed","Arial Narrow",sans-serif'
 
 def brand(s):
     for a, b in SCOPED: s = s.replace(a, b)
@@ -60,6 +66,7 @@ def brand(s):
         s = re.sub(re.escape(a), b, s, flags=re.I)
     for a, b in FONTS: s = s.replace(a, b)
     s = GFONT.sub(GFONT_NEW, s)
+    s = s.replace(DISPLAY_OLD, DISPLAY_NEW).replace(DISPLAY_MID, DISPLAY_NEW)
     return s
 
 def main(docs):
