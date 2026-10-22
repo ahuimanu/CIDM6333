@@ -187,7 +187,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 09</div>
   <h1>Plan, Do, Check</h1>
-  <p class="lede">Two rules from the E8 deck shape this graph. A worker's result is a typed claim, and a verdict counts only when it comes from a reviewer that cannot edit the work it judges. The controller that enforces both rules appears here as a state graph, with an implementer, a fail-closed parse, two reviewers, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to watch a pair of agents collapse into one.</p>
+  <p class="lede">Two rules from the E8 deck shape this graph. A worker's result is a typed claim, and a verdict counts only when it comes from a reviewer that can say no. The controller that enforces both rules appears here as a state graph, with an implementer, a fail-closed parse, two reviewers, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to watch a pair of agents collapse into one.</p>
 </header>
 
 <div class="figwrap">
@@ -491,7 +491,7 @@ permission:
     "git diff*": allow
     "git log*": allow
 ---</pre>
-    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." The harness enforces the deny on every call, whereas a sentence in the prompt is a request the model may ignore.</p>
+    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." The harness enforces the deny, and the anti-trait only explains it.</p>
   </section>
 </div>
 
@@ -506,7 +506,7 @@ permission:
         <li><b>Implement.</b> One dispatch per task to the implementer persona; HandoffResult back; then two-stage review, spec reviewer then quality reviewer, each returning ReviewResult.</li>
         <li><b>Verify.</b> The controller runs the checks itself: tests, lint, the brief's verification commands. A worker's 'tests pass' is not this stage.</li>
         <li><b>Present evidence.</b> The human receives paths, commands, and outputs, and draws the conclusions.</li>
-        <li><b>Sync.</b> The pipeline writes the ledger events, the brief status, and the dispatch records. The human attests, and the pipeline never records an attestation.</li>
+        <li><b>Sync.</b> The pipeline writes the ledger events, the brief status, and the dispatch records. The human attests, and the pipeline records the attestation but never makes one.</li>
       </ol>
       <p class="small">The deck's sources: <code>docs/user/concepts/subagent-pipeline.md</code>, <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>, <code>.gzkit/personas/</code>. The deck marks the ADR number, stage names, and paths "verify against the repository before class."</p>
     </div>
@@ -514,7 +514,7 @@ permission:
       <h3 class="sub">HandoffResult, dispatch records, and credit</h3>
       <p>HandoffResult statuses come from ADR-0.18.0: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, BLOCKED. ReviewResult is PASS, FAIL, or CONCERNS with findings. Both are parsed fail-closed. The field names beyond status are the course's.</p>
       <blockquote>Credit is never inferred.<cite>gzkit rule, as quoted in the E8 deck, slide 21</cite></blockquote>
-      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie, if your reviewer could not run, the flight log says so and the sortie is recorded as an ABORT, because a PASS with no verdict on record trips the first falsifier.</p>
+      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie, if your reviewer could not run, the flight log says so and the sortie is recorded as an ABORT, not as a PASS with a missing verdict.</p>
     </div>
   </div>
 </section>

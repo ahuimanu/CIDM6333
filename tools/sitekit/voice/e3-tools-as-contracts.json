@@ -116,7 +116,7 @@
  "Function calling: tools declared at inference; the contract lives in the prompt, validated by your code.": "Function calling: tools declared at inference; the contract lives in the prompt, validated by your code.",
  "Learned calls put the contract in the model; declared calls put it in your loop.": "Learned calls put the contract in the model; declared calls put it in your loop.",
  "Gorilla and ToolBench (2023): retrieval": "Gorilla and ToolBench (2023): retrieval",
- "Gorilla retrieved API docs at inference; ToolBench built 16,000 real APIs and a retriever.": "Gorilla retrieved API docs at inference; ToolBench built 16,000 real APIs and a retriever.",
+ "Gorilla retrieved API docs at inference; ToolBench built 16,000 real APIs and a retriever.": "Gorilla retrieved API docs at inference; ToolBench collected 16,000 real APIs and a retriever.",
  "The description is what retrieval and the model both read. A retrieved tool the model has never seen is an untrusted tool.": "The description is what retrieval and the model both read. A retrieved tool the model has never seen is an untrusted tool.",
  "Progressive disclosure: the map in context, the catalog on disk.": "Progressive disclosure: the map in context, the catalog on disk.",
  "7": "7",

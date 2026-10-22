@@ -12,7 +12,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 ## Chapter 2: What Is an Agent?
 
 - Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.), ch. 2. Pearson. https://aima.cs.berkeley.edu/
-- Anthropic (Schluntz, E., & Zhang, B.) (2024, Dec 19). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents (the page now carries a banner that says its tooling advice is dated, but it remains the canonical source for the five workflow patterns)
+- Anthropic (Schluntz, E., & Zhang, B.) (2024, Dec 19). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents (the page now carries a banner that the tooling landscape has changed, but it remains the canonical source for the five workflow patterns)
   - **[newer]** Martin, L., Cemaj, G., & Cohen, M. (2026, Apr 8). *Scaling Managed Agents: Decoupling the brain from the hands.* https://www.anthropic.com/engineering/managed-agents
 - Yao, S., et al. (2022). *ReAct: Synergizing Reasoning and Acting in Language Models.* ICLR 2023. https://arxiv.org/abs/2210.03629
 
@@ -89,7 +89,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 
 - Anthropic (2024). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents
 - gzkit. *Guide: PRD.* https://gzkit.org/examples/guide-prd/
-- gzkit. *Tutorial: Your First Governed Project.* https://gzkit.org/examples/tutorial-first-project/
+- gzkit. *Tutorial: Your First Governed Project.* https://gzkit.org/examples/tutorial-first-project/ [re-verify against gzkit 0.34.9]
 
 ## Chapter 11: Patterns and Orchestration Frameworks
 
@@ -195,7 +195,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 - gzkit. *Tutorial: Your First Governed Project.* https://gzkit.org/examples/tutorial-first-project/
 - gzkit. *Guide: Tasks.* https://gzkit.org/examples/guide-tasks/
 - gzkit. *Quickstart.* https://gzkit.org/user/quickstart/
-- Version note: the current release is v0.34.9 (2026-10-11). Appendix F's gotchas were tested against 0.34.5.
+- Version note: the current release is v0.34.9 (2026-10-11). Appendix F's gotchas were checked against 0.34.5.
 
 ## Chapter 26: The Final System and the Closeout Ceremony
 

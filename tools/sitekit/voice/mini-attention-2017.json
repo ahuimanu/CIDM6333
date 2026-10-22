@@ -126,7 +126,7 @@
  "The encoder stack": "The encoder stack",
  "Encoder–decoder attention": "Encoder–decoder attention",
  "Beam search, in favor of sampling": "Beam search, in favor of sampling",
- "Post-norm: most later models normalize before each sub-layer": "Post-norm: GPT-2 (2019) and its descendants normalize before each sub-layer",
+ "Post-norm: most later models normalize before each sub-layer": "Post-norm: most later models normalize before each sub-layer",
  "One sequence. The prompt and the reply become one stream of tokens. The model reads all of it and writes the next token, then the harness or the model's own loop appends that token and runs again.": "One sequence. The prompt and the reply become one stream of tokens. The model reads all of it and writes the next token, then the harness or the model's own loop appends that token and runs again.",
  "Sampling replaced beam search, which is why the same prompt can give different answers (E10).": "Sampling replaced beam search, which is why the same prompt can give different answers (E10).",
  "From the paper to your harness": "From the paper to your harness",

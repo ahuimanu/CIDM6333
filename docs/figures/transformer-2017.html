@@ -168,7 +168,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 01b · after Vaswani et al. (2017)</div>
   <h1>The 2017 Transformer</h1>
-  <p class="lede">This page redraws Figure 1 of <em>Attention Is All You Need</em> with the paper's own layout, color roles, and numbers, and sets the paper's words beside each part as you step through it. The switch above the figure removes the encoder, which shows which half of the 2017 model the chat models of the GPT lineage kept.</p>
+  <p class="lede">This page redraws Figure 1 of <em>Attention Is All You Need</em> with the paper's own layout, color roles, and numbers, and sets the paper's words beside each part as you step through it. The switch above the figure removes the encoder, which shows which half of the 2017 model today's chat models kept.</p>
 </header>
 
 <div class="figwrap">
@@ -378,7 +378,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <canvas id="pe" width="128" height="100" role="img" aria-label="Heatmap of sinusoidal positional encodings: rows are positions 0 to 99, columns are the first 128 of 512 dimensions; low dimensions oscillate quickly, higher dimensions slowly."></canvas>
     <div class="axisrow"><span>dimension 0</span><span>dimension 127 of 512 →</span></div>
     <div class="legend"><span><i class="sw" style="background:var(--model-line)"></i>−1</span><span><i class="sw" style="background:var(--surface-2)"></i>0</span><span><i class="sw" style="background:var(--accent)"></i>+1</span><span>rows: positions 0–99, top to bottom</span></div>
-    <p class="small">Each pair of dimensions is a sine and a cosine at its own wavelength, from 2π up to 10000·2π. Low dimensions change at every position, and high dimensions barely change across a sentence. The first layer receives the sum of this pattern and the token embedding. Later models of the Llama lineage encode position by rotating the queries and keys instead, and the reason for either method is the same: attention by itself ignores order.</p>
+    <p class="small">Each pair of dimensions is a sine and a cosine at its own wavelength, from 2π up to 10000·2π. Low dimensions change at every position, and high dimensions barely change across a sentence. The first layer receives the sum of this pattern and the token embedding. Many newer models encode position differently, for example by rotating the queries and keys, and the reason for either method is the same: attention by itself ignores order.</p>
   </section>
 
   <!-- complexity -->
@@ -397,7 +397,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="ctrl"><label for="dm">Model width d</label><input id="dm" type="range" min="0" max="5" step="1" value="1"><output id="dmout" for="dm">512</output></div>
     <svg class="cx" id="cx" viewBox="0 0 520 280" role="img" aria-label="Log-log chart of operations per layer against sequence length for self-attention and recurrent layers, crossing where n equals d."></svg>
     <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>self-attention, n²·d</span><span><i class="sw" style="background:var(--model-line)"></i>recurrent, n·d²</span></div>
-    <p class="small">Self-attention is cheaper than recurrence “when the sequence length n is smaller than the representation dimensionality d, which is most often the case” (§4). In 2017 n was a sentence. In 2026 n is a context window, far to the right of the crossing, so the trade the paper made in favor of parallel training is now paid in attention cost at every call. The O(1) sequential operations per layer are the reason self-attention trains in parallel on GPUs. The chart shows order of growth only and ignores constants and kernel optimizations.</p>
+    <p class="small">Self-attention is cheaper than recurrence “when the sequence length n is smaller than the representation dimensionality d, which is most often the case” (§4). In 2017 n was a sentence. In 2026 n is a context window, far to the right of the crossing. The O(1) sequential operations per layer are the reason self-attention trains in parallel on GPUs. The chart shows order of growth only and ignores constants and kernel optimizations.</p>
   </section>
 
   <!-- hyperparameters -->
@@ -411,7 +411,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr class="hl"><td>Big</td><td class="m">6</td><td class="m">1024</td><td class="m">4096</td><td class="m">16</td><td class="m">64</td><td class="m">0.3</td><td class="m">0.1</td><td class="m">300K</td><td class="m">213M</td><td>28.4 BLEU EN–DE, 41.8 BLEU EN–FR (WMT 2014); 3.5 days on 8 P100s</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Training: Adam with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹, and a learning rate that warms up over 4,000 steps. Vocabulary: byte-pair encoding with about 37,000 shared tokens for English–German, a 32,000 word-piece vocabulary for English–French. Decoding: beam search with a beam size of 4 and length penalty α = 0.6. For scale, 213 million parameters is small by current standards. Frontier models are larger by orders of magnitude, and since GPT-4 (2023) the labs that train them have stopped publishing parameter counts.</p>
+    <p class="small">Training: Adam with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹, and a learning rate that warms up over 4,000 steps. Vocabulary: byte-pair encoding with about 37,000 shared tokens for English–German, a 32,000 word-piece vocabulary for English–French. Decoding: beam search with a beam size of 4 and length penalty α = 0.6. For scale, 213 million parameters is small by current standards. Frontier models are larger by orders of magnitude, and most labs no longer publish their sizes.</p>
   </section>
 </div>
 
@@ -422,7 +422,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>Layout, component names, and color roles follow Figure 1 and Figure 2 of the paper. Colors are re-tinted so the figure reads in light and dark themes.</li>
       <li>The dashed return arrow on the right is not in the paper. It draws the sentence in §3 that says the model is auto-regressive.</li>
       <li>The decoder-only view is not in the paper. It shows the design that GPT (Radford et al., 2018) and later chat models adopted.</li>
-      <li>The 2017 model normalizes after each residual addition (post-norm). GPT-2 and the models after it normalize before the sub-layer (pre-norm), which Xiong et al. (2020) show trains more stably at depth.</li>
+      <li>The 2017 model normalizes after each residual addition (post-norm). Most later models normalize before the sub-layer (pre-norm), which Xiong et al. (2020) show trains more stably at depth.</li>
       <li>For the same model placed inside the agent loop, see <a href="two-loops.html">Figure 01, <em>Two Loops</em></a>.</li>
     </ul>
   </section>

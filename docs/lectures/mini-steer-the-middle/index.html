@@ -92,7 +92,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
   <h2>Steer the middle<small>Three rings, one bar, and every file you have written since E0</small></h2>
   <div class="body">
     <p>The model sits in the inner ring. OpenCode is the middle ring. Your harness is the outer ring, and most of it is your own version of what OpenCode already does by default.</p>
-    <p>This lecture comes first. The exercise follows at the keyboard, each student in their own repository, following the screen.</p>
+    <p>This lecture comes first, and it takes slides 3, 6, 7, 10, 11, and 12 of the E8 deck out of order. The exercise follows at the keyboard, each student in their own repository, following the screen.</p>
   </div>
   <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>Figure 17 · the exercise page</span></div>
 </section>
@@ -117,7 +117,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       </ul>
     </div>
   </div>
-  <div class="foot"><span>Figures 01, 07</span><span>1</span></div>
+  <div class="foot"><span>Figures 01, 07</span><span>2</span></div>
 </section>
 
 <section class="slide">
@@ -144,7 +144,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       <p class="callout">OpenCode leaves a trace of its own in the agent name in the TUI, the tool-call line, and the permission prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>OpenCode docs</span><span>2</span></div>
+  <div class="foot"><span>OpenCode docs</span><span>3</span></div>
 </section>
 
 <section class="slide">
@@ -166,7 +166,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       </tbody>
     </table>
   </div>
-  <div class="foot"><span>Each outer item sits radially outside the thing it steers</span><span>3</span></div>
+  <div class="foot"><span>Each outer item sits radially outside the thing it steers</span><span>4</span></div>
 </section>
 
 <section class="slide">
@@ -178,11 +178,11 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       <div class="mid">Execution<span>the three rings</span></div>
       <div>Evaluation, validation, verification<span>what checks the output: tests, reviewer, the Chase, ledger, the gate</span></div>
     </div>
-    <p>All three rings sit inside the narrow band. The model does its work there, and the human writes both wide ends.</p>
+    <p>All three rings sit inside the narrow band. The model does its work there. The human owns both wide ends: the human writes the specification at the left end and judges the result at the right end.</p>
     <p class="callout">This bar is E0's Degradation Pattern drawn as a shape. When the wide ends shrink, the system stops being answerable, and no component in the three rings reports the shrinkage.</p>
     <p>This Evolution's exercise walks the figure from left to right and ends with you in the right band, reading a reviewer's verdict against a diff.</p>
   </div>
-  <div class="foot"><span>E0 · index zero</span><span>4</span></div>
+  <div class="foot"><span>E0 · index zero</span><span>5</span></div>
 </section>
 
 <section class="slide embed">
@@ -203,7 +203,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       <p class="callout">In this exercise, count the tool calls on one question. Then plan hex in <code>plan</code> and build it in <code>build</code>.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 02, 03</span><span>5</span></div>
+  <div class="foot"><span>Figures 02, 03</span><span>7</span></div>
 </section>
 
 <section class="slide">
@@ -227,7 +227,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       <p class="callout">The permission prompt is the trace that the gate held. In this exercise the permission file sets most tools to ask, on purpose, so that everyone in the room sees the prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 04, 05, 06</span><span>6</span></div>
+  <div class="foot"><span>Figures 04, 05, 06</span><span>8</span></div>
 </section>
 
 <section class="slide">
@@ -246,7 +246,7 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
     </table>
     <p class="callout">Two of the three drawers from the previous Evolution are on this slide. The third drawer, memory, is on the next slide.</p>
   </div>
-  <div class="foot"><span>Figures 07, 14, 15</span><span>7</span></div>
+  <div class="foot"><span>Figures 07, 14, 15</span><span>9</span></div>
 </section>
 
 <section class="slide">
@@ -262,10 +262,10 @@ h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56
       <pre><code>As of 2026-10-22 the codec supports
 rot13 and base64. Hex is not implemented.</code></pre>
       <p>At step 9 hex exists and the record is wrong. No step in the loop compares the record with the code. The retention date and <code>evict</code> are the mechanism that removes a stale record, and the sentence "data, not instructions" is a request to the model that the mechanism does not enforce.</p>
-      <p class="callout">The retriever decides when a record enters the window. Only evict or the retention date removes the record from the store.</p>
+      <p class="callout">The loop does not open the drawer by itself, and it does not close the drawer by itself either.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 08, 14, 16</span><span>8</span></div>
+  <div class="foot"><span>Figures 08, 14, 16</span><span>10</span></div>
 </section>
 
 <section class="slide">
@@ -293,14 +293,14 @@ Why … Return exactly one ReviewResult.</code></pre>
     <div>
       <p><code>.opencode/agents/reviewer.md</code> is your version of a built-in agent, placed radially outside <code>build</code> and <code>plan</code>.</p>
       <ul>
-        <li>Write both lines. The <strong>deny</strong> line stops an edit at the permission engine, and the <strong>anti-trait</strong> line tells the model the reason.</li>
+        <li>Write both lines, in this order: the <strong>deny</strong> line stops an edit at the permission engine, and the <strong>anti-trait</strong> line tells the model the reason.</li>
         <li><code>build</code> invokes the reviewer through the task tool, or you call it with <code>@reviewer</code>. It runs in its own window and returns one message.</li>
         <li>The message is a typed claim with three fields: <code>verdict</code>, <code>findings</code> with a location, and <code>checked</code>.</li>
       </ul>
       <p class="callout">The test is to ask the reviewer to fix the bug. The persona should refuse, and if it does not, the permission engine should deny the edit. An edit that goes through is the finding of this exercise.</p>
     </div>
   </div>
-  <div class="foot"><span>E8 deck slides 6, 7, 10, 11 · Figure 09 · docs use <code>shell</code>, not <code>bash</code></span><span>9</span></div>
+  <div class="foot"><span>E8 deck slides 6, 7, 10, 11 · Figure 09 · docs use <code>shell</code>, not <code>bash</code></span><span>11</span></div>
 </section>
 
 <section class="slide">
@@ -320,7 +320,7 @@ Why … Return exactly one ReviewResult.</code></pre>
       <p class="callout">Each of the three answers the previous Evolution's Probe 3 question with a mechanism in the loop rather than a sentence in the prompt.</p>
     </div>
   </div>
-  <div class="foot"><span>Figures 10, 11</span><span>10</span></div>
+  <div class="foot"><span>Figures 10, 11</span><span>12</span></div>
 </section>
 
 <section class="slide">
@@ -342,11 +342,11 @@ Why … Return exactly one ReviewResult.</code></pre>
         <li>E6: the spec as an instruction, answered with no read</li>
         <li>E7: one dated record</li>
         <li>E8: the reviewer, then build adds hex, then <code>@reviewer</code>, then "fix it"</li>
-        <li>Evict the stale record, fill the worksheet, commit, push</li>
+        <li>Evict the stale record, fill the worksheet, commit, push; the pushed repository is the submission</li>
       </ol>
     </div>
   </div>
-  <div class="foot"><span>Each step: do · see · record. The exercise page has the exact text to type.</span><span>11</span></div>
+  <div class="foot"><span>Each step: do · see · record. The exercise page has the exact text to type.</span><span>13</span></div>
 </section>
 
 <section class="slide">
@@ -366,7 +366,7 @@ Why … Return exactly one ReviewResult.</code></pre>
       <p class="callout">For the Final System, the harness that builds your MVP is the outer ring. Your V&amp;V shows, for every file on that ring, what reads the file, when it reads it, and the trace that it left.</p>
     </div>
   </div>
-  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>12</span></div>
+  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>14</span></div>
 </section>
 
 </div>
@@ -375,7 +375,7 @@ Why … Return exactly one ReviewResult.</code></pre>
   <button id="next" class="primary" type="button">Next ▶</button>
   <button id="fs" type="button">Full screen</button>
   <span class="hint">Arrow keys step · F for full screen · Home and End jump</span>
-  <span class="count" id="count" role="status">1 / 15</span>
+  <span class="count" id="count" role="status">1 / 14</span>
 </div>
 </div>
 

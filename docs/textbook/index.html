@@ -7,6 +7,185 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#FFF4E2; --ink:#1C1C1C; --ink-2:#545859; --line:#D6D1C8;
+  --model:#EEF3FA; --model-line:#7CA6D8; --accent:#450012; --accent-soft:#FFF4E2; --accent-ink:#450012;
+  --s-a:#450012; --s-b:#7CA6D8;
+  --display:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+    --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
+    --s-a:#E89AAE; --s-b:#9DBDE4;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+  --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
+  --s-a:#E89AAE; --s-b:#9DBDE4;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:18.5px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px; overflow-wrap:anywhere}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(40px,5.5vw,60px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:30px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:1000px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:14px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:13px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:13px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:12px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .sw-track{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .sw-knob{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.35}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="win"]:not(.on){opacity:.5}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl,.fig .el.on .stripe{fill:var(--accent-soft)}
+.fig .el.on .sw-track{stroke:var(--accent)} .fig .el.on .sw-knob{fill:var(--accent)}
+.fig .kind{cursor:pointer}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:13.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:27px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--ink-2); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--bg)}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:3px 9px}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:14px; height:14px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--ink-2); box-sizing:content-box; background-clip:padding-box}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:14px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:15.5px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .ok{color:var(--ink); font-weight:500}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .dim{color:var(--ink-2)}
+svg.bars{width:100%; height:auto; display:block}
+.bars text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.bars .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.bars .axis{stroke:var(--line)} .bars .grid{stroke:var(--line); stroke-dasharray:2 4}
+.bars .ba{fill:var(--s-a)} .bars .bb{fill:var(--s-b)}
+.bars .thr{stroke:var(--ink); stroke-width:1.4; stroke-dasharray:5 4}
+
+/* heatmap */
+.hmwrap{overflow-x:auto}
+table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width:640px; width:100%}
+.hm th{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.04em; color:var(--ink-2); text-align:left; padding:4px 6px; vertical-align:bottom}
+.hm th.rid{font-family:var(--mono); font-weight:500; font-size:12px; text-align:center}
+.hm th.rid small{display:block; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:0}
+.hm td{font-family:var(--mono); font-size:13px; text-align:center; border-radius:4px; padding:8px 4px; font-variant-numeric:tabular-nums; min-width:62px}
+.hm td.q{font-family:var(--body); font-size:14.5px; text-align:left; background:none; min-width:220px; cursor:pointer; padding:6px 8px}
+.hm tr.sel td.q{background:var(--accent-soft); border-radius:6px}
+.hm td.q .kd{display:block; font-family:var(--display); font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+.hm td.low{color:var(--ink-2)}
+.hm td.inj{box-shadow:inset 0 0 0 3px var(--s-b); font-weight:500; color:var(--ink)}
+.hm td.gone{background:repeating-linear-gradient(45deg,var(--surface-2) 0 4px,var(--surface) 4px 8px); color:var(--ink-2)}
+.hm td.res{font-family:var(--body); font-size:14px; text-align:left; background:none; min-width:150px}
+.verdict{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.verdict.yes{color:var(--ink)} .verdict.no{color:var(--accent-ink)}
+.recs{display:grid; gap:6px}
+.rec{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:start; background:var(--surface-2); border-radius:8px; padding:8px 10px}
+.rec .meta{font-family:var(--mono); font-size:12px; color:var(--ink-2); word-break:break-word}
+.rec .txt{font-size:14.5px; grid-column:1/2}
+.rec.gone{opacity:.5}
+.rec.gone .txt{text-decoration:line-through}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:16.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.m{font-family:var(--mono); font-size:13.5px}
+.t.compact{font-size:15.5px; min-width:560px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:16px}
+.notes h2{font-size:22px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:16px}
+footer{margin-top:40px; font-size:14px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+
+/* ---------- site-wide additions (UX review, 2026-10-22) ---------- */
+@media (hover:none){ .vnote,.hint{display:none} }
+article blockquote{margin:14px 0; padding:8px 14px; border-left:3px solid var(--accent); background:var(--surface); border-radius:0 8px 8px 0}
+article blockquote p{margin:4px 0}
+a.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.wrap a:not(.card):not(.dl):not(.gl):not(.brand){color:var(--accent-ink)}
+.notecur,.rslide,.slide-t{overflow-wrap:anywhere; min-width:0}
+</style>
 
 <div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
 <a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
@@ -19,11 +198,11 @@
 </nav></noscript></div>
 <nav class="crumbs"><a href="../">CIDM 6333</a> · Textbook</nav><div class="eyebrow">Textbook</div><article><h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft, Fall 2026</p>
 <hr />
-<p>This book does three things at once because the course it grew out of does the same three things in the same term.</p>
+<p>This book does three things at once because the course it grew out of does the same three things.</p>
 <p><strong>It surveys.</strong> Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. Part II asks the same questions of every system: why was it designed this way, what problem did that design answer, and what did the design cost?</p>
 <p><strong>It builds.</strong> Part III takes one agentic system apart into its components (loop, patterns, tools, MCP, context, memory, coordination, evaluation, operations) and shows how to build each layer so that you can fly it against a falsifiable claim and defend it without the tool in front of you.</p>
 <p><strong>It governs.</strong> Part I and Part IV describe the posture that keeps the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which this book has the entire record, including the record of what went wrong.</p>
-<p>The title states the thesis: a system can produce an answer without being able to answer for it. The engineer's role, the one no tool takes over, is to answer for the system. The survey, the build, and the governance chapters all serve that purpose.</p>
+<p>The title states the thesis: a system can produce an answer without being able to answer for it. No tool can take over the engineer's role, which is to answer for the system. Everything in this book serves the building of systems, and of engineers, that can answer.</p>
 <h3>How to read this book</h3>
 <ul>
 <li><strong>As a course text.</strong> The week-by-week run sheet maps every CIDM 6333 Evolution to its chapters. Read the Part II chapter for the week's survey and the Part III chapter for the week's build.</li>
@@ -39,12 +218,12 @@
 </ul>
 <h3>Status</h3>
 <p>Every chapter carries a status line: <em>outline</em>, <em>draft</em>, <em>reviewed</em>, <em>final</em>. This is a working text. The outlines are complete, and I am writing the prose in the order the course needs it.</p><h2 id="contents">Contents</h2><p class="small">Each chapter is published here as an outline. The outline carries the learning outcomes, the section plan, the systems analyzed, the gzkit episode, the readings, and the exercises. The full prose will follow in a later edition.</p><h3>Part I · The posture</h3><ol start="1"><li><a href="ch-01-the-layers-of-ai-and-the-one-everybody-forgets/">The Layers of AI, and the One Everybody Forgets</a></li><li><a href="ch-02-what-is-an-agent-from-peas-to-the-nine-components/">What Is an Agent? From PEAS to the Nine Components</a></li><li><a href="ch-03-the-human-at-index-zero-degradation-covenant-gates/">The Human at Index Zero: Degradation, Covenant, Gates</a></li></ol><h3>Part II · The survey</h3><ol start="4"><li><a href="ch-04-before-language-models-symbolic-bdi-multi-agent-and-reinforc/">Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents</a></li><li><a href="ch-05-the-loop-chain-of-thought-react-and-the-first-frameworks-202/">The Loop: Chain-of-Thought, ReAct, and the First Frameworks (2020–2022)</a></li><li><a href="ch-06-the-explosion-of-2023-tools-autonomy-memory-roles/">The Explosion of 2023: Tools, Autonomy, Memory, Roles</a></li><li><a href="ch-07-agents-get-jobs-2024-coding-agents-computer-use-and-mcp/">Agents Get Jobs (2024): Coding Agents, Computer Use, and MCP</a></li><li><a href="ch-08-the-harness-year-2025-claude-code-codex-the-sdks-a2a-agents/">The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering</a></li><li><a href="ch-09-2026-harness-engineering-background-agents-and-the-reference/">2026: Harness Engineering, Background Agents, and the Reference Design&#x27;s Year</a></li></ol><h3>Part III · The build</h3><ol start="10"><li><a href="ch-10-building-the-loop-perceive-reason-act-halt/">Building the Loop: Perceive, Reason, Act, Halt</a></li><li><a href="ch-11-patterns-and-orchestration-frameworks-who-owns-the-loop/">Patterns and Orchestration Frameworks: Who Owns the Loop?</a></li><li><a href="ch-12-tools-as-contracts-schemas-permissions-hooks-recovery/">Tools as Contracts: Schemas, Permissions, Hooks, Recovery</a></li><li><a href="ch-13-the-model-context-protocol-building-servers-and-clients/">The Model Context Protocol: Building Servers and Clients</a></li><li><a href="ch-14-protocols-security-and-harness-engineering/">Protocols, Security, and Harness Engineering</a></li><li><a href="ch-15-context-engineering-budgets-compaction-handoffs-and-layers-o/">Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</a></li><li><a href="ch-16-memory-retrieval-state-eviction-retention/">Memory: Retrieval, State, Eviction, Retention</a></li><li><a href="ch-17-multi-agent-coordination-i-controller-worker-reviewer/">Multi-Agent Coordination I: Controller, Worker, Reviewer</a></li><li><a href="ch-18-multi-agent-coordination-ii-when-coordination-fails/">Multi-Agent Coordination II: When Coordination Fails</a></li><li><a href="ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses</a></li><li><a href="ch-20-observability-red-teaming-and-safety/">Observability, Red-Teaming, and Safety</a></li><li><a href="ch-21-production-and-operations-serving-scheduling-rollback-releas/">Production and Operations: Serving, Scheduling, Rollback, Release</a></li></ol><h3>Part IV · The method</h3><ol start="22"><li><a href="ch-22-sprint-and-drift/">Sprint and Drift</a></li><li><a href="ch-23-flight-cards-and-the-flight-log/">Flight Cards and the Flight Log</a></li><li><a href="ch-24-the-design-analysis/">The Design Analysis</a></li><li><a href="ch-25-governed-development-with-gzkit-a-working-tutorial/">Governed Development with gzkit: A Working Tutorial</a></li><li><a href="ch-26-the-final-system-and-the-closeout-ceremony/">The Final System and the Closeout Ceremony</a></li></ol><h3>Reading list</h3><p><a href="readings/">Every reading the chapters cite, with links.</a></p><h3>Appendices</h3><ul><li><a href="appendix-a-flight-card-template-course-edition/">Appendix A: Flight Card Template (course edition)</a></li><li><a href="appendix-b-design-analysis-template/">Appendix B: Design Analysis Template</a></li><li><a href="appendix-c-the-nine-agent-failure-modes/">Appendix C: The Nine Agent Failure Modes</a></li><li><a href="appendix-d-glossary/">Appendix D: Glossary</a></li><li><a href="appendix-e-reading-list/">Appendix E: Reading List</a></li><li><a href="appendix-f-toolkit-setup-route-a-and-route-b/">Appendix F: Toolkit Setup (Route A and Route B)</a></li><li><a href="appendix-g-the-gzkit-incident-casebook-2026/">Appendix G: The gzkit Incident Casebook (2026)</a></li></ul><h2>Preface</h2><h2>Why this book exists</h2>
-<p>In January 2026 I started a governance kit with eleven days to go before I would show it to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The kit differs in that its ledger kept the receipts for each one.</p>
+<p>In January 2026 a governance kit was started with eleven days to go before it would be shown to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The difference is that this kit kept the receipts.</p>
 <p>That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because a reader understands a component only after making it fail on purpose.</p>
 <h2>What this book is not</h2>
 <p>This book is not a framework tutorial. Frameworks change too often for a tutorial to stay current, and each one encodes a theory of control, which is the real subject. It is not a prompt-engineering book, and it is not an AI-safety book in the policy sense, although Part I situates the engineering posture against that literature. The book takes a position: the human is index zero, first in priority and final in authority, and a system whose human cannot answer for it is not finished.</p>
 <h2>Acknowledgements and lineage</h2>
-<p>I developed Sprint and Drift, the method of Part IV, for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the <em>Sprint and Drift</em> newsletter.</p><h2>Using this book with CIDM 6333</h2><p>The course runs one Evolution per session. Each Evolution carries two threads:</p>
+<p>Sprint and Drift, the method of Part IV, was developed for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the <em>Sprint and Drift</em> newsletter.</p><h2>Using this book with CIDM 6333</h2><p>The course runs one Evolution per week. Each Evolution carries two threads:</p>
 <div class="tw"><table>
 <thead>
 <tr>

@@ -41,7 +41,7 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="figures/transformer-2017.html">
       <span class="weeks">Figure 01b · after Vaswani et al. (2017)</span>
       <b>The 2017 Transformer</b>
-      <span>Figure 1 of Attention Is All You Need, redrawn with the paper's words set beside each part as you step through it. A switch removes the encoder to show which half the GPT lineage kept, and panels work the attention, the positional encodings, and Tables 1 and 3.</span>
+      <span>Figure 1 of Attention Is All You Need, redrawn with the paper's words set beside each part as you step through it. A switch removes the encoder to show which half today's chat models kept, and panels work the attention, the positional encodings, and Tables 1 and 3.</span>
     </a>
     <a class="card" href="figures/transformer-evidence.html">
       <span class="weeks">Figure 01c · E10 E6 E11</span>
@@ -91,12 +91,12 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="figures/claim-receipt-verdict.html">
       <span class="weeks">Figure 10 · E9</span>
       <b>Claim, Receipt, Verdict</b>
-      <span>Follows the four records a multi-agent system writes about one piece of work and shows which of them count as evidence. The MAST failure matrix sorts fourteen ways coordination fails, and the ten-deep chain shows how a summary becomes a fact, with receipts and without them.</span>
+      <span>Follows the four records a multi-agent system writes about one piece of work and shows which of them count as evidence. The MAST failure matrix sorts fourteen ways a multi-agent system fails, and the ten-deep chain shows how a summary becomes a fact, with receipts and without them.</span>
     </a>
     <a class="card" href="figures/one-run-is-an-anecdote.html">
       <span class="weeks">Figure 11 · E10</span>
       <b>One Run Is an Anecdote</b>
-      <span>A delta gate built so that it can fail. The golden set and the baseline are frozen, the threshold is committed before the first run, and a RED witness removes the feature and expects exit 1. The simulator counts how often a gate that sees only a few runs lets a regression through.</span>
+      <span>A delta gate built so that it can fail. The golden set and the baseline are frozen, the threshold is committed before the first run, and a RED witness removes the feature and expects exit 1. The simulator counts how often a gate that sees only a few runs lets a regression through or blocks a real improvement.</span>
     </a>
     <a class="card" href="figures/receipts-over-narrative.html">
       <span class="weeks">Figure 12 · E11</span>
@@ -155,7 +155,7 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="lectures/e3-tools-as-contracts/">
       <span class="weeks">E3 · Tools as Contracts · 12 slides</span>
       <b>Tools as Contracts</b>
-      <span>Each tool is a contract with a schema, a side-effect class, a permission gate, a retry rule, and a halt, and the model is an untrusted caller of it. Hooks sit between the two as a membrane.</span>
+      <span>Tools as contracts with a schema and a side-effect class, and the permission gating, retries, and halting the harness puts around them. The model is an untrusted caller, and hooks run between its call and the tool.</span>
     </a>
     <a class="card" href="lectures/e4-mcp-1/">
       <span class="weeks">E4 · MCP I · 13 slides</span>
@@ -170,7 +170,7 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="lectures/e6-context-engineering/">
       <span class="weeks">E6 · Context Engineering · 27 slides</span>
       <b>Context Engineering</b>
-      <span>Treats the context window as an artifact with a budget, since on every turn the model knows what is in the window and nothing else. Compaction, progressive disclosure, subagents, handoffs, and the layers of truth each follow from that budget.</span>
+      <span>Treats the context window as an artifact with a budget, since on every turn the model knows what is in the window and nothing else. The deck then covers compaction, progressive disclosure, subagents, handoffs, and the layers of truth.</span>
     </a>
     <a class="card" href="lectures/e7-memory/">
       <span class="weeks">E7 · Memory · 29 slides</span>
@@ -205,10 +205,10 @@ a.card span{color:var(--ink-2);font-size:16px}
     <a class="card" href="lectures/mini-attention-2017/">
       <span class="weeks">Mini lecture · Attention (2017) · 12 slides</span>
       <b>Attention Is All You Need, read as a design document</b>
-      <span>Reads the 2017 paper as a design document, in which the authors state a constraint, make one trade against it, and back the trade with their own tables. Every model your harness calls descends from this paper, which is why the course reads it as the first design record in the lineage.</span>
+      <span>Reads the 2017 paper as a design document, in which the authors state a constraint, make one trade against it, and back the trade with evidence. Every model your harness calls descends from this paper.</span>
     </a>
     <a class="card" href="lectures/mini-steer-the-middle/">
-      <span class="weeks">Mini lecture · Steer the Middle · 15 slides · web-only deck</span>
+      <span class="weeks">Mini lecture · Steer the Middle · 14 slides · web-only deck</span>
       <b>Steer the Middle: three rings, one bar, E0 to E8</b>
       <span>Prepares the follow-along exercise. The model, OpenCode, and your harness are drawn as three rings, a table separates what OpenCode already has from what you write, and the last slides build the reviewer that cannot edit.</span>
     </a>

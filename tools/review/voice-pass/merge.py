@@ -63,3 +63,16 @@ if "tg" in what:
     assert h0 == h1, [(a, b) for a, b in zip(h0, h1) if a != b][:3]
     (KIT / "topic-guide.md").write_text(joined, encoding="utf-8")
     print("topic-guide.md merged:", len(h1), "top-level sections")
+
+if "fix" in what:
+    path = KIT / "notes.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    FIX = HERE.parent / "voice-review" / "fix"
+    for slug, (pptx, evo) in RD.DECKS.items():
+        p = FIX / (slug + ".json")
+        if not p.exists() or pptx not in data: continue
+        new = json.loads(p.read_text(encoding="utf-8")); old = data[pptx]
+        assert len(new) == len(old), (slug, len(new), len(old))
+        print(slug, "fix merged; slides changed:", sum(1 for a, b in zip(old, new) if a != b))
+        data[pptx] = new
+    path.write_text(json.dumps(data, indent=1, ensure_ascii=False), encoding="utf-8")

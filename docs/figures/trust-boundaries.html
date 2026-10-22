@@ -180,7 +180,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 06</div>
   <h1>Trust Boundaries</h1>
-  <p class="lede">Two things cross into an MCP system from outside, and the figure follows each one to the point where a check can stop it. <em>Authority</em> arrives as a token, and Part A steps through the authorization flow the spec requires to issue and verify it. <em>Text</em> arrives in tool descriptions, resources, and results, and Part B draws the paths that untrusted text takes across a boundary. Of the five steps in Part A, step 5 is the one your sortie owns, because the server's scope check is the only check that reads the token itself.</p>
+  <p class="lede">Two things cross into an MCP system from outside, and the figure follows each one to the point where a check can stop it. <em>Authority</em> arrives as a token, and Part A steps through the authorization flow the spec requires to issue and verify it. <em>Text</em> arrives in tool descriptions, resources, and results, and Part B draws the paths that untrusted text takes across a boundary. Of the five steps in Part A, step 5 is the one your sortie owns. Below the figure, edit a tool description and watch a pinned hash refuse it.</p>
 </header>
 
 <div class="figwrap">
@@ -516,7 +516,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <p class="small" id="repinnote">A pin tells you the description changed since a human approved it. It catches the rug pull. It cannot catch a description that was already poisoned when you pinned it, so a human reads every description in full before the first pin. If you re-pin the canary, the poison becomes the baseline.</p>
       </div>
     </div>
-    <p class="small">The deck divides the labor between two controls. A permission rule limits what a poisoned description can make happen, and a pinned hash tells you the description changed. Each catches what the other misses, so you need both. None of the three harnesses the deck checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
+    <p class="small">The deck divides the labor between two controls. A permission rule limits what a poisoned description can make happen, and a pinned hash tells you the description changed, so the sortie needs both controls. None of the three harnesses the deck checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
   </section>
 
   <!-- ===== scope gate ===== -->

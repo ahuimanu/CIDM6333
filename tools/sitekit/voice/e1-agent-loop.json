@@ -106,7 +106,7 @@
  "Halt conditions, budgets, and day-one failures": "Halt conditions, budgets, and day-one failures",
  "Each failure becomes a falsifier on the card": "Each failure becomes a falsifier on the card",
  "0:25–0:30": "0:25–0:30",
- "Rule for the semester: a budget the model can talk itself out of is not a budget. Halts live in code and the ledger.": "Rule for the semester: a budget that lives only in the prompt is a budget the model can argue away. Halts live in code and the ledger.",
+ "Rule for the semester: a budget the model can talk itself out of is not a budget. Halts live in code and the ledger.": "Rule for the semester: the model can argue past a budget stated only in the prompt. Halts live in code and the ledger.",
  "7": "7",
  "Failure": "Failure",
  "What you will see": "What you will see",

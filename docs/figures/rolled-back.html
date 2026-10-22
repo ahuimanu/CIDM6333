@@ -532,7 +532,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <p class="small">Lite ran gates 1–2 all term. The Final System runs gates 1–5. Gates 3–5 are the ones a release adds.</p>
     <ul style="margin:0; padding-left:20px; display:grid; gap:6px; font-size:15.5px">
       <li><b>Docs.</b> The README, the runbook, and the release notes describe the release that exists. A command in the docs that fails when pasted is a gate failure.</li>
-      <li><b>BDD.</b> Scenarios for the external contract, what a caller of /runs or a user of the CLI can rely on. The scenarios run, because a scenario that is only written proves nothing about the contract.</li>
+      <li><b>BDD.</b> Scenarios for the external contract, what a caller of /runs or a user of the CLI can rely on. The scenarios are executed, not only written.</li>
       <li><b>Human.</b> A person attests Completed, Completed — Partial, or Dropped. The attestation is a ledger event. The agent never records it for you.</li>
       <li><b>Release notes and changelog.</b> The changelog is every change, for maintainers. Release notes are what a user must know to upgrade and to roll back.</li>
     </ul>

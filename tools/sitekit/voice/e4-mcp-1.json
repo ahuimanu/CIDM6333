@@ -131,7 +131,7 @@
  "Dec 2025 · donated to the Agentic AI Foundation": "Dec 2025 · donated to the Agentic AI Foundation",
  "Jul 2026 · GA 2026-07-28: stateless core": "Jul 2026 · GA 2026-07-28: stateless core",
  "Where is the human?": "Where is the human?",
- "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests, not permissions.": "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests; the host grants permission, and permission never travels.",
+ "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests, not permissions.": "In the host, and only in the host. The client must get the human's approval before a tool runs; the server never assumes it. The wire carries requests only; no message on it grants permission.",
  "Governance is delegated to the host by design; E5 shows that trust misplaced.": "The protocol delegates governance to the host by design; E5 shows what happens when the host's trust is misplaced.",
  "What a healthy protocol ecosystem needs": "What a healthy protocol needs around it",
  "A versioning and deprecation policy (twelve-month window). Independent SDKs (TypeScript, Python, Go, C#; Rust in beta). A server registry with provenance, or it is a supply chain (E5: SmartLoader). Governance that is not one vendor.": "A versioning and deprecation policy (twelve-month window). Independent SDKs (TypeScript, Python, Go, C#; Rust in beta). A server registry with provenance, or it is a supply chain (E5: SmartLoader). Governance that is not one vendor.",

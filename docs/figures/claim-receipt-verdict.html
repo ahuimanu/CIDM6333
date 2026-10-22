@@ -202,7 +202,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 10</div>
   <h1>Claim, Receipt, Verdict</h1>
-  <p class="lede">When a worker reports that all tests pass, the report proves only that the worker wrote it. The evidence is the receipt the harness writes when it runs the tests itself (the command, the exit code, the commit). This figure follows the four records a multi-agent system writes about one piece of work; the failure matrix and the ten-deep chain below show what happens when a claim travels without a receipt.</p>
+  <p class="lede">When a worker reports that all tests pass, the report proves only that the worker wrote it. The evidence is the receipt the harness writes when it runs the tests itself, with the command and its exit code. Step through the four records a multi-agent system writes about one piece of work, then use the failure matrix and the ten-deep chain below to see what happens when a claim travels without a receipt.</p>
 </header>
 
 <div class="figwrap">
@@ -404,13 +404,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-tiers">
     <div class="eyebrow">E9 slide 6 · chapter 18</div>
     <h2 id="h-tiers">Adversarial validation in three tiers</h2>
-    <p class="small">The tier you choose buys independence from the worker's blind spots; the adversary's size has no bearing on that.</p>
+    <p class="small">Choose the tier for its independence from the worker's blind spots, not for the size of the adversary model.</p>
     <div class="tiers">
       <div class="tier"><span class="n">Tier 1 · cross-vendor</span><p>A different model family. It does not share the worker's training data, tokenizer, or house style, so it is least likely to find the worker's mistake plausible. Model evaluators recognize and score their own generations higher than equal work from others (Panickssery, Bowman, &amp; Feng, 2024).</p></div>
       <div class="tier"><span class="n">Tier 2 · independent subagent</span><p>Same family, fresh context, no access to the worker's transcript. It is cheaper to arrange, and it shares the family's blind spots.</p></div>
       <div class="tier"><span class="n">Tier 3 · human</span><p>The Chase, or you. This tier is the slowest, and it is the only one that can attest.</p></div>
     </div>
-    <p>On OpenCode, tier 1 is cheap in Fall 2026. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a published family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
+    <p>On OpenCode, tier 1 is cheap on OpenCode Go. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a published family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
     <p class="small">The adversary gets the claim and the receipt. It never gets the worker's summary, its reasoning, or the answer you planted. The deck's worked agent file denies the adversary edit, bash, and webfetch, and defines NOT-REFUTED inside the prompt, because a model left to its own words will write “verified.”</p>
   </section>
 
@@ -451,7 +451,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Implement a small change</td><td>mid</td><td class="m">opencode-go/deepseek-v4-flash</td><td class="m">$0.15–0.30 / $0.60–1.20 (peak/off-peak)</td><td>The receipt checks the result.</td></tr>
         <tr><td>Plan, review, settle a conflict</td><td>large</td><td class="m">opencode-go/kimi-k3</td><td class="m">$3.00 / $15.00</td><td>An error here reaches every worker. Kimi K3 allows about 110 requests per 5 hours on Go.</td></tr>
         <tr><td>Adversary</td><td>other family</td><td>a family the worker is not</td><td>small tier is enough</td><td>Independence matters more than size.</td></tr>
-        <tr><td>Free or local</td><td>none</td><td class="m">opencode/big-pickle; Ollama</td><td class="m">$0</td><td>OpenCode may use Big Pickle data to improve the model; local costs your laptop's time.</td></tr>
+        <tr><td>Free or local</td><td>none</td><td class="m">opencode/big-pickle; Ollama</td><td class="m">$0</td><td>Big Pickle data may be used to improve the model; local costs your laptop's time.</td></tr>
       </tbody>
     </table></div>
     <p class="small">Go is $10/month with dollar limits per model per 5 hours, week, and month (20% / 50% / 100% of the monthly limit). Published results for the same idea: RouteLLM (Ong et al., 2024) reported 85% lower cost on MT Bench at 95% of GPT-4's quality, and FrugalGPT (Chen, Zaharia, &amp; Zou, 2023) reported cascades that matched GPT-4 at up to 98% lower cost. Your route table applies the same idea at the scale of one sortie.</p>

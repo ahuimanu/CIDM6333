@@ -25,7 +25,7 @@
 <p><strong>Files for this exercise</strong> (all on the course site; the steps fetch them with <code>curl</code>): <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-spec.md">codec-spec.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec.py">codec.py</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md">codec-check SKILL.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/reviewer.md">reviewer.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/steer-the-middle-worksheet.md">worksheet.md</a></p>
 <p><strong>How to submit:</strong> push the exit ticket to your own repository (under your name) in the CIDM6333 organization on GitHub. The repository is the submission. Do not upload files to Canvas. A commit that is on a laptop and not pushed is not submitted.</p>
 <h2>Why this exercise</h2>
-<p>Figure 17 draws your system as three rings. The model sits inside the inner ring, where it takes one window in, gives one answer out, and keeps nothing. OpenCode is the middle ring, in other words the loop that builds the window, calls the model, gates the tool call, runs it, and repeats. Your harness is the outer ring, the files you write to steer the middle. Each row of the table below pairs something OpenCode already does by default with the file you write to replace or extend it, and gives the Evolution in which that file was introduced.</p>
+<p>Figure 17 draws your system as three rings. The model sits inside the inner ring, where it takes one window in, gives one answer out, and keeps nothing. OpenCode is the middle ring, in other words the loop that builds the window, calls the model, gates the tool call, runs it, and repeats. Your harness is the outer ring, the files you write to steer the middle. Most rows of the table below pair something OpenCode already does by default with the file you write to replace or extend it, and the other two rows are additions. Each row gives the Evolution in which the file was introduced.</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -82,7 +82,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>In this Evolution you walk that table from E1 to E8. For each row you locate the file in your repository, state what reads it and when, make it fire, and record the trace. If you cannot fill a row, record that as a finding. If you fill a row for the first time in this Evolution, that file is the one to commit.</p>
+<p>In this Evolution you walk that table from E0 to E8. For each row you locate the file in your repository, state what reads it and when, make it fire, and record the trace. If you cannot fill a row, record that as a finding. If you fill a row for the first time in this Evolution, that file is the one to commit.</p>
 <p>The last row you build is new to your repository: a reviewer agent that cannot edit. The E8 lecture argues that a reviewer which can change the code it judges will pass its own fix. This one file carries that argument into your harness. The deny in its permission block enforces the rule, the anti-trait in its persona states the rule to the model, and the verdict it returns is a typed claim that cites a location.</p>
 <h2>What this exercise tests</h2>
 <p>This exercise tests one statement about the outer ring: every item on it has a file, a reader, a moment it is read, and a trace that it was read. For the reviewer the statement is more specific. The reviewer returns one ReviewResult, it changes no file, and when asked to fix the code it refuses or the permission block refuses for it.</p>
@@ -184,7 +184,7 @@ curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md -o
 uv run --no-project --python 3.14 evolution-07/lab/recall.py add evolution-08/exercise/m-codec.md --retain-until 2026-10-29
 </code></pre>
 <p>If you do not have <code>recall.py</code>, write the same file and skip the <code>add</code>. Record <code>no retriever</code>.</p>
-<p><strong>See:</strong> the record id. The record is true now. In ten minutes, after you add hex, it is stale, and nothing in the loop knows. That is the memory drawer from E7 (Figure 14): a record is a fact that was true on a date, and the loop does not open the drawer by itself.</p>
+<p><strong>See:</strong> the record id. The record is true now. In ten minutes, after you add hex, it is stale, and nothing in the loop knows. That is the memory drawer from E7 (Figure 14): a memory record is a claim with a date, and the loop does not open the drawer by itself.</p>
 <p><strong>Record:</strong> the record id, or <code>no retriever</code>.</p>
 <h3>39–55 · E8 · A reviewer that cannot edit</h3>
 <p><strong>Do, part one.</strong> Create the reviewer:</p>

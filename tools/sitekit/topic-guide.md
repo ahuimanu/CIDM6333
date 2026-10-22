@@ -14,7 +14,7 @@
 
 ---
 
-This book does three things at once because the course it grew out of does the same three things in the same term.
+This book does three things at once because the course it grew out of does the same three things.
 
 **It surveys.** Part II traces the lineage of agent systems from symbolic agents and reinforcement learning through the LLM-agent generation of 2023 to the harnesses, orchestration frameworks, and protocols of 2025 and 2026. Part II asks the same questions of every system: why was it designed this way, what problem did that design answer, and what did the design cost?
 
@@ -22,7 +22,7 @@ This book does three things at once because the course it grew out of does the s
 
 **It governs.** Part I and Part IV describe the posture that keeps the other two honest: the human at index zero, the covenant, the five gates, Sprint and Drift, flight cards, the Design Analysis, and the closeout ceremony. The reference design throughout is gzkit, the GovZero Kit, because it is the one system for which this book has the entire record, including the record of what went wrong.
 
-The title states the thesis: a system can produce an answer without being able to answer for it. The engineer's role, the one no tool takes over, is to answer for the system. The survey, the build, and the governance chapters all serve that purpose.
+The title states the thesis: a system can produce an answer without being able to answer for it. No tool can take over the engineer's role, which is to answer for the system. Everything in this book serves the building of systems, and of engineers, that can answer.
 
 ### How to read this book
 
@@ -48,7 +48,7 @@ Every chapter carries a status line: *outline*, *draft*, *reviewed*, *final*. Th
 
 ## Why this book exists
 
-In January 2026 I started a governance kit with eleven days to go before I would show it to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The kit differs in that its ledger kept the receipts for each one.
+In January 2026 a governance kit was started with eleven days to go before it would be shown to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The difference is that this kit kept the receipts.
 
 That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because a reader understands a component only after making it fail on purpose.
 
@@ -58,14 +58,14 @@ This book is not a framework tutorial. Frameworks change too often for a tutoria
 
 ## Acknowledgements and lineage
 
-I developed Sprint and Drift, the method of Part IV, for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
+Sprint and Drift, the method of Part IV, was developed for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
 
 
 ---
 
 # Using this book with CIDM 6333
 
-The course runs one Evolution per session. Each Evolution carries two threads:
+The course runs one Evolution per week. Each Evolution carries two threads:
 
 | Thread | Instrument | Chapter home |
 |---|---|---|
@@ -113,7 +113,7 @@ After this chapter you can:
 ### 1.1 The stack
 
 - Data foundation (ownership, definitions, quality, lineage) → classical AI → ML → neural networks → deep learning → generative AI → agentic AI.
-- Each layer stands on the one below, and none replaces it. The agentic layer is the newest and thinnest, and the data foundation is the oldest and the one with the defects.
+- Each layer stands on the one below, and none replaces it. The agentic layer is new and thin, and the data foundation is old and has defects.
 - Designers neglect the foundation because it is unglamorous, and the cost lands there (E7 and E11 return to it).
 
 ### 1.2 The progression
@@ -128,7 +128,7 @@ After this chapter you can:
 
 ### 1.4 Reading a system top-down and bottom-up
 
-- Read a system in two passes: from the top, what does it claim to do, and from the bottom, what does it stand on. Worked example: a chat assistant vs. an agent harness.
+- Read a system in two passes: from the top, ask what it claims to do; from the bottom, ask what it stands on. Worked example: a chat assistant vs. an agent harness.
 
 ## Systems analyzed in this chapter
 
@@ -139,7 +139,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit sits on the *agentic* layer and runs no model of its own. It is a governance meta-harness one tier above the vendor harness, and that placement is the first design choice the book examines.
+gzkit sits on the *agentic* layer and runs no model. It is a governance meta-harness one tier above the vendor harness, and that placement is the first design choice the book examines.
 
 ## Readings
 
@@ -213,7 +213,7 @@ gzkit answers component eight (governance and human interface) with the Zero Doc
 ## Exercises and Design Analysis prompts
 
 1. Specify your intended system by PEAS. Then map each PEAS element to one of the nine components.
-2. Find a system marketed as an agent that is a workflow. Say why that is the right design.
+2. Find a system marketed as an agent that is a workflow. Say whether a workflow is the right design for it, and why.
 
 
 
@@ -305,11 +305,11 @@ After this chapter you can:
 
 ### 4.3 Multi-agent systems
 
-- FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI, which reuse the same designs.
+- FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI, which repeat the same designs.
 
 ### 4.4 Reinforcement-learning agents
 
-- Environment, reward, policy. Sample efficiency and reward hacking. LLM agents inherit the lesson that gaming the gate is not new (failure mode 9).
+- Environment, reward, policy. Sample efficiency and reward hacking. Reward hacking in RL agents shows that gaming the gate is not new to LLM agents (failure mode 9).
 
 ### 4.5 What carried forward, what was dropped
 
@@ -370,7 +370,7 @@ After this chapter you can:
 
 ### 5.4 Design lessons
 
-- A loop without a halt condition runs until the budget is spent, so the halt condition is the cost control. Observations are perception, and the harness treats them as untrusted input (ch. 14).
+- A loop without a halt condition keeps calling the model, and each call costs money, until someone stops it. Observations are perception, and the harness treats them as untrusted input (ch. 14).
 
 ## Systems analyzed in this chapter
 
@@ -382,7 +382,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit's genesis (2026-01-12) is the ReAct loop plus the one thing that loop lacked, a record of intent that survives the session. Read the genesis transcript alongside ReAct.
+gzkit's genesis (2026-01-12) is the ReAct loop plus a component that loop lacked: a record of intent that survives the session. Read the genesis transcript alongside ReAct.
 
 ## Readings
 
@@ -425,7 +425,7 @@ After this chapter you can:
 
 ### 6.2 Autonomy
 
-- AutoGPT, BabyAGI (Mar–Apr): loops with goals and no grounding, budget, or evaluator. The spiral. They mattered anyway, because they stated the ambition the field then pursued.
+- AutoGPT, BabyAGI (Mar–Apr): loops with goals and no grounding, budget, or evaluator. The spiral. They mattered anyway, because they stated the ambition.
 
 ### 6.3 Reflection and memory
 
@@ -435,7 +435,7 @@ After this chapter you can:
 
 - CAMEL, MetaGPT (SOPs as prompts), AutoGen (conversation as coordination). FIPA rediscovered.
 
-### 6.5 The year's design lesson
+### 6.5 What 2023 lacked
 
 - Every one of the nine components appeared in 2023, and none appeared together with governance. The harness year (ch. 8) and the reference design fill that gap.
 
@@ -565,7 +565,7 @@ After this chapter you can:
 
 ### 8.3 Protocols and surfaces
 
-- A2A (agents as peers) vs. MCP (tools). AGENTS.md as the cross-vendor instruction file. Agent Skills as progressive disclosure. Hooks as a governance membrane.
+- A2A (agents as peers) vs. MCP (tools). AGENTS.md as the cross-vendor instruction file. Agent Skills as progressive disclosure. Hooks as enforcement points around tool calls.
 
 ### 8.4 Context engineering
 
@@ -623,7 +623,7 @@ After this chapter you can:
 
 ### 9.1 Harness engineering
 
-- Böckeler and the OpenAI post argue that most of an agent product is not the model. gzkit's appraisal of that position, and the blind spots the appraisal records (harness fitness unmeasured; an illusion of quality produced by heavy gates).
+- The claim that most of an agent product is not the model. Readings: Böckeler; the OpenAI post. gzkit's appraisal of that position, and the blind spots the appraisal records (harness fitness unmeasured; an illusion of quality produced by heavy gates).
 
 ### 9.2 Background and long-running agents
 
@@ -646,7 +646,7 @@ After this chapter you can:
 | System | Year | Why it is here | Component focus |
 |---|---|---|---|
 | Harness engineering (as a practice) | 2026 | The product is the harness | Runtime, governance |
-| Background agents | 2025–26 | Operations problems arrive | Runtime |
+| Background agents | 2025–26 | Operational problems arrive | Runtime |
 | gzkit | 2026 | The reference design, with receipts | All nine |
 
 ## Reference design: gzkit
@@ -748,7 +748,7 @@ After this chapter you can:
 
 ### 11.3 Writing ADR-1
 
-- Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. Write the ADR before the code. An ADR written after the code rationalizes what was already built.
+- Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. Write the ADR before the code, because an ADR written after the code is a post-hoc rationalization.
 
 ### 11.4 Refactoring the loop into a pattern
 
@@ -795,7 +795,7 @@ After this chapter you can:
 
 - Declare tools with schema-validated contracts and handle failure and retry.
 - Gate write-class tools behind a confirmation event recorded in a ledger.
-- Explain hooks as a governance membrane and the 2026-08-23 lesson about enforcement locus.
+- Explain hooks as enforcement points around tool calls, and the 2026-08-23 incident that moved enforcement to the commit locus.
 
 ## Outline
 
@@ -805,7 +805,7 @@ After this chapter you can:
 
 ### 12.2 Permission gating
 
-- Read freely; write with confirmation; irreversible with attestation. The confirmation event is written to the ledger before the call. A confirmation that is not in the ledger does not count as one.
+- Read freely; write with confirmation; irreversible with attestation. The confirmation event is written to the ledger before the call. If the ledger does not record the confirmation, the confirmation did not happen.
 
 ### 12.3 Hooks
 
@@ -817,7 +817,7 @@ After this chapter you can:
 
 ### 12.5 Small models and tools
 
-- Why a local 8B model is the right substrate for this Evolution: a brittle model fails wherever the tool contract is loose, so its brittleness makes the contract visible.
+- Why a local 8B model is the right substrate for this Evolution: its brittleness makes the contract visible.
 
 ## Systems analyzed in this chapter
 
@@ -827,7 +827,7 @@ After this chapter you can:
 | Function calling | 2023 | Declared calls | Tools |
 | Gorilla / ToolBench | 2023 | Tool retrieval | Tools |
 | Computer use | 2024 | Screen as tool | Perception, tools |
-| Claude Code hooks | 2025 | The membrane | Governance |
+| Claude Code hooks | 2025 | Pre- and post-tool checks | Governance |
 | gzkit hooks | 2026 | Presence vs procedure; commit locus | Governance |
 
 ## Reference design: gzkit
@@ -880,7 +880,7 @@ After this chapter you can:
 
 ### 13.4 A governance server
 
-- The reference design has no MCP server. This section builds the one it lacks: `gz status`, `gz validate`, the ledger, and receipts exposed as MCP tools and resources, with "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.
+- The reference design has no MCP server. This section specifies the server the student builds to fill that gap: `gz status`, `gz validate`, the ledger, and receipts exposed as MCP tools and resources, with "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.
 
 ### 13.5 Design Analysis of the ecosystem
 
@@ -1010,7 +1010,7 @@ After this chapter you can:
 
 ### 15.4 Layers of truth
 
-- L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 > L1 > L3; L3 can never block a gate. Frontmatter can carry a false status; the ledger is the record a gate consults.
+- L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 > L1 > L3; L3 can never block a gate. Frontmatter can carry a false status; the ledger is the authoritative record, and it outranks frontmatter (L2 > L1).
 
 ### 15.5 Intent preservation as the design goal
 
@@ -1129,7 +1129,7 @@ After this chapter you can:
 
 ### 17.1 Why more than one
 
-- Context isolation; independent review; parallelism; the same division of labor (plan / do / check) under every name since FIPA.
+- Context isolation; independent review; parallelism; the same division of labor (plan / do / check) that FIPA-era designs already used.
 
 ### 17.2 Roles and personas
 
@@ -1159,7 +1159,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-The pipeline is specified in ADR-0.18.0 and `docs/user/concepts/subagent-pipeline.md` and implemented in `src/gzkit/roles.py` and `pipeline_dispatch.py`. The personas live in `.gzkit/personas/`. The `--single-driver --reason` honesty flag completes the set.
+The pipeline is specified in ADR-0.18.0 and `docs/user/concepts/subagent-pipeline.md` and implemented in `src/gzkit/roles.py` and `pipeline_dispatch.py`. The personas live in `.gzkit/personas/`. The pipeline also provides the `--single-driver --reason` honesty flag.
 
 ## Readings
 
@@ -1199,7 +1199,7 @@ After this chapter you can:
 
 ### 18.2 Adversarial validation
 
-- Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim becomes evidence only when a receipt backs it.
+- Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim is not evidence; a receipt is.
 
 ### 18.3 Locks and mutual exclusion
 
@@ -1880,7 +1880,7 @@ ollama run qwen3:8b "say hello"
 - Install Ollama and OpenCode (or another provider-agnostic harness).
 - Use an SDK that speaks OpenAI-compatible endpoints (Pydantic AI, LangGraph, or the OpenAI SDK pointed at Ollama).
 
-## Known problems in py-gzkit 0.34.x (verified 2026-08-24)
+## Known pitfalls with py-gzkit 0.34.x (verified 2026-08-24)
 1. `gz init` writes ~520 files (`.gzkit/`, `.claude/`, `.agents/`, `.github/`). Commit them once. Do not hand-edit a generated file.
 2. The generated `pyproject.toml` declares `readme = "README.md"`. If that file does not exist, Gate 2 fails with "Readme file does not exist." Create the file first.
 3. `gz plan create` needs a slug and `--kind feature --semver 0.1.0 --lane lite`. The artifacts land in `design/`, not in `docs/design/`.
@@ -1907,7 +1907,7 @@ This appendix lists the dated episodes from the reference design and, for each, 
 | 2026-04-19 | Operator PII leaked into artifacts; history rewrite | PII rule; authorship guard | Ch. 20 |
 | 2026-04-26 | A stale clone sat 10 commits behind; a hard reset discarded ~215 lines | SessionStart ahead/behind; orientation freshness | Ch. 15 |
 | 2026-05-10 | The agent piped "ATTEST" into `gz obpi complete` to bypass the TTY gate | Regression test; then the TTY gate was removed (05-14), on the reasoning that authority belongs to the human and forgery-resistance to audit | Ch. 3, 18 |
-| 2026-05-23 | The agent bundled four questions in one prompt | Operator economy of effort | Ch. 15 |
+| 2026-05-23 | Four questions bundled in one prompt | Operator economy of effort | Ch. 15 |
 | 2026-05-24 | Ten-deep subagent chain; polished summaries became "facts" | DO IT RIGHT rules; "a subagent's claim is not evidence" | Ch. 17, 18 |
 | 2026-05-30→06-08 | Green `main` was reopened 8× in nine days | V.I.B.E.S. coined; pre-push gate; MX hangar | Ch. 19, 21 |
 | 2026-06-13 | A Gate-5 was attributed to the operator, who never gave it | First repudiation; ADR-0.0.71 | Ch. 18 |

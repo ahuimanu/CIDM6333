@@ -1,0 +1,534 @@
+# e8-multi-agent-1: speaker notes, before and after the voice pass
+
+## Slide 1
+
+### BEFORE
+
+Evolution 8, the first of two multi-agent weeks. The framing sentence: the field has rediscovered plan, do, check under a new name every few years since the mid-1990s, and the part that keeps going missing is the check that can say no. Survey: the classical baseline in FIPA and BDI, the 2023 role systems, the frameworks that turned roles into configuration, and the harness-native subagents you already use. Build: an implementer and a reviewer with personas, a structured result contract that rejects anything malformed, and a state graph with a checkpoint and a human interrupt before merge. The lab at six has you declare a read-only reviewer in OpenCode and check its verdict. Your personalized Final System brief arrives by Saturday; you acknowledge it in this week's homework.
+
+Cut from slide 1 (full wording):
+- Evolution 8 · Lecture · Thu 10/22
+- CIDM 6333 · Agentic Systems Design and Development · 4:00–6:00 · CC209 / Survey: FIPA and BDI · CAMEL, MetaGPT, AutoGen, CrewAI · LangGraph supervisor · Claude Code subagents   ·   Build: an implementer–reviewer pair with a fail-closed contract and a state graph (lab 6:00–6:30: a read-only reviewer in OpenCode)
+
+### AFTER
+
+Evolution 8 is the first of two Evolutions on multi-agent systems. The field has rediscovered plan, do, check under a new name every few years since the mid-1990s, and the part that keeps going missing is a check with authority to stop the work. The survey covers the classical baseline in FIPA and BDI, the 2023 role systems, the frameworks that turned roles into configuration, and the harness-native subagents you already use. The build is an implementer and a reviewer with personas, a result contract whose parser rejects anything malformed, and a state graph with a checkpoint and a human interrupt before merge. The lab has you declare a read-only reviewer in OpenCode and check its verdict. Your personalized Final System brief arrives separately, and you acknowledge it in the Sprint.
+
+Cut from slide 1 (full wording):
+- Evolution 8 · Lecture
+- CIDM 6333 · Agentic Systems Design and Development / Survey: FIPA and BDI · CAMEL, MetaGPT, AutoGen, CrewAI · LangGraph supervisor · Claude Code subagents   ·   Build: an implementer–reviewer pair with a fail-closed contract and a state graph (lab: a read-only reviewer in OpenCode)
+
+## Slide 2
+
+### BEFORE
+
+Ten minutes of framing, forty-five of spine including a worked trace, a five-minute break, thirty on teardowns with one Design Analysis done live on the board, fifteen on the reference design, then the lens, the card, and the two briefs. There is no consultation hour; Go/No-Go and the Chase review happen in the repo, in writing, and the homework brief gives the days.
+
+Cut from slide 2 (full wording):
+- Plan / do / check under every name since FIPA; a worker's result is a typed claim; a verdict counts only if it cites evidence and its author cannot edit
+- Why more than one; roles and personas; HandoffResult and ReviewResult; two-stage review; state graphs; declaring a read-only reviewer; common mistakes; one worked trace
+- FIPA/BDI; CAMEL and MetaGPT; AutoGen (now Microsoft Agent Framework) and CrewAI; LangGraph supervisor; Claude Code subagents; a live Design Analysis
+- Lab 6:00–6:30 (self-guided); the Sprint, due Wed 10/28, with the Chase's Go/No-Go in the repo
+
+### AFTER
+
+Ten minutes of framing, forty-five of spine including a worked trace, a five-minute break, thirty on teardowns with one Design Analysis done live on the board, fifteen on the reference design, then the lens, the card, and the two briefs. There is no consultation hour; Go/No-Go and the Chase review happen in the repo, in writing, and the homework brief gives the days.
+
+Cut from slide 2 (full wording):
+- Plan / do / check under every name since FIPA; a worker's result is a typed claim; a verdict counts only if it cites evidence and its author cannot edit the work it judges
+- Why more than one; roles and personas; HandoffResult and ReviewResult; two-stage review; state graphs; declaring a read-only reviewer; common mistakes; one worked trace
+- FIPA/BDI; CAMEL and MetaGPT; AutoGen (now Microsoft Agent Framework) and CrewAI; LangGraph supervisor; Claude Code subagents; a live Design Analysis
+- Self-guided lab; the Sprint, with the Chase's Go/No-Go in the repo
+
+## Slide 3
+
+### BEFORE
+
+Framing. Read the quote as a list of renamings: manager and contractor in the 1980 contract net, architect and engineer in MetaGPT, main agent and subagent in the harness you use. The division of labor is the same each time. The part that goes missing is a check with authority to stop the work. Two rules. First, a worker returns a typed claim; the controller parses it against a closed set of statuses and rejects anything else, and it never reads a status out of prose. Second, a verdict is evidence only if it cites what was checked and its author could not edit the work. The claim is the chapter's expansion card: nothing merges without a verdict, and FAIL blocks. The falsifiers are pre-registered now, before anyone builds.
+
+Cut from slide 3 (full wording):
+- Plan, do, check: the division of labor that keeps coming back
+- FIPA called them manager and contractor. MetaGPT called them architect and engineer. Claude Code calls them main agent and subagent. Each time, the part that went missing was a reviewer whose FAIL stops the work.
+- Rule one. A worker's result is a typed claim. It parses against a schema with a closed set of statuses, or it is rejected. Prose from a worker is never read as a status. / Rule two. A verdict is evidence only when it cites what it checked (a file and line, a test output, a diff hunk) and its author could not edit the thing it judged.
+- No implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. Three observations falsify it: merged work with no ReviewResult on record; a malformed result parsed as PASS or DONE; a reviewer's claim accepted without the evidence it cites. A pass obtained by loosening the parser or giving the reviewer write access is a fourth.
+
+### AFTER
+
+The slide lists three renamings of one division of labor: manager and contractor in the 1980 contract net, architect and engineer in MetaGPT, main agent and subagent in the harness you use. The division is the same each time, and in each case the check with authority to stop the work is the part that is missing. Two rules follow from that observation and recur through the spine. First, a worker returns a typed claim, which the controller parses against a closed set of statuses; the controller rejects anything else and never reads a status out of prose. Second, a verdict counts as evidence only if it cites what the reviewer checked and the reviewer could not edit the work. The design claim for Sortie 8 is the chapter's expansion card: no implementer output reaches main without a reviewer verdict, and a FAIL blocks the merge. The four falsifiers on the slide are pre-registered before anyone builds, so that nobody can change the test after the result is in.
+
+Cut from slide 3 (full wording):
+- Plan, do, check: a division of labor that recurs from FIPA to Claude Code
+- FIPA called them manager and contractor. MetaGPT called them architect and engineer. Claude Code calls them main agent and subagent. Each of these systems lacked a reviewer whose FAIL stops the work.
+- Rule one. A worker's result is a typed claim. It parses against a schema with a closed set of statuses, or it is rejected. Prose from a worker is never read as a status. / Rule two. A verdict is evidence only when it cites what it checked (a file and line, a test output, a diff hunk) and its author could not edit the thing it judged.
+- No implementer output reaches the main branch without a reviewer verdict, and a FAIL verdict blocks. Three observations falsify this design claim: merged work with no ReviewResult on record; a malformed result parsed as PASS or DONE; a reviewer's claim accepted without the evidence it cites. A pass obtained by loosening the parser or giving the reviewer write access is a fourth.
+
+## Slide 4
+
+### BEFORE
+
+The case for more than one agent, with numbers. Anthropic's June 2025 post on its research system reports roughly fifteen times the tokens of a chat turn for the multi-agent version and about four times for a single agent, a 90.2 percent improvement over single-agent Opus 4 on their internal evaluation, and token usage alone explaining about 80 percent of the variance. So a large part of the gain is spending more tokens. The three reasons to split are isolation, independent review, and parallelism. The counter-argument came the same week from Cognition: split workers make conflicting implicit decisions unless they share full traces. Both posts say coding parallelizes less than research. That is why this week's build is sequential: one implementer, one reviewer. Parallel work waits for locks in E9.
+
+Cut from slide 4 (full wording):
+- Three reasons to split. Context isolation: a worker starts with a clean window and returns a result, not its whole trace. Independent review: a reviewer that did not write the code does not share the author's blind spots. Parallelism: independent subtasks run at once. / The counter-argument. Walden Yan (Cognition, Jun 2025): share full traces, not messages, because actions carry implicit decisions, and two workers with different assumptions build parts that do not fit. Anthropic's post agrees that coding tasks parallelize less well than research.
+- For your system this week: one implementer and one reviewer, in sequence. Parallel workers are an E9 question, with locks.
+
+### AFTER
+
+Anthropic's June 2025 post on its research system gives the numbers for more than one agent. The multi-agent version used roughly fifteen times the tokens of a chat turn, against about four times for a single agent; it scored 90.2 percent better than single-agent Opus 4 on Anthropic's internal evaluation; and token usage alone explained about 80 percent of the variance in that score. In other words, a large part of the gain came from spending more tokens. The three reasons to split the work are context isolation, independent review, and parallelism. Walden Yan at Cognition published the counter-argument the same week: workers that do not share full traces make conflicting implicit decisions, because an action carries decisions that a summary omits. Both posts say that coding parallelizes less well than research. For this reason the build in this Evolution is sequential, with one implementer and one reviewer, and parallel work waits for E9, where locks are introduced.
+
+Cut from slide 4 (full wording):
+- Three reasons to split. Context isolation: a worker starts with a clean window and returns a result, not its whole trace. Independent review: a reviewer that did not write the code does not share the author's blind spots. Parallelism: independent subtasks run at once. / The counter-argument. Walden Yan (Cognition, Jun 2025): share full traces, not messages, because actions carry implicit decisions, and two workers with different assumptions build parts that do not fit. Anthropic's post agrees that coding tasks parallelize less well than research.
+- For your system in this Evolution: one implementer and one reviewer, in sequence. Parallel workers, and the locks they need, belong to E9.
+
+## Slide 5
+
+### BEFORE
+
+The table is the argument of the framing slide in one view. Read across. The contract net has a manager, a contractor, and typed messages. BDI has deliberation, execution, and reconsideration. CAMEL has two roles and no checker at all: the assistant ends the task by saying a token. MetaGPT puts documents between roles and adds executable feedback. AutoGen's classic version runs until someone says TERMINATE. CrewAI's hierarchical process gives a manager the reviewing job and lets a task carry a guardrail function. The harnesses give you a subagent and a message back. The last column is the one to watch: the systems that carried typed results between roles were the ones that could check them. Chat turns cannot be parsed into a verdict.
+
+Instructor checks moved off the slide:
+- [Verify against the repository before class.]
+
+### AFTER
+
+The table puts the framing slide's argument into one view, with a row per system and a column per role. Read across a row. The contract net has a manager, a contractor, and typed messages between them. BDI has deliberation, execution by a plan library, and reconsideration when beliefs change. CAMEL has two roles and no checker: the assistant ends the task by writing a token. MetaGPT puts documents between the roles and adds executable feedback for the engineer. AutoGen's classic version runs until some agent writes TERMINATE, and CrewAI's hierarchical process gives the manager the reviewing job and lets a task carry a guardrail function. The harnesses give you a subagent and a message back. The last column, what carries the result, decides what the check in the column before it can do: a system that carried a typed result between roles could parse it into a verdict, and a system that carried chat turns could not.
+
+Instructor checks moved off the slide:
+- [Verify against the repository before class.]
+
+## Slide 6
+
+### BEFORE
+
+Personas. The reference design uses four roles: implementer, spec reviewer, quality reviewer, and narrator. A persona file has a role, traits written as observable behavior, anti-traits, and a why sentence. The anti-traits do most of the work because they name the failure you expect: a reviewer that fixes the code has stopped being a reviewer, and a reviewer that softens FAIL to keep the conversation pleasant is the sycophancy problem in a job title. The why tells the model what is at stake, so it can decide a borderline case. Delete generic expertise claims; they change tone, not behavior. The right panel is the course's example, and it is close to what you will write in the lab tonight. The strip is the chapter's exercise; do it and measure.
+
+Cut from slide 6 (full wording):
+- Role. One job: implementer, spec reviewer, quality reviewer, narrator (the four in the reference design). / Traits. Observable behaviors: 'cites file and line for every finding.' / Anti-traits. The behaviors this role must not show: 'does not rewrite the code it reviews.' These carry most of the weight. / The why. One sentence on what breaks if the role fails, so the model can weigh a borderline case. / Delete on sight. 'You are a world-class senior engineer.' A generic expertise claim changes tone, not behavior, and the chapter bans it.
+- Chapter 17 exercise: give your reviewer anti-traits, then remove them and count how its verdicts change. That measurement is an Exceptional mark this week.
+
+### AFTER
+
+The reference design uses four roles: implementer, spec reviewer, quality reviewer, and narrator. A persona file for one of them holds the role, traits written as observable behavior, anti-traits, and one sentence on why the role exists. The anti-traits carry the most weight, because each states a failure you expect: a reviewer that fixes the code has stopped being a reviewer, and a reviewer that softens a FAIL to keep the conversation pleasant is the sycophancy problem in a job title. The why sentence tells the model what is at stake, so that it can decide a borderline case the traits do not cover. Delete a generic expertise claim such as 'You are a world-class senior engineer', because it changes the tone of the reply and leaves the behavior unchanged. The right panel is the course's example reviewer persona, and it is close to the file you write in the lab. The strip at the bottom is the chapter's exercise: remove the anti-traits, run the reviewer again, and count how its verdicts change.
+
+Cut from slide 6 (full wording):
+- Role. One job: implementer, spec reviewer, quality reviewer, narrator (the four in the reference design). / Traits. Observable behaviors: 'cites file and line for every finding.' / Anti-traits. The behaviors this role must not show: 'does not rewrite the code it reviews.' Anti-traits carry most of the persona's weight, and the Chapter 17 exercise tests this. / The why. One sentence on what breaks if the role fails, so the model can weigh a borderline case. / Delete on sight. 'You are a world-class senior engineer.' A generic expertise statement changes the model's tone and leaves its behavior unchanged, and the chapter bans it.
+- Chapter 17 exercise: give your reviewer anti-traits, then remove them and count how its verdicts change. That measurement earns an Exceptional mark in this Evolution.
+
+## Slide 7
+
+### BEFORE
+
+Contracts. The implementer returns a HandoffResult with one of four statuses; the reference design names them DONE, DONE WITH CONCERNS, NEEDS CONTEXT, and BLOCKED. The field names beyond status are the course's, and you can extend them. Notice that two of the four statuses are ways to say 'I did not finish': a worker with a legitimate way to say BLOCKED has less reason to fabricate DONE. The reviewer returns PASS, FAIL, or CONCERNS with findings, and each finding has a location. The third card is the whole idea of fail-closed parsing: invalid JSON, an unknown status, or a DONE without evidence is rejected, and nothing in the function returns DONE by default. The most common bug you will write this week is a parser that catches the exception and carries on.
+
+Cut from slide 7 (full wording):
+- status: one of DONE · DONE_WITH_CONCERNS · NEEDS_CONTEXT · BLOCKED / Course fields: / task id / files changed / evidence: the test command and its exit code / concerns (required if DONE_WITH_CONCERNS) / question (required if NEEDS_CONTEXT) / NEEDS_CONTEXT and BLOCKED are honest outcomes. A worker that can say BLOCKED does not have to invent DONE.
+- verdict: one of PASS · FAIL · CONCERNS / findings: a list, each with / location (file:line, test id, or hunk) / what is wrong / severity / Rule: FAIL and CONCERNS need at least one finding. PASS needs a list of what was checked. A verdict with no citations is rejected as malformed, whatever it says.
+
+### AFTER
+
+The implementer returns a HandoffResult with one of four statuses, which the reference design calls DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, and BLOCKED. The fields beyond status are the course's, and you can extend them. Two of the four statuses are ways to say 'I did not finish', and that is deliberate: a worker with a legitimate way to say BLOCKED has less reason to fabricate DONE. The reviewer returns PASS, FAIL, or CONCERNS with findings, and each finding carries a location. The third card shows fail-closed parsing in twelve lines: the parser rejects invalid JSON, an unknown status, and a DONE without evidence, and no branch of the function returns DONE by default. A parser that catches the exception and carries on with a default status is the bug to look for in your own code, because it turns a crash or a refusal into a merge.
+
+Cut from slide 7 (full wording):
+- status: one of DONE · DONE_WITH_CONCERNS · NEEDS_CONTEXT · BLOCKED / Course fields: / task id / files changed / evidence: the test command and its exit code / concerns (required if DONE_WITH_CONCERNS) / question (required if NEEDS_CONTEXT) / NEEDS_CONTEXT and BLOCKED are honest outcomes. A worker that can return BLOCKED has a legal status for a stuck task, so it has no reason to report a false DONE.
+- verdict: one of PASS · FAIL · CONCERNS / findings: a list, each with / location (file:line, test id, or hunk) / what is wrong / severity / Rule: FAIL and CONCERNS need at least one finding. PASS needs a list of what was checked. The parser rejects a verdict with no citations as malformed, whatever its status.
+
+## Slide 8
+
+### BEFORE
+
+Two-stage review, from the reference design. The implementer returns a typed result and the controller parses it. The spec reviewer asks one question: does this change do what the brief says, inside the allowed paths. Only after that passes does the quality reviewer ask whether it is done well. The order matters because a quality reviewer handed the wrong feature will review it carefully and pass it. The controller merges on two cited PASS verdicts, sends CONCERNS to the human, and bounds the retries: after a fixed number of FAIL rounds the task goes BLOCKED to a person rather than looping. For Sortie 8 one reviewer is sound; two stages with separate personas is exceptional.
+
+Cut from slide 8 (full wording):
+- The implementer gets one task, the brief, and the allowed paths. It returns a HandoffResult. The controller parses it; a reject stops here.
+- Question: does the change do what the brief asks, and nothing outside the allowed paths? Reads the brief and the diff. FAIL routes back to the implementer with findings.
+- Question: is it done well? Tests present and meaningful, errors handled, no dead code. Runs only after spec PASS, so it never polishes the wrong feature.
+- Merge only on two PASS verdicts that cite evidence. CONCERNS goes to the human. After N failed rounds the task goes BLOCKED to the human; no silent retry loop.
+- Order matters: a quality review of code that does the wrong thing produces a confident PASS on the wrong feature. Your Sortie 8 may use one reviewer; two stages is Exceptional.
+
+### AFTER
+
+Two-stage review comes from the reference design. The implementer returns a typed result and the controller parses it. The spec reviewer then asks one question: does this change do what the brief says, inside the allowed paths? Only after a spec PASS does the quality reviewer ask whether the change is done well, with meaningful tests, handled errors, and no dead code. The order matters because a quality reviewer handed the wrong feature will review it carefully and pass it. The controller merges on two PASS verdicts that cite evidence, sends CONCERNS to the human, and bounds the retries: after a fixed number of FAIL rounds the task goes BLOCKED to a person instead of looping. For Sortie 8 one reviewer is Sound, and two stages with separate personas is Exceptional.
+
+Cut from slide 8 (full wording):
+- The implementer gets one task, the brief, and the allowed paths. It returns a HandoffResult. The controller parses it. A rejected result stops the pipeline at this stage.
+- Question: does the change do what the brief asks, and nothing outside the allowed paths? The spec reviewer reads the brief and the diff. FAIL routes back to the implementer with findings.
+- Question: is it done well? Tests present and meaningful, errors handled, no dead code. The quality reviewer runs only after a spec PASS, so it never polishes the wrong feature.
+- Merge only on two PASS verdicts that cite evidence. CONCERNS goes to the human. After N failed rounds the controller marks the task BLOCKED and sends it to the human. There is no silent retry loop.
+- The order of the stages matters, because a quality review of code that does the wrong thing produces a confident PASS on the wrong feature. Sortie 8 may use one reviewer. Two stages earn an Exceptional mark.
+
+## Slide 9
+
+### BEFORE
+
+State graphs. The controller is a graph: implement, review, merge, with a conditional edge after review that routes pass to merge, fail back to implement, and halt to the end. Compile it with a checkpointer and every node's output is saved. The second card is the human interrupt: interrupt pauses the graph, the state is saved under a thread id, and a Command with a resume value continues it. Put the interrupt before merge, and the human is a node in the graph, not a comment in the README. Third card: LangChain's own guidance now says to build the supervisor with tool calling rather than the langgraph-supervisor library, which has not had a release since November 2025. If you do not want LangGraph at all, a small state machine with named states and a checkpoint file after each node meets the Sprint requirement. What does not meet it is a for-loop with no persisted state.
+
+Cut from slide 9 (full wording):
+- LangChain now recommends building the supervisor directly with tool calling: the main agent calls each subagent as a tool, and all routing passes through it. The older langgraph-supervisor library (create_supervisor, last release 0.0.31, Nov 2025) is no longer the advised path. / Equivalent without LangGraph: a Python state machine with named states and a JSON checkpoint file after each node.
+
+### AFTER
+
+The controller is a graph with three nodes, implement, review, and merge, and a conditional edge after review that routes pass to merge, fail back to implement, and halt to the end. When you compile the graph with a checkpointer, the output of every node is saved. The second card is the human interrupt: interrupt() pauses the graph, the checkpointer saves the state under a thread id, and a Command with a resume value continues the run from that point. Put the interrupt before merge, and the human becomes a node in the graph rather than a sentence in the README. The third card records a change in LangChain's own guidance: build the supervisor with tool calling, since the langgraph-supervisor library has had no release since November 2025. If you do not want LangGraph at all, a small state machine with declared states and a checkpoint file written after each node meets the Sprint requirement. A for-loop with no persisted state does not meet it, because nothing survives a halt for a human to resume.
+
+Cut from slide 9 (full wording):
+- LangChain now recommends building the supervisor directly with tool calling: the main agent calls each subagent as a tool, and all routing passes through it. The older langgraph-supervisor library (create_supervisor, last release 0.0.31, Nov 2025) is no longer the advised path. / Equivalent without LangGraph: a Python state machine with labelled states and a JSON checkpoint file after each node.
+
+## Slide 10
+
+### BEFORE
+
+The configuration you will write in the lab. In OpenCode an agent is a Markdown file in .opencode/agents with frontmatter: a description, mode subagent, a low temperature, and a permission block. Edit is denied, webfetch is denied, and bash is denied except git diff and git log. You invoke it with an at-mention, or non-interactively with opencode run and the agent flag, and a primary agent can call it through the task tool. Claude Code is the same shape: a file in .claude/agents with a tools allowlist. The doctrine from E5 applies: the permission is the enforcement and the anti-trait is the explanation. Test both by asking the reviewer to fix the bug. Two current notes from the OpenCode docs: the tools key is deprecated in favor of permission, and hiding a subagent from autocomplete does not stop the model from calling it.
+
+Cut from slide 10 (full wording):
+- --- / name: reviewer / description: Reviews one diff against one brief ... / tools: Read, Grep, Glob / model: sonnet / --- / The tools field is an allowlist; disallowedTools removes tools from what the subagent inherits. Invoke by @-mention or by name; the main agent may also delegate on the description. / Same doctrine in both. The deny is the enforcement; the anti-trait 'do not edit' is the explanation. Test both: ask the reviewer to fix the bug and watch the harness refuse.
+- OpenCode docs (Sep 2026): the tools key is deprecated; use permission. Hidden subagents can still be called through the task tool if permissions allow.
+
+### AFTER
+
+This is the configuration you write in the lab. In OpenCode an agent is a Markdown file in .opencode/agents with frontmatter: a description, mode subagent, a low temperature, and a permission block. The block denies edit, denies webfetch, and denies bash except for git diff and git log. You invoke the agent with an at-mention in the TUI, or non-interactively with opencode run and the agent flag, and a primary agent can call it through the task tool. Claude Code has the same shape, a file in .claude/agents with a tools allowlist. The doctrine from E5 applies to both: the permission line is the enforcement, and the anti-trait in the persona is the explanation the model reads. Test both by asking the reviewer to fix the bug and watching the harness refuse. Two notes from the current OpenCode docs: the tools key is deprecated in favor of permission, and hiding a subagent from autocomplete does not stop a model from calling it through the task tool.
+
+Cut from slide 10 (full wording):
+- --- / name: reviewer / description: Reviews one diff against one brief ... / tools: Read, Grep, Glob / model: sonnet / --- / The tools field is an allowlist; disallowedTools removes tools from what the subagent inherits. Invoke by @-mention or by name; the main agent may also delegate on the description. / Both harnesses follow the same doctrine. The deny rule enforces the limit, and the anti-trait 'do not edit' explains the limit to the model. Test both: ask the reviewer to fix the bug, then confirm that the harness refuses the edit.
+- OpenCode docs (Sep 2026): the tools key is deprecated; use permission. Hidden subagents can still be called through the task tool if permissions allow.
+
+## Slide 11
+
+### BEFORE
+
+The common-mistake slide. Six ways a pair collapses into one agent. Reviewing in the same session means the same context and the same blind spots. Searching the reply for the word PASS is metagaming waiting to happen, because 'this would not pass' contains the word. A parser that defaults to DONE on an exception merges crashes. A reviewer handed the implementer's summary is checking a claim against itself; give it the diff and the test output. A reviewer with write access fixes the code and passes its own fix. And an unbounded retry loop continues until the reviewer gives in. Each row has an Appendix C number; use them in your debrief. The strip previews E9: the reference design's ten-deep chain is row four repeated ten times.
+
+Cut from slide 11 (full wording):
+- The fourth row is the E9 incident in miniature: in gzkit's 2026-05-24 chain, polished summaries became facts ten levels deep.
+
+### AFTER
+
+The table lists six ways a pair of agents collapses into one agent with extra steps. A reviewer that runs in the implementer's session shares its context and its blind spots, so the review agrees with the author. A controller that searches the reply for the word PASS invites metagaming, because 'this would not PASS without tests' contains the word. A parser that defaults to DONE on an exception merges a crash or a refusal. A reviewer handed the implementer's summary checks a claim against itself, so give it the diff and the test output. A reviewer with write access fixes the code and then passes its own fix. An unbounded retry loop continues until the reviewer gives in. Each row carries an Appendix C number for your debrief. The strip previews E9: gzkit's ten-deep chain of 2026-05-24 is row four repeated at every level.
+
+Cut from slide 11 (full wording):
+- The fourth row is a small version of the E9 incident: in gzkit's 2026-05-24 chain, each of ten levels accepted the polished summary from the level below as fact.
+
+## Slide 12
+
+### BEFORE
+
+A worked trace, the kind of log the Chase will read. The first implementer result parses, and the reviewer fails it with a finding that cites the brief's second requirement and the missing test. The controller routes back. The second attempt comes back as chat prose, 'I added the test and everything passes.' The parser rejects it because it is not JSON, and the controller re-dispatches once with the schema, counting the round. The third result parses; the reviewer passes it and lists what it checked, including the test by name. The graph stops at the interrupt, the student approves, and the merge has a commit id. Last two lines: dispatch records per role, and the Chase's reading list. Note that the Chase re-runs the test command; the evidence field is a claim until someone runs it.
+
+### AFTER
+
+The trace is the kind of log the Chase reads. The first implementer result parses, and the reviewer fails it with a finding that cites the brief's second requirement and the test that is missing. The controller routes the task back. The second attempt comes back as chat prose, 'I added the test and everything passes now.' The parser rejects it because it is not JSON, and the controller re-dispatches once with the schema attached, counting the round against the bound of three. The third result parses, and the reviewer passes it with a list of what it checked, including the test by its name. The graph stops at the interrupt, the student approves, and the merge has a commit id. The last two lines are the dispatch records per role and the Chase's reading list. The Chase re-runs the test command, because the evidence field is a claim until someone runs the command it cites.
+
+## Slide 13
+
+### BEFORE
+
+Break. The question for the break: which part of your system could review the implementer's work now, and what write access would it have while it did. Most of you will answer 'the same model in the same session, with full access,' and that is the thing to change this week.
+
+Cut from slide 13 (full wording):
+- Think about this: in your own system, which component could give a verdict on the implementer's work today, and what could it edit while doing so?
+
+### AFTER
+
+Break. The question for the break: which part of your system could review the implementer's work now, and what write access would it have while it did. If your answer is 'the same model in the same session, with full access,' that arrangement is what this Evolution changes.
+
+Cut from slide 13 (full wording):
+- In your own system, which component could give a verdict on the implementer's work today, and what could it edit while doing so?
+
+## Slide 14
+
+### BEFORE
+
+First teardown, the classical baseline. The contract net protocol dates to Reid Smith's 1980 paper: call for proposals, propose or refuse, accept one, reject the rest, and the winner reports a result or a failure. FIPA, founded in 1996 and moved to an IEEE standards committee in 2005, standardized the message language, and every message carried a performative. The mechanism to take away: the message type told the receiver what kind of claim it held. The failure mode: the vocabulary never said whether an inform was true, which is fabrication, number three. BDI, from Rao and Georgeff's 1995 paper, made intentions first-class objects with explicit commitment and reconsideration. LLM agents kept the goals and dropped the inspectable belief state. A small aside for the curious: the fipa.org domain no longer hosts the specifications, so cite the IEEE and archived copies. Verify that before you say it in class.
+
+Cut from slide 14 (full wording):
+- Contract net (Smith, 1980): a manager sends a call for proposals; contractors propose or refuse; the manager accepts one; the winner reports a result or a failure. / FIPA (1996; an IEEE standards committee from 2005) standardized the Agent Communication Language. Every message carries a performative: request, inform, propose, accept-proposal, refuse, failure. JADE implemented it in Java. / Mechanism. The message type is the claim's type. / Design choice. Interoperability through a declared vocabulary. / Cost. Ontologies and heavy tooling. / Failure mode. Nothing said whether an inform was true (#3).
+- Source. Rao & Georgeff, 'BDI Agents: From Theory to Practice' (ICMAS-95), after Bratman's theory of practical reasoning. / Mechanism. An agent holds beliefs about the world and desires it could pursue, and commits to a few intentions. It keeps an intention until it succeeds, becomes impossible, or its reason is gone, and it reconsiders when beliefs change. / What carried forward. Goal decomposition; intent preservation; the halt condition as 'intention achieved or dropped.' The chapter's line: gzkit's intent preservation across context boundaries is BDI's commitment problem with a ledger. / What LLM agents dropped. Explicit belief state that a program can inspect. A chat transcript is not a belief base.
+- Read FIPA before AutoGen and CrewAI (Ch. 4): performatives became status enums; the contract net became the supervisor; reconsideration became replanning.
+
+### AFTER
+
+The first teardown is the classical baseline. The contract net protocol dates to Reid Smith's 1980 paper: a manager sends a call for proposals, contractors propose or refuse, the manager accepts one bid and rejects the rest, and the winner reports a result or a failure. FIPA, founded in 1996 and moved to an IEEE standards committee in 2005, standardized the message language so that every message carried a performative. The mechanism to take from it is that the message type told the receiver what kind of claim the message held. The failure mode is that the vocabulary never said whether an inform was true, which is fabrication, Appendix C number three. BDI, from Rao and Georgeff's 1995 paper, made intentions first-class objects with explicit commitment and reconsideration when beliefs change. LLM agents kept the goals and dropped the inspectable belief state, since a chat transcript is not a belief base that a program can query. One note on sources: the fipa.org domain no longer hosts the specifications, so cite the IEEE and archived copies.
+
+Cut from slide 14 (full wording):
+- Contract net (Smith, 1980): a manager sends a call for proposals; contractors propose or refuse; the manager accepts one; the winner reports a result or a failure. / FIPA (1996; an IEEE standards committee from 2005) standardized the Agent Communication Language. Every message carries a performative: request, inform, propose, accept-proposal, refuse, failure. JADE implemented it in Java. / Mechanism. The performative gives each message a type. / Design choice. Interoperability through a declared vocabulary. / Cost. Ontologies and heavy tooling. / Failure mode. Nothing in the protocol checked whether an inform was true (#3).
+- Source. Rao & Georgeff, 'BDI Agents: From Theory to Practice' (ICMAS-95), after Bratman's theory of practical reasoning. / Mechanism. An agent holds beliefs about the world and desires it could pursue, and commits to a few intentions. It keeps an intention until it succeeds, becomes impossible, or its reason is gone, and it reconsiders when beliefs change. / What carried forward. Goal decomposition; intent preservation; the halt condition as 'intention achieved or dropped.' The chapter states that gzkit's intent preservation across context boundaries is BDI's commitment problem with a ledger. / What LLM agents dropped. Explicit belief state that a program can inspect. A chat transcript records what was said, and a program cannot query it for what the agent believes.
+- Read FIPA before AutoGen and CrewAI (Ch. 4): performatives became status enums; the contract net became the supervisor; reconsideration became replanning.
+
+## Slide 15
+
+### BEFORE
+
+Second teardown, the 2023 role systems. CAMEL set two agents talking with inception prompts, and the paper is honest about what went wrong: role flipping, repeated instructions, flake replies, infinite loops. Its halt is the assistant saying a special token, which is completion by assertion, fabrication and metagaming in one line. MetaGPT is the correction: roles modeled on a software company, connected by structured documents through a publish-subscribe pool, with executable feedback for the engineer. It reported high HumanEval and MBPP numbers for its time. The failure mode is that every role reads the same upstream documents, so a wrong requirement flows through intact. The third card is the lesson for your build: documents with a shape beat chat, and a closed status set plus a blocking verdict is one more step.
+
+Cut from slide 15 (full wording):
+- Mechanism. Two agents, an AI user and an AI assistant, set up by 'inception prompting' to cooperate on a task without a human in the loop. / Design choice. Study agent societies through their conversations. / Cost and failure. The paper names four failures: role flipping, the assistant repeating instructions, flake replies ('I will...'), and infinite message loops. The halt is the assistant writing <CAMEL_TASK_DONE>: completion by assertion (#3, #9).
+- Mechanism. 'Code = SOP(Team)': product manager, architect, project manager, engineer, QA. Roles exchange structured documents (PRD, design, code) through a shared message pool with subscriptions, not dialogue. The engineer gets executable feedback from running its code. / Design choice. An assembly line to stop cascading hallucination. / Cost and failure. Reported 85.9% / 87.7% Pass@1 on HumanEval / MBPP. The QA role is another model reading the same documents; a wrong PRD flows downstream intact (#4).
+- CAMEL connected roles with chat; MetaGPT connected them with documents that have a shape. / That is the step from 'the agents talked' to 'the agents handed over an artifact,' and it is the step this week's contract takes one further: the artifact has a closed status set and the controller rejects anything else. / Neither system had a reviewer whose verdict could block, or a human in the path.
+
+### AFTER
+
+The second teardown covers the 2023 role systems. CAMEL set two agents talking with inception prompts and no human in the loop, and the paper reports four failures: role flipping, repeated instructions, flake replies, and infinite loops. Its halt is the assistant writing a special token, which is completion by assertion, fabrication and metagaming in one line. MetaGPT corrected that design with roles modeled on a software company, connected by structured documents through a publish-subscribe pool, and with executable feedback for the engineer. It reported 85.9 percent and 87.7 percent Pass@1 on HumanEval and MBPP. Its failure mode is that every role reads the same upstream documents, so a wrong requirement in the PRD flows downstream intact. The third card states what your build takes from the pair: documents with a shape can be checked and chat turns cannot, and this Evolution's contract adds a closed status set and a verdict that blocks.
+
+Cut from slide 15 (full wording):
+- Mechanism. Two agents, an AI user and an AI assistant, set up by 'inception prompting' to cooperate on a task without a human in the loop. / Design choice. Study agent societies through their conversations. / Cost and failure. The paper lists four failures: role flipping, the assistant repeating instructions, flake replies ('I will...'), and infinite message loops. The run halts when the assistant writes <CAMEL_TASK_DONE>, so the assistant's own assertion marks completion (#3, #9).
+- Mechanism. 'Code = SOP(Team)': product manager, architect, project manager, engineer, QA. Roles exchange structured documents (PRD, design, code) through a shared message pool with subscriptions, not dialogue. The engineer gets executable feedback from running its code. / Design choice. An assembly line to stop cascading hallucination. / Cost and failure. The paper reports 85.9% / 87.7% Pass@1 on HumanEval / MBPP. The QA role is another model reading the same documents; a wrong PRD flows downstream intact (#4).
+- CAMEL connected roles with chat; MetaGPT connected them with documents that have a fixed structure. / MetaGPT's documents replace 'the agents talked' with 'the agents handed over an artifact.' The contract in this Evolution goes one step further: the artifact has a closed status set, and the controller rejects anything outside it. / Neither system had a reviewer whose verdict could block, or a human in the path.
+
+## Slide 16
+
+### BEFORE
+
+Third teardown: roles became configuration. AutoGen's classic design made coordination a conversation: an assistant writes code, a user proxy runs it and can pull in a human, and a group chat manager picks who speaks next. Its best feature was that code actually ran, so there was an observation in the loop. Its halt was a TERMINATE string. As of this year the AutoGen repository is in maintenance mode and points new users to Microsoft Agent Framework, which reached 1.0 on April 3, 2026, with sequential, concurrent, handoff, group chat, and Magentic-One orchestrations plus checkpointing and human approvals. CrewAI made coordination an org chart: the hierarchical manager plans, delegates, and reviews. Its guardrail is the closest thing in the survey to your contract: a function returns a boolean and a value, with retries. The failure to watch: a retry loop against a checker can be metagamed.
+
+Cut from slide 16 (full wording):
+- Conversable agents: an assistant writes code, a user proxy executes it and can ask the human; group chat with a manager that picks the next speaker. Classic halt: a TERMINATE message.
+- Agents with role, goal, backstory; tasks with an expected output. Sequential process, or hierarchical: a manager (manager_llm or manager_agent) plans, delegates, reviews outputs, and judges completion.
+- Task guardrail: a function returns (bool, value); on False the agent retries, default 3 times. output_pydantic types the result.
+- AutoGen README: maintenance mode, community managed; new users go to Microsoft Agent Framework 1.0 (Apr 3, 2026): sequential, concurrent, handoff, group chat, Magentic-One; checkpointing; human approvals.
+- Manager and workers often share one model; a guardrail that retries until pass can be metagamed (#9).
+
+### AFTER
+
+In the third teardown, roles became configuration. AutoGen's classic design made coordination a conversation: an assistant writes code, a user proxy runs it and can pull in a human, and a group chat manager picks who speaks next. Because the user proxy ran the code, the loop held an observation and not only a claim. Its halt was a TERMINATE string. The AutoGen repository is now in maintenance mode and points new users to Microsoft Agent Framework, which reached 1.0 on April 3, 2026, with sequential, concurrent, handoff, group chat, and Magentic-One orchestrations, checkpointing, and human approvals. CrewAI made coordination an org chart, in which the hierarchical manager plans, delegates, and reviews. Its task guardrail is the closest thing in the survey to your contract: a function returns a boolean and a value, and on False the agent retries, three times by default. The failure to watch for is a retry loop against a checker, which a worker can metagame, and the risk rises when manager and workers share one model.
+
+Cut from slide 16 (full wording):
+- Conversable agents: an assistant writes code, a user proxy executes it and can ask the human; group chat with a manager that picks the next speaker. The classic halt is a TERMINATE message.
+- Agents with role, goal, backstory; tasks with an expected output. Sequential process, or hierarchical: a manager (manager_llm or manager_agent) plans, delegates, reviews outputs, and judges completion.
+- Task guardrail: a function returns (bool, value); on False the agent retries, default 3 times. output_pydantic types the result.
+- AutoGen README: maintenance mode, community managed; new users go to Microsoft Agent Framework 1.0 (Apr 3, 2026): sequential, concurrent, handoff, group chat, Magentic-One; checkpointing; human approvals.
+- In both frameworks, manager and workers can run on one model, and an agent can metagame a guardrail that retries until it passes (#9).
+
+## Slide 17
+
+### BEFORE
+
+Fourth teardown, the LangGraph supervisor. The mechanism is a hub node that routes to workers and gets control back, with a checkpointer under everything. The old library made the key trade-off a single parameter: give the supervisor every worker message, or only the last one. Full history costs window; last message costs visibility, and a supervisor that sees only a worker's summary treats it as the result, which is summary laundering. In 2026 LangChain's own advice is to build the supervisor with tool calling so you control exactly what each subagent receives and returns, and its multi-agent page names five patterns. For your build: whatever passes back through your controller should be the typed result plus a pointer to the evidence, not the worker's prose.
+
+Cut from slide 17 (full wording):
+- A supervisor node decides which worker runs next; workers return to the supervisor; edges and state are explicit, and a checkpointer persists state at every step. / The library version (create_supervisor) passed handoff tools to the supervisor and let you choose output_mode: full_history (every worker message) or last_message (only the final reply).
+- Choice: the controller is code you can read, and the supervisor is one node in it, not the whole program. / Cost: every routing decision is a model call at the hub; full_history fills the supervisor's window, last_message hides the worker's trace. That is Cognition's argument about sharing traces, set as a parameter.
+- Failure: with last_message the supervisor sees only the worker's summary and treats it as the result (#3, summary laundering). / 2026: LangChain recommends the supervisor built directly with tool calling, for control over what each subagent receives and returns. The docs now name five patterns: subagents, handoffs, skills, router, custom workflow.
+
+### AFTER
+
+The fourth teardown is the LangGraph supervisor. The mechanism is a hub node that routes to workers and gets control back, with a checkpointer under everything. The older library (create_supervisor) reduced the main trade-off to one parameter, output_mode: the supervisor sees every worker message, or only the last one. Full history fills the supervisor's window, and last message hides the worker's trace, so a supervisor that sees only a worker's summary treats the summary as the result, which is summary laundering. In 2026 LangChain's own advice is to build the supervisor with tool calling, so that you control what each subagent receives and returns, and its multi-agent page lists five patterns: subagents, handoffs, skills, router, custom workflow. For your build, what passes back through the controller should be the typed result and a pointer to the evidence; the worker's prose stays in the worker's window.
+
+Cut from slide 17 (full wording):
+- A supervisor node decides which worker runs next; workers return to the supervisor; edges and state are explicit, and a checkpointer persists state at every step. / The library version (create_supervisor) passed handoff tools to the supervisor and let you choose output_mode: full_history (every worker message) or last_message (only the final reply).
+- Choice: the controller is code you can read, and the supervisor is one node in it, not the whole program. / Cost: every routing decision is a model call at the hub; full_history fills the supervisor's window, last_message hides the worker's trace. The output_mode parameter turns Cognition's argument about sharing traces into a configuration choice.
+- Failure: with last_message the supervisor sees only the worker's summary and treats it as the result (#3, summary laundering). / 2026: LangChain recommends the supervisor built directly with tool calling, for control over what each subagent receives and returns. The docs now list five patterns: subagents, handoffs, skills, router, custom workflow.
+
+## Slide 18
+
+### BEFORE
+
+Fifth teardown, the harness-native version, which is the one you will actually use. A Claude Code subagent is a Markdown file with frontmatter; it runs in a clean window, sees the delegation message and project instructions but not the conversation, and returns a message. Nesting to three levels is in the current docs; verify it before class, since it changed this year. OpenCode has the same shape, and you will build one at six. Agent teams are the experimental step up: a lead, teammates, a shared task list, and mailboxes. Two lines from the docs are worth reading aloud. A teammate cannot supply consent on your behalf, which is authority not crossing. And the lead approves a teammate's plan without reviewing it, which is a review step that always says yes. The harness gives you workers; the contract and the verdict are yours.
+
+Cut from slide 18 (full wording):
+- Mechanism. A subagent is a Markdown file with frontmatter (name, description, tools, model, permissionMode, maxTurns, hooks, isolation: worktree, and more). It runs in its own context window; it sees the delegation message, CLAUDE.md, a git status snapshot, and preloaded skills, but not the conversation history. Its result returns to the caller. / Nesting. Subagents can spawn subagents up to three levels deep by default. [verify] / Built-ins. Explore and Plan (read-only), general-purpose. / OpenCode. Same shape: primary agents (Build, Plan) switched with Tab; subagents (General, Explore, Scout) called by @-mention or the task tool.
+- Mechanism. A lead session, teammates in their own windows, a shared task list with file-locked claiming, and a mailbox per agent. Off by default (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). / Two lines from the docs to quote. 'A teammate can't approve a permission prompt or supply consent on your behalf.' And: when a teammate finishes planning, the lead approves the plan 'without the lead reviewing it.' / Reading. Authority does not cross between agents; that is E5's rule, now in the harness. And an approval step that approves automatically is a reviewer that cannot say no. / Failure mode. The caller trusts the returned message (#3); deep nesting multiplies it.
+- Design choice: context isolation first, review second. The harness gives you the worker; you supply the contract and the verdict.
+
+Instructor checks moved off the slide:
+- [verify]
+
+### AFTER
+
+The fifth teardown is the harness-native version, the one you use. A Claude Code subagent is a Markdown file with frontmatter; it runs in a clean window, sees the delegation message and the project instructions but not the conversation, and returns a message to the caller. The current docs allow nesting three levels deep by default. OpenCode has the same shape, and you build one in the lab. Agent teams are the experimental step up: a lead, teammates in their own windows, a shared task list, and mailboxes. Two lines from the docs carry the lesson. A teammate cannot supply consent on your behalf, which is E5's rule that authority does not cross between agents. The lead approves a teammate's plan without reviewing it, which is a review step that can only say yes. The harness gives you the workers, and you supply the contract and the verdict.
+
+Cut from slide 18 (full wording):
+- Mechanism. A subagent is a Markdown file with frontmatter (name, description, tools, model, permissionMode, maxTurns, hooks, isolation: worktree, and more). It runs in its own context window; it sees the delegation message, CLAUDE.md, a git status snapshot, and preloaded skills, but not the conversation history. Its result returns to the caller. / Nesting. Subagents can spawn subagents up to three levels deep by default. [verify] / Built-ins. Explore and Plan (read-only), general-purpose. / OpenCode. Same shape: primary agents (Build, Plan) switched with Tab; subagents (General, Explore, Scout) called by @-mention or the task tool.
+- Mechanism. A lead session, teammates in their own windows, a shared task list with file-locked claiming, and a mailbox per agent. Off by default (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). / Two lines from the docs to quote. 'A teammate can't approve a permission prompt or supply consent on your behalf.' And: when a teammate finishes planning, the lead approves the plan 'without the lead reviewing it.' / Reading. One agent's authority does not pass to another agent, which is E5's rule, now enforced by the harness. An approval step that approves automatically acts as a reviewer that cannot say no. / Failure mode. The caller trusts the returned message (#3); deep nesting multiplies the risk.
+- Design choice: context isolation first, review second. The harness gives you the worker, and you supply the contract and the reviewer that issues the verdict.
+
+Instructor checks moved off the slide:
+- [verify]
+
+## Slide 19
+
+### BEFORE
+
+The live Design Analysis. Put the nine components on the board and have the class fill Coordination and Evaluation before you reveal them. The answers come from the current docs. The row that matters is Evaluation and feedback: there is no verdict schema; the caller reads a message. Hooks are the place a check can be installed, and that is the design space your contract fills. Governance is stronger than most: permission modes per subagent and the rule that teammates cannot consent for the human. The judgment loop in the strip is the model for your own analysis: the decision was to isolate context, it privileges clean windows and a cheap parent context, it costs tokens and the lost trace, its failure mode is a summary accepted as fact, and nothing preserves against that by default.
+
+Cut from slide 19 (full wording):
+- Parent delegates on the subagent's description; the subagent plans inside its own loop, bounded by maxTurns
+- Hub and spoke: the caller manages all work; agent teams add a task list and mailboxes
+- None built in: no verdict schema; the caller reads a message. Hooks (PreToolUse, PostToolUse, Stop) are where a check can go
+
+### AFTER
+
+The Design Analysis of Claude Code subagents is worked live: the nine components go on the board, and the class fills the Coordination and Evaluation rows before the answers appear. The answers come from the current docs. The Evaluation and feedback row decides the rest: there is no verdict schema, and the caller reads a message. Hooks (PreToolUse, PostToolUse, Stop) are the place where a check can be installed, and that is the space your contract fills. The Governance row is the strongest of the nine: permission modes per subagent, and the rule that teammates cannot consent for the human. The judgment loop in the strip is the model for your own Design Analysis. The decision was to isolate context per worker; it privileges clean windows and a cheap parent context; it costs tokens and the lost trace; its failure mode is a summary accepted as fact; and nothing preserves against that failure by default, so your contract has to.
+
+Cut from slide 19 (full wording):
+- Parent delegates on the subagent's description; the subagent plans inside its own loop, bounded by maxTurns
+- Hub and spoke: the caller manages all work; agent teams add a task list and mailboxes
+- None built in: no verdict schema; the caller reads a message. A check can go in hooks (PreToolUse, PostToolUse, Stop)
+
+## Slide 20
+
+### BEFORE
+
+The reference design. ADR-0.18.0 defines a five-stage pipeline: load context, implement with two-stage review per task, verify, present evidence, and sync. The controller never implements; it dispatches, parses, and decides. Stage three is the controller running the checks itself, which is why a worker's claim that tests pass is not verification. Stage four presents paths and commands rather than conclusions, and in E9 you will see the adversarial step inserted there. Stage five writes the ledger events and the dispatch records, and the human attests. The files to read are the subagent-pipeline concept document, roles.py, pipeline_dispatch.py, and the persona directory. Verify the ADR number, the stage names, and the paths against the repository before class.
+
+Cut from slide 20 (full wording):
+- One dispatch per task to the implementer persona; HandoffResult back; then two-stage review: spec reviewer, then quality reviewer, each returning ReviewResult.
+- The controller runs the checks itself: tests, lint, the brief's verification commands. A worker's 'tests pass' is not this stage.
+
+Instructor checks moved off the slide:
+- [Verify ADR-0.18.0, stage names, and file paths against the repository before class.]
+
+### AFTER
+
+gzkit's ADR-0.18.0 defines a five-stage pipeline: load context, implement with two-stage review per task, verify, present evidence, and sync. The controller never implements; it dispatches, parses, and decides. In stage three the controller runs the tests, the lint, and the brief's verification commands itself, which is why a worker's claim that tests pass is not verification. Stage four presents paths, commands, and outputs to the human rather than conclusions, and E9 inserts the adversarial validation step there. Stage five writes the ledger events, the brief status, and the dispatch records, and the human attests to the result. The files to read are the subagent-pipeline concept document, roles.py, pipeline_dispatch.py, and the persona directory.
+
+Cut from slide 20 (full wording):
+- One dispatch per task to the implementer persona; HandoffResult back; then two-stage review: spec reviewer, then quality reviewer, each returning ReviewResult.
+- The controller runs the checks itself: tests, lint, the brief's verification commands. A worker's report that 'tests pass' does not count as this stage.
+
+Instructor checks moved off the slide:
+- [Verify ADR-0.18.0, stage names, and file paths against the repository before class.]
+
+## Slide 21
+
+### BEFORE
+
+The mechanism that makes the pipeline auditable. Both result types are parsed fail-closed. Every dispatch of every role writes a record, and the rule is that credit is never inferred: no record for a role means the role did not run, whatever any summary says. The right panel is the honesty flag. A run where one agent did everything is allowed, but it must be declared with a reason, and the course takes the same line: a declared single-driver run is graded as what it is, and an undeclared one presented as reviewed fails. If your reviewer cannot run because the model is unavailable or you hit your usage limit, that is an abort, and the log says so. Verify which command takes the flag before class.
+
+Cut from slide 21 (full wording):
+- HandoffResult. DONE · DONE_WITH_CONCERNS · NEEDS_CONTEXT · BLOCKED. / ReviewResult. PASS · FAIL · CONCERNS with findings. Parsing is fail-closed: an unparseable result is a failure. / Dispatch records. Each dispatch of each role writes a record: which role, which task, which result. The record is the evidence that a review happened. / 'Credit is never inferred.' If there is no dispatch record for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.'
+- Sometimes one agent does everything: a small task, one vendor, no budget for subagents. The reference design allows it, but the run must say so: --single-driver --reason "...". / Why this matters for your sortie. A single-driver run that declares itself is honest and gets graded as a single-driver run. A single-driver run that presents itself as reviewed is falsifier three on your card. / Your version. If your reviewer could not run (Big Pickle unavailable, Go limit reached), the flight log says so and the sortie is an ABORT, not a PASS with a missing verdict. / [Verify the command that takes --single-driver and --reason against the repository before class.]
+
+Instructor checks moved off the slide:
+- [Verify the command that takes --single-driver and --reason against the repository before class.]
+
+### AFTER
+
+Two mechanisms make the pipeline auditable. The controller parses both result types fail-closed, and every dispatch of every role writes a record. The rule that credit is never inferred follows from the records: no record for a role means the role did not run, whatever a summary says. The right panel is the honesty flag. The reference design allows a run in which one agent does everything, but the run must declare it with a reason, and the course takes the same line: a declared single-driver run is read as a single-driver run, and an undeclared one presented as reviewed trips falsifier three on your card. If your reviewer cannot run because the model route is unavailable or you reached a usage limit, the sortie is an ABORT, and the flight log says so.
+
+Cut from slide 21 (full wording):
+- HandoffResult. DONE · DONE_WITH_CONCERNS · NEEDS_CONTEXT · BLOCKED. / ReviewResult. PASS · FAIL · CONCERNS with findings. Parsing is fail-closed: an unparseable result is a failure. / Dispatch records. Each dispatch of each role writes a record: which role, which task, which result. The record is the evidence that a review happened. / 'Credit is never inferred.' If there is no dispatch record for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.'
+- Sometimes one agent does everything: a small task, one vendor, no budget for subagents. The reference design allows it, but the run must say so: --single-driver --reason "...". / Grading of your sortie. A single-driver run that declares itself is honest and gets graded as a single-driver run. A single-driver run that presents itself as reviewed is falsifier three on your card. / Your version. If your reviewer could not run (Big Pickle unavailable, Go limit reached), the flight log says so and records the sortie as an ABORT, because a PASS requires the verdict. / [Verify the command that takes --single-driver and --reason against the repository before class.]
+
+Instructor checks moved off the slide:
+- [Verify the command that takes --single-driver and --reason against the repository before class.]
+
+## Slide 22
+
+### BEFORE
+
+Why the reference design insists on records. Two dated episodes from the casebook. On May 24, a chain of subagents ten levels deep turned summaries of summaries into facts; the rule that came out of it is that a subagent's claim is not evidence. On August 21, a pipeline gate checked that a marker file existed, a stale marker licensed about three hundred and fifty lines with no dispatch and no review, and the rule that came out of it is that a presence check tells you something is armed, never that the procedure ran. Both return in detail next week. For this week, the lesson for your controller is concrete: the merge gate checks for a ReviewResult tied to this task and this diff, not for a file that says review happened. Verify the details before class.
+
+Cut from slide 22 (full wording):
+- 2026-05-24, the ten-deep chain. Subagents dispatched subagents ten levels deep; each level summarized the one below, and the polished summaries became 'facts' at the top. Result: the DO IT RIGHT rules and the line in the box. / 2026-08-21, the undispatched Stage 2. The pipeline gate checked only that a marker file existed. A stale marker licensed roughly 350 lines of change with no dispatch and no review. Result: the second line in the box, and the reason dispatch records, not markers, carry credit. / [Verify dates, counts, and rule names against the insights corpus and CHANGELOG before class.]
+
+Instructor checks moved off the slide:
+- [Verify dates, counts, and rule names against the insights corpus and CHANGELOG before class.]
+
+### AFTER
+
+Two dated episodes from Appendix G explain why the reference design insists on records. On 2026-05-24, a chain of subagents ten levels deep turned summaries of summaries into facts, and the rule that came out of it is that a subagent's claim is not evidence. On 2026-08-21, a pipeline gate checked only that a marker file existed; a stale marker licensed roughly 350 lines of change with no dispatch and no review, and the rule that came out of it is that a presence check tells you something is armed, never that the procedure ran. Both episodes return in detail in E9. For this Evolution, the consequence for your controller is that the merge gate checks for a ReviewResult tied to this task and this diff, and a file that says review happened does not satisfy it.
+
+Cut from slide 22 (full wording):
+- 2026-05-24, the ten-deep chain. Subagents dispatched subagents ten levels deep; each level summarized the one below, and the top level treated the polished summaries as 'facts'. Result: the DO IT RIGHT rules and the line in the box. / 2026-08-21, the undispatched Stage 2. The pipeline gate checked only that a marker file existed. A stale marker licensed roughly 350 lines of change with no dispatch and no review. Result: the second line in the box, and the rule that dispatch records carry credit and marker files do not. / [Verify dates, counts, and rule names against the insights corpus and CHANGELOG before class.]
+
+Instructor checks moved off the slide:
+- [Verify dates, counts, and rule names against the insights corpus and CHANGELOG before class.]
+
+## Slide 23
+
+### BEFORE
+
+Weak: a reviewer that is the implementer in the same session, a verdict read by substring, a parser that defaults to DONE, a reviewer with write access, a persona that claims expertise, and a loop with no saved state and no human. Sound: a separate read-only reviewer declared in configuration, two schemas with closed status sets, malformed input rejected and logged, FAIL that blocks and a bound on rounds, findings with locations, a graph with a checkpoint and an interrupt, and a dispatch record per role. Exceptional: two-stage review, a reviewer on a different model, the anti-trait ablation measured, an honest squawk for a defect the reviewer missed, and a Chase who re-runs the evidence commands rather than reading them.
+
+Cut from slide 23 (full wording):
+- Reviewer is the implementer's own session told to 'review your work' / Verdict found by searching the reply for 'PASS' / Parser catches errors and continues as DONE / Reviewer can edit or run arbitrary bash / Persona says 'expert engineer'; no anti-traits / Controller is a for-loop; no checkpoint; no human before merge
+- Separate reviewer agent with its own window and read-only permission in config / HandoffResult and ReviewResult schemas with closed enums; malformed input rejected and logged / FAIL routes back and blocks merge; bounded rounds, then BLOCKED / Every finding cites file:line, test id, or output / Graph or state machine with a checkpoint and an interrupt before merge / Dispatch record per role per task
+- Two-stage review with separate spec and quality personas / Reviewer on a different model than the implementer, with both ids logged / Anti-traits removed and verdicts re-counted (Ch. 17 exercise) / A planted defect the reviewer missed, reported as a squawk / Chase re-runs the evidence commands and gets the same exit codes
+
+### AFTER
+
+The lens has three columns. A weak Sortie 8 has a reviewer that is the implementer in the same session, a verdict read by substring, a parser that defaults to DONE, a reviewer with write access, a persona that asserts expertise, and a loop with no saved state and no human before merge. A sound one has a separate read-only reviewer declared in configuration, two schemas with closed status sets, malformed input rejected and logged, a FAIL that blocks with a bound on rounds, findings with locations, a graph with a checkpoint and an interrupt, and a dispatch record per role. An exceptional one adds two-stage review, a reviewer on a different model with both ids logged, the anti-trait ablation measured, an honest squawk for a defect the reviewer missed, and a Chase who re-runs the evidence commands and gets the same exit codes.
+
+Cut from slide 23 (full wording):
+- Reviewer is the implementer's own session told to 'review your work' / Verdict found by searching the reply for 'PASS' / Parser catches errors and continues as DONE / Reviewer can edit or run arbitrary bash / Persona says 'expert engineer'; no anti-traits / Controller is a for-loop; no checkpoint; no human before merge
+- Separate reviewer agent with its own window and read-only permission in config / HandoffResult and ReviewResult schemas with closed enums; malformed input rejected and logged / FAIL routes back and blocks merge; bounded rounds, then BLOCKED / Every finding cites file:line, test id, or output / Graph or state machine with a checkpoint and an interrupt before merge / Dispatch record per role per task
+- Two-stage review with separate spec and quality personas / Reviewer on a different model than the implementer, with both ids logged / Anti-traits removed and verdicts re-counted (Ch. 17 exercise) / A planted defect the reviewer missed, reported as a squawk / Chase re-runs the evidence commands and gets the same exit codes
+
+## Slide 24
+
+### BEFORE
+
+Card eight, an expansion card. Five test points: a clean task that merges only after a cited PASS and a human approval; a planted defect that the reviewer fails and that does not merge; a malformed result that the parser rejects before any review; a reviewer asked to fix the code whose edit the harness denies; and a resume from a checkpoint that produces exactly one merge. The falsifiers are the chapter's three plus the one the reference design taught about passing by weakening a check. Go and No-Go are asynchronous this term: your Chase reads the card in the repo and signs Go or No-Go by Sunday. The Sprint line adds one item: acknowledge your Final System brief.
+
+Cut from slide 24 (full wording):
+- Flight Card 8 brief — Sortie 8: a reviewer that can say no
+- Expansion · depends on Sortie 7 · Go/No-Go by the Chase, in the repo, by Sun 10/25
+- ENVELOPE            expansion / DESIGN CLAIM        No implementer output reaches main without a reviewer verdict, and a FAIL blocks. / SYSTEMS UNDER TEST  controller (graph or state machine) · implementer persona · reviewer persona (read-only) /                     · HandoffResult + ReviewResult schemas · fail-closed parser · merge gate · checkpoint /                     · ledger / SUBSTRATE           repo + commit · graph library + version · implementer model id · reviewer model id / DEPENDS ON          Sortie 7 PASS (memory layer), or its re-fly on record /  / ENTRY CONDITIONS    clean tree · ADR for the pair (roles, contract, graph) committed · Chase GO in the card /  / TEST POINTS /   1  clean task          -> HandoffResult DONE, parsed -> ReviewResult PASS citing diff -> interrupt, merge /   2  planted defect      -> ReviewResult FAIL with a located finding -> routed to implement -> no merge /   3  malformed result    -> parser REJECT logged (not JSON / unknown status / DONE without evidence) /                             -> no review dispatched, no merge /   4  'fix it yourself'   -> reviewer's edit denied by the harness; diff unchanged; verdict still returned /   5  resume after halt   -> checkpoint id logged; human approval recorded; exactly one merge commit /  / INSTRUMENTATION     dispatch log (one record per role per task) · 2+ ReviewResults · 1+ REJECT lines /                     · checkpoint ids · git log · ledger events /  / PRE-REGISTERED FALSIFIERS (any ONE => FAIL) /   - merged work with no ReviewResult on record for that task /   - a malformed result parsed as PASS or DONE /   - a reviewer claim accepted without the evidence it cites /   - passing only by loosening the parser, granting the reviewer edit, or editing the log /  / ABORT (halt-not-fail)  model route unavailable for either role; usage limit reached mid-sortie / CHASE               reads dispatch log, ReviewResults, REJECT lines, git log; re-runs one evidence command /  / SPRINT (due Wed 10/28)  Sortie 8 log · pair + contract + graph · Design Analysis · AI_LOG · brief acknowledged
+
+### AFTER
+
+Flight Card 8 is an expansion card. It has five test points: a clean task that merges only after a cited PASS and a human approval; a planted defect that the reviewer fails and that does not merge; a malformed result that the parser rejects before any review is dispatched; a reviewer asked to fix the code, whose edit the harness denies while the verdict still returns; and a resume from a checkpoint that produces exactly one merge commit. The falsifiers are the chapter's three plus a fourth from the reference design, a pass obtained by weakening a check: loosening the parser, granting the reviewer edit, or editing the log. The Chase reads the card in the repo and records GO or NO-GO there in writing. The Sprint line adds one item, the acknowledgment of your Final System brief.
+
+Cut from slide 24 (full wording):
+- Flight Card 8 brief: Sortie 8, a reviewer that can say no
+- Expansion · depends on Sortie 7 · Go/No-Go by the Chase, in the repo
+- ENVELOPE            expansion / DESIGN CLAIM        No implementer output reaches main without a reviewer verdict, and a FAIL blocks. / SYSTEMS UNDER TEST  controller (graph or state machine) · implementer persona · reviewer persona (read-only) /                     · HandoffResult + ReviewResult schemas · fail-closed parser · merge gate · checkpoint /                     · ledger / SUBSTRATE           repo + commit · graph library + version · implementer model id · reviewer model id / DEPENDS ON          Sortie 7 PASS (memory layer), or its re-fly on record /  / ENTRY CONDITIONS    clean tree · ADR for the pair (roles, contract, graph) committed · Chase GO in the card /  / TEST POINTS /   1  clean task          -> HandoffResult DONE, parsed -> ReviewResult PASS citing diff -> interrupt, merge /   2  planted defect      -> ReviewResult FAIL with a located finding -> routed to implement -> no merge /   3  malformed result    -> parser REJECT logged (not JSON / unknown status / DONE without evidence) /                             -> no review dispatched, no merge /   4  'fix it yourself'   -> reviewer's edit denied by the harness; diff unchanged; verdict still returned /   5  resume after halt   -> checkpoint id logged; human approval recorded; exactly one merge commit /  / INSTRUMENTATION     dispatch log (one record per role per task) · 2+ ReviewResults · 1+ REJECT lines /                     · checkpoint ids · git log · ledger events /  / PRE-REGISTERED FALSIFIERS (any ONE => FAIL) /   - merged work with no ReviewResult on record for that task /   - a malformed result parsed as PASS or DONE /   - a reviewer claim accepted without the evidence it cites /   - passing only by loosening the parser, granting the reviewer edit, or editing the log /  / ABORT (halt-not-fail)  model route unavailable for either role; usage limit reached mid-sortie / CHASE               reads dispatch log, ReviewResults, REJECT lines, git log; re-runs one evidence command /  / SPRINT              Sortie 8 log · pair + contract + graph · Design Analysis · AI_LOG · brief acknowledged
+
+## Slide 25
+
+### BEFORE
+
+The lab brief. It is self-guided and needs nothing beyond the E0 toolkit: OpenCode, Python, and git. You declare a reviewer subagent in OpenCode with read-only permissions, point it at a small planted bug, and parse its reply with a twenty-line standard-library parser from the handout. Then you check the verdict against the code and the test, ask the reviewer to fix the bug so you can watch the harness refuse, and feed the parser three malformed replies. Commit the agent file, the raw reply, the parser lines, and the worksheet. A flaky free model helps here: prose instead of JSON is a rejection you record, and an invented line number is a refuted claim.
+
+Cut from slide 25 (full wording):
+- Lab tonight (6:00–6:30): a read-only reviewer in OpenCode
+- Self-guided · handout CIDM6333_Lab_E8_Subagents.md · Big Pickle or a Go model · no installs · test points 1–5 fly in the Sprint
+- 0–4   Scratch branch or directory; copy the handout's tiny buggy function, its brief, and parse_review.py (stdlib only). / 4–10  Write .opencode/agents/reviewer.md: persona with anti-traits; permission edit deny, webfetch deny, bash deny except git diff and git log. / 10–17 @reviewer the diff. Save its reply. Run python parse_review.py on it: accepted or rejected? / 17–23 Check the verdict: does each finding's file:line exist and say what the reviewer claims? Run the test yourself. / 23–27 Ask the reviewer to 'just fix it.' Record the harness's refusal. Feed the parser three malformed replies. / 27–30 Commit and write the worksheet.
+- evolution-08/lab/ / reviewer.md (your agent file) / review-1.json (raw reply) and the parser's verdict line / worksheet.md: verdict checked against the code, the refusal, three REJECTs, model id / A ledger event recording the commit. / Small models are part of the lesson. If Big Pickle returns prose instead of JSON, your parser should reject it, and that REJECT is a result you record. If the reviewer cites a line that does not exist, that is a refuted claim.
+
+### AFTER
+
+The lab brief. It is self-guided and needs nothing beyond the E0 toolkit: OpenCode, Python, and git. You declare a reviewer subagent in OpenCode with read-only permissions, point it at a small planted bug, and parse its reply with a twenty-line standard-library parser from the handout. Then you check the verdict against the code and the test, ask the reviewer to fix the bug so you can watch the harness refuse, and feed the parser three malformed replies. Commit the agent file, the raw reply, the parser lines, and the worksheet. A flaky free model helps here: prose instead of JSON is a rejection you record, and an invented line number is a refuted claim.
+
+Cut from slide 25 (full wording):
+- Lab: a read-only reviewer in OpenCode
+- Self-guided · handout CIDM6333_Lab_E8_Subagents.md · Big Pickle or a Go model · no installs · test points 1–5 fly in the Sprint
+- Create a scratch branch or directory. Copy the handout's tiny buggy function, its brief, and parse_review.py (stdlib only). / Write .opencode/agents/reviewer.md with a persona that has anti-traits. Set permission edit deny, webfetch deny, and bash deny except git diff and git log. / Send the diff to @reviewer. Save its reply. Run python parse_review.py on the reply and record whether the parser accepts or rejects it. / Check the verdict. Confirm that each finding's file:line exists and shows what the reviewer reports. Run the test yourself. / Ask the reviewer to 'just fix it.' Record the harness's refusal. Feed the parser three malformed replies. / Commit and write the worksheet.
+- evolution-08/lab/ / reviewer.md (your agent file) / review-1.json (raw reply) and the parser's verdict line / worksheet.md: verdict checked against the code, the refusal, three REJECTs, model id / A ledger event recording the commit. / Small models are part of the lesson. If Big Pickle returns prose instead of JSON, your parser must reject it, and you record that REJECT as a result. If the reviewer cites a line that does not exist, record that finding as a refuted claim.
+
+## Slide 26
+
+### BEFORE
+
+The Sprint. Five things: the Sortie 8 log, the pair itself with its schemas, parser, graph, and ADR, a Design Analysis of one multi-agent system, the AI_LOG entry, and the acknowledgment of your Final System brief, which arrives by Saturday. The Go and No-Go moved out of class: commit the card Friday, your Chase signs by Sunday, and you do not fly before GO is in the log. After the sortie the Chase reads only the evidence named on the card, re-runs one command, and writes a verdict with one line of reason. The homework brief has the details and the dates.
+
+Cut from slide 26 (full wording):
+- The Sprint, due Wed 10/28, 11:59 p.m.
+- Sortie 8 flight log (card + evidence + verdict + debrief) / The pair: implementer and reviewer personas, HandoffResult and ReviewResult schemas, fail-closed parser, graph with checkpoint and interrupt, ADR for the pair / Design Analysis (one multi-agent system) / AI_LOG entry / Final System brief acknowledged (issued by Sat 10/24)
+- Fri 10/23: card committed to evolution-08/flight-card.md. / By Sun 10/25: your Chase reads the card and signs GO or NO-GO under CHASE, with one line of reason, as a commit. / No sortie is flown before GO is in the log. A NO-GO means amend and ask again.
+- Tue 10/27: flight log committed. / By Wed 10/28: the Chase reads only the evidence slice named on the card, re-runs one evidence command, and writes PASS or FAIL with one line of reason. / The Chase does not read your narrative first.
+
+### AFTER
+
+The Sprint. Five things: the Sortie 8 log, the pair itself with its schemas, parser, graph, and ADR, a Design Analysis of one multi-agent system, the AI_LOG entry, and the acknowledgment of your Final System brief, which arrives by Saturday. The Go and No-Go moved out of class: commit the card Friday, your Chase signs by Sunday, and you do not fly before GO is in the log. After the sortie the Chase reads only the evidence listed on the card, re-runs one command, and writes a verdict with one line of reason. The homework brief has the details and the dates.
+
+Cut from slide 26 (full wording):
+- The Sprint
+- Sortie 8 flight log (card + evidence + verdict + debrief) / The pair: implementer and reviewer personas, HandoffResult and ReviewResult schemas, fail-closed parser, graph with checkpoint and interrupt, ADR for the pair / Design Analysis (one multi-agent system) / AI_LOG entry / Final System brief acknowledged
+- Commit the card to evolution-08/flight-card.md. / Your Chase reads the card and signs GO or NO-GO under CHASE, with one line of reason, as a commit. / Fly no sortie before GO is in the log. After a NO-GO, amend the card and ask again.
+- Commit the flight log. / The Chase reads only the evidence slice specified on the card, re-runs one evidence command, and writes PASS or FAIL with one line of reason. / The Chase does not read your narrative first.
+
+## Slide 27
+
+### BEFORE
+
+Close. A worker's result is a typed claim, and a verdict counts only when it cites evidence and its author could not edit the work. Lab at six. Sources checked this session, Sep 24, 2026: opencode.ai/docs/agents; opencode.ai/docs/cli; opencode.ai/docs/go; code.claude.com/docs/en/sub-agents; code.claude.com/docs/en/agent-teams; github.com/langchain-ai/langgraph-supervisor-py; docs.langchain.com/oss/python/langchain/multi-agent; docs.langchain.com/oss/python/langgraph/interrupts; github.com/microsoft/autogen; devblogs.microsoft.com/agent-framework/microsoft-agent-framework-version-1-0; docs.crewai.com/en/concepts/processes; docs.crewai.com/en/concepts/tasks; arxiv.org/abs/2303.17760 and arxiv.org/html/2303.17760 (CAMEL); arxiv.org/abs/2308.00352 and html (MetaGPT); arxiv.org/abs/2308.08155 (AutoGen); github.com/FoundationAgents/MetaGPT; anthropic.com/engineering/multi-agent-research-system; cognition.com/blog/dont-build-multi-agents; en.wikipedia.org/wiki/Contract_Net_Protocol; en.wikipedia.org/wiki/Foundation_for_Intelligent_Physical_Agents; cdn.aaai.org/ICMAS/1995/ICMAS95-042.pdf. gzkit facts come from the course topic guide only; verify ADR-0.18.0, the stage names, the file paths, the single-driver flag, and the 05-24 and 08-21 episodes against the repository before class.
+
+Cut from slide 27 (full wording):
+- Build the reviewer that can say no, and the controller that listens. Commit the card Friday; your Chase signs by Sunday. Lab at six: declare the reviewer and check what it tells you.
+
+### AFTER
+
+A worker's result is a typed claim, and a verdict counts only when it cites evidence and its author could not edit the work. The lab follows: declare the reviewer and check what it tells you.
+
+Cut from slide 27 (full wording):
+- Build the reviewer that can say no, and the controller that acts on its verdict. Commit the card, then have your Chase sign it. In the lab, declare the reviewer and check what it tells you.
+

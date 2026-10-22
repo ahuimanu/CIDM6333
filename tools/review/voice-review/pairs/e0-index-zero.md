@@ -1,0 +1,354 @@
+# e0-index-zero: speaker notes, before and after the voice pass
+
+## Slide 1
+
+### BEFORE
+
+Welcome. Tonight's hour is content, not logistics: the orientation deck and WTClass carry the mechanics of the semester. What I want you to leave with tonight are four maps and one posture. The four maps: the seven-layer stack, the five-stage progression to agentic AI, the definition of an agent from PEAS to the nine components, and the framework board with every box assigned to a week. The posture: the human is index zero, and here is what happens when the human stops being index zero. Four words describe the semester — survey, build, govern, defend — and tonight is the survey and govern half of that. [0:00–0:02]
+
+Cut from slide 1 (full wording):
+- CIDM 6333 · Agentic Systems Design and Development · Thu 08/27/2026 · 4:00–5:00 · CC209 / Dr. Jeffry Babb · Paul and Virginia Engler College of Business · West Texas A&M University
+
+### AFTER
+
+This lecture carries content rather than logistics, and the orientation deck holds the mechanics of the semester. The lecture leaves you with four maps and one posture. The four maps are the seven-layer stack, the five-stage progression to agentic AI, the definition of an agent from PEAS to the nine components, and the framework board with every box assigned to an Evolution. The posture is that the human is index zero, and the Degradation Pattern describes what happens when the human stops being index zero. Four words describe the semester (survey, build, govern, defend), and this Evolution covers the survey and govern pair. [0:00–0:02]
+
+Cut from slide 1 (full wording):
+- CIDM 6333 · Agentic Systems Design and Development / Dr. Jeffry Babb · Paul and Virginia Engler College of Business · West Texas A&M University
+
+## Slide 2
+
+### BEFORE
+
+Five moves. Framing for ten minutes; the two maps for fifteen; what an agent is for thirteen, including the one worked example we do on a slide tonight, a chat assistant against Claude Code; governance for fourteen; and the last eight minutes on the instrument you will use every week and what is due Wednesday. Nothing is on a screen tonight except these slides; the install clinic is in lab at six.
+
+Cut from slide 2 (full wording):
+- Layers of AI (and the one everybody forgets); AI & ML → Agentic AI; the framework board, every box assigned to a week
+- Russell & Norvig and PEAS; the LLM agent loop and its halt; the nine components; a worked Design Analysis: chat assistant vs. Claude Code
+
+### AFTER
+
+The lecture has five parts. The first part frames the course. The second part reads two maps. The third part defines an agent and works one example on a slide, a chat assistant against Claude Code. The fourth part makes the case for governance. The fifth part presents the instrument you will use in every Evolution and the Evolution 0 brief.
+
+Cut from slide 2 (full wording):
+- Layers of AI (and the one everybody forgets); AI & ML → Agentic AI; the framework board, every box assigned to a week
+- Russell & Norvig and PEAS; the LLM agent loop and its halt; the nine components; a worked Design Analysis: chat assistant vs. Claude Code
+
+## Slide 3
+
+### BEFORE
+
+Two questions, one course. The survey question is a why question: not what is fashionable this month, but what problem each design answered and what it cost. The build question is whether you can make one and answer for it. Tree Hollow is your first reading because it names the stake: a system can produce an answer without being able to answer for it. Ask them: who answered for the last piece of generated code you shipped? Sit in the silence for a moment. Then the definition that runs the semester: a language model is a reasoner with no persistent state, no ground truth, and no accountability. Every component we study is an attempt to supply one of those three things from outside the model. Governance supplies the third, and it cannot be automated. [~7 min]
+
+Cut from slide 3 (full wording):
+- Why was each system built that way, what problem did it answer, and what did it cost? Historical order, one component model.
+- Answerability / A model has no persistent state, no ground truth, and no accountability. Everything stacked on top of it — tools, memory, evaluators, governance — exists to supply those. The engineer's irreducible role is to be the one who answers. The whole structure of this course (flight cards, consultations, attestations) exists to make that true rather than aspirational.
+
+### AFTER
+
+The course asks two questions. The survey question asks why: what problem each design answered and what the design cost, rather than what is fashionable this month. The build question asks whether you can make such a system and answer for it. Tree Hollow is your first reading because it states the stake: a system can produce an answer without being able to answer for it. Consider who answered for the last piece of generated code you shipped. The definition that runs the semester follows from that question. A language model is a reasoner with no persistent state, no ground truth, and no accountability. Every component this course studies is an attempt to supply one of those three things from outside the model. Governance supplies the third, and no software can automate it, because accountability belongs to a person. [~7 min]
+
+Cut from slide 3 (full wording):
+- Why was each system built that way, what problem did it answer, and what did it cost? Historical order, one component model.
+- Answerability / A model has no persistent state, no ground truth, and no accountability. Everything stacked on top of it (tools, memory, evaluators, governance) exists to supply those three. The engineer's role, which no component can take over, is to answer for the system. The course structure (flight cards, consultations, attestations) has you perform that role each week, with evidence.
+
+## Slide 4
+
+### BEFORE
+
+The first map. Seven layers, read top down or bottom up. Agentic AI on top: memory, planning, tool use, autonomous execution. Underneath it, generative AI, deep learning, neural networks, machine learning, classical AI, and at the bottom the data foundation: ownership, definitions, quality, lineage. The point of drawing it as a widening stack is that every agentic system stands on all of it. Nothing at the top replaces anything below; classical planning did not die, it came back as 'planning' in LLM agents. When you write a Design Analysis you start at the bottom. What does this stand on? [~5 min]
+
+Cut from slide 4 (full wording):
+- How to read it / Agentic AI is thin and new; the foundation is old and cracked. / Every Design Analysis starts at the bottom: what model, what weights, what data does this thing stand on — local or hosted? / Two passes on any system: what does it claim (top-down) and what does it stand on (bottom-up). / The foundation shows through in E7 (memory on embeddings) and E11 (what your evaluation data actually is).
+
+### AFTER
+
+The first map has seven layers, and you can read it top down or bottom up. Agentic AI sits on top with memory, planning, tool use, and autonomous execution. Under it sit generative AI, deep learning, neural networks, machine learning, and classical AI, and at the bottom sits the data foundation: ownership, definitions, quality, lineage. The figure draws the layers as a widening stack because every agentic system stands on all of them. Nothing at the top replaces anything below. Classical planning did not die; it returned as 'planning' in LLM agents. For this reason a Design Analysis starts at the bottom, with the question of what the system stands on. [~5 min]
+
+Cut from slide 4 (full wording):
+- How to read it / Agentic AI is the newest and thinnest layer. The data foundation is the oldest, and it has cracks. / Every Design Analysis starts at the bottom: what model, what weights, what data does this thing stand on, and is it local or hosted? / Two passes on any system: what does it claim (top-down) and what does it stand on (bottom-up). / The foundation shows through in E7 (memory on embeddings) and E11 (what your evaluation data actually is).
+
+## Slide 5
+
+### BEFORE
+
+Why is it forgotten? Because it is unglamorous and because it is where the cost lands, later, on someone else. Four words from the framework image: ownership, definitions, quality, lineage. Each one becomes a failure later in the semester. Ownership: who may the agent act on behalf of. Definitions: the agent inherits every ambiguity in your schema, and 'done' is the most dangerous word in the course. Quality: retrieval returns what is stored; in week seven you will poison your own memory with one false fact and watch it propagate. Lineage: without provenance a polished summary becomes a fact; that is the ten-deep summary-laundering chain we read in week nine. The Sprint and Drift essay 'Newtonian motion' makes the general claim: the cost of generated code is deferred, never erased. [~2 min]
+
+Cut from slide 5 (full wording):
+- The Newtonian-motion argument: the cost of generated code is deferred, never erased. The foundation is where the bill is delivered.
+
+### AFTER
+
+The data foundation is easy to forget because it is unglamorous and because its cost lands later, on someone else. The framework image lists four words for it: ownership, definitions, quality, lineage. Each one returns as a failure later in the semester. Ownership asks on whose behalf the agent may act. Definitions matter because the agent inherits every ambiguity in your schema, and 'done' is the term to define first, because the agent's halt and your attestation both depend on it. Quality matters because retrieval returns what is stored: in Evolution 7 you will poison your own memory store with one false fact and watch it propagate. Lineage matters because without provenance a polished summary becomes a fact, which is the ten-deep summary-laundering chain you read in Evolution 9. The Sprint and Drift essay 'Newtonian motion' argues that the cost of generated code is deferred, never erased. [~2 min]
+
+Cut from slide 5 (full wording):
+- The Newtonian-motion argument (Sprint and Drift, E9) holds that generated code defers its cost and does not erase it. The deferred cost comes due in the foundation: the data, weights, and infrastructure the system stands on.
+
+## Slide 6
+
+### BEFORE
+
+The second map, five stages left to right. What changes at each step is the unit of work. AI and ML turns data into a decision. Deep learning stacks networks for harder decisions. Generative AI produces an artifact: text, code, an image. AI agents take on a task: they call tools, plan, remember, and keep a human in the loop. Agentic AI automates a process: many agents, protocols between them, delegation, intent preserved across handoffs, rollback, evaluators, cost management, observability, governance. Read the small text in the last two columns; it is the syllabus. The course lives there. Weeks one through seven build the AI Agents column on your system; eight through twelve build the Agentic AI column. [~4 min]
+
+Cut from slide 6 (full wording):
+- tool use & function calling · planning (ReAct, CoT, ToT) · goal decomposition · memory systems · context management · human-in-the-loop · self-reflection & error recovery
+- multi-agent collaboration · agent protocols · delegation & handoff · intent preservation · rollback · feedback loops & evaluators · cost & resource mgmt · observability · governance & guardrails
+- The course lives in the last two stages. E1–E7 build the AI Agents column on your system; E8–E12 build the Agentic AI column. Note what changes at each step: the unit of work goes from a decision, to an artifact, to a task, to a process.
+
+### AFTER
+
+The second map runs five stages left to right, and the unit of work changes at each stage. AI and ML turns data into a decision. Deep learning stacks networks for harder decisions. Generative AI produces an artifact: text, code, an image. AI agents take on a task: they call tools, plan, remember, and keep a human in the loop. Agentic AI automates a process: many agents, protocols between them, delegation, intent preserved across handoffs, rollback, evaluators, cost management, observability, governance. The small text in the last two columns is the syllabus, and the course lives there. Evolutions 1 through 7 build the AI Agents column on your system, and Evolutions 8 through 12 build the Agentic AI column. [~4 min]
+
+Cut from slide 6 (full wording):
+- tool use & function calling · planning (ReAct, CoT, ToT) · goal decomposition · memory systems · context management · human-in-the-loop · self-reflection & error recovery
+- multi-agent collaboration · agent protocols · delegation & handoff · intent preservation · rollback · feedback loops & evaluators · cost & resource mgmt · observability · governance & guardrails
+- The course lives in the last two stages. E1–E7 build the AI Agents column on your system; E8–E12 build the Agentic AI column. Note what changes at each step: the unit of work goes from a decision, to an artifact, to a task, to a process.
+
+## Slide 7
+
+### BEFORE
+
+The same five stages as a road. Stops one through three are behind us in the sense that you consume them: the models, the networks, the generative capability come from a vendor or an open-weight release. Stops four and five are the ones you build in this course: an agent that takes on a task, then an agentic system that automates a process. Keep this picture; every week I will tell you which stop we are at. [~1 min]
+
+### AFTER
+
+The road map shows the same five stages as stops. You consume stops one through three rather than build them: the models, the networks, and the generative capability come from a vendor or an open-weight release. You build stops four and five in this course: an agent that takes on a task, then an agentic system that automates a process. Keep this picture, because each Evolution states which stop it is at. [~1 min]
+
+## Slide 8
+
+### BEFORE
+
+The same board read the other way: as rings out from the foundation. Foundation, creation, core systems, action, full automation. Rings tell you how far a system's capability extends outward; the columns on the previous slide tell you when each capability arrived historically. Hold both readings. The most common thing sold as agentic today claims ring five and runs on ring two: a generative model with a loop bolted on, no memory, no evaluator, no governance. By the end of tonight you will be able to say why that matters. And here is the exercise for the week: mark every box on the board you can already name a concrete system for. The blanks are your reading list. [~3 min]
+
+Cut from slide 8 (full wording):
+- Multi-agent collaboration · protocols · delegation & handoff · intent preservation · rollback · evaluators · cost · observability · governance.
+- Rings say how far a system's capability extends outward from its foundation. Columns (the five stages) say when in the field's history each capability arrived. /  / A system that claims ring five but runs on ring two — a generative model with a loop bolted on — is the most common thing marketed as 'agentic' today. Recognizing it is chapter one's third learning outcome. /  / Exercise for this week: mark every box you can already name a concrete system for. The blanks are your reading list.
+
+### AFTER
+
+The framework board can also be read as rings out from the foundation: foundation, creation, core systems, action, full automation. Rings state how far a system's capability extends outward. The columns on the previous slide state when each capability arrived in the field's history. Hold both readings. A system that claims ring five and runs on ring two is a generative model with a loop bolted on, with no memory, no evaluator, and no governance, and vendors sell such systems as agentic. By the end of this lecture you will be able to say why that gap matters. The exercise for Evolution 0 is to mark every box on the board for which you can cite a concrete system, and the blanks become your reading list for the semester. [~3 min]
+
+Cut from slide 8 (full wording):
+- Multi-agent collaboration · protocols · delegation & handoff · intent preservation · rollback · evaluators · cost · observability · governance.
+- Rings say how far a system's capability extends outward from its foundation. Columns (the five stages) say when in the field's history each capability arrived. /  / A system that claims ring five but runs on ring two (a generative model with a loop bolted on) can still be marketed as 'agentic'. Chapter one's third learning outcome asks you to recognize such a system. /  / Exercise: mark every box for which you can already identify a concrete system. The blank boxes are your reading list.
+
+## Slide 9
+
+### BEFORE
+
+This is the fill-in order. I have put every box on the framework board somewhere in these twelve weeks. Two things to notice. First, the middle is inverted from the catalog: tools and MCP come before context and memory, because since 2024 most of what fills a context window is tool results, and MCP is a tool protocol that needs function calling understood first. Second, the two starred weeks run on a local open-weight model no matter which route you chose, because tool calling with a small model is instructive precisely because it is brittle, and embeddings are cheap locally. You do not need to memorize this; you need to know it exists so that every week you can say where you are on the board. [~3 min]
+
+### AFTER
+
+This table gives the fill-in order. I have placed every box on the framework board in one of the twelve Evolutions. Two things differ from the catalog order. First, the middle is inverted: tools and MCP come before context and memory. The context window of an agent harness fills with tool results, so context management is a problem you meet only after tool calling exists, and MCP is a tool protocol that requires function calling understood first. Second, the two starred Evolutions run on a local open-weight model no matter which route you chose, because tool calling with a small model is brittle, and the brittleness shows you the mechanism, and because embeddings are cheap locally. You do not need to memorize the table. You need to know it exists so that in every Evolution you can say where you are on the board. [~3 min]
+
+## Slide 10
+
+### BEFORE
+
+Before we define an agent, be precise about the reasoner in the middle of it. What a language model adds is a reasoner that generalizes from text; that is the thing classical agents never had, and it is why 2023 happened. What it does not have is three things: persistent state, ground truth, and accountability. Look at the semester through that lens and it simplifies. Context and memory supply state. Tools, retrieval, and evaluators supply ground truth. Governance supplies accountability, and that is the one that cannot be supplied by more software, because accountability is a property of a person. [~2 min]
+
+Cut from slide 10 (full wording):
+- A reasoner that generalizes from text. /  / It can read an unfamiliar error, propose a plan, write the call, and explain itself in prose — the capability that made 2023's explosion possible and that the classical agents of chapter 4 never had.
+- It cannot answer for anything. Governance and the human interface (E0, E5, E9, E11) exist to supply it — and this one cannot be automated.
+
+### AFTER
+
+Before the definition of an agent, the reasoner in the middle of it needs a precise statement. A language model adds a reasoner that generalizes from text. Classical agents never had that reasoner, and its arrival is why the agent loops of 2023 appeared. The model lacks three things: persistent state, ground truth, and accountability. Those three things organize the semester. Context and memory supply state. Tools, retrieval, and evaluators supply ground truth. Governance supplies accountability, and more software cannot supply it, because accountability is a property of a person. [~2 min]
+
+Cut from slide 10 (full wording):
+- A reasoner that generalizes from text. /  / It can read an unfamiliar error, propose a plan, write the call, and explain itself in prose. This capability made the 2023 wave of LLM agents possible, and the classical agents of chapter 4 never had it.
+- It cannot answer for anything. Governance and the human interface (E0, E5, E9, E11) supply answerability, and no automation can supply it in their place.
+
+## Slide 11
+
+### BEFORE
+
+Before the LLM there was a perfectly good definition of an agent and it still holds. Russell and Norvig: an agent perceives its environment through sensors and acts on it through actuators; the agent function maps percept sequences to actions. You specify one by PEAS: performance measure, environment, actuators, sensors. Notice the P. The performance measure is the thing the 2023 loops never wrote down, and it is why they ran until the credit card was empty. The five agent types are a ladder: reflex, model-based, goal-based, utility-based, learning. And BDI and FIPA are where multi-agent vocabulary comes from; when we meet CrewAI in week eight you will recognize a 1990s design with a language model in the reasoner slot. Your first exercise this week: specify your intended system by PEAS. [~3 min]
+
+Cut from slide 11 (full wording):
+- Agent types, in increasing sophistication: simple reflex · model-based · goal-based · utility-based · learning. BDI (belief–desire–intention) and FIPA multi-agent platforms are the pre-LLM coordination vocabulary; we meet them again in E8.
+
+### AFTER
+
+The definition of an agent predates the language model and still holds. Russell and Norvig define an agent as anything that perceives its environment through sensors and acts on it through actuators, and the agent function maps percept sequences to actions. You specify an agent by PEAS: performance measure, environment, actuators, sensors. The performance measure deserves attention, because the 2023 loops never wrote one down, and for this reason they ran until the budget was gone. The five agent types form a ladder: reflex, model-based, goal-based, utility-based, learning. BDI and FIPA supply the multi-agent vocabulary, so when you meet CrewAI in Evolution 8 you will recognize a 1990s design with a language model in the reasoner slot. Your first exercise in Evolution 0 is to specify your intended system by PEAS. [~3 min]
+
+Cut from slide 11 (full wording):
+- Agent types, in increasing sophistication: simple reflex · model-based · goal-based · utility-based · learning. BDI (belief–desire–intention) and FIPA multi-agent platforms are the pre-LLM coordination vocabulary; the course returns to them in E8.
+
+## Slide 12
+
+### BEFORE
+
+Now put a language model in the reasoner slot. Perceive: the prompt, tool results, files, events. Reason: one model call that emits a thought and a decision. Act: either a tool call or a final answer. Then the question the whole loop turns on: halt? If not, the observation goes back in as the next percept. ReAct, from Yao and colleagues in 2022, is the canonical form: thought, action, observation, interleaved. It is the atom that every later week decorates with tools, memory, coordination, and evaluation. What did it lack? Memory, a budget, verification. And the halt condition is what 2023 forgot: AutoGPT and BabyAGI were this loop with a goal and nothing to stop it. Your first sortie next week is a loop that halts, on every input class, within budget, with every turn in the ledger. [~3 min]
+
+Cut from slide 12 (full wording):
+- Thought → Action → Observation, interleaved, until the model emits a final answer. It is the atom every later week decorates. What it lacked: memory, a budget, and verification.
+- AutoGPT and BabyAGI (spring 2023) were the loop with goals and no grounding, no budget, no evaluator. They spiraled. A loop without a halt is not autonomy; it is a bill. Sortie 1 is 'a governed loop that halts.'
+
+### AFTER
+
+The LLM agent loop puts a language model in the reasoner slot. The loop perceives the prompt, tool results, files, and events. It reasons with one model call that emits a thought and a decision. It acts with either a tool call or a final answer. Then it asks the question the whole loop turns on: halt? If the answer is no, the observation goes back in as the next percept. ReAct, from Yao and colleagues in 2022, is the canonical form: thought, action, observation, interleaved. Every later Evolution adds tools, memory, coordination, and evaluation to this loop. ReAct lacked memory, a budget, and verification. The halt condition is what 2023 forgot: AutoGPT and BabyAGI were this loop with a goal and nothing to stop it. Sortie 1 is a loop that halts, on every input class, within budget, with every turn in the ledger. [~3 min]
+
+Cut from slide 12 (full wording):
+- Thought → Action → Observation, interleaved, until the model emits a final answer. Every later week adds components to this loop. ReAct lacked memory, a budget, and verification.
+- AutoGPT and BabyAGI (spring 2023) ran the loop with goals but with no grounding, no budget, and no evaluator. They spiraled. A loop without a halt keeps calling the model, and every call adds to the bill. Sortie 1 is 'a governed loop that halts.'
+
+## Slide 13
+
+### BEFORE
+
+Nine components. This is how you take every system apart this semester, and the order matters: it goes from what it stands on, to what it sees, to how it thinks, to how it acts, to what it remembers, to how it coordinates, to what checks it, to where the human is, to how it runs. For each one there is a question and, in teal, the failure that shows up when the component is missing or weak. Read the failures as a preview of the incident casebook: injection is a perception failure; a spiral is a planning failure; summary laundering is a coordination failure; governance theater is component eight. A Design Analysis is nine short answers and one paragraph on why. [~3 min]
+
+### AFTER
+
+The nine components are how you take every system apart this semester, and their order matters. The list runs from what the system stands on, to what it sees, to how it thinks, to how it acts, to what it remembers, to how it coordinates, to what checks it, to where the human is, to how it runs. Each component carries a question and, in teal, the failure that appears when the component is missing or weak. The failures preview the incident casebook: injection is a perception failure, a spiral is a planning failure, summary laundering is a coordination failure, and governance theater is a failure of component eight. A Design Analysis consists of nine short answers and one paragraph on why. [~3 min]
+
+## Slide 14
+
+### BEFORE
+
+Here is the exercise for the week, done on a slide. Left column, a chat assistant; right column, an agent harness like Claude Code or Codex CLI. Walk the nine rows. The foundation is the same hosted model. Perception changes: the harness sees the repo, the shell, tool results, an instruction file. Planning changes: the chat has one turn and the human is the loop; the harness runs an open ReAct loop with plan mode and subagents. Tools: none versus a built-in set plus MCP with permission prompts and hooks. Memory: both are window-bound, but the harness compacts and reads an instruction file. Coordination: single versus main session plus subagents. Evaluation: in both, mostly the human. Governance: the chat has a human on every turn by construction; the harness has a human in the loop per tool call, and attestation is implicit. Runtime: a web page versus a terminal with background and cloud sessions. Now the paragraph that matters. The harness owns the loop so the vendor can ship tools, hooks, compaction, and subagents as features; that is what makes it an agent. The cost is that governance is per call and implicit, and nothing records what was attested. That is the gap the reference design fills one tier up. And note: the chat assistant is not worse. It is a workflow with the human as the loop, and most production agents should be workflows. [~4 min]
+
+Cut from slide 14 (full wording):
+- The harness owns the loop so the vendor can ship tools, permissions, hooks, compaction, and subagents as product features: that is what turns a generative system into an agent (components 3, 4, 6, 9 appear). /  / The cost: governance is per-call and implicit. Every tool call asks 'allow?', and by week four you are pressing yes without reading. Nothing records what was attested. That gap — component 8 — is what the reference design, gzkit, fills one tier up. /  / The chat assistant is not worse; it is a workflow with the human as the loop. Most production 'agents' should be workflows.
+
+### AFTER
+
+The Evolution 0 exercise, done on a slide, compares a chat assistant (left column) with an agent harness such as Claude Code or Codex CLI (right column) across the nine rows. The foundation is the same hosted model. Perception changes: the harness sees the repo, the shell, tool results, and an instruction file. Planning changes: the chat assistant has one turn, and the human is the loop, while the harness runs an open ReAct loop with plan mode and subagents. Tools: the chat assistant has none, and the harness has a built-in set plus MCP with permission prompts and hooks. Memory: both are bound to the window, but the harness compacts and reads an instruction file. Coordination: a single session against a main session plus subagents. Evaluation: in the chat assistant the human reads the answer, and in the harness the tests it runs and the human, with nothing built in. Governance: the chat assistant has a human on every turn by construction, and the harness has a human in the loop per tool call, with attestation implicit. Runtime: a web page against a terminal with background and cloud sessions. The why paragraph follows from the rows. The harness owns the loop so that the vendor can ship tools, hooks, compaction, and subagents as features, and that ownership of the loop is what makes it an agent. The cost is that governance is per call and implicit, and nothing records what was attested. gzkit, the reference design, fills that gap one tier up. The comparison does not rank the chat assistant below the harness: the chat assistant is a workflow with the human as the loop, and a workflow is the right design wherever the path is known in advance. [~4 min]
+
+Cut from slide 14 (full wording):
+- The harness owns the loop so the vendor can ship tools, permissions, hooks, compaction, and subagents as product features: that is what turns a generative system into an agent (components 3, 4, 6, 9 appear). /  / The cost: governance is per-call and implicit. Every tool call asks 'allow?', and by week four you are pressing yes without reading. Nothing records what was attested. The reference design, gzkit, fills that gap (component 8) one tier up. /  / The chat assistant is a workflow with the human as the loop. When the path of a task is known, a workflow is the better design.
+
+## Slide 15
+
+### BEFORE
+
+Two distinctions. First, from Anthropic's 'Building Effective Agents': a workflow calls the model along code paths you wrote; an agent lets the model direct its own control flow. Most production agents are workflows and should be. You will reach for the open loop only when the path cannot be known ahead of time, and in week two you will have to write down which one you chose and why. Second, the historical point. The pre-LLM era carried forward PEAS, planning, and coordination protocols. What 2023 dropped and the field has been rediscovering ever since: explicit state, halt conditions, and evaluation against an environment. Reinforcement learning already knew about reward hacking; gaming the gate is not new. [~2 min]
+
+Cut from slide 15 (full wording):
+- Workflow: the model is called along predefined code paths; control lives in your code. /  / Agent: the model directs its own control flow — decides which tool, when, and whether to continue. /  / Most production 'agents' are workflows, and should be: predictable, cheap, testable. Reach for an open loop only when the path cannot be known in advance. E2 refactors your loop into a named pattern (chaining, routing, parallelization, orchestrator–workers, evaluator–optimizer) and makes you write down why.
+- Carried forward / PEAS and the agent function / Planning (STRIPS → goal decomposition) / Coordination protocols (FIPA, contract net → A2A, crews) / Dropped in 2023, rediscovered since / Explicit state (→ context engineering, ledgers) / Halt conditions and budgets (→ governed loops) / Evaluation against an environment (→ evals as gates); reward hacking (→ gaming the gate, failure mode 9)
+
+### AFTER
+
+Two distinctions carry out of this Evolution. The first comes from Anthropic's 'Building Effective Agents': a workflow calls the model along code paths you wrote, and an agent lets the model direct its own control flow. Anthropic recommends the workflow wherever the path is known in advance, and the open loop only where it is not, and in Evolution 2 you will write down which one you chose and why. The second distinction is historical. The field carried PEAS, planning, and coordination protocols forward from the pre-LLM era. The loops of 2023 dropped explicit state, halt conditions, and evaluation against an environment, and the field has rediscovered each of them since. Reinforcement learning had already described reward hacking, so gaming the gate has a history older than the language model. [~2 min]
+
+Cut from slide 15 (full wording):
+- Workflow: the model is called along predefined code paths; control lives in your code. /  / Agent: the model directs its own control flow: it decides which tool, when, and whether to continue. /  / When the path is known, a workflow is the better design because it is predictable, cheap, and testable. Reach for an open loop only when the path cannot be known in advance. E2 refactors your loop into a standard pattern (chaining, routing, parallelization, orchestrator–workers, evaluator–optimizer) and makes you write down why.
+- Carried forward / PEAS and the agent function / Planning (STRIPS → goal decomposition) / Coordination protocols (FIPA, contract net → A2A, crews) / Dropped in 2023, rediscovered since / Explicit state (→ context engineering, ledgers) / Halt conditions and budgets (→ governed loops) / Evaluation against an environment (→ evals as gates); reward hacking (→ gaming the gate, failure mode 9)
+
+## Slide 16
+
+### BEFORE
+
+Here is why the course is built the way it is, and it comes from gzkit's why.md. Week one you prompt carefully and read every line. Week two you skim the diff and trust the green checkmarks. Week three you batch approvals and 'looks good' becomes reflexive. Week four you are approving pull requests you did not read for code you do not understand. Nobody decides to lose control. It slips away one looks-good at a time. There are three names for it and they are the same failure: cognitive surrender, where the judgment is delegated rather than the task; mediated observation, where you see the summary and never the artifact; and governance theater, where every check passes and nobody verified anything. Ask the room: where on this curve were you last week? The first exercise in chapter three is a one-week log of your own review behavior. [~4 min]
+
+### AFTER
+
+The Degradation Pattern, from gzkit's why.md, is the reason I built the course the way I did. In week one you prompt carefully and read every line. In week two you skim the diff and trust the green checkmarks. In week three you batch approvals, and 'looks good' becomes reflexive. In week four you approve pull requests you did not read for code you do not understand. Nobody decides to lose control; control slips away one 'looks good' at a time. The failure has three names, and they describe the same event: cognitive surrender, in which you delegate the judgment rather than the task; mediated observation, in which you see the summary and never the artifact; and governance theater, in which every check passes and nobody verified anything. Ask yourself where on this curve you sat during your last project. The first exercise in chapter three is a one-week log of your own review behavior. [~4 min]
+
+## Slide 17
+
+### BEFORE
+
+The answer to the Degradation Pattern is the Zero Doctrine: the human is index zero. First in priority: your intent drives every decision. Final in authority: you sign off, not the model. And it cannot be automated away, because accountability is a property of a person. The word zero has its own history in the reference design: it began as zero overhead, became zero drift, and settled as index zero. The covenant is five clauses and both parties are bound. The human defines intent. The agent operates within constraints and flags violations. Verification is mutual. The human attests after observing the artifacts, not the summary. Artifacts survive sessions. The part people miss is that it has two sides: gates constrain the agent, and the human must engage. If you only have gates you get theater. The three concerns, specification, methodology, governance, need each other; the sentence on the slide is the founding argument of the reference design, from a conversation in January in which the model said only specification matters and the operator refused. [~3 min]
+
+Cut from slide 17 (full wording):
+- Two sides: gates constrain agents, and humans must engage — read everything, insist on Q&A. Gates alone produce theater. “Specification without governance drifts; governance without methodology is theater; methodology without specification is arbitrary.”
+
+### AFTER
+
+The Zero Doctrine answers the Degradation Pattern: the human is index zero. First in priority, because your intent drives every decision. Final in authority, because you sign off, and the model does not. And the position cannot be automated away, because accountability is a property of a person. The word zero has its own history in the reference design: it began as zero overhead, became zero drift, and settled as index zero. The covenant has five clauses, and both parties are bound. The human defines intent. The agent operates within constraints and flags violations. Verification is mutual. The human attests after observing the artifacts rather than the summary. Artifacts survive sessions. The covenant has two sides: gates constrain the agent, and the human must engage. Gates alone produce theater. The three concerns (specification, methodology, governance) need each other, and the sentence on the slide is the founding argument of the reference design. It comes from a conversation in January in which the model said only specification matters and the operator refused. [~3 min]
+
+Cut from slide 17 (full wording):
+- Two sides: gates constrain agents, and humans must engage (read everything, insist on Q&A). Gates without human engagement produce theater. “Specification without governance drifts; governance without methodology is theater; methodology without specification is arbitrary.”
+
+## Slide 18
+
+### BEFORE
+
+The covenant is enforced by five gates. ADR: intent before implementation. TDD: tests from the spec, and the red witnessed before the green. Docs: what is written matches what runs. BDD: acceptance scenarios for anything with an external contract. Human: someone looked at the artifacts and signed. Two lanes: Lite is gates one and two and that is where your weekly Evolutions live; Heavy is all five and that is the Final System. Ceremony must earn its place, which is why there are two lanes and not one. But human attestation at the brief level is universal, and there is no self-close path. The command doctrine is where the flight vocabulary of this course comes from. Degani and Wiener's Four P's: philosophy, policies, procedures, practices. The cockpit is the model because it is the one place where authority over an automated system has been engineered for decades. Four rules: accountability is non-transferable; authority must be instrumented, not asserted; the model is a crew resource, not a crew member; evidence is artifacts, not narration. [~3 min]
+
+Cut from slide 18 (full wording):
+- Degani & Wiener: philosophy → policies → procedures → practices. A cockpit is the model because it is the one place where authority over an automated system has been engineered for decades. /  / • Accountability is non-transferable. / • Authority must be instrumented, not asserted. / • The model is a crew resource, not a crew member. / • Evidence is artifacts, not narration.
+- Evolutions run Lite (gates 1–2). The Final System closes out Heavy (1–5). * Brief-level human attestation is universal; there is no self-close path. Closed vocabulary: Completed · Completed — Partial · Dropped.
+
+### AFTER
+
+Five gates enforce the covenant. ADR records intent before implementation. TDD derives tests from the spec, with the red witnessed before the green. Docs match what is written to what runs. BDD supplies acceptance scenarios for anything with an external contract. Human means that someone looked at the artifacts and signed. The gates run in two lanes. Lite is gates one and two, and the weekly Evolutions live there. Heavy is all five, and the Final System lives there. There are two lanes rather than one because ceremony must earn its place. Human attestation at the brief level is universal in both lanes, and there is no self-close path. The command doctrine is the source of the flight vocabulary in this course. Degani and Wiener's Four P's run philosophy, policies, procedures, practices. The cockpit is the model because it is the one place where engineers have built authority over an automated system for decades. The doctrine has four rules: accountability is non-transferable; authority must be instrumented, not asserted; the model is a crew resource, not a crew member; evidence is artifacts, not narration. [~3 min]
+
+Cut from slide 18 (full wording):
+- Degani & Wiener: philosophy → policies → procedures → practices. The cockpit serves as the model because aviation has engineered human authority over automated systems for decades. /  / • Accountability is non-transferable. / • Authority must be instrumented, not asserted. / • The model is a crew resource, not a crew member. / • Evidence is artifacts, not narration.
+- Evolutions run Lite (gates 1–2). The Final System closes out Heavy (1–5). * Every brief requires human attestation. No path lets an agent close its own brief. Closed vocabulary: Completed · Completed — Partial · Dropped.
+
+## Slide 19
+
+### BEFORE
+
+Situate the posture so nobody mistakes it for the whole of AI governance. Policy frameworks, NIST's risk management framework, the EU AI Act, ISO 42001, tell an organization what must be true; they are silent on what one engineer and one agent do in one session. Frontier-lab safety frameworks and system cards govern the model, and in week eleven you will read one as a Design Analysis. The practitioner literature on auditing names an accountability gap: audits without access, attestations nobody observed. A covenant is one engineer's answer to that gap: below policy, inside the session, at the level of the artifact. It cannot make a model safe or certify an organization. It makes one build answerable. [~2 min]
+
+Cut from slide 19 (full wording):
+- Organizational risk management: map, measure, manage, govern. Necessary, and silent on what one engineer and one agent do in one session.
+- The industry's evaluation genre: what was tested, what was found. E11 reads one as a Design Analysis. They govern the model, not your use of it.
+- Audits without access, standards without enforcement, attestations nobody observed. The practitioner literature names the gap; a covenant is one engineer's answer to it.
+- Where it fits: below policy, inside the session, at the level of the artifact. Where it does not: it cannot make a model safe, certify an organization, or substitute for law. It makes one build answerable.
+
+### AFTER
+
+The posture needs its place among the governance frameworks, so that nobody mistakes it for the whole of AI governance. Policy frameworks (NIST's AI Risk Management Framework, the EU AI Act, ISO/IEC 42001) tell an organization what must be true, and they are silent on what one engineer and one agent do in one session. Frontier-lab safety frameworks and system cards govern the model, and in Evolution 11 you will read one as a Design Analysis. The practitioner literature on auditing (Raji and colleagues, 'Auditing Work') describes an accountability gap: audits without access, standards without enforcement, attestations nobody observed. A covenant is one engineer's answer to that gap. It sits below policy, inside the session, at the level of the artifact. It cannot make a model safe, certify an organization, or substitute for law. Its scope is one build, and it makes that build answerable to the engineer who signed. [~2 min]
+
+Cut from slide 19 (full wording):
+- Organizational risk management: map, measure, manage, govern. This framework is necessary, and it says nothing about what one engineer and one agent do in one session.
+- The industry's evaluation genre: what was tested, what was found. E11 reads one as a Design Analysis. A system card covers the model and leaves your use of the model unaddressed.
+- Audits without access, standards without enforcement, attestations nobody observed. The practitioner literature identifies the gap. A covenant is one engineer's answer to it.
+- Where it fits: below policy, inside the session, at the level of the artifact. Where it does not: it cannot make a model safe, certify an organization, or substitute for law. Its scope is one build, which it makes answerable through artifacts and attestation.
+
+## Slide 20
+
+### BEFORE
+
+The survey thread's instrument, and the way to close every Design Analysis: the judgment loop from 6330. Name the decision in one sentence. Name the characteristic it privileged. Name the cost. Name the failure mode: what breaks first when the assumption stops holding. And name the preservation mechanism: what keeps the intent alive after the person who decided has left the session. That last one is the whole course in one question. The format is on the right and it is short on purpose: about a hundred and fifty words, nine lines, one paragraph, five items. I will ask you about it in consultation. [~2 min]
+
+Cut from slide 20 (full wording):
+- ~150 words · one per week · committed to design-analyses/<system>.md · one row in LEDGER.md /  / 1. Sources read / 2. Nine components, one line each / 3. Why it was built this way, and what it cost (one paragraph) / 4. Judgment loop (five items) /  / Defended in consultation: “why did they build it that way, and what did it cost?”
+
+### AFTER
+
+The judgment loop from CIDM 6330 is the survey thread's instrument, and it closes every Design Analysis. State the decision in one sentence. State the characteristic the decision privileged. State the cost. State the failure mode, which is what breaks first when the assumption behind the decision stops holding. State the preservation mechanism, which is what keeps the intent alive after the person who decided has left the session. That last question contains the course's whole concern, because an intent nobody preserved is an intent nobody can answer for. The format on the right is short on purpose: about a hundred and fifty words, nine lines, one paragraph, five items. I will ask you about it in consultation. [~2 min]
+
+Cut from slide 20 (full wording):
+- ~150 words · one per week · committed to design-analyses/<system>.md · one row in LEDGER.md /  / 1. Sources read / 2. Nine components, one line each / 3. Why it was built this way, and what it cost (one paragraph) / 4. Judgment loop (five items) /  / Defended in consultation: “why did they build it that way, and what did it cost?”
+
+## Slide 21
+
+### BEFORE
+
+What is due Wednesday night. Read Tree Hollow, the Degradation Pattern in why.md, the glossary, and the two framework images. Write the first Design Analysis: the chat assistant against the harness, which we just did on a slide, so yours should be better than mine, with the why paragraph and the judgment loop. Specify your intended system by PEAS. Mark the framework board. Write the one-page pitch. Stand up the toolkit tonight in lab, start the repository and the AI log from the first prompt. At five o'clock we go around the room and test every system idea against one question: can it take all twelve layers? [~3 min, leave a minute for questions]
+
+Cut from slide 21 (full wording):
+- Due Wednesday 09/02, 11:59 p.m. — the mechanics are in the orientation deck and WTClass
+- • Sprint and Drift, “Tree Hollow” / • gzkit why.md (the Degradation Pattern) and the glossary / • The two framework images: Layers of AI; Agentic AI: A Complete Framework / • Optional: Russell & Norvig ch. 2; Anthropic, “Building Effective Agents” (workflows vs. agents)
+- • Design Analysis #1: a chat assistant vs. an agent harness — nine components each, the “why and what it cost” paragraph, the judgment loop / • Your intended system specified by PEAS, each element mapped to a component / • The framework board with every box you can name a system for marked; the blanks are your reading list / • One-page system pitch: route, harness, candidate framework, risk
+- • Toolkit: uv, Python 3.14, gzkit, your harness, Ollama — the install clinic is in lab tonight at 6:00 / • Course repository in the GitHub org; AI_LOG.md started from the first prompt / • Skills inventory / • Consultation at 5:00: your system idea, tested against “can it take all twelve layers?”
+
+### AFTER
+
+Evolution 0 asks for reading, writing, and setup. Read Tree Hollow, the Degradation Pattern in why.md, the glossary, and the two framework images. Write the first Design Analysis, the chat assistant against the harness, with the why paragraph and the judgment loop; the lecture worked the same comparison on a slide, so yours should be more complete than mine. Specify your intended system by PEAS. Mark the framework board. Write the one-page pitch. Stand up the toolkit, start the course repository, and start the AI log from the first prompt. In consultation I test every system idea against one question: can it take all twelve layers? [~3 min, leave a minute for questions]
+
+Cut from slide 21 (full wording):
+- The submission mechanics are in the orientation deck.
+- • Sprint and Drift, “Tree Hollow” / • gzkit why.md (the Degradation Pattern) and the glossary / • The two framework images: Layers of AI; Agentic AI: A Complete Framework / • Optional: Russell & Norvig ch. 2; Anthropic, “Building Effective Agents” (workflows vs. agents)
+- • Design Analysis #1: a chat assistant vs. an agent harness (nine components each), the “why and what it cost” paragraph, the judgment loop / • Your intended system specified by PEAS, each element mapped to a component / • The framework board with every box marked for which you can identify a system; the blank boxes are your reading list / • One-page system pitch: route, harness, candidate framework, risk
+- • Toolkit: uv, Python 3.14, gzkit, your harness, Ollama (the install clinic runs in the E0 lab) / • Course repository in the GitHub org; AI_LOG.md started from the first prompt / • Skills inventory / • Consultation: your system idea, tested against “can it take all twelve layers?”
+
+## Slide 22
+
+### BEFORE
+
+Close on the thesis. Every system we take apart this semester was designed by people who had to answer for it, and most of the design choices only make sense once you ask who was answering and for what. Your job is to build one you can answer for.
+
+### AFTER
+
+The thesis closes the lecture. Every system this course takes apart was designed by people who had to answer for it, and a design choice makes sense once you ask who was answering and for what. Your job is to build one you can answer for.
+

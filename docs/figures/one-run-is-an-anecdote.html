@@ -174,7 +174,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 11</div>
   <h1>One Run Is an Anecdote</h1>
-  <p class="lede">An evaluation that cannot fail proves nothing, because it would pass whatever the system did. The delta gate in this figure is built so that it can fail: a frozen golden set, a frozen baseline, a threshold rule committed before the first run, and a RED witness that removes the feature and expects exit 1. The simulator below shows how often a gate that sees only a few runs lets a regression through or blocks a real improvement, which is the reason one run is an anecdote.</p>
+  <p class="lede">An evaluation that cannot fail proves nothing, and a check you have never seen fail is not yet evidence. The delta gate in this figure is built so that it can fail: a frozen golden set, a frozen baseline, a threshold rule committed before the first run, and a RED witness that removes the feature and expects exit 1. Step through the gate from the golden set to the exit code, then use the simulator below to see how often a gate that sees only a few runs lets a regression through or blocks a real improvement.</p>
 </header>
 
 <div class="figwrap">
@@ -406,7 +406,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <!-- ===== pass@k ===== -->
   <section class="panel" aria-labelledby="h-pk">
     <div class="eyebrow">E10 slide 6 · τ-bench (Yao et al., 2024)</div>
-    <h2 id="h-pk">pass@k against pass^k</h2>
+    <h2 id="h-pk">pass@k: any of k passes; pass^k: all of k pass</h2>
     <p class="small">pass@k is the chance that at least one of k trials succeeds, so it rises with k and flatters. pass^k is the chance that all k succeed, so it falls with k, and it is the number a user who runs the task every day experiences. The curves assume independent trials with one fixed success chance per trial.</p>
     <div class="ctrl"><label for="pt">Success chance per trial</label><input id="pt" type="range" min="5" max="100" step="1" value="70"><output id="ptout" for="pt"></output></div>
     <svg class="chart" id="pk" viewBox="0 0 520 240" role="img" aria-label="pass@k and pass^k against k from 1 to 10."></svg>
