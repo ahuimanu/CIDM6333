@@ -64,6 +64,13 @@ SCHED = re.compile("|".join([
     r"\b\d{3}-\d{3}-\d{4}\b", r"[\w.]+@wtamu\.edu", r"\bLabor Day\b", r"\bcode freeze\b",
     r"\bWednesdays?( night| evening)?\b", r"\bFriday( night)?\b", r"\bSaturday\b", r"\bSunday\b", r"\bMonday\b", r"\bTuesday\b", r"\bThursdays?\b",
     r"\bby appointment\b", r"\boffice hours\b", r"\bT/Th\b", r"\bdue (on )?the dates\b", r"\b11:59\b",
+    # course management: the site carries the subject, not the running of a section
+    r"\bconsultation\b", r"\bGo or No-Go\b", r"\bGo/No-Go\b", r"\bcard station\b", r"\binstall clinic\b",
+    r"\bhomework\b", r"\bthe Sprint (closes|is due|due)\b", r"\bSprint due\b", r"\bSPRINT \(", r"\bbook (your|a|on|it|them)\b",
+    r"\bceremony slot\b", r"\bceremonies\b", r"\bWTClass\b", r"\bCanvas\b", r"\bsyllabus\b", r"\bgrade[sd]?\b", r"\bgrading\b",
+    r"\bper ?cent of (the|your) (grade|course)\b", r"\blab (tonight|at six|handout|is self-guided|runs)\b", r"\bLab (tonight|at six)\b",
+    r"\bself-guided\b", r"\bChase signs\b", r"\bsigns? (Go|GO)\b", r"\brun of show\b", r"\bminutes? of (framing|spine|teardowns?)\b",
+    r"\b(Framing|Spine|Teardowns|Lens and card|Lab and Sprint)\s*·", r"\bBreak\s*·", r"\bFive minutes\b", r"\bTwo hours\b",
 ]), re.I)
 DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
 

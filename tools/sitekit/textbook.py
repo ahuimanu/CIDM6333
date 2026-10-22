@@ -54,6 +54,8 @@ def slug(t):
 
 def clean(md):
     md = md.replace("4:00–6:30 p.m., ", "")
+    md = re.sub(r"The course runs thirteen Thursdays[^\n]*\n", "The course runs one Evolution at a time. Each Evolution carries two threads:\n", md)
+    md = re.sub(r"The weekly rhythm \(lecture 60 · consultation 60 · lab 30\), the Sprint and Drift method, and the scoring live in Part IV and in the run sheet\.", "The Sprint and Drift method lives in Part IV.", md)
     md = re.sub(r"\[(week-by-week run sheet|run sheet|method)\]", r"\1", md)
     md = re.sub(r"\n---\s*$", "", md.strip()) + "\n"
     return md

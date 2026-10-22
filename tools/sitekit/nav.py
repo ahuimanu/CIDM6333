@@ -27,6 +27,9 @@ nav.site a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accen
 nav.site .brand{color:var(--ink);font-weight:700;letter-spacing:.1em;margin-right:6px}
 nav.site .brand small{display:block;font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:none}
 @media (max-width:640px){nav.site{gap:4px 12px;font-size:14px} nav.site .brand{flex-basis:100%}}
+.sitenav.foot{margin-top:32px}
+.sitenav.foot nav.site{border-bottom:0;border-top:1px solid var(--line);margin:0;padding:14px 0 0}
+footer{margin-top:6px}
 """
 
 NAV_HTML = """<nav class="site" aria-label="Site">
@@ -56,6 +59,7 @@ def process(path, rel):
     s = re.sub(r'<style id="site-nav-css">.*?</style>\n?', "", s, flags=re.S)
     s = re.sub(r'<nav class="site".*?</nav>\n?', "", s, flags=re.S)
     s = re.sub(r'<div class="sitenav".*?</div>\n?', "", s, flags=re.S)
+    s = re.sub(r'<div class="sitenav foot".*?</div>\n?', "", s, flags=re.S)
     s = re.sub(r'<link rel="stylesheet" href="[^"]*assets/site\.css">\n?', "", s)
     s = re.sub(r'<script src="[^"]*assets/(htmx|_hyperscript)\.min\.js"></script>\n?', "", s)
     # move the common blocks out
@@ -83,6 +87,11 @@ def process(path, rel):
         return False
     div = '<div class="sitenav" hx-get="%sassets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="%s" _="%s"><noscript>%s</noscript></div>\n' % (ROOT, section_of(rel), HS, NAV_HTML.strip())
     s = s[:m.end()] + div + s[m.end():]
+    # the footer is nav too: the same fragment above the page's footer line
+    fdiv = '<div class="sitenav foot" hx-get="%sassets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="%s" _="%s"><noscript>%s</noscript></div>\n' % (ROOT, section_of(rel), HS, NAV_HTML.strip())
+    fm = re.search(r'<footer[ >]', s)
+    if fm:
+        s = s[:fm.start()] + fdiv + s[fm.start():]
     open(path, "w", encoding="utf-8").write(s)
     return True
 

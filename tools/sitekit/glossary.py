@@ -140,13 +140,20 @@ def entry_html(e, depth_prefix):
     if chs: rows.append('<p class="gk"><b>Textbook.</b> %s</p>' % chs)
     al = [a for a in e["aliases"] if a.lower() != e["term"].lower()][:8]
     alias = ('<p class="gk small">Also appears as: %s</p>' % html.escape(" · ".join(al))) if al else ""
-    return '<div class="gentry" id="%s"><h3>%s</h3>%s%s</div>' % (e["slug"], html.escape(e["term"]), "".join(rows), alias)
+    return '<div class="gentry" id="%s"><div class="ghead"><h3>%s</h3><a class="gtop" href="#top" aria-label="Back to the top of the glossary">↑ top</a></div>%s%s</div>' % (e["slug"], html.escape(e["term"]), "".join(rows), alias)
 
 GCSS = """<style>
 .gtoc{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 24px;font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.04em}
 .gtoc a{color:var(--accent-ink);text-decoration:none}
 .gentry{padding:14px 0;border-top:1px solid var(--line)}
+.gentry .ghead{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
 .gentry h3{margin:0 0 6px}
+.gtop{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); text-decoration:none; white-space:nowrap}
+.gtop:hover,.gtop:focus-visible{color:var(--accent-ink)}
+h2[id^="cat-"]{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-top:34px}
+h2[id^="cat-"] .gtop{font-size:14px}
+.gtop-float{position:sticky; bottom:16px; float:right; margin-top:-48px; font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.06em; text-transform:uppercase; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:8px 14px; color:var(--ink); text-decoration:none}
+.gtop-float:hover{border-color:var(--accent); color:var(--accent-ink)}
 .gentry p{margin:6px 0;max-width:80ch}
 .gentry .gk{font-size:15px;color:var(--ink-2)}
 .gentry .gk b{font-family:var(--display);font-weight:600;letter-spacing:.05em;color:var(--ink)}
@@ -157,14 +164,14 @@ article{max-width:900px}
 def build_glossary(docs):
     out = pathlib.Path(docs) / "glossary"; out.mkdir(exist_ok=True)
     toc = '<div class="gtoc">' + "".join('<a href="#cat-%s">%s</a>' % (c, n) for c, n in CATS) + "</div>"
-    body = ['<h1>Glossary</h1><p class="lede">Every name that the lectures use without stopping to introduce it: systems, papers, protocols, companies, and the course\'s own vocabulary. Each entry says what the thing is, who made it and when, why it is in this course, and where to read more. Lecture transcripts link here on a term\'s first mention; each lecture page lists the names on its slides.</p>', toc]
+    body = ['<h1 id="top">Glossary</h1><p class="lede">Every name that the lectures use without stopping to introduce it: systems, papers, protocols, companies, and the course\'s own vocabulary. Each entry says what the thing is, who made it and when, why it is in this course, and where to read more. Lecture transcripts link here on a term\'s first mention; each lecture page lists the names on its slides.</p>', toc]
     for c, n in CATS:
         es = sorted([e for e in ENTRIES if e["cat"] == c], key=lambda e: e["term"].lower())
         if not es: continue
-        body.append('<h2 id="cat-%s">%s</h2>' % (c, n))
+        body.append('<h2 id="cat-%s">%s <a class="gtop" href="#top">↑ top</a></h2>' % (c, n))
         body += [entry_html(e, "../") for e in es]
     body.append('<p class="small" style="margin-top:28px">%d entries. Dates and attributions were checked against the lecture decks and the sources named; corrections go to the instructor.</p>' % len(ENTRIES))
-    page = HEAD.replace("{{TITLE}}", "Glossary · CIDM 6333") + GCSS + '\n<div class="wrap"><nav class="crumbs"><a href="../">CIDM 6333</a> · Glossary</nav><div class="eyebrow">CIDM 6333 · Agentic Systems · Glossary</div><article>' + "".join(body) + '</article><footer>CIDM 6333 · Glossary · Fall 2026</footer></div>\n</body></html>\n'
+    page = HEAD.replace("{{TITLE}}", "Glossary · CIDM 6333") + GCSS + '\n<div class="wrap"><nav class="crumbs"><a href="../">CIDM 6333</a> · Glossary</nav><div class="eyebrow">CIDM 6333 · Agentic Systems · Glossary</div><article>' + "".join(body) + '<a class="gtop-float" href="#top">↑ top</a></article><footer>CIDM 6333 · Glossary · Fall 2026</footer></div>\n</body></html>\n'
     (out / "index.html").write_text(page, encoding="utf-8")
     print("glossary:", len(ENTRIES), "entries")
 
