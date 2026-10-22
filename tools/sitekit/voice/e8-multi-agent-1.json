@@ -440,7 +440,7 @@
  "'Credit is never inferred.' No dispatch record for the spec reviewer: spec review did not happen.": "'Credit is never inferred.' If there is no dispatch record for the spec reviewer, spec review did not happen.",
  "The honesty flag": "The honesty flag",
  "One agent may do everything, declared: --single-driver --reason \"...\".": "One agent may do everything if the run declares it: --single-driver --reason \"...\".",
- "Declared: graded as single-driver. Undeclared, presented as reviewed: falsifier three.": "A declared single-driver run is read as one. An undeclared run presented as reviewed trips falsifier three.",
+ "Declared: graded as single-driver. Undeclared, presented as reviewed: falsifier three.": "A declared single-driver run is read as one. An undeclared run presented as reviewed trips falsifier one.",
  "Reviewer could not run (Big Pickle unavailable, Go limit reached): ABORT, not PASS.": "If the reviewer could not run (Big Pickle unavailable, Go limit reached), the sortie is an ABORT rather than a PASS.",
  "Reference design: why the rule exists": "Reference design: why the rule exists",
  "1:40–1:45": "1:40–1:45",
