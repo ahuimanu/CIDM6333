@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Steer the Middle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .sw-track{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .sw-knob{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="win"]:not(.on){opacity:.5}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl,.fig .el.on .stripe{fill:var(--accent-soft)}
+.fig .el.on .sw-track{stroke:var(--accent)} .fig .el.on .sw-knob{fill:var(--accent)}
+.fig .kind{cursor:pointer}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:3px 9px}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .ok{color:var(--ink); font-weight:500}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .dim{color:var(--ink-2)}
+svg.bars{width:100%; height:auto; display:block}
+.bars text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.bars .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.bars .axis{stroke:var(--line)} .bars .grid{stroke:var(--line); stroke-dasharray:2 4}
+.bars .ba{fill:var(--s-a)} .bars .bb{fill:var(--s-b)}
+.bars .thr{stroke:var(--ink); stroke-width:1.4; stroke-dasharray:5 4}
+
+/* heatmap */
+.hmwrap{overflow-x:auto}
+table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width:640px; width:100%}
+.hm th{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.04em; color:var(--ink-2); text-align:left; padding:4px 6px; vertical-align:bottom}
+.hm th.rid{font-family:var(--mono); font-weight:500; font-size:12px; text-align:center}
+.hm th.rid small{display:block; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:0}
+.hm td{font-family:var(--mono); font-size:13px; text-align:center; border-radius:4px; padding:8px 4px; font-variant-numeric:tabular-nums; min-width:62px}
+.hm td.q{font-family:var(--body); font-size:14.5px; text-align:left; background:none; min-width:220px; cursor:pointer; padding:6px 8px}
+.hm tr.sel td.q{background:var(--accent-soft); border-radius:6px}
+.hm td.q .kd{display:block; font-family:var(--display); font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+.hm td.low{color:var(--ink-2)}
+.hm td.inj{box-shadow:inset 0 0 0 3px var(--s-b); font-weight:500; color:var(--ink)}
+.hm td.gone{background:repeating-linear-gradient(45deg,var(--surface-2) 0 4px,var(--surface) 4px 8px); color:var(--ink-2)}
+.hm td.res{font-family:var(--body); font-size:14px; text-align:left; background:none; min-width:150px}
+.verdict{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.verdict.yes{color:var(--ink)} .verdict.no{color:var(--accent-ink)}
+.recs{display:grid; gap:6px}
+.rec{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:start; background:var(--surface-2); border-radius:8px; padding:8px 10px}
+.rec .meta{font-family:var(--mono); font-size:12px; color:var(--ink-2); word-break:break-word}
+.rec .txt{font-size:14.5px; grid-column:1/2}
+.rec.gone{opacity:.5}
+.rec.gone .txt{text-decoration:line-through}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.m{font-family:var(--mono); font-size:13.5px}
+.t.compact{font-size:14.5px; min-width:560px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:15px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+<style>
+/* ---------- figure 17 additions ---------- */
+.fig .ring-model{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .ring-oc{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.3}
+.fig .ring-ours{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .el.on .ring-model,.fig .el.on .ring-oc,.fig .el.on .ring-ours{stroke:var(--accent); stroke-width:2.4}
+.fig .rname{font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; fill:var(--ink-2)}
+.fig .ri{font-size:11.5px; font-weight:600; fill:var(--ink)}
+.fig .ro{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .tie{stroke:var(--ink-2); stroke-width:1.2}
+.fig .el.on .tie{stroke:var(--accent); stroke-width:2}
+.fig .band{fill:var(--surface-2); stroke:var(--line); stroke-width:1.3}
+.fig .band.mid{fill:var(--model); stroke:var(--model-line)}
+.fig .el.on .band{stroke:var(--accent); stroke-width:2.4; fill:var(--accent-soft)}
+.fig .bt{font-size:14px; font-weight:600}
+.fig .brk{fill:none; stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.fig .el.on .brk{stroke:var(--accent); stroke-width:2}
+.fig .col{font-size:12px; fill:var(--ink)}
+.fig .colm{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
+.fig .cols{font-size:11px; fill:var(--ink-2)}
+.fig .evo{font-size:10px; font-weight:600; letter-spacing:.08em; fill:var(--accent-ink)}
+.fig .rowbg{fill:var(--surface); stroke:var(--line); stroke-width:1}
+.fig .el.on .rowbg{stroke:var(--accent); stroke-width:2; fill:var(--accent-soft)}
+.fig .el.ghost{opacity:.42}
+.fig .el.ghost .rowbg,.fig .el.ghost .ro{stroke-dasharray:3 3}
+.fig.focus .el.ghost:not(.on){opacity:.14}
+.fig .el.ghost.on{opacity:1}
+.fig .addmark{fill:var(--accent)}
+.place{display:grid; gap:8px}
+.pl{display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:6px 12px; align-items:center; background:var(--surface-2); border-radius:8px; padding:8px 12px}
+.pl .ft{font-size:15px}
+.pl .ft code{font-family:var(--mono); font-size:.88em}
+.pl .why{grid-column:1/-1; font-size:14px; color:var(--ink-2); min-height:1.2em}
+.pl .why b{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.pl .why.ok b{color:var(--ink)} .pl .why.bad b{color:var(--accent-ink)}
+.pl .seg button{padding:5px 10px; font-size:13.5px}
+@media (max-width:700px){ .pl{grid-template-columns:1fr} }
+body.embed header,body.embed .panels,body.embed section.map,body.embed .notes,body.embed footer{display:none}
+body.embed .wrap{padding:8px 8px 16px}
+</style>
+<script>if(/[?&]embed/.test(location.search)) document.body.classList.add("embed");</script>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 17</div>
+  <h1>Steer the Middle</h1>
+  <p class="lede">Three rings and one bar. The inner ring is the model. The middle ring is OpenCode, the loop you did not write. The outer ring is what you write to steer the middle: one file for each thing OpenCode already does by default, plus two additions. The bar says where the human's work is: wide before the loop runs and wide after, narrow where the model runs. Step from the inside out, then from E0 to E8.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1200 640" role="img" aria-label="A horizontal bar with three bands: specs and planning (wide), execution (narrow), and evaluation, validation, verification (wide). Below the narrow band, three concentric rings: the model inside, OpenCode in the middle, your harness outside. Items on the outer ring sit radially outside the OpenCode item each one steers. Columns on the left and right list what the human writes before the loop and what checks its output after.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- the bar -->
+    <g class="el" data-k="bar band-left human">
+      <rect class="band" x="20" y="26" width="480" height="72" rx="8"/>
+      <text class="bt" x="34" y="50">Specs and planning</text>
+      <text class="ts" x="34" y="68">the human writes what is wanted, before the loop runs</text>
+      <text class="ts" x="34" y="84">pitch · brief · PRD · AGENTS.md · plan · handoff</text>
+      <text class="tag" x="488" y="50" text-anchor="end">WIDE</text>
+    </g>
+    <g class="el" data-k="bar band-mid oc-loop">
+      <rect class="band mid" x="500" y="26" width="200" height="72" rx="8"/>
+      <text class="bt" x="514" y="50">Execution</text>
+      <text class="ts" x="514" y="68">OpenCode runs the loop: window,</text>
+      <text class="ts" x="514" y="84">model, gate, tool, repeat</text>
+      <text class="tag" x="692" y="50" text-anchor="end">NARROW</text>
+    </g>
+    <g class="el" data-k="bar band-right human">
+      <rect class="band" x="700" y="26" width="480" height="72" rx="8"/>
+      <text class="bt" x="714" y="50">Evaluation, validation, verification</text>
+      <text class="ts" x="714" y="68">what checks the loop's output, after it runs</text>
+      <text class="ts" x="714" y="84">tests · reviewer · the Chase · ledger · the gate</text>
+      <text class="tag" x="1168" y="50" text-anchor="end">WIDE</text>
+    </g>
+    <g class="el" data-k="bar bracket band-mid">
+      <path class="brk" d="M500,98 L418,222"/>
+      <path class="brk" d="M700,98 L782,222"/>
+      <text class="ts" x="600" y="128" text-anchor="middle">the narrow band, up close</text>
+    </g>
+
+    <!-- left column: specs and planning -->
+    <g class="el" data-k="band-left"><text class="lab" x="20" y="160">Specs and planning · before the loop</text></g>
+    <g id="lcol"></g>
+
+    <!-- right column: V&V -->
+    <g class="el" data-k="band-right"><text class="lab" x="880" y="160">Evaluation · validation · verification</text></g>
+    <g id="rcol"></g>
+
+    <!-- rings are generated by script -->
+    <g id="rings"></g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 15</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <section class="panel wide" aria-labelledby="h-place">
+    <div class="eyebrow">Step 3 and step 15, up close · which ring, which band · E0–E8</div>
+    <h2 id="h-place">Place this affordance</h2>
+    <p class="small">For each item pick the ring it lives on (Model, OpenCode, or Your harness) and the band of the bar where its work sits (Specs and planning, Execution, or Evaluation, validation, verification). Then press Check. Two items accept either of two bands; the answer says why.</p>
+    <div class="place" id="place"></div>
+    <div class="ctrl"><button type="button" id="check" class="primary">Check</button><button type="button" id="clear">Clear</button><span class="stat" id="score"></span></div>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">Step 15 · the inventory · one row per outer-ring item</div>
+  <h2 id="h-map">A file, a reader, a moment, a trace</h2>
+  <p class="small">The worksheet for tonight's exercise is this table with a fifth column: was it in your repository before tonight? Locations and loading rules are from the OpenCode documentation checked 10/22/2026.</p>
+  <div class="tablewrap">
+  <table class="t compact">
+    <thead><tr><th>Evo</th><th>Affordance</th><th>File</th><th>Read by</th><th>When it is read</th><th>Trace that it was read</th></tr></thead>
+    <tbody>
+      <tr><td>E5</td><td>Rules</td><td class="m">AGENTS.md (project root; global copy in ~/.config/opencode/)</td><td>OpenCode, into the window</td><td>Every turn, the whole file</td><td>A fresh session answers a standing-intent question and names the file</td></tr>
+      <tr><td>E3</td><td>Permissions</td><td class="m">opencode.json → permission (read, edit, shell, task, skill, webfetch, external_directory, doom_loop)</td><td>The permission engine, not the model</td><td>At every tool call; last matching rule wins</td><td>The once / always / reject prompt in the TUI</td></tr>
+      <tr><td>E3</td><td>Custom tool</td><td class="m">.opencode/tools/&lt;name&gt;.ts (tool() with a Zod args schema and execute)</td><td>The model sees name, description, schema; OpenCode runs execute</td><td>Listed every turn; run when called</td><td>The tool-call line naming your tool, and its permission prompt</td></tr>
+      <tr><td>E4</td><td>MCP server</td><td class="m">opencode.json → mcp</td><td>Same as a tool, through the MCP client</td><td>Listed every turn; run when called</td><td>A tool call whose name carries the server's prefix</td></tr>
+      <tr><td>E5</td><td>Skill</td><td class="m">.opencode/skills/&lt;name&gt;/SKILL.md (name matches the folder)</td><td>The model, through the skill tool</td><td>Name and description every turn; the body when called</td><td>The skill permission prompt (permission.skill: ask)</td></tr>
+      <tr><td>E2 · E10</td><td>Command</td><td class="m">.opencode/commands/&lt;name&gt;.md ($ARGUMENTS; !`cmd` injects shell output; agent:, subtask:)</td><td>The model, as the user turn</td><td>Only when a human types /name</td><td>The expanded prompt in the session</td></tr>
+      <tr><td>E2 · E8</td><td>Agent</td><td class="m">.opencode/agents/&lt;name&gt;.md (description, mode, model, temperature, permission)</td><td>A primary agent through the task tool, or the human with @name</td><td>Subagent descriptions every turn; the body when invoked, in its own window</td><td>The task-tool line and the subagent's returned message</td></tr>
+      <tr><td>E6</td><td>Instructions · references</td><td class="m">opencode.json → instructions (files, globs, URLs) · references (path or repository, with description)</td><td>OpenCode, into the window with AGENTS.md</td><td>Every turn</td><td>A fresh session answers from the file without a read tool call</td></tr>
+      <tr><td>E6</td><td>Handoff</td><td class="m">evolution-&lt;nn&gt;/handoff.md (course convention)</td><td>The next session's model, when told to read it</td><td>Once, at the start of the next session</td><td>The read tool call on the file</td></tr>
+      <tr><td>E7</td><td>Memory</td><td class="m">evolution-07/lab/recall.py · memory.jsonl · memory-ledger.jsonl (course addition)</td><td>The model, as a marked block of data</td><td>Only when the retriever scores a record above the threshold</td><td>The record id cited in the answer; the recall event in the ledger</td></tr>
+      <tr><td>E10</td><td>Plugin (hook)</td><td class="m">.opencode/plugins/&lt;name&gt;.ts (tool.execute.before / after, session.*, permission.asked, event)</td><td>OpenCode's event bus; the model never sees it</td><td>Around every matching event, inside the loop</td><td>A blocked call, or a log line the hook wrote</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:10px">The built-in items on the middle ring have no file of yours. Their trace is OpenCode's own: the agent name in the TUI, the tool-call line, the compaction notice.</p>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>Where this is used</h2>
+    <ul>
+      <li>In class: the follow-along exercise "Steer the Middle," which walks this figure from E0 to E8 in your own repository and ends with a reviewer agent that cannot edit.</li>
+      <li>Figures 14, 15, and 16 are the E5 and E7 items on the outer ring, up close. Figure 09 (Plan, Do, Check) is the E8 item. Figure 06 is the MCP boundary.</li>
+      <li>Final System: the harness that builds your MVP is the outer ring. Your V&amp;V has to show, for each item, the trace that it was read.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Sources</h2>
+    <ol>
+      <li>OpenCode documentation, checked 10/22/2026: Rules, Permissions, Custom Tools, MCP servers, Agent Skills, Commands, Agents, Plugins, References. https://opencode.ai/docs/</li>
+      <li>The E8 lecture: slide 6 (persona with anti-traits), slide 7 (ReviewResult), slide 10 (a reviewer that cannot edit), slide 11 (common mistakes).</li>
+      <li>The E0 lecture: the Degradation Pattern and the human at index zero.</li>
+    </ol>
+  </section>
+</div>
+
+<footer>CIDM 6333 · Figure 17 · Steer the Middle · Fall 2026</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const ns="http://www.w3.org/2000/svg";
+  const mk=(tag,attrs,txt)=>{ const e=document.createElementNS(ns,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(txt!=null) e.textContent=txt; return e; };
+  const grp=(k,cls)=>mk("g",{"class":"el"+(cls?" "+cls:""),"data-k":k});
+
+  /* ================= rings ================= */
+  const CX=600, CY=410, R0=62, R1=122, R2=182;
+  const rings=$("rings");
+  // ring fills, outer first so inner draws on top
+  const gOurs=grp("ours ring-ours-g"); gOurs.appendChild(mk("circle",{"class":"ring-ours",cx:CX,cy:CY,r:R2})); rings.appendChild(gOurs);
+  const gOc=grp("oc ring-oc-g"); gOc.appendChild(mk("circle",{"class":"ring-oc",cx:CX,cy:CY,r:R1})); rings.appendChild(gOc);
+  const gModel=grp("model"); gModel.appendChild(mk("circle",{"class":"ring-model",cx:CX,cy:CY,r:R0}));
+  gModel.appendChild(mk("text",{"class":"rname",x:CX,y:CY-18,"text-anchor":"middle"},"Model"));
+  gModel.appendChild(mk("text",{"class":"ri",x:CX,y:CY-1,"text-anchor":"middle"},"Big Pickle"));
+  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+14,"text-anchor":"middle"},"one window in,"));
+  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+28,"text-anchor":"middle"},"nothing kept"));
+  rings.appendChild(gModel);
+  // ring names at the bottom gap
+  const nOc=grp("oc"); nOc.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R0+36,"text-anchor":"middle"},"OpenCode")); rings.appendChild(nOc);
+  const nOurs=grp("ours"); nOurs.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R1+38,"text-anchor":"middle"},"Your harness")); rings.appendChild(nOurs);
+
+  // pairs: angle in degrees from the top, clockwise
+  const PAIRS=[
+    {a:-150, oc:"compaction", ours:["handoff.md","instructions · references"], k:"pair-ctx e6", evo:"E6"},
+    {a:-112, oc:"built-in commands", ours:[".opencode/commands/"], k:"pair-cmd e2", evo:"E2"},
+    {a:-75,  oc:"build · plan", ours:[".opencode/agents/"], k:"pair-agents e2 e8", evo:"E2 E8"},
+    {a:-37,  oc:"default prompt", ours:["AGENTS.md"], k:"pair-rules e5", evo:"E5"},
+    {a:0,    oc:"built-in tools", ours:[".opencode/tools/", "opencode.json → mcp"], k:"pair-tools e3 e4", evo:"E3 E4"},
+    {a:37,   oc:"default permissions", ours:["opencode.json → permission"], k:"pair-perm e3", evo:"E3"},
+    {a:75,   oc:"the skill tool", ours:[".opencode/skills/"], k:"pair-skills e5", evo:"E5"},
+    {a:112,  oc:"(no store)", ours:["recall · memory.jsonl"], k:"pair-mem e7 addition", evo:"E7", add:true},
+    {a:150,  oc:"event bus", ours:[".opencode/plugins/"], k:"pair-hooks e10 addition", evo:"E10", add:true, ghost:true}
+  ];
+  const pol=(r,a)=>{ const t=a*Math.PI/180; return [CX+r*Math.sin(t), CY-r*Math.cos(t)]; };
+  const anchor=a=> (Math.abs(a)>60 ? "middle" : (a>12 ? "start" : (a<-12 ? "end" : "middle")));
+  PAIRS.forEach(p=>{
+    const g=grp("ours oc "+p.k, p.ghost?"ghost":"");
+    // tie across the ring boundary
+    const [x1,y1]=pol(R1-6,p.a), [x2,y2]=pol(R1+6,p.a);
+    g.appendChild(mk("line",{"class":"tie",x1,y1,x2,y2}));
+    // middle ring item
+    const [mx,my]=pol(Math.abs(p.a)>60?85:92,p.a);
+    g.appendChild(mk("text",{"class":"ri",x:mx.toFixed(1),y:(my+4).toFixed(1),"text-anchor":anchor(p.a)},p.oc));
+    // outer ring items
+    const [ox,oy]=pol(Math.abs(p.a)>60?160:152,p.a);
+    const n=p.ours.length;
+    p.ours.forEach((s,i)=>{ g.appendChild(mk("text",{"class":"ro",x:ox.toFixed(1),y:(oy+4+(i-(n-1)/2)*13).toFixed(1),"text-anchor":anchor(p.a)},s)); });
+    // evolution tag just outside the ring
+    const [ex,ey]=pol(R2+12,p.a);
+    const dy=4+(Math.abs(p.a)>90?10:(Math.abs(p.a)>60?-8:0));
+    g.appendChild(mk("text",{"class":"evo",x:ex.toFixed(1),y:(ey+dy).toFixed(1),"text-anchor":anchor(p.a)},p.evo+(p.add?" · addition":"")));
+    if(p.add){ const [ax,ay]=pol(R2-4,p.a); g.appendChild(mk("circle",{"class":"addmark",cx:ax.toFixed(1),cy:ay.toFixed(1),r:3})); }
+    rings.appendChild(g);
+  });
+
+  /* ================= side columns ================= */
+  const LEFT=[
+    {evo:"E0", m:"the pitch · the brief · the PRD", s:"what is wanted, written by a human", k:"human prd e0"},
+    {evo:"E2", m:"plan (built-in agent)", s:"reads and plans; cannot edit the repository", k:"oc-agents plan e2"},
+    {evo:"E5", m:"AGENTS.md", s:"standing intent; every turn, in full", k:"agentsmd e5 pair-rules"},
+    {evo:"E5", m:".opencode/skills/<name>/SKILL.md", s:"a procedure the model loads when asked", k:"skills e5 pair-skills"},
+    {evo:"E6", m:"opencode.json → instructions", s:"the spec rides every turn beside AGENTS.md", k:"instructions e6 pair-ctx"},
+    {evo:"E6", m:"evolution-<nn>/handoff.md", s:"one session writes it for the next", k:"handoff e6 pair-ctx"},
+    {evo:"E2", m:".opencode/commands/<name>.md", s:"a prompt the human runs as /name", k:"commands e2 pair-cmd"}
+  ];
+  const RIGHT=[
+    {evo:"E0", m:"the Chase · the gate · closeout", s:"a human judges what came back", k:"human chase e0"},
+    {evo:"E1 E3", m:"ledger.jsonl", s:"every call, every verdict, dated", k:"ledger e1 e3"},
+    {evo:"E3", m:"codec.py --selftest · tests", s:"the round-trip property, run, with an exit code", k:"selftest e3 tools"},
+    {evo:"E8", m:".opencode/agents/reviewer.md", s:"edit: deny; returns one ReviewResult JSON", k:"reviewer e8 pair-agents ours-agents"},
+    {evo:"E9", m:"a second reviewer; the disagreement", s:"not tonight", k:"ghost e9", ghost:true},
+    {evo:"E10", m:".opencode/plugins/ → tool.execute.before", s:"a hook that refuses a write without a passing run", k:"ghost e10 pair-hooks", ghost:true},
+    {evo:"E10", m:"/test command with !`pytest -q`", s:"injects the test output into the prompt", k:"ghost e10 commands", ghost:true},
+    {evo:"E10", m:"permission.doom_loop", s:"the same call three times stops the loop", k:"ghost e10 pair-perm", ghost:true}
+  ];
+  function col(root,items,x){
+    items.forEach((it,i)=>{
+      const y=172+i*54;
+      const g=grp(it.k, it.ghost?"ghost":"");
+      g.appendChild(mk("rect",{"class":"rowbg",x:x,y:y,width:300,height:46,rx:7}));
+      g.appendChild(mk("text",{"class":"evo",x:x+10,y:y+16},it.evo));
+      g.appendChild(mk("text",{"class":"colm",x:x+10,y:y+31},it.m));
+      g.appendChild(mk("text",{"class":"cols",x:x+10,y:y+43},it.s));
+      root.appendChild(g);
+    });
+  }
+  col($("lcol"),LEFT,20); col($("rcol"),RIGHT,880);
+
+  /* ================= step-through player ================= */
+  const STEPS = [
+    {k:"*", t:"Steer the middle", w:["E0","E8","Final"],
+     p:"Three rings and one bar. The inner ring is the model: Big Pickle, one window in, nothing kept between calls. The middle ring is OpenCode, the loop that builds the window, calls the model, gates the tool, runs it, and repeats. The outer ring is what you write to steer the middle. The bar above says where the human's work is: wide at both ends, narrow where the model runs. Step from the inside out, then from E0 to E8."},
+    {k:"model", t:"The model: one window in, then nothing", w:["E1","E6"],
+     p:"Big Pickle (opencode/big-pickle) reads one window and writes one answer. It keeps nothing between calls; the next turn starts from a window the harness builds again. You cannot change this ring. You can only change what goes into the window and what happens to what comes out."},
+    {k:"oc", t:"OpenCode: the loop you did not write", w:["E1","E5"],
+     p:"OpenCode builds the window, calls the model, parses the tool call, checks the permission, runs the tool, and loops. It ships with built-in tools (read, edit, shell, webfetch), built-in agents (build, plan, general, explore, scout), built-in commands (/init, /undo, /help), a default prompt, default permissions, a skill tool, compaction, and an event bus. Most of what you will write is your version of one of these."},
+    {k:"ours", t:"Your harness: one file per thing you steer", w:["E3","E5","E8"],
+     p:"Every item on the outer ring is a file in your repository, placed outside the thing it steers. AGENTS.md replaces the default prompt. .opencode/tools/ and MCP servers add to the built-in tools. opencode.json sets the permissions. .opencode/agents/ adds agents beside build and plan. Two items have no counterpart, marked with a dot: memory, because OpenCode keeps no store between sessions, and plugins, because that is your code running inside the loop. Those are additions, not versions."},
+    {k:"bar band-left band-mid band-right bracket", t:"The bar: the widths are where the human's work is", w:["E0"],
+     p:"Specs and planning on the left, wide. Execution in the middle, narrow. Evaluation, validation, verification on the right, wide. All three rings together sit inside the narrow band: the model's part of the work is the thin part, and the human owns both wide ends. This is the Degradation Pattern drawn as a shape, and E0's claim that the human is index zero."},
+    {k:"band-left band-right human prd chase e0", t:"E0 · The human at index zero", w:["E0"],
+     p:"Before the loop runs, a human writes what is wanted: the pitch, the brief, the PRD. After it runs, a human judges what came back: the Chase, the gate, the closeout. Nothing is in the rings yet. Tonight's exercise ends with you in the right band, reading the reviewer's verdict against the diff."},
+    {k:"oc-loop model band-mid oc", t:"E1 · The loop, and its one visible trace", w:["E1"],
+     p:"E1 built the loop: perceive, reason, act, halt. In OpenCode the loop is the middle ring, and its trace is the tool-call line in the TUI: read, then read, then an answer. Tonight's first probe: open a fresh session and ask what is in the repository. Count the tool calls before the answer. That count is the loop running."},
+    {k:"pair-agents oc-agents plan e2 pair-cmd commands", t:"E2 · Patterns: plan and build are two agents", w:["E2"],
+     p:"E2 asked who owns the loop. OpenCode answers with two primary agents: build, which can edit, and plan, which denies edits outside ~/.opencode/plan/. Tab switches between them. A pattern you drew in E2 is now a permission difference between two agent definitions. Plan sits in the left band; build in the middle. A command file in .opencode/commands/ is a prompt you run by name, the smallest pattern of all."},
+    {k:"pair-tools pair-perm tools selftest e3", t:"E3 · Tools as contracts", w:["E3"],
+     p:"E3's tool is a schema plus a gate. .opencode/tools/<name>.ts declares args with a Zod schema and an execute function; the model sees the name, description, and schema every turn. opencode.json → permission decides whether a call runs, asks, or is denied, and the last matching rule wins. Last week's codec is tonight's tool, and the permission prompt is the trace that the gate held."},
+    {k:"pair-tools e4", t:"E4 · MCP: the same shape, a different boundary", w:["E4","E5"],
+     p:"An MCP server's tools reach the model the same way a custom tool does: name, description, schema in the window; the permission engine at call time. The difference is the trust boundary (Figure 06): the server's text is someone else's. The entry is opencode.json → mcp. Tonight you only locate it and record what it exposes."},
+    {k:"pair-rules pair-skills agentsmd skills e5", t:"E5 · Rules and skills", w:["E5"],
+     p:"AGENTS.md rides every turn in full; a skill's name and description ride every turn and its body loads when the model calls the skill tool. Those are two of the three drawers (Figure 14). Tonight: confirm AGENTS.md states what the system is and must never do, add the codec line, and build one skill if you have none. permission.skill set to ask makes the call visible."},
+    {k:"pair-ctx instructions handoff e6", t:"E6 · Context: what rides along, and what gets squeezed", w:["E6"],
+     p:"The window is finite. Three outer-ring items decide what is in it: instructions in opencode.json (extra files joined to AGENTS.md on every turn), references (described directories advertised to the agent), and the handoff file one session writes for the next. Compaction is the middle ring's own answer: a summary the model writes when the window fills. Tonight the codec spec rides along as an instruction."},
+    {k:"pair-mem e7", t:"E7 · Memory: a drawer the loop does not open by itself", w:["E7"],
+     p:"OpenCode keeps no store between sessions. recall.py and memory.jsonl are an addition: a record enters the window only when the retriever scores it above the threshold, and the model reads it as fact (Figure 08). Tonight you file one dated fact about the codec, then change the codec, and watch the record go stale in the time it takes to add hex."},
+    {k:"pair-agents ours-agents reviewer e8 band-right", t:"E8 · Agents: a reviewer that cannot edit", w:["E8"],
+     p:".opencode/agents/reviewer.md is your version of a built-in agent: mode: subagent, edit: deny, a shell allowlist of git diff and git log, and a persona with anti-traits. build invokes it through the task tool, or you call it with @reviewer. It returns one ReviewResult JSON with a verdict and findings that cite a location. The deny enforces; the anti-trait explains. It is the first thing you build in the right band."},
+    {k:"ghost e9 e10 band-right", t:"E9 and E10 · Not tonight: the mechanisms in the loop", w:["E9","E10"],
+     p:"E9 asks what happens when the reviewer and the worker disagree, and adds a second reviewer. E10 puts your code inside the loop for the first time: a plugin hook on tool.execute.before that refuses a write without a passing run, a /test command that injects the test output into the prompt, and doom_loop. Those are the mechanisms in the loop that Figure 16's Probe 3 asked for. Greyed until their week."},
+    {k:"*", t:"The inventory", w:["E8","Final"],
+     p:"Every item on the outer ring has four facts: a file, a reader, a moment it is read, and a trace that it was read. The table below is that inventory. Tonight's worksheet adds a fifth column, whether the item was in your repository before tonight. A row you cannot fill is a finding. A row you filled tonight for the first time is the thing to commit."}
+  ];
+
+  const fig = $("fig");
+  const els = [...fig.querySelectorAll(".el")];
+  let cur = 0;
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="dot";
+    b.setAttribute("aria-label","Step "+i+": "+s.t);
+    b.addEventListener("click",()=>go(i));
+    dots.appendChild(b);
+  });
+  function light(keys){
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{
+      const ek=(e.dataset.k||"").split(" ");
+      e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x)));
+    });
+  }
+  function render(){
+    const s=STEPS[cur];
+    light(s.k==="*" ? null : s.k.split(" "));
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=s.t;
+    $("captext").textContent=s.p;
+    $("capweeks").innerHTML=s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); render(); }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  render();
+
+  /* ================= place this affordance ================= */
+  const RN={M:"Model",O:"OpenCode",H:"Your harness"}, BN={S:"Specs and planning",X:"Execution",V:"Evaluation, validation, verification"};
+  const ITEMS=[
+    {t:"<code>AGENTS.md</code>", r:"H", b:["S"], why:"Your version of the default prompt. It states what is wanted before the loop runs, and rides every turn."},
+    {t:"<code>opencode/big-pickle</code>", r:"M", b:["X"], why:"The model. One window in, one answer out, nothing kept. It is the thin part."},
+    {t:"The built-in <code>plan</code> agent", r:"O", b:["S"], why:"OpenCode ships it. It reads and plans and denies edits; it belongs to the left band."},
+    {t:"The built-in <code>build</code> agent", r:"O", b:["X"], why:"OpenCode ships it with every tool allowed. It is the loop doing the work."},
+    {t:"<code>.opencode/tools/codec.ts</code>", r:"H", b:["X"], why:"Your addition to the built-in tools, run inside the loop when the model calls it."},
+    {t:"<code>opencode.json → permission</code>", r:"H", b:["X"], why:"Your version of the default permissions. The engine checks it at every call, inside the loop; it is a gate on execution, not a review after it."},
+    {t:"<code>.opencode/skills/codec-check/SKILL.md</code>", r:"H", b:["V","S"], why:"Your skill; the band depends on what the procedure does. codec-check runs the selftest and reads the spec, so it is verification; a writing-plans skill would sit in the left band."},
+    {t:"<code>.opencode/commands/plan-hex.md</code>", r:"H", b:["S","V"], why:"Your version of a built-in command. /plan-hex writes a plan, so it is specs; a /test command that injects pytest output would be verification."},
+    {t:"<code>.opencode/agents/reviewer.md</code>", r:"H", b:["V"], why:"Your version of a built-in agent, with edit denied. It judges the diff after the work; the first thing you build in the right band."},
+    {t:"<code>recall.py · memory.jsonl</code>", r:"H", b:["X"], why:"An addition with no OpenCode counterpart. The retriever puts a record into the window at execution time, and the model reads it as fact."},
+    {t:"Compaction", r:"O", b:["X"], why:"OpenCode's own answer to a full window: a summary the model writes mid-run. You did not write it and cannot review it before it happens."},
+    {t:"<code>.opencode/plugins/</code> hook on <code>tool.execute.before</code>", r:"H", b:["V"], why:"An addition: your code inside the loop, refusing a call before it runs. E10's mechanism; a gate the prompt cannot provide."}
+  ];
+  const picks = ITEMS.map(()=>({r:null,b:null}));
+  function seg(i,kind,opts){ return '<div class="seg" role="group" aria-label="'+(kind==="r"?"Ring":"Band")+' for item '+(i+1)+'">'+opts.map(o=>'<button type="button" data-i="'+i+'" data-kind="'+kind+'" data-v="'+o+'" aria-pressed="'+(picks[i][kind]===o)+'" aria-label="Item '+(i+1)+': '+(kind==="r"?RN[o]:BN[o])+'">'+(kind==="r"?RN[o]:{S:"Specs",X:"Execution",V:"V&amp;V"}[o])+'</button>').join("")+'</div>'; }
+  function renderPlace(){
+    $("place").innerHTML = ITEMS.map((f,i)=>'<div class="pl" id="p'+i+'"><div class="ft">'+(i+1)+'. '+f.t+'</div>'+seg(i,"r",["M","O","H"])+seg(i,"b",["S","X","V"])+'<div class="why" id="w'+i+'"></div></div>').join("");
+    $("place").querySelectorAll("button[data-v]").forEach(b=>b.addEventListener("click",()=>{
+      const i=+b.dataset.i, kind=b.dataset.kind; picks[i][kind]=b.dataset.v;
+      $("place").querySelectorAll('button[data-i="'+i+'"][data-kind="'+kind+'"]').forEach(x=>x.setAttribute("aria-pressed",x===b));
+    }));
+  }
+  $("check").addEventListener("click",()=>{
+    let n=0, done=0;
+    ITEMS.forEach((f,i)=>{
+      const w=$("w"+i), p=picks[i];
+      const okR=p.r===f.r, okB=f.b.includes(p.b), ok=okR&&okB;
+      if (p.r&&p.b) done++; if (ok) n++;
+      w.className="why "+(ok?"ok":"bad");
+      const ans=RN[f.r]+" · "+f.b.map(x=>BN[x]).join(" or ");
+      w.innerHTML='<b>'+(ok?'RIGHT':((p.r&&p.b)?'NO':'NOT PLACED'))+' · '+ans+'</b> '+f.why;
+    });
+    $("score").textContent=n+" of "+ITEMS.length+" right"+(done<ITEMS.length?" ("+(ITEMS.length-done)+" not placed)":"");
+  });
+  $("clear").addEventListener("click",()=>{ picks.forEach(p=>{p.r=null;p.b=null;}); renderPlace(); $("score").textContent=""; });
+  renderPlace();
+})();
+</script>
+
+</body></html>

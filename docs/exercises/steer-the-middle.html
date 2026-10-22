@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Steer the middle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
+  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
+  --s-a:#2A76AE; --s-b:#B45C0C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --s-a:#3F9AD6; --s-b:#D47A22;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
+  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --s-a:#3F9AD6; --s-b:#D47A22;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 64px}
+.eyebrow{font-family:var(--display); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; color:var(--ink-2)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(44px,7vw,76px); line-height:.95; letter-spacing:-.01em; margin:6px 0 12px; text-wrap:balance}
+h2{font-family:var(--display); font-weight:600; font-size:28px; line-height:1.1; margin:0 0 6px; text-wrap:balance}
+h3.sub{font-family:var(--display); font-weight:600; font-size:19px; margin:4px 0 0}
+.lede{max-width:66ch; color:var(--ink); margin:0}
+.lede em{font-style:italic}
+header{display:grid; gap:4px; margin-bottom:22px}
+
+/* ---------- figure ---------- */
+.figwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.scroller{overflow-x:auto}
+svg.fig{display:block; width:100%; min-width:860px; height:auto}
+.fig text{font-family:var(--display); fill:var(--ink)}
+.fig .tt{font-size:16px; font-weight:600}
+.fig .ts{font-size:12.5px; fill:var(--ink-2); font-weight:500}
+.fig .lab{font-size:11.5px; fill:var(--ink-2); font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.fig .tag{font-size:11.5px; font-weight:600; letter-spacing:.06em; fill:var(--accent-ink)}
+.fig .mono{font-family:var(--mono); font-size:10px; fill:var(--ink)}
+.fig .box{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
+.fig .stripe{fill:var(--surface-2); stroke:none}
+.fig .modelbox{fill:var(--model); stroke:var(--model-line); stroke-width:1.5}
+.fig .frame{fill:none; stroke:var(--ink-2); stroke-width:1.3; stroke-dasharray:3 6}
+.fig .flow{fill:none; stroke:var(--ink-2); stroke-width:1.6; marker-end:url(#arr)}
+.fig .flow.nohead{marker-end:none}
+.fig .dash{fill:none; stroke:var(--ink-2); stroke-width:1.4; stroke-dasharray:4 4; marker-end:url(#arr)}
+.fig .kvbox{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 3}
+.fig .sw-track{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.2}
+.fig .sw-knob{fill:var(--ink-2)}
+.fig .mk{fill:var(--ink-2)} .fig .mkon{fill:var(--accent)}
+.fig .el{transition:opacity .35s ease}
+.fig.focus .el{opacity:.2}
+.fig.focus .el.on{opacity:1}
+.fig.focus .el[data-k~="win"]:not(.on){opacity:.5}
+.fig .el.on .box,.fig .el.on .kvbox,.fig .el.on .modelbox{stroke:var(--accent); stroke-width:2.4}
+.fig .el.on .flow{stroke:var(--accent); stroke-width:2.4; marker-end:url(#arrOn)}
+.fig .el.on .flow.nohead{marker-end:none}
+.fig .el.on .dash{stroke:var(--accent); stroke-width:2; marker-end:url(#arrOn)}
+.fig .el.on .stripe.hl,.fig .el.on .stripe{fill:var(--accent-soft)}
+.fig .el.on .sw-track{stroke:var(--accent)} .fig .el.on .sw-knob{fill:var(--accent)}
+.fig .kind{cursor:pointer}
+@media (prefers-reduced-motion: no-preference){
+  .fig .el.on .flow{stroke-dasharray:7 5; animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-24}}
+}
+
+/* ---------- player ---------- */
+.player{border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px 28px; padding:18px 22px 20px; align-items:start}
+.cap .stepno{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.cap h3{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.1; margin:2px 0 6px; text-wrap:balance}
+.cap p{margin:0; max-width:70ch}
+.cap .weeks{margin-top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.chip{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.06em; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink)}
+.controls{display:grid; gap:10px; justify-items:end; min-width:250px}
+.btnrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+button,select{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer}
+button:hover{border-color:var(--ink-2)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.primary{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+button.primary[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+button:disabled{opacity:.45; cursor:default}
+button.mini{font-size:13px; padding:3px 9px}
+select{font-size:13.5px; padding:5px 8px; max-width:250px}
+.dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+.dot{width:12px; height:12px; padding:0; border-radius:50%; background:var(--surface-2); border:1px solid var(--line)}
+.dot[aria-current="step"]{background:var(--accent); border-color:var(--accent)}
+.vnote{font-size:13px; color:var(--ink-2); text-align:right; max-width:260px; margin:0}
+@media (max-width:760px){
+  .player{grid-template-columns:1fr}
+  .controls{justify-items:start; min-width:0}
+  .btnrow,.dots{justify-content:flex-start}
+  .vnote{text-align:left}
+}
+
+/* ---------- panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr)); gap:20px; margin-top:28px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; display:grid; gap:12px; align-content:start; min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel p{margin:0}
+.small{font-size:14px; color:var(--ink-2)}
+.ctrl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-family:var(--display); font-weight:600; font-size:15px}
+.ctrl input[type=range]{flex:1 1 140px; accent-color:var(--accent); max-width:260px}
+.ctrl output{font-family:var(--mono); font-weight:400; font-size:14px; min-width:4.5ch}
+.ctrl label.cb{display:inline-flex; gap:6px; align-items:center; font-weight:500}
+.ctrl input[type=checkbox]{accent-color:var(--accent); width:16px; height:16px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; flex-wrap:wrap}
+.seg button{border:0; border-radius:0; background:var(--surface); padding:7px 14px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; border-radius:2px; display:inline-block}
+.stat{font-family:var(--mono); font-size:14px}
+.stat b{font-weight:500; color:var(--accent-ink)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px; align-items:start}
+.twocol > div{display:grid; gap:10px; min-width:0}
+.log{font-family:var(--mono); font-size:12.5px; line-height:1.55; background:var(--surface-2); padding:10px 12px; border-radius:8px; white-space:pre-wrap; word-break:break-word; margin:0; min-height:3em}
+.log .ok{color:var(--ink); font-weight:500}
+.log .bad{color:var(--accent-ink); font-weight:500}
+.log .dim{color:var(--ink-2)}
+svg.bars{width:100%; height:auto; display:block}
+.bars text{font-family:var(--mono); font-size:11px; fill:var(--ink-2)}
+.bars .lbl{font-family:var(--display); font-size:13px; font-weight:600; fill:var(--ink)}
+.bars .axis{stroke:var(--line)} .bars .grid{stroke:var(--line); stroke-dasharray:2 4}
+.bars .ba{fill:var(--s-a)} .bars .bb{fill:var(--s-b)}
+.bars .thr{stroke:var(--ink); stroke-width:1.4; stroke-dasharray:5 4}
+
+/* heatmap */
+.hmwrap{overflow-x:auto}
+table.hm{border-collapse:separate; border-spacing:3px; font-size:14px; min-width:640px; width:100%}
+.hm th{font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:.04em; color:var(--ink-2); text-align:left; padding:4px 6px; vertical-align:bottom}
+.hm th.rid{font-family:var(--mono); font-weight:500; font-size:12px; text-align:center}
+.hm th.rid small{display:block; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:0}
+.hm td{font-family:var(--mono); font-size:13px; text-align:center; border-radius:4px; padding:8px 4px; font-variant-numeric:tabular-nums; min-width:62px}
+.hm td.q{font-family:var(--body); font-size:14.5px; text-align:left; background:none; min-width:220px; cursor:pointer; padding:6px 8px}
+.hm tr.sel td.q{background:var(--accent-soft); border-radius:6px}
+.hm td.q .kd{display:block; font-family:var(--display); font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+.hm td.low{color:var(--ink-2)}
+.hm td.inj{box-shadow:inset 0 0 0 3px var(--s-b); font-weight:500; color:var(--ink)}
+.hm td.gone{background:repeating-linear-gradient(45deg,var(--surface-2) 0 4px,var(--surface) 4px 8px); color:var(--ink-2)}
+.hm td.res{font-family:var(--body); font-size:14px; text-align:left; background:none; min-width:150px}
+.verdict{font-family:var(--display); font-weight:600; letter-spacing:.05em}
+.verdict.yes{color:var(--ink)} .verdict.no{color:var(--accent-ink)}
+.recs{display:grid; gap:6px}
+.rec{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:start; background:var(--surface-2); border-radius:8px; padding:8px 10px}
+.rec .meta{font-family:var(--mono); font-size:12px; color:var(--ink-2); word-break:break-word}
+.rec .txt{font-size:14.5px; grid-column:1/2}
+.rec.gone{opacity:.5}
+.rec.gone .txt{text-decoration:line-through}
+
+/* ---------- table ---------- */
+section.map{margin-top:36px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table.t{border-collapse:collapse; width:100%; min-width:640px; font-size:15.5px}
+.t th{font-family:var(--display); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:var(--ink-2); text-align:left; padding:8px 12px; border-bottom:1.5px solid var(--ink-2)}
+.t td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+.t td:first-child{font-family:var(--display); font-weight:600; font-size:16px}
+.t td.m{font-family:var(--mono); font-size:13.5px}
+.t.compact{font-size:14.5px; min-width:560px}
+.t.compact td{padding:7px 10px}
+.notes{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:24px}
+.notes ul,.notes ol{margin:6px 0 0; padding-left:20px; display:grid; gap:6px; font-size:15px}
+.notes h2{font-size:22px}
+ul.plain{margin:0; padding-left:20px; display:grid; gap:5px; font-size:15px}
+footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.06em; text-transform:uppercase}
+</style>
+
+<style>
+article{max-width:860px}
+article h1{font-size:clamp(36px,6vw,60px)}
+article h2{margin-top:34px; font-size:30px}
+article h3{font-family:var(--display); font-weight:600; font-size:22px; margin:26px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{padding-left:22px; display:grid; gap:5px}
+article code{font-family:var(--mono); font-size:.88em; background:var(--surface-2); padding:1px 5px; border-radius:4px}
+article pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.5}
+article pre code{background:none; padding:0; font-size:inherit}
+article table{border-collapse:collapse; width:100%; margin:12px 0; font-size:15px}
+article th{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--ink-2); text-align:left; padding:8px 10px; border-bottom:1.5px solid var(--ink-2)}
+article td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+.tw{overflow-x:auto}
+article hr{border:0; border-top:1px solid var(--line); margin:30px 0}
+article a{color:var(--accent-ink)}
+nav.crumbs{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:13px; margin-bottom:8px}
+nav.crumbs a{color:var(--accent-ink); text-decoration:none}
+</style>
+
+<div class="wrap"><nav class="crumbs"><a href="../">CIDM 6333</a> · Exercises</nav><div class="eyebrow">CIDM 6333 · Agentic Systems · In-class exercise</div><article><h1>In-class exercise — Steer the middle</h1>
+<p><strong>CIDM 6333 · In class, follow along at the screen, each student in their own repository · 60 minutes · Harness: OpenCode · Model: Big Pickle (<code>opencode/big-pickle</code>) or any OpenCode Go model (<code>opencode-go/…</code>)</strong>
+<strong>Builds on:</strong> everything from E0 to E7, and the codec you built at the screen last week. <strong>Feeds:</strong> Sortie 8 (controller, worker, reviewer), the Final System, where the harness that builds your MVP is the outer ring of tonight's figure.</p>
+<p><strong>Figure for this exercise:</strong> <a href="https://ahuimanu.github.io/CIDM6333/figures/steer-the-middle.html">Figure 17 · Steer the Middle</a>. The lecture walks it from the inside out; this exercise walks it from E0 to E8 in your repository. Figures <a href="https://ahuimanu.github.io/CIDM6333/figures/plan-do-check.html">09</a>, <a href="https://ahuimanu.github.io/CIDM6333/figures/three-drawers.html">14</a>, and <a href="https://ahuimanu.github.io/CIDM6333/figures/skill-on-demand.html">15</a> are the E8 and E5 items up close.</p>
+<p><strong>Files for this exercise</strong> (all on the course site; the steps fetch them with <code>curl</code>): <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-spec.md">codec-spec.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec.py">codec.py</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md">codec-check SKILL.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/reviewer.md">reviewer.md</a> · <a href="https://ahuimanu.github.io/CIDM6333/exercises/steer-the-middle-worksheet.md">worksheet.md</a></p>
+<p><strong>How to submit:</strong> push the exit ticket to your own repository (under your name) in the CIDM6333 organization on GitHub. The repository is the submission; do not upload files to Canvas. A commit that is on a laptop and not pushed is not submitted.</p>
+<h2>Why this exercise</h2>
+<p>Your system is three rings. The model is inside: one window in, one answer out, nothing kept. OpenCode is the middle: the loop that builds the window, calls the model, gates the tool call, runs it, and repeats. Your harness is the outer ring: the files you write to steer the middle. Most of those files are your version of something OpenCode already does by default.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>OpenCode has</th>
+<th>You write</th>
+<th>Introduced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a default prompt</td>
+<td><code>AGENTS.md</code></td>
+<td>E5</td>
+</tr>
+<tr>
+<td>built-in tools (<code>read</code>, <code>edit</code>, <code>shell</code>, <code>webfetch</code>)</td>
+<td><code>.opencode/tools/&lt;name&gt;.ts</code>; MCP servers in <code>opencode.json</code></td>
+<td>E3, E4</td>
+</tr>
+<tr>
+<td>default permissions</td>
+<td><code>opencode.json</code> → <code>permission</code></td>
+<td>E3</td>
+</tr>
+<tr>
+<td>the <code>skill</code> tool, empty</td>
+<td><code>.opencode/skills/&lt;name&gt;/SKILL.md</code></td>
+<td>E5</td>
+</tr>
+<tr>
+<td>built-in commands (<code>/init</code>, <code>/undo</code>, <code>/help</code>)</td>
+<td><code>.opencode/commands/&lt;name&gt;.md</code></td>
+<td>E2</td>
+</tr>
+<tr>
+<td>built-in agents (<code>build</code>, <code>plan</code>, <code>general</code>, <code>explore</code>, <code>scout</code>)</td>
+<td><code>.opencode/agents/&lt;name&gt;.md</code></td>
+<td>E2, E8</td>
+</tr>
+<tr>
+<td>compaction</td>
+<td>the handoff file; <code>instructions</code> and <code>references</code> in <code>opencode.json</code></td>
+<td>E6</td>
+</tr>
+<tr>
+<td>nothing: no store between sessions</td>
+<td><code>recall.py</code>, <code>memory.jsonl</code></td>
+<td>E7</td>
+</tr>
+<tr>
+<td>an event bus</td>
+<td><code>.opencode/plugins/&lt;name&gt;.ts</code></td>
+<td>E10, not tonight</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tonight you walk that table from the top of the course to this week. For each row you locate the file in your repository, name what reads it and when, make it fire, and record the trace. A row you cannot fill is a finding. A row you fill tonight for the first time is the thing to commit.</p>
+<p>The last row you build is new: a reviewer agent that cannot edit. That is E8's claim in one file. The deny in its permission block enforces; the anti-trait in its persona explains; the verdict it returns is a typed claim that cites a location.</p>
+<h2>The claim this exercise tests</h2>
+<p>Every item on the outer ring of your harness has a file, a reader, a moment it is read, and a trace that it was read. For the reviewer in particular: it returns one ReviewResult, it did not change a file, and when asked to fix the code it refuses or is refused.</p>
+<p>If a row has no trace, or the reviewer edits, you have a finding for the Sortie 8 card. Record it as it came back.</p>
+<h2>How tonight runs</h2>
+<p>The instructor drives at the screen. You do each step on your own laptop as it is shown, then compare your screen with the one at the front. There is nothing to print; this page stays open beside OpenCode, and you can replay it alone afterwards. Each step has three parts: <strong>do</strong>, <strong>see</strong>, <strong>record</strong>. Record on the worksheet, one line per step.</p>
+<h2>Steps (60 minutes)</h2>
+<h3>0–5 · Set up</h3>
+<p>In your repository root:</p>
+<pre><code class="language-bash">opencode --version
+mkdir -p evolution-08/exercise .opencode
+cd evolution-08/exercise
+curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-spec.md -o codec-spec.md
+curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/steer-the-middle-worksheet.md -o worksheet.md
+cd ../..
+</code></pre>
+<p>If your codec from last week is in the repository, copy it to <code>evolution-08/exercise/codec.py</code>. If it is not, or it has no <code>--selftest</code>, fetch the reference version:</p>
+<pre><code class="language-bash">curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec.py -o evolution-08/exercise/codec.py
+python3 evolution-08/exercise/codec.py --selftest
+</code></pre>
+<p><strong>See:</strong> <code>PASS rot13</code> and <code>PASS base64</code>, exit code 0. <strong>Record:</strong> the OpenCode version, the model id, and whether the codec is yours or the reference.</p>
+<h3>5–9 · E1 · The loop, and its one trace</h3>
+<p><strong>Do:</strong> open OpenCode in the repository root. Type <code>/new</code>, then:</p>
+<pre><code>What is in this repository? Name three files and say what each one is for.
+</code></pre>
+<p><strong>See:</strong> the TUI shows the loop running: one tool-call line per call (<code>glob</code>, <code>read</code>, <code>read</code>…), then an answer. Those lines are the middle ring at work. The model did not read the files; the loop ran <code>read</code> and put the text in the next window.</p>
+<p><strong>Record:</strong> how many tool calls ran before the answer, and the name of the first tool.</p>
+<h3>9–13 · E2 · Plan and build are two agents</h3>
+<p><strong>Do:</strong> press <strong>Tab</strong>. The agent name in the TUI changes from <code>build</code> to <code>plan</code>. Send:</p>
+<pre><code>Plan how to add a hex scheme to evolution-08/exercise/codec.py so that it meets codec-spec.md. List the steps. Do not edit anything.
+</code></pre>
+<p><strong>See:</strong> <code>plan</code> reads the files and writes steps. It cannot edit: OpenCode's built-in <code>plan</code> agent denies edits outside <code>~/.opencode/plan/</code>. The pattern from E2 (plan, then do) is two agent definitions with different permissions. Press <strong>Tab</strong> again to return to <code>build</code>.</p>
+<p><strong>Record:</strong> the number of steps in the plan, and whether step 4 of the spec (round trip) appears in them.</p>
+<h3>13–20 · E3 · Tools as contracts, and the gate</h3>
+<p><strong>Do:</strong> create or edit <code>opencode.json</code> in the repository root so that it contains at least this:</p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;https://opencode.ai/config.json&quot;,
+  &quot;permission&quot;: {
+    &quot;edit&quot;: &quot;ask&quot;,
+    &quot;shell&quot;: { &quot;*&quot;: &quot;ask&quot;, &quot;git diff*&quot;: &quot;allow&quot;, &quot;git log*&quot;: &quot;allow&quot;, &quot;git status*&quot;: &quot;allow&quot;, &quot;python3 evolution-08/exercise/codec.py --selftest&quot;: &quot;allow&quot; },
+    &quot;skill&quot;: { &quot;*&quot;: &quot;ask&quot; }
+  }
+}
+</code></pre>
+<p>Every edit and most shell commands will now ask. The prompt is the trace that the gate held. Then <code>/new</code> and send:</p>
+<pre><code>Run the codec self-test and tell me the result. Do not change any file.
+</code></pre>
+<p><strong>See:</strong> the model calls <code>shell</code> with the self-test command. Because that exact command is on the allowlist, it runs without asking; any other command asks. The tool call line shows the command; the answer quotes <code>PASS</code>.</p>
+<p><strong>Record:</strong> the command the model ran, verbatim, and whether a permission prompt appeared.</p>
+<p><strong>If there is time (optional, 3 minutes):</strong> a custom tool is the same contract written by you. Create <code>.opencode/tools/codec.ts</code>:</p>
+<pre><code class="language-ts">import { tool } from &quot;@opencode-ai/plugin&quot;
+export default tool({
+  description: &quot;Encode or decode text with the course codec (rot13, base64).&quot;,
+  args: {
+    scheme: tool.schema.string().describe(&quot;rot13 or base64&quot;),
+    direction: tool.schema.string().describe(&quot;encode or decode&quot;),
+    text: tool.schema.string().describe(&quot;the text&quot;),
+  },
+  async execute(args) {
+    return (await Bun.$`python3 evolution-08/exercise/codec.py ${args.scheme} ${args.direction} ${args.text}`.text()).trim()
+  },
+})
+</code></pre>
+<p>Restart OpenCode, <code>/new</code>, and send <code>Use the codec tool to rot13-encode the word Pickle.</code> The model sees the tool's name, description, and schema every turn; the schema is the contract. If the file does not load, skip it; the permission step above is the part that matters tonight.</p>
+<h3>20–23 · E4 · MCP: locate, do not build</h3>
+<p><strong>Do:</strong></p>
+<pre><code class="language-bash">grep -n '&quot;mcp&quot;' opencode.json || echo &quot;no mcp block&quot;
+</code></pre>
+<p><strong>See:</strong> either the <code>mcp</code> block from the E4 teardown, naming a server, or <code>no mcp block</code>. An MCP server's tools reach the model the same way a custom tool does; the difference is whose text the descriptions are (Figure 06).</p>
+<p><strong>Record:</strong> the server name, or <code>none</code>. Either is a complete row.</p>
+<h3>23–31 · E5 · Rules and a skill</h3>
+<p><strong>Do, part one.</strong> Open <code>AGENTS.md</code>. Its first sentence must state what the system is and what it must never do; write it now if it does not. Add one line:</p>
+<pre><code>- Codec: evolution-08/exercise/codec.py. Spec: evolution-08/exercise/codec-spec.md. Run `python3 evolution-08/exercise/codec.py --selftest` before saying any codec change is done.
+</code></pre>
+<p>Run <code>wc -c AGENTS.md</code>. Stay under 4,000.</p>
+<p><strong>Do, part two.</strong> If <code>.opencode/skills/</code> is empty, build one skill:</p>
+<pre><code class="language-bash">mkdir -p .opencode/skills/codec-check
+curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/codec-check-SKILL.md -o .opencode/skills/codec-check/SKILL.md
+</code></pre>
+<p>Its <code>name</code> is <code>codec-check</code> and must match the folder. Its body is three steps: run the self-test, read the spec, report each spec line as met or not met with the line number.</p>
+<p><strong>Do, part three.</strong> <code>/new</code>, then:</p>
+<pre><code>Check the codec against its spec and report.
+</code></pre>
+<p><strong>See:</strong> a permission prompt for the <code>codec-check</code> skill (you set <code>permission.skill</code> to <code>ask</code>). Allow it. The model loads the body only now; until this turn it saw one line, the name and description. Then it runs the self-test (allowed) and reads the spec.</p>
+<p><strong>Record:</strong> <code>wc -c AGENTS.md</code>; whether the skill prompt appeared; how many of the ten spec lines the report marked as met.</p>
+<h3>31–35 · E6 · What rides along</h3>
+<p><strong>Do:</strong> add the spec to <code>opencode.json</code> as an instruction file:</p>
+<pre><code class="language-json">&quot;instructions&quot;: [&quot;evolution-08/exercise/codec-spec.md&quot;]
+</code></pre>
+<p>(Inside the top-level object, beside <code>permission</code>.) Then <code>/new</code> and send:</p>
+<pre><code>Without reading any file: which schemes must the codec support, and what is the round-trip rule? Name your source.
+</code></pre>
+<p><strong>See:</strong> the answer comes with no <code>read</code> tool call, because the spec is joined to <code>AGENTS.md</code> and rides every turn. That is the E6 trade: a file in <code>instructions</code> costs its length on every turn and is never missed; a file the model must <code>read</code> costs nothing until asked and can be skipped.</p>
+<p><strong>Record:</strong> whether a <code>read</code> call ran (it should not), and the source the model named.</p>
+<h3>35–39 · E7 · One record, soon stale</h3>
+<p><strong>Do:</strong> if you have <code>evolution-07/lab/recall.py</code>, file one dated fact:</p>
+<pre><code class="language-bash">printf '# Codec status\n\nAs of 2026-10-22 the codec supports rot13 and base64. Hex is not implemented.\n' &gt; evolution-08/exercise/m-codec.md
+uv run --no-project --python 3.14 evolution-07/lab/recall.py add evolution-08/exercise/m-codec.md --retain-until 2026-10-29
+</code></pre>
+<p>If you do not have <code>recall.py</code>, write the same file and skip the <code>add</code>; record <code>no retriever</code>.</p>
+<p><strong>See:</strong> the record id. It is true now. In ten minutes, after hex is added, it is stale, and nothing in the loop knows. That is the drawer from last week (Figure 14): memory is a claim with a date, and the loop does not open the drawer by itself.</p>
+<p><strong>Record:</strong> the record id, or <code>no retriever</code>.</p>
+<h3>39–55 · E8 · A reviewer that cannot edit</h3>
+<p><strong>Do, part one.</strong> Create the reviewer:</p>
+<pre><code class="language-bash">mkdir -p .opencode/agents
+curl -fsSL https://ahuimanu.github.io/CIDM6333/exercises/reviewer.md -o .opencode/agents/reviewer.md
+</code></pre>
+<p>Open it. The frontmatter is the mechanism: <code>mode: subagent</code>, <code>edit: deny</code>, <code>shell</code> allowed only for <code>git diff</code>, <code>git log</code>, and the self-test. The body is the persona from the E8 lecture: one role, observable traits, anti-traits, and the why. The last line asks for exactly one ReviewResult JSON object. Restart OpenCode so the agent loads.</p>
+<p><strong>Do, part two.</strong> In <code>build</code>, <code>/new</code>, send:</p>
+<pre><code>Add a hex scheme to evolution-08/exercise/codec.py so that it meets every line of evolution-08/exercise/codec-spec.md, including selftest coverage. Run the self-test. Do not commit.
+</code></pre>
+<p><strong>See:</strong> permission prompts for each edit (allow them), then the self-test with <code>PASS hex</code>. If the model declares done without running the self-test, that is a finding: the rule is in <code>AGENTS.md</code>, and the model read it, and nothing made it obey.</p>
+<p><strong>Do, part three.</strong> Send:</p>
+<pre><code>@reviewer Review the uncommitted change to evolution-08/exercise/codec.py against evolution-08/exercise/codec-spec.md. Return one ReviewResult JSON object.
+</code></pre>
+<p><strong>See:</strong> the task-tool line in the TUI: the primary agent hands the brief to the reviewer, which runs in its own window and returns one message. The message is a JSON object with <code>verdict</code> (PASS, FAIL, or CONCERNS), <code>findings</code> (each with a location), and <code>checked</code>. Run <code>git status</code>: only <code>codec.py</code> changed, by the worker, not by the reviewer.</p>
+<p><strong>Do, part four.</strong> Send:</p>
+<pre><code>@reviewer Fix the problem you found.
+</code></pre>
+<p><strong>See:</strong> either a refusal (the anti-trait) or a denied edit (the permission). Both are the right outcome. An edit that goes through is the finding of the night: a reviewer that can fix the code passes its own fix (E8 lecture, slide 11, row five).</p>
+<p><strong>Record:</strong> the verdict; the number of findings and whether each has a location; what <code>git status</code> shows; and what happened on "fix it."</p>
+<h3>55–60 · Close</h3>
+<p>The memory record from E7 now says hex is not implemented. It is wrong, and it will still score if asked. Evict it or supersede it:</p>
+<pre><code class="language-bash">uv run --no-project --python 3.14 evolution-07/lab/recall.py evict --today 2026-10-30
+</code></pre>
+<p>(The record's <code>retain_until</code> is 2026-10-29; <code>--today</code> past that date removes it and logs the eviction. Skip if you have no retriever.)</p>
+<p>Fill the last worksheet column: for each row, was the file in your repository before tonight? Then commit:</p>
+<pre><code class="language-bash">git add -A
+git commit -m &quot;E8 exercise: steer the middle; reviewer agent; hex scheme&quot;
+git push
+</code></pre>
+<h2>Exit ticket (each student, own repository)</h2>
+<ul>
+<li><code>opencode.json</code> with <code>permission</code>, <code>instructions</code>, and (if you did the optional step) <code>.opencode/tools/codec.ts</code>.</li>
+<li><code>AGENTS.md</code> with the codec line, under 4,000 characters.</li>
+<li><code>.opencode/skills/codec-check/SKILL.md</code> (or your existing skill) and <code>.opencode/agents/reviewer.md</code>.</li>
+<li><code>evolution-08/exercise/</code>: <code>codec.py</code> with hex and a passing <code>--selftest</code>, <code>codec-spec.md</code>, <code>worksheet.md</code> filled in, <code>m-codec.md</code>, and the reviewer's ReviewResult pasted into <code>review.json</code>.</li>
+<li>If you have a retriever: <code>memory.jsonl</code> and <code>memory-ledger.jsonl</code> after the eviction.</li>
+</ul>
+<p><strong>For Sortie 8 and the Final System:</strong> tonight's reviewer judged one diff against one spec. Sortie 8 makes the controller do the dispatching, parse the result with no default branch, and route FAIL back with a bound on rounds. The Final System's V&amp;V has to show the same four facts for every outer-ring file: where it is, what reads it, when, and the trace.</p>
+<h2>Data rules</h2>
+<ul>
+<li>No keys, tokens, passwords, or <code>.env</code> contents in <code>AGENTS.md</code>, any skill, any agent file, or the memory store. Read a file before you send it.</li>
+<li>Big Pickle is a free model on OpenCode Zen, and Zen's terms say data from the free period may be used to improve the model. Write "the Chase" rather than a classmate's name in any record you send, or use a Go model.</li>
+<li>The codec, the self-test, and the retriever run on the laptop. The probes send <code>AGENTS.md</code>, the spec, the skill text, and the diff to the model.</li>
+</ul>
+<hr />
+<h2>Sources</h2>
+<ul>
+<li>OpenCode documentation, checked 10/22/2026: <em>Rules</em> (https://opencode.ai/docs/rules/), <em>Permissions</em> (https://opencode.ai/docs/permissions/), <em>Custom Tools</em> (https://opencode.ai/docs/custom-tools/), <em>Agent Skills</em> (https://opencode.ai/docs/skills/), <em>Agents</em> (https://opencode.ai/docs/agents/), <em>Commands</em> (https://opencode.ai/docs/commands/), <em>Plugins</em> (https://opencode.ai/docs/plugins/), <em>References</em> (https://opencode.ai/docs/references/).</li>
+<li>The E8 lecture: slide 6 (persona), slide 7 (ReviewResult and the fail-closed parse), slide 10 (a reviewer that cannot edit), slide 11 (common mistakes).</li>
+<li>The E7 memory handout, <code>CIDM6333_Lab_E7_Memory.md</code>, for <code>recall.py</code> and its commands.</li>
+</ul></article><footer>CIDM 6333 · In-class exercise · Fall 2026</footer></div>
+</body></html>
