@@ -311,7 +311,7 @@ body.embed .wrap{padding:8px 8px 16px}
     <tbody>
       <tr><td>E5</td><td>Rules</td><td class="m">AGENTS.md (project root; global copy in ~/.config/opencode/)</td><td>OpenCode, into the window</td><td>Every turn, the whole file</td><td>A fresh session answers a standing-intent question and names the file</td></tr>
       <tr><td>E3</td><td>Permissions</td><td class="m">opencode.json → permission (read, edit, shell, task, skill, webfetch, external_directory, doom_loop)</td><td>The permission engine, not the model</td><td>At every tool call; last matching rule wins</td><td>The once / always / reject prompt in the TUI</td></tr>
-      <tr><td>E3</td><td>Tool (Python CLI)</td><td class="m">evolution-08/exercise/codec.py, run through shell (OpenCode's own custom-tool files are TypeScript; not used in this course)</td><td>The model, through the shell tool; the permission engine gates it</td><td>When the model calls it</td><td>The shell tool-call line with the command, and its permission prompt</td></tr>
+      <tr><td>E3</td><td>Custom tool</td><td class="m">.opencode/tools/&lt;name&gt;.ts: a shim that declares the schema and calls your Python (all logic in the .py)</td><td>The model sees name, description, schema; OpenCode runs execute</td><td>Listed every turn; run when called</td><td>The tool-call line naming your tool, and its permission prompt</td></tr>
       <tr><td>E4</td><td>MCP server</td><td class="m">opencode.json → mcp</td><td>Same as a tool, through the MCP client</td><td>Listed every turn; run when called</td><td>A tool call whose name carries the server's prefix</td></tr>
       <tr><td>E5</td><td>Skill</td><td class="m">.opencode/skills/&lt;name&gt;/SKILL.md (name matches the folder)</td><td>The model, through the skill tool</td><td>Name and description every turn; the body when called</td><td>The skill permission prompt (permission.skill: ask)</td></tr>
       <tr><td>E2 · E10</td><td>Command</td><td class="m">.opencode/commands/&lt;name&gt;.md ($ARGUMENTS; !`cmd` injects shell output; agent:, subtask:)</td><td>The model, as the user turn</td><td>Only when a human types /name</td><td>The expanded prompt in the session</td></tr>
@@ -319,7 +319,7 @@ body.embed .wrap{padding:8px 8px 16px}
       <tr><td>E6</td><td>Instructions · references</td><td class="m">opencode.json → instructions (files, globs, URLs) · references (path or repository, with description)</td><td>OpenCode, into the window with AGENTS.md</td><td>Every turn</td><td>A fresh session answers from the file without a read tool call</td></tr>
       <tr><td>E6</td><td>Handoff</td><td class="m">evolution-&lt;nn&gt;/handoff.md (course convention)</td><td>The next session's model, when told to read it</td><td>Once, at the start of the next session</td><td>The read tool call on the file</td></tr>
       <tr><td>E7</td><td>Memory</td><td class="m">evolution-07/lab/recall.py · memory.jsonl · memory-ledger.jsonl (course addition)</td><td>The model, as a marked block of data</td><td>Only when the retriever scores a record above the threshold</td><td>The record id cited in the answer; the recall event in the ledger</td></tr>
-      <tr><td>E10</td><td>A gate in the loop</td><td class="m">OpenCode offers .opencode/plugins/ (TypeScript hooks on tool.execute.before and other events); the course's Python form is decided at E10</td><td>The loop itself; the model never sees it</td><td>Around every matching event, inside the loop</td><td>A blocked call, or a log line the gate wrote</td></tr>
+      <tr><td>E10</td><td>Plugin (hook)</td><td class="m">.opencode/plugins/&lt;name&gt;.ts: a hook on tool.execute.before (or session.*, permission.asked, event) that calls your Python</td><td>OpenCode's event bus; the model never sees it</td><td>Around every matching event, inside the loop</td><td>A blocked call, or a log line the gate wrote</td></tr>
     </tbody>
   </table>
   </div>
@@ -377,11 +377,11 @@ body.embed .wrap{padding:8px 8px 16px}
     {a:-112, oc:"built-in commands", ours:[".opencode/commands/"], k:"pair-cmd e2", evo:"E2"},
     {a:-75,  oc:"build · plan", ours:[".opencode/agents/"], k:"pair-agents e2 e8", evo:"E2 E8"},
     {a:-37,  oc:"default prompt", ours:["AGENTS.md"], k:"pair-rules e5", evo:"E5"},
-    {a:0,    oc:"built-in tools", ours:["a Python CLI under a shell rule", "a Python MCP server (mcp)"], k:"pair-tools e3 e4", evo:"E3 E4"},
+    {a:0,    oc:"built-in tools", ours:[".opencode/tools/*.ts → codec.py", "a Python MCP server (mcp)"], k:"pair-tools e3 e4", evo:"E3 E4"},
     {a:37,   oc:"default permissions", ours:["opencode.json → permission"], k:"pair-perm e3", evo:"E3"},
     {a:75,   oc:"the skill tool", ours:[".opencode/skills/"], k:"pair-skills e5", evo:"E5"},
     {a:112,  oc:"(no store)", ours:["recall · memory.jsonl"], k:"pair-mem e7 addition", evo:"E7", add:true},
-    {a:150,  oc:"event bus", ours:["a gate in the loop (E10)"], k:"pair-hooks e10 addition", evo:"E10", add:true, ghost:true}
+    {a:150,  oc:"event bus", ours:[".opencode/plugins/*.ts → .py"], k:"pair-hooks e10 addition", evo:"E10", add:true, ghost:true}
   ];
   const pol=(r,a)=>{ const t=a*Math.PI/180; return [CX+r*Math.sin(t), CY-r*Math.cos(t)]; };
   const anchor=a=> (Math.abs(a)>60 ? "middle" : (a>12 ? "start" : (a<-12 ? "end" : "middle")));
@@ -421,7 +421,7 @@ body.embed .wrap{padding:8px 8px 16px}
     {evo:"E3", m:"codec.py --selftest · tests", s:"the round-trip property, run, with an exit code", k:"selftest e3 tools"},
     {evo:"E8", m:".opencode/agents/reviewer.md", s:"edit: deny; returns one ReviewResult JSON", k:"reviewer e8 pair-agents ours-agents"},
     {evo:"E9", m:"a second reviewer; the disagreement", s:"not tonight", k:"ghost e9", ghost:true},
-    {evo:"E10", m:"a gate in the loop (Python; decided at E10)", s:"refuses a write without a passing run", k:"ghost e10 pair-hooks", ghost:true},
+    {evo:"E10", m:".opencode/plugins/ → tool.execute.before → .py", s:"a hook that calls a Python checker; refuses a write without a passing run", k:"ghost e10 pair-hooks", ghost:true},
     {evo:"E10", m:"/test command with !`pytest -q`", s:"injects the test output into the prompt", k:"ghost e10 commands", ghost:true},
     {evo:"E10", m:"permission.doom_loop", s:"the same call three times stops the loop", k:"ghost e10 pair-perm", ghost:true}
   ];
@@ -447,7 +447,7 @@ body.embed .wrap{padding:8px 8px 16px}
     {k:"oc", t:"OpenCode: the loop you did not write", w:["E1","E5"],
      p:"OpenCode builds the window, calls the model, parses the tool call, checks the permission, runs the tool, and loops. It ships with built-in tools (read, edit, shell, webfetch), built-in agents (build, plan, general, explore, scout), built-in commands (/init, /undo, /help), a default prompt, default permissions, a skill tool, compaction, and an event bus. Most of what you will write is your version of one of these."},
     {k:"ours", t:"Your harness: one file per thing you steer", w:["E3","E5","E8"],
-     p:"Every item on the outer ring is a file in your repository, placed outside the thing it steers. AGENTS.md replaces the default prompt. A Python CLI under a shell rule, or a Python MCP server, adds to the built-in tools. opencode.json sets the permissions. .opencode/agents/ adds agents beside build and plan. Two items have no counterpart, marked with a dot: memory, because OpenCode keeps no store between sessions, and plugins, because that is your code running inside the loop. Those are additions, not versions."},
+     p:"Every item on the outer ring is a file in your repository, placed outside the thing it steers. AGENTS.md replaces the default prompt. A .ts shim in .opencode/tools/ that calls your Python, or a Python MCP server, adds to the built-in tools. opencode.json sets the permissions. .opencode/agents/ adds agents beside build and plan. Two items have no counterpart, marked with a dot: memory, because OpenCode keeps no store between sessions, and plugins, because that is your code running inside the loop. Those are additions, not versions."},
     {k:"bar band-left band-mid band-right bracket", t:"The bar: the widths are where the human's work is", w:["E0"],
      p:"Specs and planning on the left, wide. Execution in the middle, narrow. Evaluation, validation, verification on the right, wide. All three rings together sit inside the narrow band: the model's part of the work is the thin part, and the human owns both wide ends. This is the Degradation Pattern drawn as a shape, and E0's claim that the human is index zero."},
     {k:"band-left band-right human prd chase e0", t:"E0 · The human at index zero", w:["E0"],
@@ -457,7 +457,7 @@ body.embed .wrap{padding:8px 8px 16px}
     {k:"pair-agents oc-agents plan e2 pair-cmd commands", t:"E2 · Patterns: plan and build are two agents", w:["E2"],
      p:"E2 asked who owns the loop. OpenCode answers with two primary agents: build, which can edit, and plan, which denies edits outside ~/.opencode/plan/. Tab switches between them. A pattern you drew in E2 is now a permission difference between two agent definitions. Plan sits in the left band; build in the middle. A command file in .opencode/commands/ is a prompt you run by name, the smallest pattern of all."},
     {k:"pair-tools pair-perm tools selftest e3", t:"E3 · Tools as contracts", w:["E3"],
-     p:"E3's tool is a contract plus a gate. In this course the tool is Python: a CLI with arguments, a result, and exit codes, run through shell; or an MCP server. opencode.json → permission decides whether a call runs, asks, or is denied, and the last matching rule wins. Last week's codec is tonight's tool, and the permission prompt is the trace that the gate held."},
+     p:"E3's tool is a contract plus a gate. A custom tool in .opencode/tools/<name>.ts declares args with a schema and calls your Python; the model sees the name, description, and schema every turn, and all the logic stays in the .py. opencode.json → permission decides whether a call runs, asks, or is denied, and the last matching rule wins. Last week's codec is tonight's tool, and the permission prompt is the trace that the gate held."},
     {k:"pair-tools e4", t:"E4 · MCP: the same shape, a different boundary", w:["E4","E5"],
      p:"An MCP server's tools reach the model the same way a custom tool does: name, description, schema in the window; the permission engine at call time. The difference is the trust boundary (Figure 06): the server's text is someone else's. The entry is opencode.json → mcp. Tonight you only locate it and record what it exposes."},
     {k:"pair-rules pair-skills agentsmd skills e5", t:"E5 · Rules and skills", w:["E5"],
@@ -469,7 +469,7 @@ body.embed .wrap{padding:8px 8px 16px}
     {k:"pair-agents ours-agents reviewer e8 band-right", t:"E8 · Agents: a reviewer that cannot edit", w:["E8"],
      p:".opencode/agents/reviewer.md is your version of a built-in agent: mode: subagent, edit: deny, a shell allowlist of git diff and git log, and a persona with anti-traits. build invokes it through the task tool, or you call it with @reviewer. It returns one ReviewResult JSON with a verdict and findings that cite a location. The deny enforces; the anti-trait explains. It is the first thing you build in the right band."},
     {k:"ghost e9 e10 band-right", t:"E9 and E10 · Not tonight: the mechanisms in the loop", w:["E9","E10"],
-     p:"E9 asks what happens when the reviewer and the worker disagree, and adds a second reviewer. E10 puts your code inside the loop for the first time: a gate that refuses a write without a passing run (OpenCode offers a TypeScript plugin hook; the course's Python form is decided at E10), a /test command that injects the test output into the prompt, and doom_loop. Those are the mechanisms in the loop that Figure 16's Probe 3 asked for. Greyed until their week."},
+     p:"E9 asks what happens when the reviewer and the worker disagree, and adds a second reviewer. E10 puts your code inside the loop for the first time: a plugin hook on tool.execute.before that calls a Python checker and refuses a write without a passing run, a /test command that injects the test output into the prompt, and doom_loop. Those are the mechanisms in the loop that Figure 16's Probe 3 asked for. Greyed until their week."},
     {k:"*", t:"The inventory", w:["E8","Final"],
      p:"Every item on the outer ring has four facts: a file, a reader, a moment it is read, and a trace that it was read. The table below is that inventory. Tonight's worksheet adds a fifth column, whether the item was in your repository before tonight. A row you cannot fill is a finding. A row you filled tonight for the first time is the thing to commit."}
   ];
@@ -518,14 +518,14 @@ body.embed .wrap{padding:8px 8px 16px}
     {t:"<code>opencode/big-pickle</code>", r:"M", b:["X"], why:"The model. One window in, one answer out, nothing kept. It is the thin part."},
     {t:"The built-in <code>plan</code> agent", r:"O", b:["S"], why:"OpenCode ships it. It reads and plans and denies edits; it belongs to the left band."},
     {t:"The built-in <code>build</code> agent", r:"O", b:["X"], why:"OpenCode ships it with every tool allowed. It is the loop doing the work."},
-    {t:"<code>codec.py</code>, run through <code>shell</code> under a permission rule", r:"H", b:["X"], why:"Your Python tool. It runs inside the loop when the model calls it; the permission rule gates the call."},
+    {t:"<code>.opencode/tools/codec.ts</code>, calling <code>codec.py</code>", r:"H", b:["X"], why:"Your addition to the built-in tools: a shim that declares the schema and calls your Python, run inside the loop when the model calls it."},
     {t:"<code>opencode.json → permission</code>", r:"H", b:["X"], why:"Your version of the default permissions. The engine checks it at every call, inside the loop; it is a gate on execution, not a review after it."},
     {t:"<code>.opencode/skills/codec-check/SKILL.md</code>", r:"H", b:["V","S"], why:"Your skill; the band depends on what the procedure does. codec-check runs the selftest and reads the spec, so it is verification; a writing-plans skill would sit in the left band."},
     {t:"<code>.opencode/commands/plan-hex.md</code>", r:"H", b:["S","V"], why:"Your version of a built-in command. /plan-hex writes a plan, so it is specs; a /test command that injects pytest output would be verification."},
     {t:"<code>.opencode/agents/reviewer.md</code>", r:"H", b:["V"], why:"Your version of a built-in agent, with edit denied. It judges the diff after the work; the first thing you build in the right band."},
     {t:"<code>recall.py · memory.jsonl</code>", r:"H", b:["X"], why:"An addition with no OpenCode counterpart. The retriever puts a record into the window at execution time, and the model reads it as fact."},
     {t:"Compaction", r:"O", b:["X"], why:"OpenCode's own answer to a full window: a summary the model writes mid-run. You did not write it and cannot review it before it happens."},
-    {t:"A gate in the loop that refuses a write without a passing run (E10)", r:"H", b:["V"], why:"An addition: your code inside the loop, refusing a call before it runs. E10's mechanism, in Python; a gate the prompt cannot provide."}
+    {t:"<code>.opencode/plugins/</code> hook on <code>tool.execute.before</code>, calling a Python checker", r:"H", b:["V"], why:"An addition: your code inside the loop, refusing a call before it runs. E10's mechanism; a gate the prompt cannot provide."}
   ];
   const picks = ITEMS.map(()=>({r:null,b:null}));
   function seg(i,kind,opts){ return '<div class="seg" role="group" aria-label="'+(kind==="r"?"Ring":"Band")+' for item '+(i+1)+'">'+opts.map(o=>'<button type="button" data-i="'+i+'" data-kind="'+kind+'" data-v="'+o+'" aria-pressed="'+(picks[i][kind]===o)+'" aria-label="Item '+(i+1)+': '+(kind==="r"?RN[o]:BN[o])+'">'+(kind==="r"?RN[o]:{S:"Specs",X:"Execution",V:"V&amp;V"}[o])+'</button>').join("")+'</div>'; }

@@ -220,7 +220,7 @@ nav.crumbs a{color:var(--accent-ink); text-decoration:none}
 </tr>
 <tr>
 <td>built-in tools (<code>read</code>, <code>edit</code>, <code>shell</code>, <code>webfetch</code>)</td>
-<td>a Python CLI run through <code>shell</code> under a permission rule; a Python MCP server in <code>opencode.json</code></td>
+<td><code>.opencode/tools/&lt;name&gt;.ts</code>, a shim that calls your Python; a Python MCP server in <code>opencode.json</code></td>
 <td>E3, E4</td>
 </tr>
 <tr>
@@ -310,7 +310,22 @@ python3 evolution-08/exercise/codec.py --selftest
 </code></pre>
 <p><strong>See:</strong> the model calls <code>shell</code> with the self-test command. Because that exact command is on the allowlist, it runs without asking; any other command asks. The tool call line shows the command; the answer quotes <code>PASS</code>.</p>
 <p><strong>Record:</strong> the command the model ran, verbatim, and whether a permission prompt appeared.</p>
-<p><strong>The contract, in Python.</strong> The codec's CLI is the contract: positional arguments, <code>encode</code> or <code>decode</code>, exit 0 on success, exit 2 on a bad scheme or direction, <code>--selftest</code> as the evidence. OpenCode's own custom-tool file format is TypeScript, so in this course a tool you write is either a Python CLI the model runs through <code>shell</code> under a permission rule, as here, or a Python MCP server, which is the next step.</p>
+<p><strong>The contract, in Python; the shim, in TypeScript.</strong> The codec's CLI is the contract: positional arguments, <code>encode</code> or <code>decode</code>, exit 0 on success, exit 2 on a bad scheme or direction, <code>--selftest</code> as the evidence. OpenCode's custom-tool file format is TypeScript, so a tool of your own is a ten-line <code>.ts</code> shim that declares the schema and calls the Python. All logic stays in <code>codec.py</code>.</p>
+<p><strong>If there is time (optional, 3 minutes):</strong> create <code>.opencode/tools/codec.ts</code>:</p>
+<pre><code class="language-ts">import { tool } from &quot;@opencode-ai/plugin&quot;
+export default tool({
+  description: &quot;Encode or decode text with the course codec (rot13, base64).&quot;,
+  args: {
+    scheme: tool.schema.string().describe(&quot;rot13 or base64&quot;),
+    direction: tool.schema.string().describe(&quot;encode or decode&quot;),
+    text: tool.schema.string().describe(&quot;the text&quot;),
+  },
+  async execute(args) {
+    return (await Bun.$`python3 evolution-08/exercise/codec.py ${args.scheme} ${args.direction} ${args.text}`.text()).trim()
+  },
+})
+</code></pre>
+<p>Restart OpenCode, <code>/new</code>, and send <code>Use the codec tool to rot13-encode the word Pickle.</code> The model sees the tool's name, description, and schema every turn; the schema is the contract, and the Python does the work. If the file does not load, skip it; the permission step above is the part that matters tonight.</p>
 <h3>20–23 · E4 · MCP: locate, do not build</h3>
 <p><strong>Do:</strong></p>
 <pre><code class="language-bash">grep -n '&quot;mcp&quot;' opencode.json || echo &quot;no mcp block&quot;
@@ -380,7 +395,7 @@ git push
 </code></pre>
 <h2>Exit ticket (each student, own repository)</h2>
 <ul>
-<li><code>opencode.json</code> with <code>permission</code> and <code>instructions</code>.</li>
+<li><code>opencode.json</code> with <code>permission</code> and <code>instructions</code>, and <code>.opencode/tools/codec.ts</code> if you did the optional step.</li>
 <li><code>AGENTS.md</code> with the codec line, under 4,000 characters.</li>
 <li><code>.opencode/skills/codec-check/SKILL.md</code> (or your existing skill) and <code>.opencode/agents/reviewer.md</code>.</li>
 <li><code>evolution-08/exercise/</code>: <code>codec.py</code> with hex and a passing <code>--selftest</code>, <code>codec-spec.md</code>, <code>worksheet.md</code> filled in, <code>m-codec.md</code>, and the reviewer's ReviewResult pasted into <code>review.json</code>.</li>
