@@ -74,8 +74,15 @@ SCHED = re.compile("|".join([
 ]), re.I)
 DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
 
+REWRITE = [(r"\bTonight's claim\b", "The claim"), (r"\bTonight's\b", "This Evolution's"), (r"\btonight's\b", "this Evolution's"),
+           (r"\bthis week's\b", "this Evolution's"), (r"\bThis week's\b", "This Evolution's"), (r"\bnext week\b", "the next Evolution"), (r"\blast week\b", "the previous Evolution")]
+def rewrite(text):
+    for a, b in REWRITE: text = re.sub(a, b, text)
+    return text
+
 def scrub_sentence_list(text):
     """Drop every sentence that carries schedule or instructor-only content."""
+    text = rewrite(text)
     text = re.sub(r"\s*\[[Vv]erify[^\]]*\]", "", text)
     text = re.sub(r"\s*\[[^\]]*\bverify\b[^\]]*\]", "", text)
     sents = re.split(r"(?<=[.!?])\s+", text)
@@ -83,6 +90,7 @@ def scrub_sentence_list(text):
     return " ".join(keep).strip()
 
 def scrub_line(l):
+    l = rewrite(l)
     l = re.sub(r"\s*\[[^\]]*\bverify\b[^\]]*\]", "", l, flags=re.I)
     if DROPLINE.search(l): return ""
     if SCHED.search(l):
