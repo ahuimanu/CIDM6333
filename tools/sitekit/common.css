@@ -1,24 +1,24 @@
 :root{
-  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
-  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
-  --s-a:#2A76AE; --s-b:#B45C0C;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#FFF4E2; --ink:#1C1C1C; --ink-2:#545859; --line:#D6D1C8;
+  --model:#EEF3FA; --model-line:#7CA6D8; --accent:#450012; --accent-soft:#FFF4E2; --accent-ink:#450012;
+  --s-a:#450012; --s-b:#7CA6D8;
+  --display:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
-    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
-    --s-a:#3F9AD6; --s-b:#D47A22;
+    --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+    --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
+    --s-a:#E89AAE; --s-b:#9DBDE4;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
-  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
-  --s-a:#3F9AD6; --s-b:#D47A22;
+  --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+  --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
+  --s-a:#E89AAE; --s-b:#9DBDE4;
 }
 *{box-sizing:border-box}
 body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:18.5px; line-height:1.55; margin:0}
@@ -175,3 +175,9 @@ article blockquote p{margin:4px 0}
 a.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .wrap a:not(.card):not(.dl):not(.gl):not(.brand){color:var(--accent-ink)}
 .notecur,.rslide,.slide-t{overflow-wrap:anywhere; min-width:0}
+/* WT brand (WT Brand Quick Guide v2.2): maroon headings and table heads; white text on maroon */
+:root{--head:#450012; --th-bg:#450012; --th-ink:#FFFFFF}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--head:#F4EEE6; --th-bg:#3D1220; --th-ink:#F4EEE6} }
+:root[data-theme="dark"]{--head:#F4EEE6; --th-bg:#3D1220; --th-ink:#F4EEE6}
+h1,h2,.cap h3,article h3,article h4{color:var(--head)}
+.t th, article table th{background:var(--th-bg); color:var(--th-ink); border-bottom-color:var(--th-bg)}

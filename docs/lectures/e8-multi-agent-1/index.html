@@ -6,7 +6,17 @@
 <title>E8 · Multi-agent I: Controller, Worker, Reviewer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style id="gl-css">
+a.gl{color:inherit;text-decoration:none;border-bottom:1px dotted var(--accent);}
+a.gl:hover{color:var(--accent-ink);border-bottom-style:solid}
+.names{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:0 0 14px}
+.names summary{cursor:pointer;list-style:revert}
+.names .k{font-family:var(--display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:12px;color:var(--accent-ink);margin-bottom:6px}
+.names ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px}
+.names li a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--accent)}
+.names li span{color:var(--ink-2)}
+</style>
 <style id="deck-css">
 .stage{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
 .slides{position:relative; aspect-ratio:16/9; width:100%}
@@ -64,16 +74,6 @@ button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color
 :fullscreen .strip{display:none}
 @media (max-width:760px){ .slides{aspect-ratio:auto} .slide{position:relative; min-height:0; overflow:visible} .slide .body{overflow:visible} .orig,.figframe{position:relative; min-height:56vw} }
 @media print{ .slide{display:grid!important; position:relative; page-break-after:always; height:7.5in; border-bottom:1px solid #ccc} .ctrls,.strip,.orig,.figframe{display:none} }
-</style>
-<style id="gl-css">
-a.gl{color:inherit;text-decoration:none;border-bottom:1px dotted var(--accent);}
-a.gl:hover{color:var(--accent-ink);border-bottom-style:solid}
-.names{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:0 0 14px}
-.names summary{cursor:pointer;list-style:revert}
-.names .k{font-family:var(--display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:12px;color:var(--accent-ink);margin-bottom:6px}
-.names ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px}
-.names li a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--accent)}
-.names li span{color:var(--ink-2)}
 </style>
 <style id="reader-css">
 .notecur{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:12px}

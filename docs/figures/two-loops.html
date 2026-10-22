@@ -6,26 +6,26 @@
 <title>Two Loops</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E7ECF0; --ink:#15212B; --ink-2:#4F606D; --line:#B6C2CC;
-  --model:#E4EEF4; --model-line:#7FA7BD; --accent:#B45C0C; --accent-soft:#F7E4D0; --accent-ink:#8A4406;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#FFF4E2; --ink:#1C1C1C; --ink-2:#545859; --line:#D6D1C8;
+  --model:#EEF3FA; --model-line:#7CA6D8; --accent:#450012; --accent-soft:#FFF4E2; --accent-ink:#450012;
+  --display:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
-    --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+    --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+    --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0E151B; --surface:#16212A; --surface-2:#1F2C37; --ink:#E2E8ED; --ink-2:#9AAAB6; --line:#3B4B58;
-  --model:#12232E; --model-line:#43758E; --accent:#F0A04B; --accent-soft:#3A2916; --accent-ink:#F6B874;
+  --bg:#170F11; --surface:#21171A; --surface-2:#2D2124; --ink:#F4EEE6; --ink-2:#BDB8B0; --line:#4C3E42;
+  --model:#1A2330; --model-line:#7CA6D8; --accent:#E89AAE; --accent-soft:#3D1220; --accent-ink:#F2B8C6;
 }
 *{box-sizing:border-box}
 body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; margin:0}
@@ -360,7 +360,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-cost">
     <div class="eyebrow">Steps 1, 6 and 12, up close · E1 · E6 · E11</div>
     <h2 id="h-cost">Input tokens per call across a session</h2>
-    <p class="small">The model keeps nothing between calls, so every turn resends the whole transcript. Each bar is one call. The grey part repeats the previous call exactly, and a prompt cache can serve it; the amber part is new. The figures are illustrative, and prices and cache rules differ by provider.</p>
+    <p class="small">The model keeps nothing between calls, so every turn resends the whole transcript. Each bar is one call. The grey part repeats the previous call exactly, and a prompt cache can serve it; the maroon part is new. The figures are illustrative, and prices and cache rules differ by provider.</p>
     <div class="ctrl"><label for="add">Tokens added per turn</label><input id="add" type="range" min="500" max="6000" step="250" value="2000"><output id="addout" for="add">2,000</output></div>
     <div class="ctrl"><label for="turns">Turns before halt</label><input id="turns" type="range" min="2" max="30" step="1" value="12"><output id="turnsout" for="turns">12</output></div>
     <svg class="cost" id="cost" viewBox="0 0 520 250" role="img" aria-label="Bar chart of input tokens sent per call, growing each turn."></svg>
