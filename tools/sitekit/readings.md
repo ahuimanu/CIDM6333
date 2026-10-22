@@ -1,6 +1,6 @@
-# Reading list, linked and freshened
+# Reading list
 
-Every reading the chapters name, with a verified link (checked 2026-10-22). Items marked **[outline]** are cited in a chapter's outline rather than its Readings; **[newer]** marks a fresher source that supersedes or extends the one cited. gzkit documents render at gzkit.org; its design records and repository-root files are linked on GitHub. The gzkit repository is at v0.34.9 (2026-10-11); the guide was written against v0.34.5 (2026-08-23).
+Every reading the chapters name, with its link. Items marked **[outline]** are cited in a chapter's outline rather than its Readings; **[newer]** marks a later source that extends the one cited. gzkit documents render at gzkit.org; its design records and repository-root files are on GitHub.
 
 ## Chapter 1 — The Layers of AI
 
@@ -212,7 +212,7 @@ Every reading the chapters name, with a verified link (checked 2026-10-22). Item
 - Nygard (2018), Russell & Norvig (2020), Wooldridge (2009), Sutton & Barto (2018): as above.
 - Reference design: gzkit docs https://gzkit.org · repository https://github.com/tvproductions/gzkit
 
-## Stale or open items
+## Later editions and open items
 
 1. MCP: chapters 7 and 13 describe the 2025 protocol; the current revision is 2026-07-28 (stateless requests, `server/discover`, extensions). The Python SDK is on its v2 line.
 2. "Building effective agents" now points to "Scaling Managed Agents" (Apr 2026); pair them in chapters 2, 5, 7, 10.

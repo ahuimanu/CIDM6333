@@ -170,7 +170,7 @@ def build_glossary(docs):
         if not es: continue
         body.append('<h2 id="cat-%s">%s <a class="gtop" href="#top">↑ top</a></h2>' % (c, n))
         body += [entry_html(e, "../") for e in es]
-    body.append('<p class="small" style="margin-top:28px">%d entries. Dates and attributions were checked against the lecture decks and the sources named; corrections go to the instructor.</p>' % len(ENTRIES))
+    body.append('<p class="small" style="margin-top:28px">%d entries.</p>' % len(ENTRIES))
     page = HEAD.replace("{{TITLE}}", "Glossary · CIDM 6333") + GCSS + '\n<div class="wrap"><nav class="crumbs"><a href="../">CIDM 6333</a> · Glossary</nav><div class="eyebrow">CIDM 6333 · Agentic Systems · Glossary</div><article>' + "".join(body) + '<a class="gtop-float" href="#top">↑ top</a></article><footer>CIDM 6333 · Glossary · Fall 2026</footer></div>\n</body></html>\n'
     (out / "index.html").write_text(page, encoding="utf-8")
     print("glossary:", len(ENTRIES), "entries")

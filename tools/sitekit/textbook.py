@@ -55,7 +55,9 @@ def slug(t):
 def clean(md):
     md = md.replace("4:00–6:30 p.m., ", "")
     md = re.sub(r"The course runs thirteen Thursdays[^\n]*\n", "The course runs one Evolution at a time. Each Evolution carries two threads:\n", md)
-    md = re.sub(r"The weekly rhythm \(lecture 60 · consultation 60 · lab 30\), the Sprint and Drift method, and the scoring live in Part IV and in the run sheet\.", "The Sprint and Drift method lives in Part IV.", md)
+    md = re.sub(r"The weekly rhythm[^\n]*\n", "", md)
+    md = md.replace("The week-by-week run sheet maps every CIDM 6333 Evolution to its chapters.", "The chapter-to-Evolution map on this page pairs every Evolution with its chapters.")
+    md = re.sub(r"\n## Using this book with CIDM 6333\n", "\n## The Evolutions\n", md)
     md = re.sub(r"\[(week-by-week run sheet|run sheet|method)\]", r"\1", md)
     md = re.sub(r"\n---\s*$", "", md.strip()) + "\n"
     return md
@@ -100,7 +102,7 @@ def main(docs):
                 links = " · ".join('<a href="../../lectures/%s/">%s</a> <span class="small">(%s)</span>' % (LECTURE_SLUG[e], e, r) if e in LECTURE_SLUG else "%s (%s)" % (e, r) for e, r in ev)
                 extra = '<p class="small"><strong>Lectures that use this chapter:</strong> ' + links + '</p>'
         if kind == "chapter":
-            extra += '<p class="small"><strong>Readings, linked and checked:</strong> <a href="../readings/#chapter-%d">this chapter\'s entries in the reading list</a></p>' % key
+            extra += '<p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-%d">this chapter\'s entries in the reading list</a></p>' % key
         body_html = "<h1>" + html.escape(title) + "</h1>" + extra + render(clean(body))
         nav = '<hr><p>' + ('<a href="../%s/">◀ %s</a>' % (prev[0], html.escape(prev[1])) if prev else "") + (" &nbsp;·&nbsp; " if prev and nxt else "") + ('<a href="../%s/">%s ▶</a>' % (nxt[0], html.escape(nxt[1])) if nxt else "") + '</p>'
         short = ("Chapter %d" % key) if kind == "chapter" else title.split("—")[0].strip()
@@ -112,14 +114,14 @@ def main(docs):
     title_body = [b for t, b in front if t.startswith("Answerable")]
     intro = render(clean(title_body[0])) if title_body else ""
     intro = re.sub(r"<h2>The Design, Lineage, and Governance of Agentic Software</h2>\s*<p><strong>Jeffry Babb, PhD</strong>.*?</p>\s*<p><em>Working draft.*?</em></p>", "", intro, flags=re.S)
-    toc = ['<h2 id="contents">Contents</h2><p class="small">Status: every chapter is an <em>outline</em> (learning outcomes, sections, systems analyzed, the gzkit episode, readings, exercises). The prose is being written in the order the course needs it.</p>']
+    toc = ['<h2 id="contents">Contents</h2><p class="small">Every chapter is an outline edition: learning outcomes, sections, systems analyzed, the gzkit episode, readings, exercises. The prose follows.</p>']
     def group(name, lo, hi):
         items = [p for p in pages if p[2]=="chapter" and lo <= p[3] <= hi]
         return '<h3>%s</h3><ol start="%d">' % (name, lo) + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t.split(". ",1)[1])) for d,t,k,key,b in items) + "</ol>"
     toc.append(group("Part I · The posture", 1, 3)); toc.append(group("Part II · The survey", 4, 9))
     toc.append(group("Part III · The build", 10, 21)); toc.append(group("Part IV · The method", 22, 26))
-    toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters name, with verified links</a> (checked 10/22/2026), and the stale items to know about.</p>')
-    toc.append('<h3>Appendices</h3><ul>' + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t)) for d,t,k,key,b in pages if k=="appendix") + '</ul><p class="small">Appendix H, the week-by-week run sheet, stays in the course calendar on Canvas.</p>')
+    toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters name, with links.</a></p>')
+    toc.append('<h3>Appendices</h3><ul>' + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t)) for d,t,k,key,b in pages if k=="appendix") + '</ul>')
     body = '<h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft, Fall 2026</p>' + intro + "".join(toc) + fm
     (out / "index.html").write_text(page("Answerable Systems · textbook", "CIDM 6333 · Textbook", body, '<a href="../">CIDM 6333</a> · Textbook', 1), encoding="utf-8")
     # readings page (verified links), linked from the index and from every chapter
