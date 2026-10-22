@@ -184,6 +184,9 @@ header h1{grid-column:1; grid-row:2; font-size:clamp(34px,3.6vw,52px); margin:2p
 header .lede{grid-column:2; grid-row:1/3; font-size:16px; max-width:none}
 @media (max-width:900px){ header{grid-template-columns:1fr} header .lede{grid-column:1; grid-row:3} }
 .figwrap{margin-inline:auto}
+svg.fig{max-height:calc(100vh - 170px); min-height:520px}
+@media (min-width:1750px){ .figwrap{display:grid; grid-template-columns:minmax(0,1fr) 360px} .figwrap .player{border-top:0; border-left:1px solid var(--line); grid-template-columns:1fr; align-content:start; padding:20px 20px} .figwrap .controls{justify-items:start} .figwrap .btnrow,.figwrap .dots{justify-content:flex-start} .figwrap .vnote{text-align:left} .cap h3{font-size:23px} .cap p{font-size:16px} }
+body.embed svg.fig{max-height:none}
 .lede{max-width:80ch}
 .panels,section.map,.notes{max-width:1180px; margin-inline:auto}
 
@@ -191,21 +194,23 @@ header .lede{grid-column:2; grid-row:1/3; font-size:16px; max-width:none}
 .fig .ring-oc{fill:var(--surface-2); stroke:var(--ink-2); stroke-width:1.3}
 .fig .ring-ours{fill:var(--surface); stroke:var(--line); stroke-width:1.3}
 .fig .el.on .ring-model,.fig .el.on .ring-oc,.fig .el.on .ring-ours{stroke:var(--accent); stroke-width:2.4}
-.fig .rname{font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; fill:var(--ink-2)}
-.fig .ri{font-size:12.5px; font-weight:600; fill:var(--ink)}
-.fig .ro{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
+.fig .rname{font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; fill:var(--ink-2)}
+.fig .ri{font-size:15px; font-weight:600; fill:var(--ink)}
+.fig .ro{font-family:var(--mono); font-size:13.5px; fill:var(--ink)}
 .fig .tie{stroke:var(--ink-2); stroke-width:1.2}
 .fig .el.on .tie{stroke:var(--accent); stroke-width:2}
 .fig .band{fill:var(--surface-2); stroke:var(--line); stroke-width:1.3}
 .fig .band.mid{fill:var(--model); stroke:var(--model-line)}
 .fig .el.on .band{stroke:var(--accent); stroke-width:2.4; fill:var(--accent-soft)}
-.fig .bt{font-size:14px; font-weight:600}
+.fig .bt{font-size:17px; font-weight:600}
+.fig .ts{font-size:13.5px}
+.fig .lab{font-size:12.5px}
 .fig .brk{fill:none; stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
 .fig .el.on .brk{stroke:var(--accent); stroke-width:2}
 .fig .col{font-size:12px; fill:var(--ink)}
-.fig .colm{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
-.fig .cols{font-size:11.5px; fill:var(--ink-2)}
-.fig .evo{font-size:10px; font-weight:600; letter-spacing:.08em; fill:var(--accent-ink)}
+.fig .colm{font-family:var(--mono); font-size:13.5px; fill:var(--ink)}
+.fig .cols{font-size:13.5px; fill:var(--ink-2)}
+.fig .evo{font-size:12px; font-weight:600; letter-spacing:.08em; fill:var(--accent-ink)}
 .fig .rowbg{fill:var(--surface); stroke:var(--line); stroke-width:1}
 .fig .el.on .rowbg{stroke:var(--accent); stroke-width:2; fill:var(--accent-soft)}
 .fig .el.ghost{opacity:.42}
@@ -236,7 +241,7 @@ body.embed .wrap{padding:8px 8px 16px}
 
 <div class="figwrap">
   <div class="scroller">
-  <svg class="fig" id="fig" viewBox="0 0 1200 640" role="img" aria-label="A horizontal bar with three bands: specs and planning (wide), execution (narrow), and evaluation, validation, verification (wide). Below the narrow band, three concentric rings: the model inside, OpenCode in the middle, your harness outside. Items on the outer ring sit radially outside the OpenCode item each one steers. Columns on the left and right list what the human writes before the loop and what checks its output after.">
+  <svg class="fig" id="fig" viewBox="0 0 1200 700" role="img" aria-label="A horizontal bar with three bands: specs and planning (wide), execution (narrow), and evaluation, validation, verification (wide). Below the narrow band, three concentric rings: the model inside, OpenCode in the middle, your harness outside. Items on the outer ring sit radially outside the OpenCode item each one steers. Columns on the left and right list what the human writes before the loop and what checks its output after.">
     <defs>
       <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
       <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
@@ -253,8 +258,8 @@ body.embed .wrap{padding:8px 8px 16px}
     <g class="el" data-k="bar band-mid oc-loop">
       <rect class="band mid" x="500" y="26" width="200" height="72" rx="8"/>
       <text class="bt" x="514" y="50">Execution</text>
-      <text class="ts" x="514" y="68">OpenCode runs the loop: window,</text>
-      <text class="ts" x="514" y="84">model, gate, tool, repeat</text>
+      <text class="ts" x="514" y="68">the loop: window, model,</text>
+      <text class="ts" x="514" y="84">gate, tool, repeat</text>
       <text class="tag" x="692" y="50" text-anchor="end">NARROW</text>
     </g>
     <g class="el" data-k="bar band-right human">
@@ -265,8 +270,8 @@ body.embed .wrap{padding:8px 8px 16px}
       <text class="tag" x="1168" y="50" text-anchor="end">WIDE</text>
     </g>
     <g class="el" data-k="bar bracket band-mid">
-      <path class="brk" d="M500,98 L418,222"/>
-      <path class="brk" d="M700,98 L782,222"/>
+      <path class="brk" d="M500,98 L395,232"/>
+      <path class="brk" d="M700,98 L805,232"/>
       <text class="ts" x="600" y="128" text-anchor="middle">the narrow band, up close</text>
     </g>
 
@@ -275,7 +280,7 @@ body.embed .wrap{padding:8px 8px 16px}
     <g id="lcol"></g>
 
     <!-- right column: V&V -->
-    <g class="el" data-k="band-right"><text class="lab" x="880" y="160">Evaluation · validation · verification</text></g>
+    <g class="el" data-k="band-right"><text class="lab" x="868" y="160">Evaluation · validation · verification</text></g>
     <g id="rcol"></g>
 
     <!-- rings are generated by script -->
@@ -366,20 +371,20 @@ body.embed .wrap{padding:8px 8px 16px}
   const grp=(k,cls)=>mk("g",{"class":"el"+(cls?" "+cls:""),"data-k":k});
 
   /* ================= rings ================= */
-  const CX=600, CY=410, R0=62, R1=122, R2=182;
+  const CX=600, CY=440, R0=72, R1=140, R2=210;
   const rings=$("rings");
   // ring fills, outer first so inner draws on top
   const gOurs=grp("ours ring-ours-g"); gOurs.appendChild(mk("circle",{"class":"ring-ours",cx:CX,cy:CY,r:R2})); rings.appendChild(gOurs);
   const gOc=grp("oc ring-oc-g"); gOc.appendChild(mk("circle",{"class":"ring-oc",cx:CX,cy:CY,r:R1})); rings.appendChild(gOc);
   const gModel=grp("model"); gModel.appendChild(mk("circle",{"class":"ring-model",cx:CX,cy:CY,r:R0}));
-  gModel.appendChild(mk("text",{"class":"rname",x:CX,y:CY-18,"text-anchor":"middle"},"Model"));
-  gModel.appendChild(mk("text",{"class":"ri",x:CX,y:CY-1,"text-anchor":"middle"},"Big Pickle"));
-  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+14,"text-anchor":"middle"},"one window in,"));
-  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+28,"text-anchor":"middle"},"nothing kept"));
+  gModel.appendChild(mk("text",{"class":"rname",x:CX,y:CY-22,"text-anchor":"middle"},"Model"));
+  gModel.appendChild(mk("text",{"class":"ri",x:CX,y:CY-3,"text-anchor":"middle"},"Big Pickle"));
+  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+15,"text-anchor":"middle"},"one window in,"));
+  gModel.appendChild(mk("text",{"class":"ts",x:CX,y:CY+31,"text-anchor":"middle"},"nothing kept"));
   rings.appendChild(gModel);
   // ring names at the bottom gap
-  const nOc=grp("oc"); nOc.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R0+36,"text-anchor":"middle"},"OpenCode")); rings.appendChild(nOc);
-  const nOurs=grp("ours"); nOurs.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R1+38,"text-anchor":"middle"},"Your harness")); rings.appendChild(nOurs);
+  const nOc=grp("oc"); nOc.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R0+40,"text-anchor":"middle"},"OpenCode")); rings.appendChild(nOc);
+  const nOurs=grp("ours"); nOurs.appendChild(mk("text",{"class":"rname",x:CX,y:CY+R1+42,"text-anchor":"middle"},"Your harness")); rings.appendChild(nOurs);
 
   // pairs: angle in degrees from the top, clockwise
   const PAIRS=[
@@ -394,23 +399,24 @@ body.embed .wrap{padding:8px 8px 16px}
     {a:150,  oc:"event bus", ours:[".opencode/plugins/*.ts → .py"], k:"pair-hooks e10 addition", evo:"E10", add:true, ghost:true}
   ];
   const pol=(r,a)=>{ const t=a*Math.PI/180; return [CX+r*Math.sin(t), CY-r*Math.cos(t)]; };
-  const anchor=a=> (Math.abs(a)>60 ? "middle" : (a>12 ? "start" : (a<-12 ? "end" : "middle")));
+  const anchor=a=> "middle";
   PAIRS.forEach(p=>{
     const g=grp("ours oc "+p.k, p.ghost?"ghost":"");
     // tie across the ring boundary
     const [x1,y1]=pol(R1-6,p.a), [x2,y2]=pol(R1+6,p.a);
     g.appendChild(mk("line",{"class":"tie",x1,y1,x2,y2}));
     // middle ring item
-    const [mx,my]=pol(Math.abs(p.a)>60?85:92,p.a);
-    g.appendChild(mk("text",{"class":"ri",x:mx.toFixed(1),y:(my+4).toFixed(1),"text-anchor":anchor(p.a)},p.oc));
+    const [mx,my]=pol(p.a===0?108:(Math.abs(p.a)>60?100:92),p.a);
+    const mAnchor=(p.a!==0&&Math.abs(p.a)<=45)?(p.a>0?"start":"end"):"middle";
+    g.appendChild(mk("text",{"class":"ri",x:mx.toFixed(1),y:(my+4).toFixed(1),"text-anchor":mAnchor},p.oc));
     // outer ring items
-    const [ox,oy]=pol(Math.abs(p.a)>60?160:152,p.a);
+    const [ox,oy]=pol(Math.abs(p.a)>60?184:176,p.a);
     const n=p.ours.length;
-    p.ours.forEach((s,i)=>{ g.appendChild(mk("text",{"class":"ro",x:ox.toFixed(1),y:(oy+4+(i-(n-1)/2)*13).toFixed(1),"text-anchor":anchor(p.a)},s)); });
+    p.ours.forEach((s,i)=>{ g.appendChild(mk("text",{"class":"ro",x:ox.toFixed(1),y:(oy+4+(i-(n-1)/2)*16).toFixed(1),"text-anchor":anchor(p.a)},s)); });
     // evolution tag just outside the ring
     const [ex,ey]=pol(R2+12,p.a);
-    const dy=4+(Math.abs(p.a)>90?10:(Math.abs(p.a)>60?-8:0));
-    g.appendChild(mk("text",{"class":"evo",x:ex.toFixed(1),y:(ey+dy).toFixed(1),"text-anchor":anchor(p.a)},p.evo+(p.add?" · addition":"")));
+    const dy=4+(Math.abs(p.a)>90?12:(Math.abs(p.a)>60?-10:0));
+    g.appendChild(mk("text",{"class":"evo",x:ex.toFixed(1),y:(ey+dy).toFixed(1),"text-anchor":(Math.abs(p.a)>60?"middle":(p.a===0?"middle":(p.a>0?"start":"end")))},p.evo+(p.add?" · addition":"")));
     if(p.add){ const [ax,ay]=pol(R2-4,p.a); g.appendChild(mk("circle",{"class":"addmark",cx:ax.toFixed(1),cy:ay.toFixed(1),r:3})); }
     rings.appendChild(g);
   });
@@ -431,22 +437,22 @@ body.embed .wrap{padding:8px 8px 16px}
     {evo:"E3", m:"codec.py --selftest · tests", s:"the round-trip property, run, with an exit code", k:"selftest e3 tools"},
     {evo:"E8", m:".opencode/agents/reviewer.md", s:"edit: deny; returns one ReviewResult JSON", k:"reviewer e8 pair-agents ours-agents"},
     {evo:"E9", m:"a second reviewer; the disagreement", s:"not tonight", k:"ghost e9", ghost:true},
-    {evo:"E10", m:".opencode/plugins/ → tool.execute.before → .py", s:"calls a Python checker before any write", k:"ghost e10 pair-hooks", ghost:true},
+    {evo:"E10", m:".opencode/plugins/*.ts → .py", s:"hook on tool.execute.before; a Python checker", k:"ghost e10 pair-hooks", ghost:true},
     {evo:"E10", m:"/test command with !`pytest -q`", s:"injects the test output into the prompt", k:"ghost e10 commands", ghost:true},
     {evo:"E10", m:"permission.doom_loop", s:"the same call three times stops the loop", k:"ghost e10 pair-perm", ghost:true}
   ];
   function col(root,items,x){
     items.forEach((it,i)=>{
-      const y=172+i*54;
+      const y=176+i*63;
       const g=grp(it.k, it.ghost?"ghost":"");
-      g.appendChild(mk("rect",{"class":"rowbg",x:x,y:y,width:300,height:46,rx:7}));
-      g.appendChild(mk("text",{"class":"evo",x:x+10,y:y+16},it.evo));
-      g.appendChild(mk("text",{"class":"colm",x:x+10,y:y+31},it.m));
-      g.appendChild(mk("text",{"class":"cols",x:x+10,y:y+43},it.s));
+      g.appendChild(mk("rect",{"class":"rowbg",x:x,y:y,width:312,height:55,rx:7}));
+      g.appendChild(mk("text",{"class":"evo",x:x+10,y:y+17},it.evo));
+      g.appendChild(mk("text",{"class":"colm",x:x+10,y:y+35},it.m));
+      g.appendChild(mk("text",{"class":"cols",x:x+10,y:y+50},it.s));
       root.appendChild(g);
     });
   }
-  col($("lcol"),LEFT,20); col($("rcol"),RIGHT,880);
+  col($("lcol"),LEFT,20); col($("rcol"),RIGHT,868);
 
   /* ================= step-through player ================= */
   const STEPS = [
