@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>8. The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 8. The Harness Year (2025)</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>8. The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e2-patterns-frameworks/">E2</a> <span class="small">(survey)</span> · <a href="../../lectures/e5-mcp-2-security-harness/">E5</a> <span class="small">(survey)</span> · <a href="../../lectures/e6-context-engineering/">E6</a> <span class="small">(survey)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E2, E5, E6 survey. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Describe what a harness is and why the field's design center moved to it.</li>
+<li>Compare the vendor harnesses and SDKs by their theory of control.</li>
+<li>Explain A2A against MCP, and AGENTS.md and skills as context surfaces.</li>
+<li>Define context engineering and the spec-driven kits.</li>
+</ul>
+<h2>Outline</h2>
+<h3>8.1 The harness</h3>
+<ul>
+<li>Claude Code (Feb): terminal-native, tools, permissions, CLAUDE.md, then hooks, subagents, plan mode, compaction. Codex CLI and cloud; Gemini CLI; Copilot coding agent; Cursor and Windsurf.</li>
+</ul>
+<h3>8.2 The SDKs</h3>
+<ul>
+<li>OpenAI Agents SDK (agents, handoffs, guardrails, tracing); Google ADK; Claude Agent SDK (the harness as a library); Pydantic AI (typed tool calls). Each encodes who owns the loop.</li>
+</ul>
+<h3>8.3 Protocols and surfaces</h3>
+<ul>
+<li>A2A (agents as peers) vs. MCP (tools). AGENTS.md as the cross-vendor instruction file. Agent Skills as progressive disclosure. Hooks as a governance membrane.</li>
+</ul>
+<h3>8.4 Context engineering</h3>
+<ul>
+<li>The window as an engineered artifact: budgets, compaction, subagents for isolation, progressive disclosure. The Anthropic and OpenAI guidance.</li>
+</ul>
+<h3>8.5 Spec-driven kits</h3>
+<ul>
+<li>GitHub spec-kit, BMAD, OpenSpec, GSD: methodology without governance, mostly. gzkit's comparison document.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td>2025</td>
+<td>The reference harness</td>
+<td>All nine</td>
+</tr>
+<tr>
+<td>Codex CLI / cloud</td>
+<td>2025</td>
+<td>AGENTS.md-native; sandbox; background</td>
+<td>Runtime, governance</td>
+</tr>
+<tr>
+<td>OpenAI Agents SDK</td>
+<td>2025</td>
+<td>Handoffs, guardrails, tracing</td>
+<td>Coordination, evaluation</td>
+</tr>
+<tr>
+<td>Google ADK / A2A</td>
+<td>2025</td>
+<td>Agents as peers</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>Claude Agent SDK</td>
+<td>2025</td>
+<td>Harness as library</td>
+<td>Runtime</td>
+</tr>
+<tr>
+<td>Pydantic AI</td>
+<td>2024–25</td>
+<td>Validation as governance</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>AGENTS.md / Skills</td>
+<td>2025</td>
+<td>Context surfaces</td>
+<td>Context</td>
+</tr>
+<tr>
+<td>spec-kit / BMAD / OpenSpec / GSD</td>
+<td>2025</td>
+<td>Methodology kits</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>gzkit is a meta-harness: it renders one canon into each harness's surfaces (17 hooks into Claude Code, 2 into Codex, 1 into Copilot). The control-surface matrix is the chapter's central Design Analysis.</p>
+<h2>Readings</h2>
+<ul>
+<li>Anthropic, "Effective Context Engineering for AI Agents" (2025); "Effective Harnesses for Long-Running Agents" (2025).</li>
+<li>OpenAI, "A Practical Guide to Building Agents" (2025).</li>
+<li>gzkit <code>docs/design/agent-control-surface-matrix.md</code>; <code>docs/examples/comparison-gzkit-speckit-bmad.md</code>.</li>
+</ul>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Design Analysis: your harness. Then the same harness as gzkit sees it (which surfaces does it render into?).</li>
+<li>Design Analysis: A2A vs. MCP. What is a peer that a tool is not?</li>
+</ol><hr><p><a href="../ch-07-agents-get-jobs-2024-coding-agents-computer-use-and-mcp/">◀ 7. Agents Get Jobs (2024): Coding Agents, Computer Use, and MCP</a> &nbsp;·&nbsp; <a href="../ch-09-2026-harness-engineering-background-agents-and-the-reference/">9. 2026: Harness Engineering, Background Agents, and the Reference Design&#x27;s Year ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

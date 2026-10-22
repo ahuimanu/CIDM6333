@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>12. Tools as Contracts: Schemas, Permissions, Hooks, Recovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 12. Tools as Contracts</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>12. Tools as Contracts: Schemas, Permissions, Hooks, Recovery</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e3-tools-as-contracts/">E3</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E3 (local model required). Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Declare tools with schema-validated contracts and handle failure and retry.</li>
+<li>Gate write-class tools behind a confirmation event recorded in a ledger.</li>
+<li>Explain hooks as a governance membrane and the 2026-08-23 lesson about enforcement locus.</li>
+</ul>
+<h2>Outline</h2>
+<h3>12.1 Declaring a tool</h3>
+<ul>
+<li>Name, description, JSON schema, Pydantic model; idempotency; side-effect class (read, write, irreversible).</li>
+</ul>
+<h3>12.2 Permission gating</h3>
+<ul>
+<li>Read freely; write with confirmation; irreversible with attestation. The confirmation event precedes the call, in the ledger, or it did not happen.</li>
+</ul>
+<h3>12.3 Hooks</h3>
+<ul>
+<li>Claude Code hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd); gzkit's 17. What a hook can see and what it cannot: the Bash-write bypass and the move to the commit locus (<code>git diff --cached</code>).</li>
+</ul>
+<h3>12.4 Failure and recovery</h3>
+<ul>
+<li>Timeouts, malformed calls, tool errors as observations; retry budgets; when to halt instead.</li>
+</ul>
+<h3>12.5 Small models and tools</h3>
+<ul>
+<li>Why a local 8B model is the right substrate this week: brittleness makes the contract visible.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Toolformer</td>
+<td>2023</td>
+<td>Learned calls</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>Function calling</td>
+<td>2023</td>
+<td>Declared calls</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>Gorilla / ToolBench</td>
+<td>2023</td>
+<td>Tool retrieval</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>Computer use</td>
+<td>2024</td>
+<td>Screen as tool</td>
+<td>Perception, tools</td>
+</tr>
+<tr>
+<td>Claude Code hooks</td>
+<td>2025</td>
+<td>The membrane</td>
+<td>Governance</td>
+</tr>
+<tr>
+<td>gzkit hooks</td>
+<td>2026</td>
+<td>Presence vs procedure; commit locus</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>.claude/hooks/</code> as emitted by <code>gz init</code>; <code>pipeline-gate.py</code> and <code>verifier-pipe-gate.py</code>; the 2026-08-21 presence-check incident; GHI #844/#847 (write-side fences moved to the commit locus).</p>
+<h2>Readings</h2>
+<ul>
+<li>Schick et al., "Toolformer."</li>
+<li>gzkit <code>.claude/hooks/README.md</code>; <code>.gzkit/rules/agent-failure-modes.md</code>; <code>CHANGELOG.md</code> v0.34.5.</li>
+<li>Sprint and Drift, "Get the Balance Right."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 3 (expansion) — DESIGN CLAIM: no write-tool executes without a prior confirmation event. Four test points including a prompt-injected write request. FALSIFIERS: a write with no preceding confirmation; a file change after denial; passing only by disabling the gate.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Implement the gate as a hook in your harness <em>and</em> as a check in your own loop. Show a write that one catches and the other misses.</li>
+</ol><hr><p><a href="../ch-11-patterns-and-orchestration-frameworks-who-owns-the-loop/">◀ 11. Patterns and Orchestration Frameworks: Who Owns the Loop?</a> &nbsp;·&nbsp; <a href="../ch-13-the-model-context-protocol-building-servers-and-clients/">13. The Model Context Protocol: Building Servers and Clients ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

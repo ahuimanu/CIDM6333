@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>21. Production and Operations: Serving, Scheduling, Rollback, Release</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 21. Production and Operations</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>21. Production and Operations: Serving, Scheduling, Rollback, Release</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e12-deployment/">E12</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E12. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Package, serve, and containerize your system with secrets and rate limits handled.</li>
+<li>Run the Heavy-lane gates (docs, BDD, human) and a release ceremony with rollback.</li>
+<li>Explain long-running and background agents' operational problems.</li>
+</ul>
+<h2>Outline</h2>
+<h3>21.1 Serving an agent</h3>
+<ul>
+<li>FastAPI (or equivalent); request lifecycle; streaming; idempotency; timeouts; the agent as a service vs. a job.</li>
+</ul>
+<h3>21.2 Containers, secrets, limits</h3>
+<ul>
+<li>Image, config, secret injection, rate limits, budgets; never in the repo.</li>
+</ul>
+<h3>21.3 Scheduling and background agents</h3>
+<ul>
+<li>Scheduled sorties; long-running sessions; compaction across days; who attests an unattended run.</li>
+</ul>
+<h3>21.4 Rollback and feedback loops</h3>
+<ul>
+<li>Release with a rollback path; feedback from evaluators into the next release; self-improvement bounded by attestation.</li>
+</ul>
+<h3>21.5 The release ceremony</h3>
+<ul>
+<li>Docs gate; BDD scenarios for external contracts; human attestation; release notes vs. changelog; the distribution invariant; MX mode ("loose in the bay, hard at the door").</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Background / cloud agents</td>
+<td>2025–26</td>
+<td>Operations arrive</td>
+<td>Runtime</td>
+</tr>
+<tr>
+<td>Copilot coding agent</td>
+<td>2025</td>
+<td>PR-native background work</td>
+<td>Runtime</td>
+</tr>
+<tr>
+<td>gzkit closeout / patch release / MX</td>
+<td>2026</td>
+<td>Release as ceremony</td>
+<td>Runtime, governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>gz closeout --ceremony</code>, <code>gz patch release</code>, <code>gz validate --distribution</code>, ADR-0.0.74 (MX mode), ADR-0.0.31 (distribution invariant), the GHI #830 backfilled releases.</p>
+<h2>Readings</h2>
+<ul>
+<li>gzkit <code>docs/examples/guide-releasing.md</code>; <code>command-doctrine.md</code>.</li>
+<li>Nygard, <em>Release It!</em> (selected chapters).</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 12 (expansion) — DESIGN CLAIM: a release can be rolled back in one governed command and the rollback is in the ledger; secrets never appear in image, log, or repo. FALSIFIERS: a rollback that needs manual steps; a secret in any artifact; a release with no attestation event.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Roll back your own release. Time it. Put the number in the runbook.</li>
+</ol><hr><p><a href="../ch-20-observability-red-teaming-and-safety/">◀ 20. Observability, Red-Teaming, and Safety</a> &nbsp;·&nbsp; <a href="../ch-22-sprint-and-drift/">22. Sprint and Drift ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

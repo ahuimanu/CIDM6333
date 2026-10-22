@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>1. The Layers of AI, and the One Everybody Forgets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 1. The Layers of AI, and the One Everybo</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>1. The Layers of AI, and the One Everybody Forgets</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e0-index-zero/">E0</a> <span class="small">(survey)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E0 Orientation. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Place any AI system on the seven-layer stack and say which layers it actually exercises.</li>
+<li>Explain the five-stage progression from AI &amp; ML to agentic AI and what changes at each step.</li>
+<li>Recognize when a system labelled "agentic" is a generative system with a loop bolted on, and say why that matters.</li>
+</ul>
+<h2>Outline</h2>
+<h3>1.1 The stack</h3>
+<ul>
+<li>Data foundation (ownership, definitions, quality, lineage) → classical AI → ML → neural networks → deep learning → generative AI → agentic AI.</li>
+<li>Each layer stands on the one below; none replaces it. Agentic AI is thin and new; the foundation is old and cracked.</li>
+<li>Why the foundation is forgotten: it is unglamorous and it is where the cost lands (E7, E11 callbacks).</li>
+</ul>
+<h3>1.2 The progression</h3>
+<ul>
+<li>AI &amp; ML: turn data into decisions. Deep learning: multi-layered networks. Gen AI: create new content. AI agents: autonomous tasks. Agentic AI: automate entire processes.</li>
+<li>The Agentic AI framework board: rings (foundation, creation, core systems, action, full automation) and columns; every box is assigned a chapter (table).</li>
+</ul>
+<h3>1.3 What a language model adds and what it does not</h3>
+<ul>
+<li>A reasoner that generalizes from text; no persistent state, no ground truth, no accountability. The stack above it (tools, memory, evaluators, governance) exists to supply those.</li>
+<li>The Newtonian-motion argument: the cost of generated code is deferred, never erased.</li>
+</ul>
+<h3>1.4 Reading a system top-down and bottom-up</h3>
+<ul>
+<li>Two passes: what does it claim (top) and what does it stand on (bottom). Worked example: a chat assistant vs. an agent harness.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A chat assistant (any vendor)</td>
+<td>2022–</td>
+<td>The baseline: generative, no loop, no tools</td>
+<td>Foundation, perception</td>
+</tr>
+<tr>
+<td>Claude Code / Codex CLI</td>
+<td>2025</td>
+<td>What makes it an agent: loop, tools, permissions, harness</td>
+<td>All nine</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>gzkit sits on the <em>agentic</em> layer without running a model at all: it is a governance meta-harness one tier above the vendor harness. That placement is the first design choice the book examines.</p>
+<h2>Readings</h2>
+<ul>
+<li>Sprint and Drift, "Tree Hollow."</li>
+<li>gzkit <code>docs/user/why.md</code> (the Degradation Pattern) and <code>docs/examples/glossary.md</code>.</li>
+<li>The two framework images (Layers of AI; Agentic AI: A Complete Framework).</li>
+</ul>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Write the E0 Design Analysis: a chat assistant versus an agent harness, nine components each, and one paragraph on what the harness adds and what it costs.</li>
+<li>Take the framework board and mark every box you can already name a concrete system for. The blanks are your reading list.</li>
+</ol><hr><p><a href="../ch-02-what-is-an-agent-from-peas-to-the-nine-components/">2. What Is an Agent? From PEAS to the Nine Components ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

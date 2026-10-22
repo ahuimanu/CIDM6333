@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>16. Memory: Retrieval, State, Eviction, Retention</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 16. Memory</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>16. Memory: Retrieval, State, Eviction, Retention</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e7-memory/">E7</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E7 (local model required). Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Distinguish short-term (window), working (state), and long-term (store) memory and implement each.</li>
+<li>Build retrieval over local embeddings and measure its effect.</li>
+<li>Write eviction and retention rules and justify them as governance.</li>
+</ul>
+<h2>Outline</h2>
+<h3>16.1 Kinds of memory</h3>
+<ul>
+<li>Window; structured state; episodic (what happened); semantic (what is known); procedural (skills). Which your system needs.</li>
+</ul>
+<h3>16.2 Retrieval</h3>
+<ul>
+<li>RAG as memory-by-lookup; chunking, embeddings (local), similarity, reranking; when retrieval hurts.</li>
+</ul>
+<h3>16.3 The 2023 designs revisited</h3>
+<ul>
+<li>Generative Agents' memory stream and reflection; MemGPT's paging; Reflexion's memory of failure; Voyager's skill library.</li>
+</ul>
+<h3>16.4 Governance of memory</h3>
+<ul>
+<li>Retention, deletion, provenance, and who owns it; memory as a vibing surface (stale facts recalled as truth); insights corpora as governed memory.</li>
+</ul>
+<h3>16.5 ADR-2</h3>
+<ul>
+<li>The memory decision with alternatives; the personalized Final System brief follows this week's Drift.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RAG</td>
+<td>2020</td>
+<td>Memory by retrieval</td>
+<td>Memory</td>
+</tr>
+<tr>
+<td>Generative Agents</td>
+<td>2023</td>
+<td>Stream, reflection, planning</td>
+<td>Memory</td>
+</tr>
+<tr>
+<td>MemGPT / Letta</td>
+<td>2023–</td>
+<td>Virtual memory</td>
+<td>Memory, context</td>
+</tr>
+<tr>
+<td>Reflexion</td>
+<td>2023</td>
+<td>Memory of failure</td>
+<td>Memory, evaluation</td>
+</tr>
+<tr>
+<td>Assistant memory features</td>
+<td>2024–</td>
+<td>Retention questions</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>.gzkit/insights/agent-insights.jsonl</code> (558 governed course-corrections) and <code>gz insights remember</code>; the OKF knowledge bundle; <code>gz context</code>. Memory in the reference design is files and ledger, deliberately; the book adds retrieval.</p>
+<h2>Readings</h2>
+<ul>
+<li>Lewis et al., "Retrieval-Augmented Generation" (2020).</li>
+<li>Park et al., "Generative Agents"; Packer et al., "MemGPT"; Shinn et al., "Reflexion."</li>
+<li>Sprint and Drift, "Code ergo sum."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 7 (expansion, local) — DESIGN CLAIM: with memory enabled, the system answers a question about a prior session correctly that it cannot answer with memory disabled, and eviction removes what the retention rule says it removes. FALSIFIERS: a recalled fact that was never stored; a retained item past its rule; retrieval that changes an answer that should not change.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Poison your own memory store with one false fact and record how far it propagates.</li>
+</ol><hr><p><a href="../ch-15-context-engineering-budgets-compaction-handoffs-and-layers-o/">◀ 15. Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</a> &nbsp;·&nbsp; <a href="../ch-17-multi-agent-coordination-i-controller-worker-reviewer/">17. Multi-Agent Coordination I: Controller, Worker, Reviewer ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

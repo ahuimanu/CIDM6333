@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>Appendix F — Toolkit Setup (Route A and Route B)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix F — Toolkit Setup (Route A and </nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix F — Toolkit Setup (Route A and Route B)</h1><h2>Everyone</h2>
+<pre><code class="language-bash"># Python 3.14+ via uv
+curl -LsSf https://astral.sh/uv/install.sh | sh     # or the Windows installer
+uv python install 3.14
+
+# gzkit
+uv tool install py-gzkit
+gz --version
+
+# a governed project
+mkdir my-agent &amp;&amp; cd my-agent &amp;&amp; git init
+gz init --mode lite
+gz status
+
+# local models (required for E3 and E7 on both routes)
+# install Ollama from https://ollama.com, then:
+ollama pull qwen3:8b            # 8–16 GB machines; qwen3-coder:30b on 24–32 GB
+ollama run qwen3:8b &quot;say hello&quot;
+</code></pre>
+<h2>Route A — subscription + small API budget</h2>
+<ul>
+<li>Claude Pro / ChatGPT Plus / Google AI Pro (~$20/mo) and its harness: Claude Code or Claude Desktop, Codex CLI, or Gemini CLI.</li>
+<li>~$20–40 of API credit for SDK and MCP work.</li>
+<li>GitHub Copilot (Student plan) as a free supplement.</li>
+</ul>
+<h2>Route B — local only</h2>
+<ul>
+<li>Ollama + OpenCode (or another provider-agnostic harness).</li>
+<li>SDKs that speak OpenAI-compatible endpoints (Pydantic AI, LangGraph, the OpenAI SDK pointed at Ollama).</li>
+</ul>
+<h2>Known gotchas against py-gzkit 0.34.x (verified 2026-08-24)</h2>
+<ol>
+<li><code>gz init</code> writes ~520 files (<code>.gzkit/</code>, <code>.claude/</code>, <code>.agents/</code>, <code>.github/</code>). Commit once; never hand-edit generated files.</li>
+<li>The generated <code>pyproject.toml</code> declares <code>readme = "README.md"</code>; create it or Gate 2 fails with "Readme file does not exist."</li>
+<li><code>gz plan create</code> needs a slug and <code>--kind feature --semver 0.1.0 --lane lite</code>; artifacts land in <code>design/</code>, not <code>docs/design/</code>.</li>
+<li>Exclude <code>.claude</code>, <code>.gzkit</code>, <code>.github</code>, <code>.agents</code> from ruff and ty (<code>extend-exclude</code>; <code>ty.toml</code> <code>[src] include = ["src","tests"]</code>), and <code>uv add --dev ty</code>.</li>
+<li>Briefs: after any edit run <code>gz obpi brief-drift &lt;ID&gt;</code> again before <code>gz obpi complete --attestor &lt;you&gt; --attestation-text "..."</code>; the brief needs substantive Objective, Value Narrative, Key Proof, Implementation Summary; Allowed Paths must cover <code>src/</code> and <code>tests/</code> for product proof.</li>
+<li>In Claude Code, <code>pipeline-gate.py</code> refuses <code>src/</code>/<code>tests/</code> edits without an active pipeline (<code>gz obpi pipeline &lt;ID&gt;</code>); <code>verifier-pipe-gate.py</code> refuses <code>unittest ... | tail</code>. Do not work around hooks.</li>
+<li><code>gz closeout</code> ends in an interactive <code>Select [1/2/3]</code>; in non-TTY contexts use <code>gz closeout &lt;ADR&gt; --ceremony --attest</code> or <code>gz attest</code>.</li>
+<li>Step 4b adversarial validation prefers Codex as tier-1; with one vendor you run in degraded mode and say so.</li>
+<li>Several skills are <code>model: opus</code>; budget accordingly, and prefer <code>--no-subagents</code> for small sorties.</li>
+</ol><hr><p><a href="../appendix-e-reading-list/">◀ Appendix E — Reading List</a> &nbsp;·&nbsp; <a href="../appendix-g-the-gzkit-incident-casebook-2026/">Appendix G — The gzkit Incident Casebook (2026) ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

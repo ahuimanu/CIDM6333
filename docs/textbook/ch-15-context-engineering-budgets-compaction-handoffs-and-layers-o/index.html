@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>15. Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 15. Context Engineering</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>15. Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e6-context-engineering/">E6</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E6. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Instrument the context window and manage it under a budget.</li>
+<li>Implement compaction and a session handoff that preserves intent across a fresh session.</li>
+<li>Design an append-only ledger for your system and declare the three layers of truth.</li>
+</ul>
+<h2>Outline</h2>
+<h3>15.1 The window as an artifact</h3>
+<ul>
+<li>What is in it: instructions, history, tool results, retrieved memory. Measure it. Budget it.</li>
+</ul>
+<h3>15.2 Compaction and progressive disclosure</h3>
+<ul>
+<li>Summarize, drop, page; subagents for isolation; skills loaded on demand; the PreCompact hook.</li>
+</ul>
+<h3>15.3 Handoffs</h3>
+<ul>
+<li>Seven sections (current state, important context, decisions with attribution, next steps, pending work, verification checklist, evidence); rulings stores; session-start advisement; the exit bookmark.</li>
+</ul>
+<h3>15.4 Layers of truth</h3>
+<ul>
+<li>L1 canon (markdown), L2 ledger (append-only events), L3 derived (status views, markers). Precedence L2 &gt; L1 &gt; L3; L3 can never block a gate. Frontmatter can lie; the ledger is the truth.</li>
+</ul>
+<h3>15.5 Intent preservation as the design goal</h3>
+<ul>
+<li>Why memory is not the same as preserved intent; the AGENTS.md-as-derived-view episode.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code (CLAUDE.md, compaction, subagents)</td>
+<td>2025</td>
+<td>Context surfaces</td>
+<td>Context</td>
+</tr>
+<tr>
+<td>Codex (AGENTS.md, compaction)</td>
+<td>2025</td>
+<td>Context surfaces</td>
+<td>Context</td>
+</tr>
+<tr>
+<td>Cursor rules</td>
+<td>2024–25</td>
+<td>Editor-native context</td>
+<td>Context</td>
+</tr>
+<tr>
+<td>gzkit handoffs / rulings / ledger</td>
+<td>2026</td>
+<td>Intent across boundaries</td>
+<td>Context, governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>docs/governance/state-doctrine.md</code> (ADR-0.0.9); <code>gz handoff create/resume</code>; <code>scripts/session_orientation.py</code>; <code>.gzkit/handoffs/rulings.jsonl</code>; the 2026-04-26 stale-clone incident; ADR-0.0.37 and ADR-0.0.54.</p>
+<h2>Readings</h2>
+<ul>
+<li>Anthropic, "Effective Context Engineering for AI Agents."</li>
+<li>gzkit <code>state-doctrine.md</code>; <code>docs/user/reference/agent-input-disciplines.md</code>.</li>
+<li>Sprint and Drift, "Woven."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 6 (expansion) — DESIGN CLAIM: a handoff written at session end lets a fresh session resume with no loss of intent (measured: the next action taken is the one the handoff named). FALSIFIERS: the fresh session asks a question the handoff answered; an L3 view contradicts the ledger and wins.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Compute your system's context budget per turn for a week. Where did it go?</li>
+</ol><hr><p><a href="../ch-14-protocols-security-and-harness-engineering/">◀ 14. Protocols, Security, and Harness Engineering</a> &nbsp;·&nbsp; <a href="../ch-16-memory-retrieval-state-eviction-retention/">16. Memory: Retrieval, State, Eviction, Retention ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

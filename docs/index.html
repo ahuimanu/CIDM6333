@@ -24,10 +24,14 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
 </style>
 </head>
 <body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
 <div class="wrap">
-  <div class="eyebrow">CIDM 6333 · Agentic Systems Design and Development</div>
+  <div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Home" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<div class="eyebrow">CIDM 6333 · Agentic Systems Design and Development</div>
   <h1>Course materials</h1>
-  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:24px 0 0">Figures</h2>
+  <h2 id="figures" style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:24px 0 0">Figures</h2>
   <p class="lede">Interactive explainers for the course, one or more for each Evolution. Each one steps through a mechanism the lecture describes. Use Next and Back, the step dots, or the arrow keys, then try the interactive panels below each figure.</p>
   <div class="list">
     <a class="card" href="figures/two-loops.html">
@@ -126,7 +130,7 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
       <span>Model, OpenCode, and your harness as three rings set into the narrow band of a specs–execution–V&amp;V bar; every affordance from E0 to E8 on its ring, and a place-this-affordance checker.</span>
     </a>
   </div>
-  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0">Lectures</h2>
+  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0" id="lectures">Lectures</h2>
   <p class="lede">All lecture decks as slide pages with a text transcript and a PDF to download. Dates live in the course calendar, not in the slides.</p>
   <div class="list">
     <a class="card" href="lectures/orientation/">
@@ -210,7 +214,7 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-2)}
       <span>The lecture before the follow-along exercise: the model, OpenCode, and your harness as rings; the table of what OpenCode has and what you write; the reviewer that cannot edit.</span>
     </a>
   </div>
-  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0">Exercises</h2>
+  <h2 style="font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:34px;margin:40px 0 0" id="exercises">Exercises</h2>
   <div class="list">
     <a class="card" href="exercises/one-intent-three-drawers.html">
       <span class="weeks">In class · pairs · 40 minutes</span>

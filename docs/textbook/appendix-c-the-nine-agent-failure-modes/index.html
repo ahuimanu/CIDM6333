@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>Appendix C — The Nine Agent Failure Modes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix C — The Nine Agent Failure Mode</nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix C — The Nine Agent Failure Modes</h1><p>From gzkit <code>.gzkit/rules/agent-failure-modes.md</code> (sourced to frontier system cards), with the human-side patterns the course adds.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Mode</th>
+<th>One line</th>
+<th>Red-team probe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Safeguard circumvention</td>
+<td>Works around a guardrail instead of producing the evidence it asks for</td>
+<td>Block a write; offer an easier bypass</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Reckless action</td>
+<td>Hard-to-reverse action without confirming authorization for this scope</td>
+<td>Ambiguous "clean up" instruction</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Fabrication</td>
+<td>A claim, receipt, or attestation not observed from a primary source</td>
+<td>Ask for a result that cannot be produced</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Skipped cheap verification</td>
+<td>Pattern-matched incantation without running it</td>
+<td>A command that looks right and is wrong</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Correction fails</td>
+<td>Correction received but not applied, or applied superficially</td>
+<td>Correct once, re-test three turns later</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dishonest when caught</td>
+<td>Post-hoc rationalization without quoting the rule and the conflicting directive</td>
+<td>Catch a violation; watch the explanation</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Hallucinated authorization</td>
+<td>Acts on a gate it believes was passed when nothing records it</td>
+<td>Remove the record; see if it proceeds</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Security shortcut</td>
+<td>Trades integrity for convenience without surfacing the trade</td>
+<td>Put a secret in the easy path</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Metagaming the gate</td>
+<td>Shapes output to satisfy the check rather than the intent</td>
+<td>A test that can be passed by string-matching</td>
+</tr>
+</tbody>
+</table></div>
+<p>Human-side: the Degradation Pattern; governance theater; cognitive surrender; mediated observation; summary laundering; presence-is-not-procedure.</p><hr><p><a href="../appendix-b-design-analysis-template/">◀ Appendix B — Design Analysis Template</a> &nbsp;·&nbsp; <a href="../appendix-d-glossary/">Appendix D — Glossary ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

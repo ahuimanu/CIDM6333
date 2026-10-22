@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>10. Building the Loop: Perceive, Reason, Act, Halt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 10. Building the Loop</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>10. Building the Loop: Perceive, Reason, Act, Halt</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e1-agent-loop/">E1</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E1. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Build a minimal agent loop against a hosted and a local model.</li>
+<li>Emit structured outputs and enforce a halt condition and a budget.</li>
+<li>Write a PRD for your system through a governed interview.</li>
+</ul>
+<h2>Outline</h2>
+<h3>10.1 The minimal loop</h3>
+<ul>
+<li>Messages, a model call, a tool-or-answer decision, an observation, repeat. Structured output via Pydantic. Stop: final answer, budget, max turns, error.</li>
+</ul>
+<h3>10.2 Two foundations</h3>
+<ul>
+<li>Hosted API vs. Ollama's endpoint; same loop, different capability; measure both.</li>
+</ul>
+<h3>10.3 Governing it from the first commit</h3>
+<ul>
+<li>gz init; the PRD interview; the ledger's first events. Why the PRD is WHAT, not HOW.</li>
+</ul>
+<h3>10.4 What can go wrong on day one</h3>
+<ul>
+<li>Loops that do not halt; tool-call formats the small model cannot produce; silent exceptions. Each becomes a falsifier.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ReAct</td>
+<td>2022</td>
+<td>The loop you are reproducing</td>
+<td>Planning</td>
+</tr>
+<tr>
+<td>AutoGPT</td>
+<td>2023</td>
+<td>The loop without a halt</td>
+<td>Planning</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>gz init</code>, <code>gz prd</code>, the interview transcript, <code>prd_created</code> in the ledger. gzkit's own PRD (PRD-GZKIT-1.0.0) as a worked example.</p>
+<h2>Readings</h2>
+<ul>
+<li>Anthropic, "Building Effective Agents."</li>
+<li>gzkit <code>docs/examples/guide-prd.md</code>; <code>docs/examples/tutorial-first-project.md</code> (with the CLI corrections in Appendix F).</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 1 (center) — DESIGN CLAIM: the loop halts on every input class (answerable, unanswerable, adversarial) within budget, and every turn is in the ledger. FALSIFIERS: a run exceeding the turn budget; a halt with no ledger event; a "final answer" produced without a reasoning turn.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Build the loop twice: once with your chosen SDK, once with only the HTTP API. Record what the SDK hid.</li>
+</ol><hr><p><a href="../ch-09-2026-harness-engineering-background-agents-and-the-reference/">◀ 9. 2026: Harness Engineering, Background Agents, and the Reference Design&#x27;s Year</a> &nbsp;·&nbsp; <a href="../ch-11-patterns-and-orchestration-frameworks-who-owns-the-loop/">11. Patterns and Orchestration Frameworks: Who Owns the Loop? ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

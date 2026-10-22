@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>2. What Is an Agent? From PEAS to the Nine Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 2. What Is an Agent? From PEAS to the Ni</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>2. What Is an Agent? From PEAS to the Nine Components</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e0-index-zero/">E0</a> <span class="small">(survey)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E0 Orientation. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Give the pre-LLM definition of an agent and specify one by PEAS.</li>
+<li>Describe the LLM agent loop and identify its halt condition.</li>
+<li>Dissect any agentic system into the nine components used throughout the book.</li>
+</ul>
+<h2>Outline</h2>
+<h3>2.1 The classical definition</h3>
+<ul>
+<li>Russell &amp; Norvig: perceives through sensors, acts through actuators; PEAS. Agent types: reflex, model-based, goal-based, utility-based, learning.</li>
+<li>BDI (belief–desire–intention) and multi-agent platforms as the pre-LLM coordination vocabulary.</li>
+</ul>
+<h3>2.2 The LLM agent loop</h3>
+<ul>
+<li>Perceive (prompt, tool results) → reason (model call) → act (tool call or answer) → repeat until halt. ReAct as canonical form.</li>
+<li>Halt conditions, budgets, and why 2023 forgot them.</li>
+</ul>
+<h3>2.3 The nine components</h3>
+<ul>
+<li>Foundation; perception; planning and reasoning; tool use and orchestration; memory and context; coordination; evaluation and feedback; governance and human interface; runtime and operations.</li>
+<li>For each: the question to ask, the typical answers, the failure that shows up when it is missing.</li>
+</ul>
+<h3>2.4 Workflows versus agents</h3>
+<ul>
+<li>Anthropic's distinction: predefined code paths vs. model-directed control. Most production "agents" are workflows, and should be.</li>
+</ul>
+<h3>2.5 The judgment loop</h3>
+<ul>
+<li>From CIDM 6330: name the decision, the characteristics, the cost, the failure mode, the preservation mechanism. Used to close every Design Analysis.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Russell &amp; Norvig agent</td>
+<td>1995–</td>
+<td>The definition that still holds</td>
+<td>Perception, planning</td>
+</tr>
+<tr>
+<td>ReAct</td>
+<td>2022</td>
+<td>The loop in its simplest form</td>
+<td>Planning, tools</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>gzkit answers component eight (governance and human interface) with the Zero Doctrine and Gate 5, and component seven (evaluation) with gates, receipts, and RED witnesses. It deliberately leaves components one through six to the vendor harness.</p>
+<h2>Readings</h2>
+<ul>
+<li>Russell &amp; Norvig, <em>Artificial Intelligence: A Modern Approach</em>, ch. 2 (any edition).</li>
+<li>Anthropic, "Building Effective Agents" (2024), sections on workflows vs. agents.</li>
+<li>Yao et al., "ReAct" (2022).</li>
+</ul>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Specify your intended system by PEAS. Then map each PEAS element to one of the nine components.</li>
+<li>Find a system marketed as an agent that is a workflow. Say why that is the right design.</li>
+</ol><hr><p><a href="../ch-01-the-layers-of-ai-and-the-one-everybody-forgets/">◀ 1. The Layers of AI, and the One Everybody Forgets</a> &nbsp;·&nbsp; <a href="../ch-03-the-human-at-index-zero-degradation-covenant-gates/">3. The Human at Index Zero: Degradation, Covenant, Gates ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

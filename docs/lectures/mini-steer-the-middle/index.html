@@ -92,7 +92,11 @@ footer{margin-top:28px; font-size:13px; color:var(--ink-2); font-family:var(--di
 </style>
 </head>
 <body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
 <div class="wrap">
+<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Lectures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
 <nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Lectures</a> · Mini lecture</nav>
 <div class="eyebrow">CIDM 6333 · Agentic Systems · Mini lecture · before the Steer the Middle exercise</div>
 <h1 class="deck">Steer the Middle: three rings, one bar, E0 to E8</h1>

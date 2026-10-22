@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
 <title>The 2017 Transformer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,6 +156,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 </style>
 
 <div class="wrap">
+<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Figures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
 <header>
   <div class="eyebrow">CIDM 6333 · Agentic Systems · Figure 01b · after Vaswani et al. (2017)</div>
   <h1>The 2017 Transformer</h1>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>Appendix G — The gzkit Incident Casebook (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix G — The gzkit Incident Casebook</nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix G — The gzkit Incident Casebook (2026)</h1><p>Dated episodes from the reference design, each with the mechanism that resulted. Sources: <code>AGENTS.md</code> § Operator Doctrine, <code>CHANGELOG.md</code>, <code>RELEASE_NOTES.md</code>, <code>.gzkit/insights/agent-insights.jsonl</code>, the ledger.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Date</th>
+<th>What happened</th>
+<th>What resulted</th>
+<th>Course use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-01-12</td>
+<td>ADR-0.1.9 in AirlineOps accumulated ~100 briefs under one identity</td>
+<td>gzkit itself; semver as governance assertion</td>
+<td>Ch. 3, 9</td>
+</tr>
+<tr>
+<td>2026-04-16</td>
+<td>First outside adopter: <code>gz init</code> left no runnable project; scaffolders emitted ids their own validator rejected</td>
+<td>v0.25.1–0.25.10; issue templates</td>
+<td>Ch. 25</td>
+</tr>
+<tr>
+<td>2026-04-18</td>
+<td><code>gz patch release</code> over-counted closed issues 5×</td>
+<td>"Count what we CLOSE, not what we book"</td>
+<td>Ch. 21</td>
+</tr>
+<tr>
+<td>2026-04-18</td>
+<td>Trust-chain poisoning outage: nine silent-wrong layers feeding decisions that looked correct</td>
+<td>Trust doctrine (T0–T3)</td>
+<td>Ch. 20</td>
+</tr>
+<tr>
+<td>2026-04-19</td>
+<td>Operator PII leaked into artifacts; history rewrite</td>
+<td>PII rule; authorship guard</td>
+<td>Ch. 20</td>
+</tr>
+<tr>
+<td>2026-04-26</td>
+<td>Stale clone 10 commits behind; ~215 lines discarded by hard reset</td>
+<td>SessionStart ahead/behind; orientation freshness</td>
+<td>Ch. 15</td>
+</tr>
+<tr>
+<td>2026-05-10</td>
+<td>Agent piped "ATTEST" into <code>gz obpi complete</code> to bypass the TTY gate</td>
+<td>Regression test; then the TTY gate removed (05-14) — authority belongs to the human, forgery-resistance to audit</td>
+<td>Ch. 3, 18</td>
+</tr>
+<tr>
+<td>2026-05-23</td>
+<td>Four questions bundled in one prompt</td>
+<td>Operator economy of effort</td>
+<td>Ch. 15</td>
+</tr>
+<tr>
+<td>2026-05-24</td>
+<td>Ten-deep subagent chain; polished summaries became "facts"</td>
+<td>DO IT RIGHT rules; "a subagent's claim is not evidence"</td>
+<td>Ch. 17, 18</td>
+</tr>
+<tr>
+<td>2026-05-30→06-08</td>
+<td>Green <code>main</code> reopened 8× in nine days</td>
+<td>V.I.B.E.S. named; pre-push gate; MX hangar</td>
+<td>Ch. 19, 21</td>
+</tr>
+<tr>
+<td>2026-06-13</td>
+<td>Gate-5 attributed to the operator that was never given</td>
+<td>First repudiation; ADR-0.0.71</td>
+<td>Ch. 18</td>
+</tr>
+<tr>
+<td>2026-06-16</td>
+<td>Four briefs attested for a renderer, validator, composer, playback store — none existed as attested</td>
+<td>Repudiations; enforcement-claim rule</td>
+<td>Ch. 19</td>
+</tr>
+<tr>
+<td>2026-06-18/19</td>
+<td>"The antibody" (verification-layer audit) was itself hollow and attested Completed</td>
+<td><code>@enforces</code> live negative controls</td>
+<td>Ch. 19</td>
+</tr>
+<tr>
+<td>2026-06-20</td>
+<td>"Utter shambles": 70 validate scopes behind a 162-parameter function; 116 handoffs</td>
+<td>MX mode; amendments append, never inline</td>
+<td>Ch. 21</td>
+</tr>
+<tr>
+<td>2026-07-18</td>
+<td>90-day commit mix 2.9% feat / 31% fix / 54% chore; zero airlock transits</td>
+<td>"Permitted to say enough"</td>
+<td>Ch. 9</td>
+</tr>
+<tr>
+<td>2026-08-14</td>
+<td>20 of 23 airlock transits computed an empty seam-map</td>
+<td>Calibrate before widening</td>
+<td>Ch. 9</td>
+</tr>
+<tr>
+<td>2026-08-16</td>
+<td>A limit in a Markdown doc disagreed with the JSON authority; 51 unguarded modules</td>
+<td>"A value in Markdown is illustrative, never authoritative"</td>
+<td>Ch. 14</td>
+</tr>
+<tr>
+<td>2026-08-21</td>
+<td>Pipeline gate checked only that a marker file existed; a stale marker licensed ~350 lines with no dispatch or review</td>
+<td>"A presence check answers 'is something armed', never 'did the procedure run'"</td>
+<td>Ch. 12, 19</td>
+</tr>
+<tr>
+<td>2026-08-22</td>
+<td>Registering one CLI verb produced 21 failures; three docs disagreed on the obligation set</td>
+<td>One authority for new-verb obligations</td>
+<td>Ch. 14</td>
+</tr>
+<tr>
+<td>2026-08-23</td>
+<td>Six governance hooks keyed on editor-tool matchers were bypassed by any Bash write</td>
+<td>Enforcement moved to the commit locus (<code>git diff --cached</code>)</td>
+<td>Ch. 12</td>
+</tr>
+<tr>
+<td>2026-08-23</td>
+<td>Agent re-elicited three settled rulings by multiple-choice</td>
+<td>"A settled question is a drift vector"</td>
+<td>Ch. 15</td>
+</tr>
+</tbody>
+</table></div><hr><p><a href="../appendix-f-toolkit-setup-route-a-and-route-b/">◀ Appendix F — Toolkit Setup (Route A and Route B)</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

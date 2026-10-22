@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>13. The Model Context Protocol: Building Servers and Clients</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · 13. The Model Context Protocol</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>13. The Model Context Protocol: Building Servers and Clients</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e4-mcp-1/">E4</a> <span class="small">(build)</span></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E4. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Explain MCP's architecture (hosts, clients, servers) and primitives (tools, resources, prompts).</li>
+<li>Build an MCP server with the Python SDK and exercise it from two clients.</li>
+<li>Compare MCP to plugins, OpenAPI tool specs, and function calling, and say why a protocol won.</li>
+</ul>
+<h2>Outline</h2>
+<h3>13.1 Why a protocol</h3>
+<ul>
+<li>N×M integrations → N+M; capability negotiation; discovery; the plugin era's failure.</li>
+</ul>
+<h3>13.2 Architecture and primitives</h3>
+<ul>
+<li>Host, client, server; tools (model-controlled), resources (application-controlled), prompts (user-controlled); sampling; roots; notifications.</li>
+</ul>
+<h3>13.3 Building a server</h3>
+<ul>
+<li>FastMCP-style declaration; schemas from types; stdio transport first; testing with an inspector; connecting to your harness and to a script client.</li>
+</ul>
+<h3>13.4 A governance server</h3>
+<ul>
+<li>The reference design's missing piece: <code>gz status</code>, <code>gz validate</code>, the ledger, and receipts as MCP tools and resources; "what is attested?" as a resource. Why gzkit refused MCP, and what changes when you add it one tier up.</li>
+</ul>
+<h3>13.5 Design Analysis of the ecosystem</h3>
+<ul>
+<li>Reference servers; registries; the foundation; what a healthy protocol ecosystem needs (ch. 14 for security).</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ChatGPT plugins</td>
+<td>2023</td>
+<td>The pre-protocol attempt</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>OpenAPI-style tool specs</td>
+<td>2023–</td>
+<td>Description without negotiation</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>2024</td>
+<td>The protocol</td>
+<td>Tools, coordination</td>
+</tr>
+<tr>
+<td>Agentic AI Foundation</td>
+<td>2025</td>
+<td>Governance of the protocol</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>Doctrine: <code>docs/governance/storage-tiers.md</code> ("no external protocol may become a prerequisite for core governance operations"); the pool ADR sketching an MCP context server; the campaign review scoring MCP "absent and un-designed." The student project: an MCP server over gz verbs and the ledger.</p>
+<h2>Readings</h2>
+<ul>
+<li>Model Context Protocol specification.</li>
+<li>MCP Python SDK documentation.</li>
+<li>Sprint and Drift, "Stop the presses, hail the autoloom."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 4 (center) — DESIGN CLAIM: every tool the server declares is discoverable, callable, and schema-validated from two independent clients, and every call is logged server-side. FALSIFIERS: a tool callable from one client but not the other; a call with no server-side log; a schema the client accepted that the server rejected.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Build the governance MCP server. Ask your harness "what is attested in this repo?" and check its answer against the ledger.</li>
+</ol><hr><p><a href="../ch-12-tools-as-contracts-schemas-permissions-hooks-recovery/">◀ 12. Tools as Contracts: Schemas, Permissions, Hooks, Recovery</a> &nbsp;·&nbsp; <a href="../ch-14-protocols-security-and-harness-engineering/">14. Protocols, Security, and Harness Engineering ▶</a></p></article><footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>
