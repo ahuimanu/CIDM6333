@@ -26,29 +26,6 @@ All 15 pptx decks are built by `deck.py` (DECK_META holds each deck's title and 
 - Done Oct 23: Sortie 5 no longer tests authorization (Jeffry: drop it). Card keeps the honest read, the poisoned resource, and the pin check; the lecture still teaches the authorization flow as background. `deck.py`: a voice override of "" drops the line.
 - Done Oct 23: E0/E2 workflow paraphrase checked against "Building Effective Agents" (matches: workflows for well-defined tasks, agents where the number of steps cannot be predicted); E8 three-level nesting default confirmed in the Claude Code sub-agents docs (retrieved Oct 23, 2026); glossary chapters fixed (JADE entry 4, 6, 7; ToolBench 6, 12). HumanEval appears in no chapter; its ch=19 stays.
 
-## Questions for Jeffry (one at a time)
+## Questions for Jeffry
 
-Resolved Oct 22: Raji/Groves citation; E2 workflows line; E10 five rules; E8 falsifier one; E8 BrowseComp; E1 Kojima; submission/LMS references dropped.
-
-2. E5 slide 1: "In Evolution 3 you put a tool on the wire; in Evolution 4 you tore down the GitHub MCP server". Is E3 right?
-3. E0 slide 5: "'done' is the most dangerous word in the course." Add a reason after it, or leave it bare?
-4. E0 and E1 slide 2 list minutes per part. Remove them as times?
-5. E1 slide 10 says governance arrived "not as a wrapper"; orientation slide 18 says gzkit "wraps them". Which wording?
-6. E2 Flight Card: a missing predicted consequence is a FAIL, but the exceptional lens rewards "the predicted consequence did not appear, and the ADR was amended with the evidence". Is an amended miss a FAIL that still earns top marks?
-7. E3: slide 5 code accepts a confirm event for every non-read class; slide 4 card says "irreversible: … requires an attestation". Which changes?
-8. E4 close: "A protocol is a contract that strangers can discover; that is what it adds", while slide 3 lists three promises. Reword?
-9. "membrane" on the E3 and E2 slides ("the membrane a harness puts around every tool", "Hooks as a membrane"). Keep it?
-10. E9 slide 3: "you will know before you fly whether your adversary is a real one". The planted falsehood is tested during the sortie. Change "before you fly"?
-11. E10: is the file students open the "Sprint brief" or the "homework brief"?
-12. E11: slide 3 falsifier ("any guardrail that passes only because the attack was never delivered") vs the slide 23 card ("a guardrail credited when the attack never reached it, or a pass obtained by disabling a check"). Which list is authoritative?
-13. Textbook contents note (in `textbook.py`): "The full prose will follow in a later edition." Restore "The prose follows", or "The full prose replaces each outline as the chapter's status advances"?
-14. Textbook history passages: first person ("I started the governance kit in January 2026", "I developed Sprint and Drift for CIDM 6330") or passive?
-15. Ch. 9 says "Twenty-five dated incidents (Appendix G)"; Appendix G has 21 rows.
-16. Ch. 26: "the student executes, the instructor observes and attests" vs §26.3 "the human executes and observes". Who runs the commands at the closeout?
-17. Ch. 3: "Cognitive surrender, mediated observation, governance theater: three names for the same failure" vs Appendix C listing them separately.
-18. Appendix A flight-card header separator: "FLIGHT CARD · SORTIE <N> : <short name>" (the em dash is banned). Match gzkit's template?
-19. Persona order: glossary says anti-trait first; the mini deck says the deny line first; both say "in that order". Which order, or drop the ordering?
-20. Is "the V&V must show the skill being called" a Final System requirement?
-21. Restore glossary citations removed for lack of a course source: Beck (2002) TDD, North (2006) BDD, NIST SHA-2 (2001)?
-22. Receipt fields: glossary (command, exit code, output hash, time) vs E9 (command, exit code, commit, output hash). Which set?
-23. E1: "hundreds of thousands of stars in weeks" has no source; keep, source, or cut?
+All resolved Oct 22–23, 2026. Rulings, in order: Raji/Groves citation; E2 workflow line = Anthropic's advice; E10 shares only pre-registration with the five flight-test rules; E8 falsifier one; E8 80% = BrowseComp; E1 Kojima; submission/LMS/office-hours/late-policy specifics dropped; Sortie 5 drops authorization; E5 recap points to E4; no mentions of time; E0 'done' gets a reason (closed attestation vocabulary); gzkit = a custom harness on top of a vendor harness (Figure 17); E2 amended miss is still a FAIL, the amended ADR earns the exceptional mark; E3 gate code: attestation for irreversible, confirm for write; E4 close names discovery, negotiation, transport independence; "membrane" replaced by the mechanism; E9 "before you fly" stays; E11 slide 3 matches the card; textbook is a living document (status lines removed); preface in first person; Ch. 9 twenty-one incidents; closeout: student presents, instructor executes, observes, attests; cognitive surrender / mediated observation / governance theater are three related failures; flight-card headers use a plain hyphen (normal hyphens are always fine; only the em dash is banned); persona order claim dropped; Skill on Demand: Final System V&V must show the skill call; glossary citations Beck 2002, North 2006, FIPS 180-2 restored after checking; receipt = command, exit code, commit, output hash, time; E1 AutoGPT stars sentence cut.
