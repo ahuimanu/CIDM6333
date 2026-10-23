@@ -26,7 +26,7 @@ The title states the thesis: a system can produce an answer without being able t
 
 ### How to read this book
 
-- **As a course text.** The [week-by-week run sheet] maps every CIDM 6333 Evolution to its chapters. Read the Part II chapter for the week's survey and the Part III chapter for the week's build.
+- **As a course text.** Each CIDM 6333 lecture links to its chapters, and each chapter lists the lectures that use it. Read the Part II chapter for the Evolution's survey and the Part III chapter for its build.
 - **As a survey.** Read Part II straight through, then dip into Part III where a component interests you.
 - **As a flight manual.** Read Part IV first, then use Part III chapter by chapter with the flight cards in Appendix A.
 
@@ -72,7 +72,7 @@ The course runs one Evolution per week. Each Evolution carries two threads:
 | **Survey**: why are agentic systems designed the way they are? | The Design Analysis (nine components, one "why") | Part II, and the *Systems analyzed* table in every Part III chapter |
 | **Build**: one individual system, one layer per week | The flight card and flight log | Part III, one chapter per Evolution |
 
-The weekly rhythm (lecture 60 · consultation 60 · lab 30), the Sprint and Drift method, and the scoring live in Part IV and in the [run sheet].
+The Sprint and Drift method and the scoring are in Part IV.
 
 ## Chapter-to-Evolution map
 

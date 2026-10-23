@@ -115,13 +115,13 @@ def main(docs):
     title_body = [b for t, b in front if t.startswith("Answerable")]
     intro = render(clean(title_body[0])) if title_body else ""
     intro = re.sub(r"<h2>The Design, Lineage, and Governance of Agentic Software</h2>\s*<p><strong>Jeffry Babb, PhD</strong>.*?</p>\s*<p><em>Working draft.*?</em></p>", "", intro, flags=re.S)
-    toc = ['<h2 id="contents">Contents</h2><p class="small">This textbook is a living document. Each chapter carries its learning outcomes, section plan, systems analyzed, gzkit episode, readings, and exercises, and the chapters expand and elaborate as the course needs them.</p>']
+    toc = ['<h2 id="contents">Contents</h2><p class="small">Each chapter gives its learning outcomes, section plan, the systems it analyzes, a gzkit episode, readings, and exercises.</p>']
     def group(name, lo, hi):
         items = [p for p in pages if p[2]=="chapter" and lo <= p[3] <= hi]
         return '<h3>%s</h3><ol start="%d">' % (name, lo) + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t.split(". ",1)[1])) for d,t,k,key,b in items) + "</ol>"
     toc.append(group("Part I · The posture", 1, 3)); toc.append(group("Part II · The survey", 4, 9))
     toc.append(group("Part III · The build", 10, 21)); toc.append(group("Part IV · The method", 22, 26))
-    toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters cite, with links.</a></p>')
+    toc.append('<h3><a href="readings/">Reading list</a></h3><p>The papers, documentation, and essays each chapter draws on, grouped by chapter.</p>')
     toc.append('<h3>Appendices</h3><ul>' + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t)) for d,t,k,key,b in pages if k=="appendix") + '</ul>')
     body = '<h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft</p>' + intro + "".join(toc) + fm
     (out / "index.html").write_text(page("Answerable Systems · textbook", "CIDM 6333 · Textbook", body, '<a href="../">CIDM 6333</a> · Textbook', 1), encoding="utf-8")

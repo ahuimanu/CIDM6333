@@ -1,18 +1,17 @@
 # Reading list
 
-Every reading the chapters cite, with its link. An item marked **[outline]** is cited in a chapter's outline rather than in its Readings list. An item marked **[newer]** is a later source that extends the one the chapter cites. gzkit documents render at gzkit.org, and its design records and repository-root files are on GitHub.
+The papers, documentation, and essays each chapter draws on, grouped by chapter. **[outline]** marks a source that appears in a chapter's section plan rather than its Readings list. **[newer]** marks a later source that extends the one the chapter cites. gzkit's documentation is at gzkit.org; its design records are in its GitHub repository.
 
 ## Chapter 1: The Layers of AI
 
 - Babb, J. (2026, Jul 2). *Tree Hollow.* Sprint and Drift. https://sprintanddrift.substack.com/p/tree-hollow
 - gzkit (2026). *Why gzkit?* (the Degradation Pattern). https://gzkit.org/user/why/
 - gzkit (2026). *Glossary.* https://gzkit.org/examples/glossary/
-- The two framework boards ("Layers of AI"; "Agentic AI: A Complete Framework") are course-local images with no public source recorded. Attribution is still to be added.
 
 ## Chapter 2: What Is an Agent?
 
 - Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.), ch. 2. Pearson. https://aima.cs.berkeley.edu/
-- Anthropic (Schluntz, E., & Zhang, B.) (2024, Dec 19). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents (the page now carries a banner that the tooling landscape has changed, but it remains the canonical source for the five workflow patterns)
+- Anthropic (Schluntz, E., & Zhang, B.) (2024, Dec 19). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents (the source of the five workflow patterns)
   - **[newer]** Martin, L., Cemaj, G., & Cohen, M. (2026, Apr 8). *Scaling Managed Agents: Decoupling the brain from the hands.* https://www.anthropic.com/engineering/managed-agents
 - Yao, S., et al. (2022). *ReAct: Synergizing Reasoning and Acting in Language Models.* ICLR 2023. https://arxiv.org/abs/2210.03629
 
@@ -90,7 +89,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 
 - Anthropic (2024). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents
 - gzkit. *Guide: PRD.* https://gzkit.org/examples/guide-prd/
-- gzkit. *Tutorial: Your First Governed Project.* https://gzkit.org/examples/tutorial-first-project/ [re-verify against gzkit 0.34.9]
+- gzkit. *Tutorial: Your First Governed Project.* https://gzkit.org/examples/tutorial-first-project/
 
 ## Chapter 11: Patterns and Orchestration Frameworks
 
@@ -106,7 +105,7 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 - gzkit. *.gzkit/rules/agent-failure-modes.md.* https://github.com/tvproductions/gzkit/blob/main/.gzkit/rules/agent-failure-modes.md
 - gzkit. *CHANGELOG* v0.34.5 (2026-08-23). https://github.com/tvproductions/gzkit/blob/main/CHANGELOG.md#v0345-2026-08-23
 - Babb, J. (2026, Jun 24). *Get the Balance Right.* https://sprintanddrift.substack.com/p/get-the-balance-right
-- **[outline §12.3]** Anthropic. *Claude Code — Hooks reference.* https://code.claude.com/docs/en/hooks (the outline lists six hook events, and the reference now documents 33)
+- **[outline §12.3]** Anthropic. *Claude Code — Hooks reference.* https://code.claude.com/docs/en/hooks (the reference documents 33 hook events)
 - **[newer]** Aizawa, K. (2025, Sep 11). *Writing effective tools for agents — with agents.* https://www.anthropic.com/engineering/writing-tools-for-agents
 - **[newer]** Anthropic (2026, Mar 25). *How we built Claude Code auto mode.* https://www.anthropic.com/engineering/claude-code-auto-mode
 
@@ -212,17 +211,3 @@ Every reading the chapters cite, with its link. An item marked **[outline]** is 
 - Beck, K. (2023). *Tidy First?* O'Reilly. https://www.oreilly.com/library/view/tidy-first/9781098151232/
 - Nygard (2018), Russell & Norvig (2020), Wooldridge (2009), Sutton & Barto (2018): as above.
 - Reference design: gzkit docs https://gzkit.org · repository https://github.com/tvproductions/gzkit
-
-## Later editions and open items
-
-1. MCP: chapters 7 and 13 describe the 2025 protocol, and the current revision is 2026-07-28 (stateless requests, `server/discover`, extensions). The Python SDK is on its v2 line.
-2. "Building effective agents" now points to "Scaling Managed Agents" (Apr 2026). Pair them in chapters 2, 5, 7, 10.
-3. "Effective harnesses for long-running agents" has a March 2026 sequel (chapters 8, 14).
-4. Claude Code hooks: the outline lists six events, and the reference documents 33 (chapter 12).
-5. A2A is at v1.0.0 under the Agentic AI Foundation, and AGENTS.md is stewarded there as well (chapters 8, 14, 18).
-6. gzkit version drift: the guide is pinned to 0.34.5 and the repository is at 0.34.9. The tutorial page pins no version.
-7. Cemri et al.: cite arXiv v3.
-8. System cards: the current cards are the 5.5 generation (Anthropic, Sep–Oct 2026), GPT-5.5 (Apr 2026), Gemini 4 Argon (Oct 2026).
-9. Degani & Wiener: 1994 chapter (Avebury), Routledge 1997 edition. NASA CR-177642 is the linkable copy.
-10. Böckeler and the OpenAI harness-engineering post are cited in chapter 9's outline but were missing from its Readings. Both are now located and listed above.
-11. Not publicly located: the CIDM 6330 Sprint and Drift method, Drift Consultation Protocol, and Final Project documents (chapters 22, 26), and the two framework images (chapter 1).
