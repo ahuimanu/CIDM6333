@@ -237,7 +237,7 @@ After this chapter you can:
 ### 3.1 The Degradation Pattern
 
 - Week 1 to week 4: careful review → skimming → batch approvals → rubber stamp. "You didn't lose control in one dramatic moment."
-- Cognitive surrender, mediated observation, governance theater: three names for the same failure.
+- Cognitive surrender, mediated observation, governance theater: three related failures.
 
 ### 3.2 The Zero Doctrine
 
