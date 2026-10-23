@@ -8,7 +8,7 @@ Live: https://ahuimanu.github.io/CIDM6333/ · repo ahuimanu/CIDM6333 (master) ·
 - Independent review found 289 findings (about half were facts the pass had added, changed or dropped). Repair pass restored them to the pre-pass wording. Logs: `tools/review/voice-review/<scope>.md` (findings + "Repair log").
 - WT brand colours (no logo, by ruling): `tools/sitekit/brand.py`. Body text is Avenir Next; headings, labels and all SVG figure text stay in Barlow Condensed (Avenir Next Condensed as fallback) because the figure geometry was measured in it. A regular-width face made labels spill out of their boxes; six overflowing mono labels in Three Drawers, Pilot and Planter, Skill on Demand and Memory Is a Claim were fitted with textLength.
 - Course-administration specifics removed so the materials stay reusable (LMS, submission mechanics, late policy, office hours, Calendly, Discord, rooms, phone, dates, times).
-- Build order: `textbook.py → voice_apply.py → reader.py → deck.py docs <web-native slug> → glossary.py → nav.py → brand.py` (from `tools/sitekit`, docs = `../../docs`).
+- Build order: `textbook.py → deck.py docs <slug> (each deck) → glossary.py → nav.py → brand.py → linkify.py` (linkify makes every web address a link and opens external links in a new window) (from `tools/sitekit`, docs = `../../docs`).
 - Push: device-code login (client id 178c6fc778ccc68e1d6a, scope repo) → token at /tmp/gh_tok in the Mac VM; push from the clone with `http.extraheader`.
 
 ## Standing rules from this session

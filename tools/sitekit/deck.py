@@ -373,7 +373,8 @@ def build(docs, slug):
         titles.append(" ".join(scrub_paras(s["title"]["paras"])) if s["title"] else ("Slide %d" % n))
         paras, cuts = RD.split_notes(notes[n-1])
         per.append((idx, paras))
-    N = [RD.para_html(p) for n, p in per]
+    import linkify as LK
+    N = [LK.autolink(RD.para_html(p)) for n, p in per]
     nums = [n for n, p in per]
     # textbook line
     evo_key = RD.DECKS[slug][1]
