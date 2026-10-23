@@ -1,12 +1,12 @@
 # CIDM 6333 site: handoff (October 22, 2026)
 
-Live: https://ahuimanu.github.io/CIDM6333/ · repo ahuimanu/CIDM6333 (master, last push d5f69e6) · local clone ~/Documents/Courses/CIDM6333
+Live: https://ahuimanu.github.io/CIDM6333/ · repo ahuimanu/CIDM6333 (master) · local clone ~/Documents/Courses/CIDM6333
 
 ## State
 
 - Voice chain (humaniser, STE, scholarly-voice, humaniser check) run over all course text: decks (slide wording via `tools/sitekit/voice/<slug>.json`), speaker notes (`tools/sitekit/notes.json`), textbook (`topic-guide.md`, `readings.md`), glossary (`glossary_data.py`), figures, exercises, index pages.
 - Independent review found 289 findings (about half were facts the pass had added, changed or dropped). Repair pass restored them to the pre-pass wording. Logs: `tools/review/voice-review/<scope>.md` (findings + "Repair log").
-- WT brand colours and fonts (no logo, by ruling): `tools/sitekit/brand.py`.
+- WT brand colours (no logo, by ruling): `tools/sitekit/brand.py`. Body text is Avenir Next; headings, labels and all SVG figure text stay in Barlow Condensed (Avenir Next Condensed as fallback) because the figure geometry was measured in it. A regular-width face made labels spill out of their boxes; six overflowing mono labels in Three Drawers, Pilot and Planter, Skill on Demand and Memory Is a Claim were fitted with textLength.
 - Course-administration specifics removed so the materials stay reusable (LMS, submission mechanics, late policy, office hours, Calendly, Discord, rooms, phone, dates, times).
 - Build order: `textbook.py → voice_apply.py → reader.py → deck.py docs <web-native slug> → glossary.py → nav.py → brand.py` (from `tools/sitekit`, docs = `../../docs`).
 - Push: device-code login (client id 178c6fc778ccc68e1d6a, scope repo) → token at /tmp/gh_tok in the Mac VM; push from the clone with `http.extraheader`.
@@ -17,16 +17,14 @@ Live: https://ahuimanu.github.io/CIDM6333/ · repo ahuimanu/CIDM6333 (master, la
 - No course-administration specifics anywhere (enduring, reusable materials).
 - Sortie environment: OpenCode and Big Pickle only. No local token issuer, no local OAuth server.
 
-## Next task: convert ALL remaining decks to web-native
+## Done Oct 23: all decks web-native
 
-Only E8 is web-native. Convert the other 14 (orientation, E0–E7, E9–E12, mini-attention-2017) with `deck.py` (each needs a DECK_META entry; slide wording already lives in `voice/<slug>.json`). After conversion the slide images (which still show pre-pass wording) are no longer the source of what students read.
+All 15 pptx decks are built by `deck.py` (DECK_META holds each deck's title and slide-to-figure links). Run-of-show, break, lab and Sprint slides are dropped by `reader.DROP_TITLE`; term footers ("CIDM 6333 · Fall 2026") are dropped. Overlong slide bodies shrink to fit (down to 72%); three slides still scroll (E0 16 and 19, E1 4) because the pptx layout puts a tall side panel in the first row. "As presented" images and the PDF still show the pptx wording.
 
 ## Small tasks (no ruling needed)
 
 - E5: remove every mention of a local token issuer / local OAuth server (slides 5 and 24 and notes); replacement waits on question 1.
-- Check the E0 paraphrase of Anthropic's "Building Effective Agents" ("use a workflow wherever the path is known in advance, and the open loop only where it is not") against the post.
-- Check E8 "Nesting. Three levels deep by default" against the current sub-agents docs.
-- Glossary chapter references: JADE/Voyager entry `ch=(7, 8)` (should be 4 and 6), HumanEval, ToolBench.
+- Done Oct 23: E0/E2 workflow paraphrase checked against "Building Effective Agents" (matches: workflows for well-defined tasks, agents where the number of steps cannot be predicted); E8 three-level nesting default confirmed in the Claude Code sub-agents docs (retrieved Oct 23, 2026); glossary chapters fixed (JADE entry 4, 6, 7; ToolBench 6, 12). HumanEval appears in no chapter; its ch=19 stays.
 
 ## Questions for Jeffry (one at a time)
 

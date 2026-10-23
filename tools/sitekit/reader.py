@@ -73,7 +73,7 @@ SCHED = re.compile("|".join([
     r"\b(Framing|Spine|Teardowns|Lens and card|Lab and Sprint)\s*·", r"\bBreak\s*·", r"\bFive minutes\b", r"\bTwo hours\b",
 ]), re.I)
 # slides that are about running a session, not the subject: dropped from web decks and from the reader
-DROP_TITLE = re.compile(r"(run of show|\bmoves\b|^Break\b|\bminutes\b|^Lab( tonight)?\b|^The Sprint\b|^Sprint\b|^Homework\b|^Tonight\b|^This week\b|^Next week\b|^Agenda\b|^Logistics\b|^Housekeeping\b|^Office hours\b|^Due\b|^Calendar\b|^Schedule\b)", re.I)
+DROP_TITLE = re.compile(r"(run of show|^(Sixty|Twenty) minutes\b|^Two hours\b|\bmoves\b|^Break\b|\bminutes\b|^Lab( tonight)?\b|^The Sprint\b|^Sprint\b|^Homework\b|^Tonight\b|^This week\b|^Next week\b|^Agenda\b|^Logistics\b|^Housekeeping\b|^Office hours\b|^Due\b|^Calendar\b|^Schedule\b)", re.I)
 
 DROPLINE = re.compile(r"^\s*(\|\s*)?(Instructor checks moved off the slide|\[?verify\b|Source[s]?:|gzkit (facts|items) (are|must))", re.I)
 

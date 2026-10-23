@@ -380,7 +380,7 @@
  "18": "18",
  "Subagents (Claude Code docs, Sep 2026)": "Subagents (Claude Code docs, Sep 2026)",
  "Mechanism. Markdown file with frontmatter (name, description, tools, model, permissionMode, maxTurns, hooks, isolation). Own window; result returns to caller.": "Mechanism. A Markdown file with frontmatter (name, description, tools, model, permissionMode, maxTurns, hooks, isolation). It runs in its own window, and its result returns to the caller.",
- "Nesting. Three levels deep by default.": "Nesting. Three levels deep by default (docs retrieved September 24, 2026).",
+ "Nesting. Three levels deep by default.": "Nesting. Three levels deep by default (docs retrieved October 23, 2026).",
  "Built-ins. Explore and Plan (read-only), general-purpose.": "Built-ins. Explore and Plan (read-only), general-purpose.",
  "OpenCode. Same shape: primary agents (Build, Plan); subagents (General, Explore, Scout).": "OpenCode. Same shape: primary agents (Build, Plan); subagents (General, Explore, Scout).",
  "Agent teams (experimental) and what they teach": "Agent teams (experimental) and what they teach",

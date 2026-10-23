@@ -23,7 +23,21 @@ SLIDE_W, SLIDE_H = 960, 540  # px at 9525 EMU/px for a 9144000 x 5143500 deck
 
 # per-deck: figures to attach to slides (slide number -> figure slug), and the deck's own metadata
 DECK_META = {
+ "orientation": {"evo": "Orientation", "title": "Course Orientation", "figs": {5: "two-loops", 9: "steer-the-middle"}},
+ "e0-index-zero": {"evo": "E0", "title": "The Human Is Index Zero", "figs": {8: "steer-the-middle", 12: "two-loops"}},
+ "e1-agent-loop": {"evo": "E1", "title": "The Agent Loop", "figs": {3: "loop-that-halts", 6: "loop-that-halts", 7: "loop-that-halts"}},
+ "e2-patterns-frameworks": {"evo": "E2", "title": "Patterns and Orchestration Frameworks", "figs": {3: "who-owns-the-loop", 4: "who-owns-the-loop", 9: "who-owns-the-loop"}},
+ "e3-tools-as-contracts": {"evo": "E3", "title": "Tools as Contracts", "figs": {3: "the-gate-holds", 5: "the-gate-holds", 6: "the-gate-holds"}},
+ "e4-mcp-1": {"evo": "E4", "title": "MCP I: Building a Server", "figs": {3: "n-plus-m", 4: "n-plus-m"}},
+ "e5-mcp-2-security-harness": {"evo": "E5", "title": "MCP II: Security and the Harness", "figs": {4: "trust-boundaries", 7: "trust-boundaries", 10: "skill-on-demand", 18: "three-drawers"}},
+ "e6-context-engineering": {"evo": "E6", "title": "Context Engineering", "figs": {3: "window-budget", 4: "window-budget", 6: "window-budget", 7: "window-budget", 8: "three-drawers"}},
+ "e7-memory": {"evo": "E7", "title": "Memory: Retrieval, State, Eviction, Retention", "figs": {3: "memory-is-a-claim", 5: "memory-is-a-claim", 6: "memory-is-a-claim", 10: "memory-is-a-claim", 13: "pilot-and-planter"}},
  "e8-multi-agent-1": {"evo": "E8", "title": "Multi-agent I: Controller, Worker, Reviewer", "figs": {3: "plan-do-check", 7: "plan-do-check", 9: "plan-do-check", 10: "steer-the-middle", 12: "plan-do-check"}},
+ "e9-multi-agent-2": {"evo": "E9", "title": "Multi-agent II: When Coordination Fails", "figs": {3: "claim-receipt-verdict", 5: "claim-receipt-verdict", 6: "claim-receipt-verdict"}},
+ "e10-evals-as-gates": {"evo": "E10", "title": "Evaluation I: Evals as Gates", "figs": {6: "one-run-is-an-anecdote", 7: "one-run-is-an-anecdote", 10: "one-run-is-an-anecdote"}},
+ "e11-observability-red-team": {"evo": "E11", "title": "Evaluation II: Receipts, Red Team, Safety", "figs": {3: "receipts-over-narrative", 4: "receipts-over-narrative", 5: "receipts-over-narrative"}},
+ "e12-deployment": {"evo": "E12", "title": "Production Deployment", "figs": {7: "rolled-back", 10: "rolled-back", 11: "rolled-back"}},
+ "mini-attention-2017": {"evo": "Mini-lecture", "title": "Attention Is All You Need, read as a design document", "figs": {4: "transformer-2017", 5: "transformer-2017", 6: "transformer-2017", 7: "transformer-evidence", 8: "transformer-evidence", 11: "two-loops"}},
 }
 
 TONE = {"F4EAEE": "rose", "E4F0F0": "teal", "F5F3F4": "neutral", "6D1F3B": "accent", "2E6F73": "accent2"}
@@ -97,6 +111,7 @@ def classify(slide):
     for t in texts:
         joined = " ".join(t["paras"]).strip()
         if t["t"] > 490 and t["size"] <= 8: drop.append(t); continue                    # footer, page number
+        if re.match(r"^CIDM 6333 · Fall 20\d\d\b", joined): drop.append(t); continue           # deck footer with term and page
         if t["l"] > 700 and t["t"] < 60 and re.match(r"^\d:\d\d", joined): drop.append(t); continue  # timing
         if t["t"] < 60 and t["size"] >= 14 and t["bold"] and title is None and t["l"] < 100: title = t; continue
         if t["t"] < 60 and t["size"] <= 11 and t["h"] <= 40 and title is None and sub is None and not t["bold"]: kick = t; continue  # "Evolution 8 · Lecture"
@@ -222,7 +237,7 @@ def render_slide(slide, n, total, meta, fig, img):
         cols = " ".join("%.2ffr" % (c["w"] / tw * len(r)) for c in r)
         body.append('<div class="row" style="grid-template-columns:%s">' % cols + "".join('<div class="cell %s">%s</div>' % (c["tone"], c["html"]) for c in r) + "</div>")
     if not body and not title: return ""
-    kick = "%s · slide %d of %d" % (meta["evo"] + " · Lecture", n, total)
+    kick = "%s · slide %d of %d" % (meta["evo"] + ("" if meta["evo"] in ("Orientation", "Mini-lecture") else " · Lecture"), n, total)
     figlink = ('<a href="../../figures/%s.html" target="_blank">Figure: %s</a>' % (fig, fig.replace("-", " "))) if fig else ""
     return ('<section class="slide" data-n="%d" data-img="%s"%s><div class="kick">%s</div><h2>%s%s</h2><div class="body">%s</div>'
             '<div class="foot"><span>CIDM 6333 · %s</span><span>%s</span></div></section>') % (
@@ -250,7 +265,7 @@ CSS = """<style id="deck-css">
 .slide .cell p{margin:0 0 6px}
 .slide .cell p.quote{font-size:1.12em; font-style:italic; line-height:1.3}
 .slide .cell ul{margin:0 0 6px; padding-left:1.1em; display:grid; gap:3px}
-.slide .cell pre{margin:0; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.82em; line-height:1.35; overflow:auto; white-space:pre}
+.slide .cell pre{margin:0; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.82em; line-height:1.35; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere}
 .slide .cell.teal pre,.slide .cell.rose pre,.slide .cell.neutral pre{background:var(--surface)}
 .slide .cell pre code{font-family:var(--mono)}
 .slide .cell pre.mid{font-size:.74em}
@@ -338,7 +353,8 @@ def build(docs, slug):
     N = [RD.para_html(p) for n, p in per]
     nums = [n for n, p in per]
     # textbook line
-    chs = TB.chapters_for_evo(meta["evo"]); dirs = TB.main_dirs()
+    evo_key = RD.DECKS[slug][1]
+    chs = TB.chapters_for_evo(evo_key) if evo_key else []; dirs = TB.main_dirs()
     chap = " · ".join('<a href="../../textbook/%s/">Chapter %d</a> <span class="small">(%s)</span>' % (dirs[c], c, r) for c, r in chs if c in dirs)
     strip = "".join('<button type="button" data-i="%d" aria-label="Slide %d: %s"><img loading="lazy" src="s-%02d.webp" alt=""></button>' % (i, n, html.escape(titles[i]), n) for i, n in enumerate(nums))
     reader = "".join('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %d in the viewer"><img loading="lazy" src="s-%02d.webp" alt=""></button><div class="n">slide %02d</div></div><div><h3>%s</h3>%s</div></div>' % (n, i, n, n, n, html.escape(titles[i]), N[i]) for i, n in enumerate(nums))
@@ -352,7 +368,7 @@ def build(docs, slug):
   <p class="lede">%(lede)s</p>
   <div class="weeks" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="chip">%(evo)s</span><span class="chip">%(count)d slides</span></div>
 </header>
-<p class="small chapters" style="margin:0 0 10px"><strong>Textbook:</strong> %(chap)s · <a href="../../glossary/">Glossary</a></p>
+%(chapline)s
 <section class="deck" aria-label="Slides">
 <div class="stage" id="stage">
 <div class="slides" id="slides" tabindex="0" aria-label="Slides; use the arrow keys">
@@ -376,13 +392,16 @@ def build(docs, slug):
 <div class="notecur" id="notecur" aria-live="polite"><div class="k">The lecture, written out · slide <span id="noteno">1</span></div><div id="notebody"></div></div>
 <p class="small" style="margin-top:10px">Arrow keys step through the slides. "As presented" shows the slide image from the original deck, and "Figure" opens the interactive figure a slide refers to. The panel above is the lecture written out for the slide on screen. <a href="#read">Read this lecture</a>, below, has the whole lecture in slide order. Names that appear without introduction link to the <a href="../../glossary/">glossary</a>.</p>
 <section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes follow here slide by slide, each under its slide. Click a slide image to open it in the viewer above.</p>%(reader)s</section>
-<footer>CIDM 6333 · Lecture · %(evo)s · Fall 2026</footer>
+<footer>CIDM 6333 · Lecture · %(evo)s</footer>
 </div>
 <script id="reader-js">(function(){const N=%(N)s;const NUMS=%(NUMS)s;const $=i=>document.getElementById(i);
 const slides=[...document.querySelectorAll(".slide")], n=slides.length; let cur=0;
 const strip=$("strip"), btns=[...strip.querySelectorAll("button")];
+function fit(s){ const bd=s.querySelector(".body"); if(!bd) return; bd.style.fontSize=""; let k=1; const base=parseFloat(getComputedStyle(bd).fontSize);
+  while(bd.scrollHeight>bd.clientHeight+2 && k>0.72){ k-=0.04; bd.style.fontSize=(base*k)+"px"; } }
+window.addEventListener("resize",()=>fit(slides[cur])); document.addEventListener("fullscreenchange",()=>setTimeout(()=>fit(slides[cur]),60));
 function go(i){ cur=Math.max(0,Math.min(n-1,i)); slides.forEach((s,j)=>s.classList.toggle("cur",j===cur)); const s=slides[cur];
-  $("count").textContent=(cur+1)+" / "+n; $("stitle").textContent=s.querySelector("h2").childNodes[0].textContent;
+  $("count").textContent=(cur+1)+" / "+n; const h2=s.querySelector("h2").cloneNode(true); h2.querySelectorAll("small").forEach(e=>e.remove()); $("stitle").textContent=h2.textContent.trim(); fit(s);
   $("noteno").textContent=NUMS[cur]; $("notebody").innerHTML=N[cur]||"";
   $("origimg").src=s.dataset.img; const f=s.dataset.fig; $("figbtn").hidden=!f; if(!f){ $("slides").classList.remove("show-fig"); $("figbtn").setAttribute("aria-pressed","false"); }
   else if($("slides").classList.contains("show-fig")){ $("figframe").innerHTML='<iframe src="../../figures/'+f+'.html?embed=1" title="Figure"></iframe>'; }
@@ -402,7 +421,7 @@ document.addEventListener("keydown",e=>{ if(e.target.matches("input,select,texta
 const h=parseInt(location.hash.slice(1)); go(isNaN(h)?0:h-1);
 })();</script>
 </body></html>
-''' % dict(evo=meta["evo"], title=html.escape(meta["title"]), lede=html.escape(" ".join(scrub_paras(slides[0]["sub"]["paras"])) if slides[0]["sub"] else ""), count=len(out_slides), chap=chap,
+''' % dict(evo=meta["evo"], title=html.escape(meta["title"]), lede=html.escape(" ".join(scrub_paras(slides[0]["sub"]["paras"])) if slides[0]["sub"] else ""), count=len(out_slides), chapline=('<p class="small chapters" style="margin:0 0 10px"><strong>Textbook:</strong> %s · <a href="../../glossary/">Glossary</a></p>' % chap) if chap else '<p class="small chapters" style="margin:0 0 10px"><a href="../../glossary/">Glossary</a></p>',
            slides="\n".join(out_slides), slug=slug, strip=strip, reader=reader, N=json.dumps(N), NUMS=json.dumps(nums))
     outp = pathlib.Path(docs) / "lectures" / slug / "index.html"
     outp.write_text(page, encoding="utf-8")

@@ -66,7 +66,7 @@ def render(md):
     h = markdown.markdown(md, extensions=["tables", "fenced_code"])
     return h.replace("<table>", '<div class="tw"><table>').replace("</table>", "</table></div>")
 
-def page(title, eyebrow, body, crumbs, depth, footer="CIDM 6333 · Answerable Systems · Fall 2026"):
+def page(title, eyebrow, body, crumbs, depth, footer="CIDM 6333 · Answerable Systems"):
     head = HEAD.replace("{{TITLE}}", html.escape(title))
     return (head + '\n<div class="wrap"><nav class="crumbs">' + crumbs + '</nav><div class="eyebrow">' + eyebrow +
             '</div><article>' + body + '</article><footer>' + footer + '</footer></div>\n</body></html>\n')
@@ -123,7 +123,7 @@ def main(docs):
     toc.append(group("Part III · The build", 10, 21)); toc.append(group("Part IV · The method", 22, 26))
     toc.append('<h3>Reading list</h3><p><a href="readings/">Every reading the chapters cite, with links.</a></p>')
     toc.append('<h3>Appendices</h3><ul>' + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t)) for d,t,k,key,b in pages if k=="appendix") + '</ul>')
-    body = '<h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft, Fall 2026</p>' + intro + "".join(toc) + fm
+    body = '<h1>Answerable Systems</h1><p class="lede"><em>The Design, Lineage, and Governance of Agentic Software</em> · Jeffry Babb, PhD · Working draft</p>' + intro + "".join(toc) + fm
     (out / "index.html").write_text(page("Answerable Systems · textbook", "CIDM 6333 · Textbook", body, '<a href="../">CIDM 6333</a> · Textbook', 1), encoding="utf-8")
     # readings page (verified links), linked from the index and from every chapter
     rd = (HERE / "readings.md").read_text(encoding="utf-8")

@@ -10,7 +10,7 @@
 
 **Jeffry Babb, PhD** · Paul and Virginia Engler College of Business · West Texas A&M University
 
-*Working draft, Fall 2026. Written for CIDM 6333, Agentic Systems Design and Development, and for anyone who has to answer for a system that a model helped build.*
+*Working draft. Written for CIDM 6333, Agentic Systems Design and Development, and for anyone who has to answer for a system that a model helped build.*
 
 ---
 
