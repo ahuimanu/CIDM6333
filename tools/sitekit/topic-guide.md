@@ -139,7 +139,7 @@ After this chapter you can:
 
 ## Reference design: gzkit
 
-gzkit sits on the *agentic* layer and runs no model. It is a governance meta-harness one tier above the vendor harness, and that placement is the first design choice the book examines.
+gzkit sits on the *agentic* layer and runs no model. It is a governance meta-harness, a custom harness built on top of the vendor harness, and that placement is the first design choice the book examines.
 
 ## Readings
 
