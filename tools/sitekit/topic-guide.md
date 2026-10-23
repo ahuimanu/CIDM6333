@@ -635,7 +635,7 @@ After this chapter you can:
 
 ### 9.4 The incident casebook (pointer)
 
-- Twenty-five dated incidents (Appendix G): what happened, what mechanism resulted. Read three now: the hollow antibody (June), presence-is-not-procedure (Aug 21), hooks that missed Bash writes (Aug 23).
+- Twenty-one dated incidents (Appendix G): what happened, what mechanism resulted. Read three now: the hollow antibody (June), presence-is-not-procedure (Aug 21), hooks that missed Bash writes (Aug 23).
 
 ### 9.5 What 2026 settled and what it did not
 
