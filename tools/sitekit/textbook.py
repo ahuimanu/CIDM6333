@@ -115,7 +115,7 @@ def main(docs):
     title_body = [b for t, b in front if t.startswith("Answerable")]
     intro = render(clean(title_body[0])) if title_body else ""
     intro = re.sub(r"<h2>The Design, Lineage, and Governance of Agentic Software</h2>\s*<p><strong>Jeffry Babb, PhD</strong>.*?</p>\s*<p><em>Working draft.*?</em></p>", "", intro, flags=re.S)
-    toc = ['<h2 id="contents">Contents</h2><p class="small">Each chapter is published here as an outline. The outline carries the learning outcomes, the section plan, the systems analyzed, the gzkit episode, the readings, and the exercises. The full prose will follow in a later edition.</p>']
+    toc = ['<h2 id="contents">Contents</h2><p class="small">This textbook is a living document. Each chapter carries its learning outcomes, section plan, systems analyzed, gzkit episode, readings, and exercises, and the chapters expand and elaborate as the course needs them.</p>']
     def group(name, lo, hi):
         items = [p for p in pages if p[2]=="chapter" and lo <= p[3] <= hi]
         return '<h3>%s</h3><ol start="%d">' % (name, lo) + "".join('<li><a href="%s/">%s</a></li>' % (d, html.escape(t.split(". ",1)[1])) for d,t,k,key,b in items) + "</ol>"

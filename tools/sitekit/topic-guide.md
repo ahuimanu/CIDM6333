@@ -39,7 +39,7 @@ The title states the thesis: a system can produce an answer without being able t
 
 ### Status
 
-Every chapter carries a status line: *outline*, *draft*, *reviewed*, *final*. This is a working text. The outlines are complete, and I am writing the prose in the order the course needs it.
+This is a living text. The chapters expand and elaborate over time, as the course needs them.
 
 
 ---
@@ -98,7 +98,7 @@ The weekly rhythm (lecture 60 · consultation 60 · lab 30), the Sprint and Drif
 
 # 1. The Layers of AI, and the One Everybody Forgets
 
-> **Course use.** CIDM 6333 · E0 Orientation. Status: **outline**.
+> **Course use.** CIDM 6333 · E0 Orientation.
 
 ## Learning outcomes
 
@@ -158,7 +158,7 @@ gzkit sits on the *agentic* layer and runs no model. It is a governance meta-har
 
 # 2. What Is an Agent? From PEAS to the Nine Components
 
-> **Course use.** CIDM 6333 · E0 Orientation. Status: **outline**.
+> **Course use.** CIDM 6333 · E0 Orientation.
 
 ## Learning outcomes
 
@@ -221,7 +221,7 @@ gzkit answers component eight (governance and human interface) with the Zero Doc
 
 # 3. The Human at Index Zero: Degradation, Covenant, Gates
 
-> **Course use.** CIDM 6333 · E0 Orientation; revisited E5, E9, E11. Status: **outline**.
+> **Course use.** CIDM 6333 · E0 Orientation; revisited E5, E9, E11.
 
 ## Learning outcomes
 
@@ -283,7 +283,7 @@ This chapter is itself the reference design's doctrine, set out in four document
 
 # 4. Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents
 
-> **Course use.** CIDM 6333 · E0 background; E8 survey. Status: **outline**.
+> **Course use.** CIDM 6333 · E0 background; E8 survey.
 
 ## Learning outcomes
 
@@ -344,7 +344,7 @@ gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "i
 
 # 5. The Loop: Chain-of-Thought, ReAct, and the First Frameworks (2020–2022)
 
-> **Course use.** CIDM 6333 · E1. Status: **outline**.
+> **Course use.** CIDM 6333 · E1.
 
 ## Learning outcomes
 
@@ -406,7 +406,7 @@ Sortie 1 (center): *a governed agent loop that halts*. See ch. 10.
 
 # 6. The Explosion of 2023: Tools, Autonomy, Memory, Roles
 
-> **Course use.** CIDM 6333 · E2, E3, E7, E8 survey. Status: **outline**.
+> **Course use.** CIDM 6333 · E2, E3, E7, E8 survey.
 
 ## Learning outcomes
 
@@ -475,7 +475,7 @@ gzkit's controller–worker pipeline (ADR-0.18.0) explicitly borrows from role-b
 
 # 7. Agents Get Jobs (2024): Coding Agents, Computer Use, and MCP
 
-> **Course use.** CIDM 6333 · E4, E10 survey. Status: **outline**.
+> **Course use.** CIDM 6333 · E4, E10 survey.
 
 ## Learning outcomes
 
@@ -542,7 +542,7 @@ gzkit does not use MCP, by doctrine: no external protocol may be a prerequisite 
 
 # 8. The Harness Year (2025): Claude Code, Codex, the SDKs, A2A, AGENTS.md, Skills, and Context Engineering
 
-> **Course use.** CIDM 6333 · E2, E5, E6 survey. Status: **outline**.
+> **Course use.** CIDM 6333 · E2, E5, E6 survey.
 
 ## Learning outcomes
 
@@ -609,7 +609,7 @@ gzkit enters this chapter as a meta-harness. It renders one canon into each harn
 
 # 9. 2026: Harness Engineering, Background Agents, and the Reference Design's Year
 
-> **Course use.** CIDM 6333 · E5, E9, E11, E12 survey. Status: **outline**.
+> **Course use.** CIDM 6333 · E5, E9, E11, E12 survey.
 
 ## Learning outcomes
 
@@ -668,7 +668,7 @@ gzkit is the subject of the whole chapter. The timeline and the casebook draw on
 
 # 10. Building the Loop: Perceive, Reason, Act, Halt
 
-> **Course use.** CIDM 6333 · E1. Status: **outline**.
+> **Course use.** CIDM 6333 · E1.
 
 ## Learning outcomes
 
@@ -726,7 +726,7 @@ Sortie 1 (center). DESIGN CLAIM: the loop halts on every input class (answerable
 
 # 11. Patterns and Orchestration Frameworks: Who Owns the Loop?
 
-> **Course use.** CIDM 6333 · E2. Status: **outline**.
+> **Course use.** CIDM 6333 · E2.
 
 ## Learning outcomes
 
@@ -787,7 +787,7 @@ Sortie 2 (center). DESIGN CLAIM: the same task runs under two patterns with iden
 
 # 12. Tools as Contracts: Schemas, Permissions, Hooks, Recovery
 
-> **Course use.** CIDM 6333 · E3 (local model required). Status: **outline**.
+> **Course use.** CIDM 6333 · E3 (local model required).
 
 ## Learning outcomes
 
@@ -854,7 +854,7 @@ Sortie 3 (expansion). DESIGN CLAIM: no write-tool executes without a prior confi
 
 # 13. The Model Context Protocol: Building Servers and Clients
 
-> **Course use.** CIDM 6333 · E4. Status: **outline**.
+> **Course use.** CIDM 6333 · E4.
 
 ## Learning outcomes
 
@@ -919,7 +919,7 @@ Sortie 4 (center). DESIGN CLAIM: every tool the server declares is discoverable,
 
 # 14. Protocols, Security, and Harness Engineering
 
-> **Course use.** CIDM 6333 · E5. Status: **outline**.
+> **Course use.** CIDM 6333 · E5.
 
 ## Learning outcomes
 
@@ -984,7 +984,7 @@ Sortie 5 (corner). DESIGN CLAIM: a poisoned resource cannot cause a write, and a
 
 # 15. Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth
 
-> **Course use.** CIDM 6333 · E6. Status: **outline**.
+> **Course use.** CIDM 6333 · E6.
 
 ## Learning outcomes
 
@@ -1049,7 +1049,7 @@ Sortie 6 (expansion). DESIGN CLAIM: a handoff written at session end lets a fres
 
 # 16. Memory: Retrieval, State, Eviction, Retention
 
-> **Course use.** CIDM 6333 · E7 (local model required). Status: **outline**.
+> **Course use.** CIDM 6333 · E7 (local model required).
 
 ## Learning outcomes
 
@@ -1115,7 +1115,7 @@ Sortie 7 (expansion, local). DESIGN CLAIM: with memory enabled, the system answe
 
 # 17. Multi-Agent Coordination I: Controller, Worker, Reviewer
 
-> **Course use.** CIDM 6333 · E8. Status: **outline**.
+> **Course use.** CIDM 6333 · E8.
 
 ## Learning outcomes
 
@@ -1181,7 +1181,7 @@ Sortie 8 (expansion). DESIGN CLAIM: no implementer output reaches the main branc
 
 # 18. Multi-Agent Coordination II: When Coordination Fails
 
-> **Course use.** CIDM 6333 · E9. Status: **outline**.
+> **Course use.** CIDM 6333 · E9.
 
 ## Learning outcomes
 
@@ -1245,7 +1245,7 @@ Sortie 9 (corner). DESIGN CLAIM: a subagent's claim never becomes evidence witho
 
 # 19. Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses
 
-> **Course use.** CIDM 6333 · E10. Status: **outline**.
+> **Course use.** CIDM 6333 · E10.
 
 ## Learning outcomes
 
@@ -1309,7 +1309,7 @@ Sortie 10 (expansion). DESIGN CLAIM: the evaluation suite fails when it should: 
 
 # 20. Observability, Red-Teaming, and Safety
 
-> **Course use.** CIDM 6333 · E11. Status: **outline**.
+> **Course use.** CIDM 6333 · E11.
 
 ## Learning outcomes
 
@@ -1373,7 +1373,7 @@ Sortie 11 (corner, red team). DESIGN CLAIM: the system survives five pre-registe
 
 # 21. Production and Operations: Serving, Scheduling, Rollback, Release
 
-> **Course use.** CIDM 6333 · E12. Status: **outline**.
+> **Course use.** CIDM 6333 · E12.
 
 ## Learning outcomes
 
@@ -1436,7 +1436,7 @@ Sortie 12 (expansion). DESIGN CLAIM: one governed command rolls a release back a
 
 # 22. Sprint and Drift
 
-> **Course use.** CIDM 6333 · E0; every week. Status: **outline**.
+> **Course use.** CIDM 6333 · E0; every week.
 
 ## Learning outcomes
 
@@ -1478,7 +1478,7 @@ After this chapter you can:
 
 # 23. Flight Cards and the Flight Log
 
-> **Course use.** CIDM 6333 · E0; every week. Status: **outline**.
+> **Course use.** CIDM 6333 · E0; every week.
 
 ## Learning outcomes
 
@@ -1528,7 +1528,7 @@ The gzkit documents for this chapter are `docs/flighttest/README.md`, `flight-ca
 
 # 24. The Design Analysis
 
-> **Course use.** CIDM 6333 · E0; every week. Status: **outline**.
+> **Course use.** CIDM 6333 · E0; every week.
 
 ## Learning outcomes
 
@@ -1570,7 +1570,7 @@ After this chapter you can:
 
 # 25. Governed Development with gzkit: A Working Tutorial
 
-> **Course use.** CIDM 6333 · E1–E12. Status: **outline**.
+> **Course use.** CIDM 6333 · E1–E12.
 
 ## Learning outcomes
 
@@ -1624,7 +1624,7 @@ This chapter uses the reference design as a tool. It follows the tutorial-first-
 
 # 26. The Final System and the Closeout Ceremony
 
-> **Course use.** CIDM 6333 · E7 brief; finals week. Status: **outline**.
+> **Course use.** CIDM 6333 · E7 brief; finals week.
 
 ## Learning outcomes
 
