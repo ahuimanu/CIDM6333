@@ -1,7 +1,7 @@
 {
  "Evolution 3 · Lecture · local model required": "Evolution 3 · Lecture · local model required",
  "Tools as Contracts": "Tools as Contracts",
- "Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks as a membrane.": "Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks as a membrane.",
+ "Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks as a membrane.": "Schemas, side-effect classes, permission gating, retry, halting. The model is an untrusted caller. Hooks run before and after every tool call.",
  "SURVEY": "SURVEY",
  "BUILD": "BUILD",
  "GOVERN": "GOVERN",
@@ -121,7 +121,7 @@
  "Progressive disclosure: the map in context, the catalog on disk.": "Progressive disclosure: the map in context, the catalog on disk.",
  "7": "7",
  "Teardowns: computer use; Claude Code hooks": "Teardowns: computer use; Claude Code hooks",
- "The screen as a tool; the membrane a harness puts around every tool": "The screen as a tool; the membrane a harness puts around every tool",
+ "The screen as a tool; the membrane a harness puts around every tool": "The screen as a tool; the hooks a harness runs before and after every tool call",
  "0:38–0:45": "0:38–0:45",
  "Computer use (Anthropic, Oct 2024)": "Computer use (Anthropic, Oct 2024)",
  "Perception is a screenshot; action is a click. One tool, every action write-class. The schema cannot say what a click causes.": "Perception is a screenshot; action is a click. One tool, every action write-class. The schema cannot say what a click causes.",

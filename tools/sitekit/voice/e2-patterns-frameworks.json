@@ -168,7 +168,7 @@
  "Hooks; the human per tool call": "Hooks; the human per tool call",
  "Evaluation framework; callbacks": "Evaluation framework; callbacks",
  "Guardrail tripwires": "Guardrail tripwires",
- "Permission prompts; hooks as membrane": "Permission prompts; hooks as membrane",
+ "Permission prompts; hooks as membrane": "Permission prompts; hooks that run before and after every tool call",
  "Callbacks; human-in-the-loop via tools": "Callbacks; human-in-the-loop via tools",
  "Runner; sessions; tracing UI": "Runner; sessions; tracing UI",
  "CLI/SDK; background and cloud sessions": "CLI/SDK; background and cloud sessions",
