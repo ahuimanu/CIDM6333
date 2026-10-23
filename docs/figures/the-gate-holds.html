@@ -328,7 +328,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2>What the figure leaves out</h2>
     <ul>
       <li>Tool errors, timeouts, unknown tool names, and budget halts appear in the table, and the sequence does not draw them.</li>
-      <li>The deck's sample gate looks for one confirm event on any call whose class is not read. The Destructive path draws the stricter rule from the same deck, an attestation for irreversible tools. The deck does not specify what an attestation record holds.</li>
+      <li>The deck's sample gate looks for a confirm event on a write and an attestation on an irreversible tool, the rule the Destructive path draws. The deck does not specify what an attestation record holds.</li>
       <li>Some harnesses ask the human at the moment of the call (a Claude Code PreToolUse hook can allow, deny, or ask). The deck's sample gate denies first and lets the human confirm afterward. Either design meets the order property if the confirm event lands in the ledger before the call event.</li>
       <li>Hosted APIs return tool calls as structured blocks. The model still produced them as tokens, and the provider's harness parsed them before yours sees them (Figure 01).</li>
       <li>Computer use collapses the contract to one tool whose every action is write-class. The deck draws the lesson that the more general the tool, the less a schema can protect you, and the more the gate must sit at the effect.</li>
@@ -379,13 +379,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     'if step.tool:',
     '    spec = TOOLS[step.tool]          # KeyError → halt',
     '    args = spec.schema.validate(step.args)',
-    '    ev = None                        # for reads',
+    '    ev, kind = None, ("attest" if spec.effect == "irreversible" else "confirm")',
     '    if spec.effect != "read":',
-    '        ev = ledger.find("confirm",',
+    '        ev = ledger.find(kind,',
     '                 tool=step.tool, args=args)',
     '        if ev is None:',
     '            ledger.emit("denied", step)',
-    '            observe("DENIED: confirm first")',
+    '            observe(f"DENIED: {kind} first")',
     '            continue',
     '    ledger.emit("call", step, ev)',
     '    observe(spec.fn(**args))'
@@ -494,7 +494,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         {t:"The gate reads irreversible", w:["E3"], ln:[5,6],
          p:"The gate reads effect = irreversible. Delete, send, and deploy belong to this class. A tool with no class declared lands here too, because the gate fails closed. Try that in the declaration panel below."},
         {t:"The gate finds no attestation", w:["E3"], ln:[7,8],
-         p:"The gate searches the ledger for an attestation bound to this tool and these arguments and finds none. The deck's sample code checks for a confirm event on every call that is not a read. This path draws the stricter irreversible rule from the deck's declaration slide."},
+         p:"The gate searches the ledger for an attestation bound to this tool and these arguments and finds none. The deck's sample code asks for an attestation when the class is irreversible, the rule the declaration slide states."},
         {t:"Denied, with a trace and an observation", w:["E3"], ln:[9,10,11,12],
          p:"The gate writes a denied event, and the harness returns a DENIED observation to the model. The model learns why the call failed and can choose another path. The Chase cannot read a failure that leaves no ledger event."},
         {t:"Nothing changed on disk", w:["E3"], ln:[],
