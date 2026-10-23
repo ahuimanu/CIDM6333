@@ -48,7 +48,7 @@ This is a living text. The chapters expand and elaborate over time, as the cours
 
 ## Why this book exists
 
-In January 2026 a governance kit was started with eleven days to go before it would be shown to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The difference is that this kit kept the receipts.
+In January 2026 I started a governance kit with eleven days to go before I would show it to students. By August it had been through seventy-six releases, eighty-seven decision records, five hundred and forty-two work briefs, and fifteen thousand ledger events, and it had accumulated a dated record of every way an agent can look finished without being finished: attestations for code that did not exist, hooks that never saw the write they were guarding, a pipeline gate that only checked that a marker file was present, a ten-deep chain of subagents whose polished summaries became "facts." None of those failures was exotic. They are the ordinary failure modes of agentic systems, and the systems built in industry have them too. The difference is that this kit kept the receipts.
 
 That record is the spine of this book. Around it is a survey, because the kit's design choices only make sense against the choices the field made before it, and a build, because a reader understands a component only after making it fail on purpose.
 
@@ -58,7 +58,7 @@ This book is not a framework tutorial. Frameworks change too often for a tutoria
 
 ## Acknowledgements and lineage
 
-Sprint and Drift, the method of Part IV, was developed for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
+I developed Sprint and Drift, the method of Part IV, for CIDM 6330 (Software Architecture). The Evolution structure and the consultation rhythm come from CIDM 6395 (the MS-CISBA capstone). GovZero came from roughly a hundred work items of governed development in an airline-operations project. gzkit is its standalone descendant, with lineage from GitHub's spec-kit and the CLAUDE.md conventions. The flight-test program borrows its vocabulary from aircraft flight test, with apology to test pilots. The essays that open each chapter first appeared in the *Sprint and Drift* newsletter.
 
 
 ---
