@@ -1674,7 +1674,7 @@ The gzkit material for this chapter is the 11-step closeout ceremony (`src/gzkit
 Copy this block into `evolution-NN/flight-card.md`. Fill every field **before** you request Go. Do not fill in the expected observables after the flight. Doctrine counts that as a violation.
 
 ```
-FLIGHT CARD · SORTIE <N> : <short name>
+FLIGHT CARD - SORTIE <N> : <short name>
 ════════════════════════════════════════════════════════════
 ENVELOPE POSITION   : <center | expansion | corner>
 DESIGN CLAIM        : <one sentence a single observation could disprove>
