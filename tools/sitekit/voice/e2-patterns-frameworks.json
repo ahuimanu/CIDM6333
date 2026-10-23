@@ -227,7 +227,7 @@
  "Scorecard filled; most features does not win": "Scorecard filled; most features does not win",
  "ADR committed before the refactor commit": "ADR committed before the refactor commit",
  "Exceptional": "Exceptional",
- "Predicted consequence absent, and the ADR amended with the evidence": "Predicted consequence absent, and the ADR amended with the evidence",
+ "Predicted consequence absent, and the ADR amended with the evidence": "Predicted consequence absent: the sortie FAILs, and the ADR is amended with the evidence",
  "A pre-mortem naming a week-12 failure and a mitigation": "A pre-mortem that states a week-12 failure and a mitigation",
  "The peer's ten challenges answered in the ADR": "The peer's ten challenges answered in the ADR",
  "What the framework hid on turn three, and how you found out": "What the framework hid on turn three, and how you found out",
