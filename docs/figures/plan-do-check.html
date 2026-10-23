@@ -187,7 +187,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 09</div>
   <h1>Plan, Do, Check</h1>
-  <p class="lede">Two rules from the E8 deck shape this graph. A worker's result is a typed claim, and a verdict counts only when it comes from a reviewer that can say no. The controller that enforces both rules appears here as a state graph, with an implementer, a fail-closed parse, two reviewers, a checkpoint, and a human before merge. Step through it, then replay the deck's worked trace and switch the reviewer's permissions to watch a pair of agents collapse into one.</p>
+  <p class="lede">Two rules from the E8 lecture shape this graph. A worker's result is a typed claim, and a verdict counts only when it comes from a reviewer that can say no. The controller that enforces both rules appears here as a state graph, with an implementer, a fail-closed parse, two reviewers, a checkpoint, and a human before merge. Step through it, then replay the lecture's worked trace and switch the reviewer's permissions to watch a pair of agents collapse into one.</p>
 </header>
 
 <div class="figwrap">
@@ -394,13 +394,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <div class="panels">
   <!-- ============ worked trace ============ -->
   <section class="panel wide" aria-labelledby="h-trace">
-    <div class="eyebrow">The deck's worked trace · slide 12 · E8</div>
+    <div class="eyebrow">The lecture's worked trace · slide 12 · E8</div>
     <h2 id="h-trace">One task, three results, one rejection</h2>
-    <p class="small">This is the controller's log the deck shows after a short run, the kind of log the Chase reads. Step through it line by line. The parser on this page is the deck's <code>parse_handoff</code>, ported to JavaScript, and it runs on each result as it arrives. The deck's trace uses one reviewer, which Sortie 8 allows; two-stage review would add a quality review after each spec PASS.</p>
+    <p class="small">This is the controller's log the E8 lecture shows after a short run, the kind of log the Chase reads. Step through it line by line. The parser here is the lecture's <code>parse_handoff</code>, ported to JavaScript, and it runs on each result as it arrives. The lecture's trace uses one reviewer, which Sortie 8 allows; two-stage review would add a quality review after each spec PASS.</p>
     <div class="ctrl">
       <span>Reviewer</span>
       <div class="seg" role="group" aria-label="Reviewer permissions in the trace">
-        <button type="button" id="t-ro" aria-pressed="true">Read-only (the deck's trace)</button>
+        <button type="button" id="t-ro" aria-pressed="true">Read-only (the lecture's trace)</button>
         <button type="button" id="t-ed" aria-pressed="false">Can edit (constructed variant)</button>
       </div>
       <button type="button" id="tprev">◀ Back</button>
@@ -431,7 +431,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-parse">
     <div class="eyebrow">Steps 3–5, up close · fail-closed parsing</div>
     <h2 id="h-parse">Feed the parser a reply</h2>
-    <p class="small">The lab asks you to feed your parser three malformed replies. Pick a contract and a sample, or type your own JSON. Each reply goes through two checks. The left one is a common mistake from the deck: a parser that defaults to DONE for the implementer, or a substring search for 'PASS' for the reviewer. The right one is the fail-closed parse.</p>
+    <p class="small">The lab asks you to feed your parser three malformed replies. Pick a contract and a sample, or type your own JSON. Each reply goes through two checks. The left one is a common mistake from the lecture: a parser that defaults to DONE for the implementer, or a substring search for 'PASS' for the reviewer. The right one is the fail-closed parse.</p>
     <div class="ctrl">
       <label for="pc">Contract</label>
       <select id="pc"><option value="h">HandoffResult (implementer)</option><option value="r">ReviewResult (reviewer)</option></select>
@@ -444,7 +444,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <div><div class="h">Fail-closed parse</div><div class="v" id="pstrict"></div></div>
     </div>
     <p class="small" id="pwhy"></p>
-    <pre class="log"><span class="dim"># from the deck, slide 7 (Python)</span>
+    <pre class="log"><span class="dim"># from the E8 lecture, slide 7 (Python)</span>
 OK = {"DONE", "DONE_WITH_CONCERNS",
       "NEEDS_CONTEXT", "BLOCKED"}
 def parse_handoff(text):
@@ -458,7 +458,7 @@ def parse_handoff(text):
         return reject("no evidence")
     return r
 <span class="dim"># There is no default branch that returns DONE.</span></pre>
-    <p class="small">This page adds two checks from the same slide's field rules (concerns required with DONE_WITH_CONCERNS, a question required with NEEDS_CONTEXT). The ReviewResult checks follow the slide's rule for verdicts.</p>
+    <p class="small">The JavaScript parser adds two checks from the same slide's field rules (concerns required with DONE_WITH_CONCERNS, a question required with NEEDS_CONTEXT). The ReviewResult checks follow the slide's rule for verdicts.</p>
   </section>
 
   <!-- ============ common mistakes ============ -->
@@ -476,9 +476,9 @@ def parse_handoff(text):
         <tr><td>FAIL loops back with no bound</td><td>Retries until the reviewer gives in</td><td>Max rounds, then BLOCKED to the human</td><td>#9</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Rows quoted from the deck. The deck adds that row four is the E9 incident in miniature: in gzkit's 2026-05-24 chain, polished summaries became facts ten levels deep.</p>
+    <p class="small">Rows quoted from the E8 lecture. The lecture adds that row four is the E9 incident in miniature: in gzkit's 2026-05-24 chain, polished summaries became facts ten levels deep.</p>
     <h3 class="sub">Read-only is a permission in config</h3>
-    <pre class="log"><span class="dim"># .opencode/agents/reviewer.md (deck, slide 10)</span>
+    <pre class="log"><span class="dim"># .opencode/agents/reviewer.md (E8 lecture, slide 10)</span>
 ---
 description: Reviews one diff against one brief. Returns one ReviewResult JSON. Never edits.
 mode: subagent
@@ -491,12 +491,12 @@ permission:
     "git diff*": allow
     "git log*": allow
 ---</pre>
-    <p class="small">The deck: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." The harness enforces the deny, and the anti-trait only explains it.</p>
+    <p class="small">From the E8 lecture: "The deny is the enforcement; the anti-trait 'do not edit' is the explanation." The harness enforces the deny, and the anti-trait only explains it.</p>
   </section>
 </div>
 
 <section class="map" aria-labelledby="h-ref">
-  <div class="eyebrow">Reference design · gzkit ADR-0.18.0, as the deck states it</div>
+  <div class="eyebrow">Reference design · gzkit ADR-0.18.0, as the E8 lecture states it</div>
   <h2 id="h-ref">The controller–worker pipeline</h2>
   <div class="panels" style="margin-top:10px">
     <div class="panel">
@@ -508,13 +508,13 @@ permission:
         <li><b>Present evidence.</b> The human receives paths, commands, and outputs, and draws the conclusions.</li>
         <li><b>Sync.</b> The pipeline writes the ledger events, the brief status, and the dispatch records. The human attests, and the pipeline records the attestation but never makes one.</li>
       </ol>
-      <p class="small">The deck's sources: <code>docs/user/concepts/subagent-pipeline.md</code>, <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>, <code>.gzkit/personas/</code>. The deck marks the ADR number, stage names, and paths "verify against the repository before class."</p>
+      <p class="small">Sources: <code>docs/user/concepts/subagent-pipeline.md</code>, <code>src/gzkit/roles.py</code>, <code>pipeline_dispatch.py</code>, <code>.gzkit/personas/</code>.</p>
     </div>
     <div class="panel">
       <h3 class="sub">HandoffResult, dispatch records, and credit</h3>
       <p>HandoffResult statuses come from ADR-0.18.0: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, BLOCKED. ReviewResult is PASS, FAIL, or CONCERNS with findings. Both are parsed fail-closed. The field names beyond status are the course's.</p>
-      <blockquote>Credit is never inferred.<cite>gzkit rule, as quoted in the E8 deck, slide 21</cite></blockquote>
-      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. The deck marks the command that takes the flag "verify." For your sortie, if your reviewer could not run, the flight log says so and the sortie is recorded as an ABORT, not as a PASS with a missing verdict.</p>
+      <blockquote>Credit is never inferred.<cite>gzkit rule, as quoted in the E8 lecture, slide 21</cite></blockquote>
+      <p class="small">If no dispatch record exists for the spec reviewer, spec review did not happen, even if the implementer's summary says 'reviewed and approved.' A run where one agent does everything is allowed when it says so: <code>--single-driver --reason "..."</code>. For your sortie, if your reviewer could not run, the flight log says so and the sortie is recorded as an ABORT, not as a PASS with a missing verdict.</p>
     </div>
   </div>
 </section>
@@ -543,7 +543,7 @@ permission:
     <ul>
       <li>Parallel workers. This Evolution's build is one implementer and one reviewer in sequence. Parallel work, with locks, is E9.</li>
       <li>The cost. Anthropic's June 2025 post on its research system reports about 15 times the tokens of a chat turn for the multi-agent version, against about 4 times for a single agent. Cognition's counter-argument from the same month says to share full traces, because two workers with different implicit decisions build parts that do not fit.</li>
-      <li>gzkit's Stage 3 verify and Stage 4 present evidence sit between review and the human in the reference pipeline. The graph shows the LangGraph shape from slide 9, so they are listed in the reference panel instead.</li>
+      <li>gzkit's Stage 3 verify and Stage 4 present evidence sit between review and the human in the reference pipeline. The graph shows the LangGraph shape from the lecture's slide 9, so they are listed in the reference panel instead.</li>
       <li>The narrator, the fourth persona in the reference design, and the persona files themselves: role, traits, anti-traits, and a why sentence.</li>
       <li>The supervisor pattern. LangChain now recommends building the supervisor with tool calling; the older langgraph-supervisor library is no longer the advised path.</li>
     </ul>
@@ -588,15 +588,15 @@ permission:
     {k:"start frame", t:"The controller loads the brief", w:["E8"],
      p:"The controller is the graph itself. It reads the brief, its requirements, and its allowed paths, and it dispatches nothing without a brief. It plans, dispatches, parses, and routes. It never implements, so it has no work of its own to defend."},
     {k:"impl", t:"The worker gets one task in a clean window", w:["E8"],
-     p:"The controller dispatches one task, the brief, and the allowed paths to the implementer persona. The worker starts with a clean window and returns a result, not its whole trace. That context isolation is the first of the deck's three reasons to split the work."},
+     p:"The controller dispatches one task, the brief, and the allowed paths to the implementer persona. The worker starts with a clean window and returns a result, not its whole trace. That context isolation is the first of the lecture's three reasons to split the work."},
     {k:"hcard impl", t:"The result is a claim with a type", w:["E3","E8"],
      p:"The worker returns a HandoffResult with one of four statuses: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, or BLOCKED. Two of the four are ways to say 'I did not finish'. A worker with an honest way to say BLOCKED has less reason to invent DONE. Prose from a worker is never read as a status."},
     {k:"parse reject", t:"The parse fails closed", w:["E3","E8"],
-     p:"The controller parses the result against the closed status set. Invalid JSON, an unknown status, or DONE without evidence is rejected, logged, and re-dispatched with the schema, and the round counts. The deck's common-mistakes slide lists the parser that catches the exception and carries on."},
+     p:"The controller parses the result against the closed status set. Invalid JSON, an unknown status, or DONE without evidence is rejected, logged, and re-dispatched with the schema, and the round counts. The lecture's common-mistakes slide lists the parser that catches the exception and carries on."},
     {k:"spec rcard", t:"The spec reviewer asks one question", w:["E8"],
      p:"A separate reviewer reads the brief and the diff, never the implementer's summary, and asks whether the change does what the brief says inside the allowed paths. It returns a ReviewResult. Every finding cites a file and line, a test id, or a diff hunk, and a verdict with no citations is rejected as malformed."},
     {k:"route blocked", t:"FAIL routes back, and the rounds are bounded", w:["E8"],
-     p:"On FAIL, the controller sends the findings back to the implementer and counts the round. After a fixed number of failed rounds the task goes BLOCKED to the human. Without that bound, the loop retries until the reviewer gives in, which the deck files under App. C #9, metagaming the gate."},
+     p:"On FAIL, the controller sends the findings back to the implementer and counts the round. After a fixed number of failed rounds the task goes BLOCKED to the human. Without that bound, the loop retries until the reviewer gives in, which the lecture files under App. C #9, metagaming the gate."},
     {k:"quality", t:"Quality review runs only after spec PASS", w:["E8"],
      p:"The second reviewer asks whether the work is done well: tests present and meaningful, errors handled, no dead code. Order matters. A quality reviewer handed the wrong feature will review it carefully and pass it. One reviewer is sound for Sortie 8; two stages with separate personas is Exceptional."},
     {k:"int ckpt concerns", t:"The human sits in the graph as a node", w:["E0","E8"],
@@ -752,7 +752,7 @@ permission:
     $("tnote").textContent=x.note||"";
     $("tcall").innerHTML = tmode==="ro"
       ? "<b>Read-only reviewer.</b> Three implementer results, one rejected by the parser, one FAIL that blocked, one PASS that cites what it checked, and a human before merge. Each verdict comes from an agent that could not edit the work it judged."
-      : "<b>Constructed variant.</b> The deck shows only the read-only trace; these lines are built from its common-mistakes row 'Reviewer has edit or bash write: it fixes the code, then passes its own fix.' Every line still parses. The collapse is invisible to the parser and to the dispatch counts, which is why Flight Card 8 lists 'granting the reviewer edit' as a falsifier.";
+      : "<b>Constructed variant.</b> The lecture shows only the read-only trace; these lines are built from its common-mistakes row 'Reviewer has edit or bash write: it fixes the code, then passes its own fix.' Every line still parses. The collapse is invisible to the parser and to the dispatch counts, which is why Flight Card 8 lists 'granting the reviewer edit' as a falsifier.";
     $("tprev").disabled=ti===0; $("tnext").disabled=ti===tr.length-1;
     $("m-edit").classList.toggle("hl", tmode==="ed");
   }
@@ -772,16 +772,16 @@ permission:
   /* ================= parser panel ================= */
   const SAMPLES = {
     h: [
-      ["The deck's implement#3 (valid)", I3],
-      ["The deck's implement#2: prose", I2],
+      ["The lecture'simplement#3 (valid)", I3],
+      ["The lecture'simplement#2: prose", I2],
       ["Unknown status (constructed)", '{"status":"COMPLETE","files":["src/memory/store.py"],"evidence":{"cmd":"uv run pytest tests/memory -q","exit":0}}'],
       ["DONE without evidence (constructed)", '{"status":"DONE","files":["src/memory/store.py"]}'],
       ["Honest BLOCKED (constructed)", '{"status":"BLOCKED","task":"T-03","question":null,"concerns":"src/memory/ has no clock to inject; REQ-2 cannot be tested"}']
     ],
     r: [
-      ["The deck's review#2 (valid)", R2],
-      ["The deck's review#1 (valid FAIL)", R1],
-      ["The deck's example sentence", "This would not PASS without tests"],
+      ["The lecture'sreview#2 (valid)", R2],
+      ["The lecture'sreview#1 (valid FAIL)", R1],
+      ["The lecture'sexample sentence", "This would not PASS without tests"],
       ["PASS with no checked list (constructed)", '{"verdict":"PASS","findings":[]}'],
       ["FAIL with no location (constructed)", '{"verdict":"FAIL","findings":[{"what":"looks wrong","sev":"low"}]}']
     ]

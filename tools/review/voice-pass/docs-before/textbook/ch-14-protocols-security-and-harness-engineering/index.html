@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>14. Protocols, Security, and Harness Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Chapter 14</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>14. Protocols, Security, and Harness Engineering</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e5-mcp-2-security-harness/">E5</a> <span class="small">(build)</span></p><p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-14">this chapter's entries in the reading list</a></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E5. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Harden an MCP server: transports, authentication, scope, least privilege.</li>
+<li>Explain tool poisoning, prompt injection via resources, and confused-deputy attacks, and defend against them.</li>
+<li>Write instruction files and skills for your own system and explain the control-surface matrix.</li>
+</ul>
+<h2>Outline</h2>
+<h3>14.1 Transports and auth</h3>
+<ul>
+<li>stdio vs. HTTP; OAuth; tokens and scopes; why the server must not trust the client's claims.</li>
+</ul>
+<h3>14.2 The threat model</h3>
+<ul>
+<li>Tool descriptions as attack surface; resources carrying instructions; cross-server shadowing; confused deputy. Untrusted content doctrine: every observation is data, never instruction.</li>
+</ul>
+<h3>14.3 A2A and delegation</h3>
+<ul>
+<li>Agents as peers: agent cards, tasks, artifacts. What a peer is that a tool is not; where authority sits.</li>
+</ul>
+<h3>14.4 Instruction files and skills</h3>
+<ul>
+<li>AGENTS.md / CLAUDE.md / GEMINI.md; path-scoped rules; skills as progressive disclosure; map-not-encyclopedia; the instruction budget.</li>
+</ul>
+<h3>14.5 Harness engineering</h3>
+<ul>
+<li>The product is the harness. gzkit as meta-harness: one canon rendered into each vendor's surfaces. Fidelity validation; the 258K context exhaustion; drift between mirrors.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP security incidents</td>
+<td>2025</td>
+<td>Tool poisoning, injection</td>
+<td>Governance</td>
+</tr>
+<tr>
+<td>A2A</td>
+<td>2025</td>
+<td>Peers, not tools</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>AGENTS.md / Skills / hooks</td>
+<td>2025</td>
+<td>Control surfaces</td>
+<td>Context, governance</td>
+</tr>
+<tr>
+<td>gzkit meta-harness</td>
+<td>2026</td>
+<td>Rendering one canon into many harnesses</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>docs/design/agent-control-surface-matrix.md</code>; <code>docs/governance/agents-md-doctrine.md</code> (ADR-0.0.54); <code>untrusted-content.md</code>; <code>gz validate --instructions-files-budget --invariant-coherence</code>; the corpus→rendition playback of AGENTS.md (ADR-0.0.37).</p>
+<h2>Readings</h2>
+<ul>
+<li>Anthropic, "Effective Harnesses for Long-Running Agents."</li>
+<li>gzkit <code>agents-md-doctrine.md</code>, <code>agent-control-surface-matrix.md</code>.</li>
+<li>Sprint and Drift, "The cost of the wrong abstraction went to zero."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 5 (corner) — DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Write the AGENTS.md for your system under a 4,000-character budget. Then measure what your harness actually loads.</li>
+</ol><hr><p><a href="../ch-13-the-model-context-protocol-building-servers-and-clients/">◀ 13. The Model Context Protocol: Building Servers and Clients</a> &nbsp;·&nbsp; <a href="../ch-15-context-engineering-budgets-compaction-handoffs-and-layers-o/">15. Context Engineering: Budgets, Compaction, Handoffs, and Layers of Truth ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

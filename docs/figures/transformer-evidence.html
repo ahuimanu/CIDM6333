@@ -346,7 +346,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         </div>
         <div class="calc" id="calc" aria-live="polite"></div>
         <p class="small" id="calcnote"></p>
-        <div class="flag"><b>41.0 or 41.8?</b> The §6.1 text says the big English-French model “achieves a BLEU score of 41.0”. Table 2 prints 41.8. The paper does not say which is right. This page plots the table's 41.8 and marks 41.0 with a dashed ring, so the gap stays visible.</div>
+        <div class="flag"><b>41.0 or 41.8?</b> The §6.1 text says the big English-French model “achieves a BLEU score of 41.0”. Table 2 prints 41.8. The paper does not say which is right. The chart plots the table's 41.8 and marks 41.0 with a dashed ring, so the gap stays visible.</div>
         <p class="small">The paper prints one cost per Transformer, spanning both language pairs. It states the method once and does not list the time and GPU inputs behind the earlier models' costs.</p>
       </div>
     </div>
@@ -455,7 +455,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>The big row changes five settings at once, so it cannot say which change helped.</td><td>Split a multi-change commit before the gate, or the delta cannot isolate a cause.</td></tr>
       </tbody>
     </table></div>
-    <p class="small">The E10 deck's test for pre-registration applies to Table 3 as well: “could the evidence have come out against you, and did you say in advance what that would look like?” Table 3 passes the first half; the paper is silent on the second.</p>
+    <p class="small">The E10 lecture's test for pre-registration applies to Table 3 as well: “could the evidence have come out against you, and did you say in advance what that would look like?” Table 3 passes the first half; the paper is silent on the second.</p>
   </section>
 </div>
 
@@ -466,7 +466,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <table>
     <thead><tr><th>Evolution</th><th>Part of the figure</th><th>What it teaches</th></tr></thead>
     <tbody>
-      <tr><td>E6 · Context engineering</td><td>Figures 3–4; the attention pictures</td><td>Each query spreads a total weight of 1 across every key. The more tokens in the window, the more pairs compete for it, which is what the E6 deck calls the attention budget.</td></tr>
+      <tr><td>E6 · Context engineering</td><td>Figures 3–4; the attention pictures</td><td>Each query spreads a total weight of 1 across every key. The more tokens in the window, the more pairs compete for it, which is what the E6 lecture calls the attention budget.</td></tr>
       <tr><td>E10 · Evals as gates</td><td>Table 3; dev and test sets; the threshold slider</td><td>A fixed base, one change per row, and a reported set kept apart from the tuning set. The paper's one run per row is the gap your pass^3 closes.</td></tr>
       <tr><td>E11 · Observability</td><td>Table 2's cost column; the 41.0 vs. 41.8 gap</td><td>A cost with its method printed beside it can be recomputed by a stranger, the way a receipt binds a result to a commit. A summary that disagrees with its own table is a transcript claim until the record settles it.</td></tr>
     </tbody>
@@ -492,10 +492,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>Jain, S., &amp; Wallace, B. C. (2019). Attention is not explanation. <em>Proceedings of NAACL-HLT 2019</em>.</li>
       <li>Wiegreffe, S., &amp; Pinter, Y. (2019). Attention is not not explanation. <em>Proceedings of EMNLP-IJCNLP 2019</em>. (A reply to Jain and Wallace.)</li>
       <li>Post, M. (2018). A call for clarity in reporting BLEU scores. <em>Proceedings of the Third Conference on Machine Translation (WMT)</em>.</li>
-      <li>Nosek, B. A., Ebersole, C. R., DeHaven, A. C., &amp; Mellor, D. T. (2018). The preregistration revolution. <em>PNAS</em>. (Cited in the E10 deck.)</li>
-      <li>Kerr, N. L. (1998). HARKing: Hypothesizing after the results are known. <em>Personality and Social Psychology Review</em>. (Cited in the E10 deck.)</li>
-      <li>Anthropic. (2026, January 9). <em>Demystifying evals for AI agents</em>. (Cited in the E10 deck.)</li>
-      <li>Anthropic. (2025, September 29). <em>Effective context engineering for AI agents</em>. (Cited in the E6 deck.)</li>
+      <li>Nosek, B. A., Ebersole, C. R., DeHaven, A. C., &amp; Mellor, D. T. (2018). The preregistration revolution. <em>PNAS</em>. (Cited in the E10 lecture.)</li>
+      <li>Kerr, N. L. (1998). HARKing: Hypothesizing after the results are known. <em>Personality and Social Psychology Review</em>. (Cited in the E10 lecture.)</li>
+      <li>Anthropic. (2026, January 9). <em>Demystifying evals for AI agents</em>. (Cited in the E10 lecture.)</li>
+      <li>Anthropic. (2025, September 29). <em>Effective context engineering for AI agents</em>. (Cited in the E6 lecture.)</li>
     </ol>
     <p class="small" style="margin-top:10px">Tables 2–4 and Figures 3–4 are redrawn from Vaswani et al. (2017) under the paper's notice: “Provided proper attribution is provided, Google hereby grants permission to reproduce the tables and figures in this paper solely for use in journalistic or scholarly works.” Figures 3–4 are schematic; no attention values are reproduced.</p>
   </section>
@@ -591,7 +591,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       const x=X(2.3e19), y=Y(41.0);
       marks+='<circle class="ghost" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="7.5"/>';
       labels+='<text class="lbl2" x="'+(x+12).toFixed(1)+'" y="'+(y+5).toFixed(1)+'">41.0 in the §6.1 text</text>';
-      hits+=hit(x,y,11,"Transformer (big), as the text states it|§6.1 says “a BLEU score of 41.0”|Table 2 prints 41.8|This page plots the table value");
+      hits+=hit(x,y,11,"Transformer (big), as the text states it|§6.1 says “a BLEU score of 41.0”|Table 2 prints 41.8|The chart plots the table value");
     }
     $("t2").innerHTML=s+marks+labels+hits;
     $("leg-ghost").style.display = pair==="fr"?"":"none";

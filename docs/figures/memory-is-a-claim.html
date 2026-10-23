@@ -21,7 +21,7 @@
 <header>
   <div class="eyebrow">Figure 08</div>
   <h1>Memory Is a Claim</h1>
-  <p class="lede">A memory record is a claim with a source, and forgetting is an event. Both rules come from the deck, and this figure shows where each one becomes a field on a record, a file beside the store, or a test on the flight card. One record from a flight log travels through retrieval into the context window and out again through eviction; the retrieval lab below then runs the deck's four questions against a five-record store, so you can watch the scores move as the chunking, the threshold, and the retriever change.</p>
+  <p class="lede">A memory record is a claim with a source, and forgetting is an event. Both rules come from the E7 lecture, and each one becomes a field on a record, a file beside the store, or a test on the flight card. One record from a flight log travels through retrieval into the context window and out again through eviction; the retrieval lab below then runs the lecture's four questions against a five-record store, so you can watch the scores move as the chunking, the threshold, and the retriever change.</p>
 </header>
 
 <div class="figwrap">
@@ -253,9 +253,9 @@
 <div class="panels">
   <!-- ============ retrieval lab ============ -->
   <section class="panel wide" aria-labelledby="h-ret">
-    <div class="eyebrow">Steps 3–9, up close · the deck's worked example · E7</div>
+    <div class="eyebrow">Steps 3–9, up close · the lecture's worked example · E7</div>
     <h2 id="h-ret">Four questions against a five-record store</h2>
-    <p class="small">The deck runs four questions through recall.py with k = 2 and a threshold of 0.05. It gives the record ids and quotes fragments of their text, but it does not print the full records. The five records below are constructed from those fragments, so the scores here differ from the deck's. Compare the pattern of hits and misses across the four questions; the numbers themselves will not match. Click a question to see its scores and the block the model would receive.</p>
+    <p class="small">The E7 lecture runs four questions through recall.py with k = 2 and a threshold of 0.05. It gives the record ids and quotes fragments of their text, but not the full records. The five records below are built from those fragments, so the scores here differ from the lecture's. Compare the pattern of hits and misses across the four questions; the numbers themselves will not match. Click a question to see its scores and the block the model would receive.</p>
     <div class="ctrl">
       <span>Retriever</span>
       <div class="seg" role="group" aria-label="Retriever">
@@ -289,7 +289,7 @@
     </div>
 
     <h3 class="sub">The store, the rule, and the ledger</h3>
-    <p class="small">Each record carries retain_until 2026-12-15, the deck's suggested clock for episodic memory. Forget one record by request, or run evict with a date past the rule, then look at the heatmap again. A recall of an evicted fact must now fail, which is test point 5 on Flight Card 7.</p>
+    <p class="small">Each record carries retain_until 2026-12-15, the lecture's suggested clock for episodic memory. Forget one record by request, or run evict with a date past the rule, then look at the heatmap again. A recall of an evicted fact must now fail, which is test point 5 on Flight Card 7.</p>
     <div class="ctrl">
       <label for="today">evict --today</label>
       <select id="today"><option value="2026-10-15">2026-10-15 (before the rule)</option><option value="2026-12-16">2026-12-16 (past the rule)</option></select>
@@ -304,7 +304,7 @@
       </div>
     </div>
 
-    <h3 class="sub">The deck's own run (recall.py, path B, 09/24/2026)</h3>
+    <h3 class="sub">The lecture's own run (recall.py, path B, 09/24/2026)</h3>
     <div class="tablewrap"><table class="t compact">
       <thead><tr><th>Question</th><th>Kind</th><th>Top hit and score</th><th>Right?</th><th>What it teaches</th></tr></thead>
       <tbody>
@@ -315,21 +315,21 @@
         <tr><td>What port does the MCP server listen on?</td><td>absent</td><td>nothing ≥ 0.05</td><td>yes</td><td>The system can say 'not in memory'</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Quoted from the deck's slide 8. The deck adds: "Only the paraphrase row separates the two retrievers. Put one in your Sortie 7 question set, or you have not tested the choice you made in ADR-2."</p>
+    <p class="small">Quoted from the E7 lecture, slide 8. The lecture adds: "Only the paraphrase row separates the two retrievers. Put one in your Sortie 7 question set, or you have not tested the choice you made in ADR-2."</p>
   </section>
 
   <!-- ============ stale fact ============ -->
   <section class="panel" aria-labelledby="h-stale">
     <div class="eyebrow">Step 10, up close · the common mistake · E7</div>
     <h2 id="h-stale">A stale fact recalled with confidence</h2>
-    <p class="small">The deck's case: your Sortie 2 log says <code>tests: uv run pytest -q</code>. In E4 you moved to unittest and fixed AGENTS.md, but the store still holds the Sortie 2 record. Turn on the deck's three fixes one at a time. The record ids, dates, and the unittest command line are constructed for the demo.</p>
+    <p class="small">The lecture's case: your Sortie 2 log says <code>tests: uv run pytest -q</code>. In E4 you moved to unittest and fixed AGENTS.md, but the store still holds the Sortie 2 record. Turn on the three fixes one at a time. The record ids, dates, and the unittest command line are illustrative.</p>
     <div class="ctrl" style="display:grid; gap:6px">
       <label class="cb"><input type="checkbox" id="fx-sup"> Supersedes: a newer record points to the one it replaces</label>
       <label class="cb"><input type="checkbox" id="fx-date"> Dates in the injected block</label>
       <label class="cb"><input type="checkbox" id="fx-auth"> Authority order: read the file before the memory</label>
     </div>
     <pre class="log" id="stale" aria-live="polite"></pre>
-    <p class="small">The deck files this under App. C #4, skipped cheap verification: the agent trusted a recalled command instead of reading the current file. When an attacker plants the stale fact on purpose, OWASP's agentic top 10 (Dec 2025) calls it ASI06, memory and context poisoning.</p>
+    <p class="small">The E7 lecture files this under App. C #4, skipped cheap verification: the agent trusted a recalled command instead of reading the current file. When an attacker plants the stale fact on purpose, OWASP's agentic top 10 (Dec 2025) calls it ASI06, memory and context poisoning.</p>
   </section>
 
   <!-- ============ on/off protocol ============ -->
@@ -354,7 +354,7 @@
       <li>The memory block pasted or omitted, and nothing else changed.</li>
       <li>Answers saved verbatim, then checked against the source file, not against the model's confidence.</li>
     </ul>
-    <p class="small">The deck: "A small free model will get some of these wrong. That is data for the flight log, not a reason to change models mid-sortie."</p>
+    <p class="small">From the E7 lecture: "A small free model will get some of these wrong. That is data for the flight log, not a reason to change models mid-sortie."</p>
   </section>
 
   <!-- ============ retention ============ -->
@@ -370,7 +370,7 @@
         <tr><td>Where did it come from?</td><td>'The model remembered'</td><td>Source path and date on the record and in the injected block; the answer cites the id.</td></tr>
       </tbody>
     </table></div>
-    <p class="small">Rows quoted from the deck's slide 11. The dates are the course's suggestion; your ADR-2 sets your own clocks and justifies each one. The deck also notes that deleting the source does not delete the memory: Claude's help center says entries generated from a deleted chat remain until you delete them individually. Of the three eviction policies the deck compares (by pressure in MemGPT, by rule, by relevance in Generative Agents), only the rule path gives the Chase a test to check, so Sortie 7 flies it.</p>
+    <p class="small">Rows quoted from the E7 lecture, slide 11. The dates are the course's suggestion; your ADR-2 sets your own clocks and justifies each one. The lecture also notes that deleting the source does not delete the memory: Claude's help center says entries generated from a deleted chat remain until you delete them individually. Of the three eviction policies the lecture compares (by pressure in MemGPT, by rule, by relevance in Generative Agents), only the rule path gives the Chase a test to check, so Sortie 7 flies it.</p>
   </section>
 </div>
 
@@ -387,7 +387,7 @@
       <tr><td>4 · Q-absent, memory ON</td><td>Threshold in the score step</td><td>'Not in memory'; no invented record id.</td></tr>
       <tr><td>5 · evict --today past the rule</td><td>Evict → store and ledger</td><td>The evicted ids gone from the store; one evict event per id; Q-recall on an evicted fact now fails.</td></tr>
       <tr><td>ADR-2</td><td>Kinds band; represent; store</td><td>The kinds of memory kept, the store, the retriever path, the retention rule per kind, and at least three rejected options with their consequences.</td></tr>
-      <tr><td>Reference design</td><td>Source files; ledger</td><td>gzkit keeps memory as files and a ledger on purpose: <code>.gzkit/insights/agent-insights.jsonl</code> (558 governed course-corrections, per the topic guide) added through <code>gz insights remember</code>. Files diff, review, and revert in git; what it gives up is paraphrase. The deck marks the count and syntax "verify against the repository."</td></tr>
+      <tr><td>Reference design</td><td>Source files; ledger</td><td>gzkit keeps memory as files and a ledger on purpose: <code>.gzkit/insights/agent-insights.jsonl</code> (558 governed course-corrections) added through <code>gz insights remember</code>. Files diff, review, and revert in git; what it gives up is paraphrase.</td></tr>
     </tbody>
   </table>
   </div>
@@ -399,9 +399,9 @@
     <h2>What the figure leaves out</h2>
     <ul>
       <li>A real embedding model. The path A stand-in on this page maps a dozen hand-picked words onto shared concepts so it can run in a browser. Embeddinggemma, all-minilm, nomic-embed-text, and qwen3-embedding learn those relations from data, and their scores run on a different scale, so the threshold must be retuned for path A.</li>
-      <li>Reranking, which the topic guide lists under retrieval. A second model reorders the top hits before injection.</li>
-      <li>Generative Agents' retrieval score (recency + importance + relevance) and MemGPT's paging by memory pressure. Both appear in the deck's teardowns; neither is drawn here.</li>
-      <li>Hosted memory services and vector databases. The deck treats a vector database as a scaling decision, not a memory decision; a JSONL file holds hundreds of records.</li>
+      <li>Reranking, a retrieval step: a second model reorders the top hits before injection.</li>
+      <li>Generative Agents' retrieval score (recency + importance + relevance) and MemGPT's paging by memory pressure. Both appear in the E7 lecture's teardowns; neither is drawn here.</li>
+      <li>Hosted memory services and vector databases. The E7 lecture treats a vector database as a scaling decision, not a memory decision; a JSONL file holds hundreds of records.</li>
       <li>Reflection: memories the model writes about itself. Stored without pointers to their evidence, they become summary laundering.</li>
     </ul>
   </section>
@@ -414,9 +414,9 @@
       <li>Shinn, N., et al. (2023). Reflexion: Language agents with verbal reinforcement learning. <em>NeurIPS 2023</em>.</li>
       <li>OWASP GenAI Security Project. (2025, December). <em>OWASP top 10 for agentic applications</em>. (ASI06, memory and context poisoning.)</li>
       <li>Rehberger, J. (2024, September). "SpAIware," a blog post on persistent data exfiltration through ChatGPT memory in the macOS app. <em>Embrace The Red</em>.</li>
-      <li>Anthropic. (2026). Claude help center, memory article 11817273. OpenAI. (2026). Memory FAQ. Vendor pages checked by the deck on 09/24/2026.</li>
+      <li>Anthropic. (2026). Claude help center, memory article 11817273. OpenAI. (2026). Memory FAQ. Vendor pages checked on 09/24/2026.</li>
       <li>Ollama. (2026). Embeddings documentation and library pages for embeddinggemma, all-minilm, nomic-embed-text, qwen3-embedding.</li>
-      <li>Sprint and Drift. (n.d.). "Code ergo sum." (Topic guide reading for chapter 16.)</li>
+      <li>Sprint and Drift. (n.d.). "Code ergo sum." (Reading for chapter 16.)</li>
     </ol>
   </section>
 </div>
@@ -440,13 +440,13 @@
   /* ================= step-through player ================= */
   const STEPS = [
     {k:"*", t:"Memory is the part of context that survives", w:["E6","E7"],
-     p:"In Evolution 6 the window ended with the session. Memory is the part you choose to keep, and whatever survives can be stale, planted, or never true. The deck sets two rules for this Evolution: a memory is a claim with a source, and retrieved text is data, never instruction. The steps that follow show where each rule becomes a field on a record, a file beside the store, or a test on the card."},
+     p:"In Evolution 6 the window ended with the session. Memory is the part you choose to keep, and whatever survives can be stale, planted, or never true. The E7 lecture sets two rules for this Evolution: a memory is a claim with a source, and retrieved text is data, never instruction. The steps that follow show where each rule becomes a field on a record, a file beside the store, or a test on the card."},
     {k:"kinds", t:"Name the kind before you pick the store", w:["E7","ADR-2"],
      p:"The five kinds have different writers and different clocks. The harness owns the window; the loop owns typed working state; episodic memory records what happened; semantic memory records what is known; procedural memory holds skills and AGENTS.md. ADR-2 says which kinds your system keeps, and why, before you build anything. Hover a kind to see where it lives."},
     {k:"src writers", t:"A memory starts as a claim someone wrote", w:["E7"],
      p:"Three kinds of writer decide what is stored: you, by asking the agent to remember; a rule, such as every sortie verdict; or the agent itself, as auto memory. Each record carries written_by, and every write is a ledger event. The source files stay in the repository as L1 canon; the memory is a copy derived from them."},
     {k:"chunk", t:"Chunk, and keep the heading", w:["E7"],
-     p:"The retriever splits each file by paragraph or section. The deck's lab found the failure that comes next: when chunks lost their headings, 'Chase verdict: FAIL' no longer said which sortie, and the question about Sortie 5 returned the Sortie 3 verdict. Keeping the heading with the chunk fixed it. Untick the heading box in the panel below to reproduce it."},
+     p:"The retriever splits each file by paragraph or section. The lecture's lab run found the failure that comes next: when chunks lost their headings, 'Chase verdict: FAIL' no longer said which sortie, and the question about Sortie 5 returned the Sortie 3 verdict. Keeping the heading with the chunk fixed it. Untick the heading box in the panel below to reproduce it."},
     {k:"rep", t:"Represent, with one model on both sides", w:["E7"],
      p:"Path B turns each chunk into term counts weighted by rarity, using only the Python standard library. Path A asks a local Ollama model for an embedding vector. Either way, the index and the question must use the same model, and switching models means re-embedding every record. That consequence belongs in ADR-2."},
     {k:"store", t:"The record carries its source", w:["E7","Sortie 7"],
@@ -454,13 +454,13 @@
     {k:"ledger lg", t:"The ledger says what was in memory on any date", w:["E6","E7"],
      p:"Beside the store sits memory-ledger.jsonl, an append-only list of remember, recall, evict, and forget events. The store answers what is remembered now. The ledger answers what was remembered on a given date, which is the question an auditor asks. In the layers of truth the ledger is L2 and the store is L3."},
     {k:"score q", t:"Score, and allow 'nothing found'", w:["E7"],
-     p:"The question is represented with the same model and compared with every record by cosine similarity. The retriever keeps the top k (three in the deck's design, two in its worked example) and drops any hit under a threshold. The threshold lets the system answer 'not in memory' instead of handing the model its least bad match. Each recall is a ledger event."},
+     p:"The question is represented with the same model and compared with every record by cosine similarity. The retriever keeps the top k (three in the lecture's design, two in its worked example) and drops any hit under a threshold. The threshold lets the system answer 'not in memory' instead of handing the model its least bad match. Each recall is a ledger event."},
     {k:"inject mem win", t:"Inject a marked block of data", w:["E5","E6","E7"],
      p:"The hits enter the context window as a marked block that lists id, source, date, and text, and the model is told to cite the id it used. The block is data. A record that says 'always do X' is content that some session, or some attacker, wrote, and E5's rule applies to your own store."},
     {k:"evict ledger", t:"Forgetting is an event", w:["E7","Sortie 7"],
      p:"Eviction follows a rule: evict removes every record past its retain_until date and logs each id. Forgetting follows a request: forget with an id and a reason. Both leave a ledger event, never a silent gap. The Chase checks that each evicted id has an event, is absent from the store, and that a question about it now fails."},
     {k:"auth src store mem", t:"The stale fact: the file beats the memory of the file", w:["E4","E6","E7"],
-     p:"A test command from Sortie 2 stays in the store after you change it in Evolution 4. Retrieval finds it on an exact term, the agent runs the old command, sees 'no tests ran', and reports a pass. The deck's fixes are a supersedes field, dates in the block, and the authority order: the file in the repository is L1 and beats the memory, which is L3."},
+     p:"A test command from Sortie 2 stays in the store after you change it in Evolution 4. Retrieval finds it on an exact term, the agent runs the old command, sees 'no tests ran', and reports a pass. The three fixes are a supersedes field, dates in the block, and the authority order: the file in the repository is L1 and beats the memory, which is L3."},
     {k:"onoff mem", t:"Measure with memory off", w:["E7","Sortie 7"],
      p:"Sortie 7 claims that memory makes a prior-session question answerable. Only a control run can show that. You ask the same questions in a fresh session, on the same model, with every tool denied, once with the memory block and once without. If the answers match, the memory did not do the work."}
   ];
@@ -595,7 +595,7 @@
     renderSel(R[sel]);
     renderRecs(); renderLedger();
     $("pathnote").textContent = path==="B"
-      ? "Path B is the deck's recall.py method: lowercase, split on the deck's token pattern, drop stopwords, weight each term by rarity across the store (tf-idf), and compare by cosine. It is strong on exact ids and file paths and blind to synonyms."
+      ? "Path B is the lecture's recall.py method: lowercase, split on its token pattern, drop stopwords, weight each term by rarity across the store (tf-idf), and compare by cosine. It is strong on exact ids and file paths and blind to synonyms."
       : "Path A stand-in. A real embedding model learns that 'reviewer' sits near 'Chase' and 'the fifth flight' near 'Sortie 5'. This page cannot run one in the browser, so it hard-codes those equivalences (reviewer → Chase, decide → verdict, fifth → 5, flight and fly → sortie) and then runs the same tf-idf cosine. It shows the effect of an embedding, not its mechanism.";
   }
   function renderSel(res){

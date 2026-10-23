@@ -1,6 +1,6 @@
 # Reading list
 
-The papers, documentation, and essays each chapter draws on, grouped by chapter. **[outline]** marks a source that appears in a chapter's section plan rather than its Readings list. **[newer]** marks a later source that extends the one the chapter cites. gzkit's documentation is at gzkit.org; its design records are in its GitHub repository.
+The papers, documentation, and essays each chapter draws on, grouped by chapter. A marker such as **[§3.6]** marks a source that the chapter's section plan cites in that section rather than in its Readings list. **[section plan]** marks such a source with no section number. **[newer]** marks a later source that extends the one the chapter cites. gzkit's documentation is at gzkit.org; its design records are in its GitHub repository.
 
 ## Chapter 1: The Layers of AI
 
@@ -26,8 +26,8 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
   - Open-access companion: Degani & Wiener (1994, June). *On the Design of Flight-Deck Procedures.* NASA CR-177642. https://ntrs.nasa.gov/citations/19940029437
 - Babb, J. (2026, Jun 29). *Who answers for the code.* https://sprintanddrift.substack.com/p/who-answers-for-the-code
 - Babb, J. (2026, Jun 30). *Code ergo sum.* https://sprintanddrift.substack.com/p/code-ergo-sum
-- **[outline §3.6]** Raji, I. D., Xu, P., Honigsberg, C., & Ho, D. E. (2022). *Outsider Oversight: Designing a Third Party Audit Ecosystem for AI Governance.* AIES 2022. https://arxiv.org/abs/2206.04737
-- **[outline §3.6]** Groves, L., Metcalf, J., Kennedy, A., Vecchione, B., & Strait, A. (2024). *Auditing Work: Exploring the New York City algorithmic bias audit regime.* FAccT 2024. https://arxiv.org/abs/2402.08101
+- **[§3.6]** Raji, I. D., Xu, P., Honigsberg, C., & Ho, D. E. (2022). *Outsider Oversight: Designing a Third Party Audit Ecosystem for AI Governance.* AIES 2022. https://arxiv.org/abs/2206.04737
+- **[§3.6]** Groves, L., Metcalf, J., Kennedy, A., Vecchione, B., & Strait, A. (2024). *Auditing Work: Exploring the New York City algorithmic bias audit regime.* FAccT 2024. https://arxiv.org/abs/2402.08101
 
 ## Chapter 4: Before Language Models
 
@@ -43,7 +43,7 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - Yao et al. (2022). *ReAct.* https://arxiv.org/abs/2210.03629
 - Anthropic (2024). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents
 - Babb, J. (2026). *Who answers for the code.* https://sprintanddrift.substack.com/p/who-answers-for-the-code
-- **[outline §5.3]** gzkit genesis transcript. https://gzkit.org/user/reference/genesis-transcript/
+- **[§5.3]** gzkit genesis transcript. https://gzkit.org/user/reference/genesis-transcript/
 
 ## Chapter 6: The Explosion of 2023
 
@@ -58,9 +58,9 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 
 - Yang, J., et al. (2024). *SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering.* NeurIPS 2024. https://arxiv.org/abs/2405.15793
 - Xia, C. S., et al. (2024). *Agentless: Demystifying LLM-based Software Engineering Agents.* ISSTA 2025. https://arxiv.org/abs/2407.01489
-- Model Context Protocol. *Specification*, revision 2026-07-28. https://modelcontextprotocol.io/specification/2026-07-28/architecture · https://modelcontextprotocol.io/specification/2026-07-28/server · versioning: https://modelcontextprotocol.io/specification/versioning. The outline is stale on this point. Chapters 7 and 13 describe the 2025 handshake-era protocol, and the 2026-07-28 revision moved to stateless requests, per-request version negotiation, a mandatory `server/discover`, and extensions (Tasks, Skills over MCP, MCP Apps).
+- Model Context Protocol. *Specification*, revision 2026-07-28. https://modelcontextprotocol.io/specification/2026-07-28/architecture · https://modelcontextprotocol.io/specification/2026-07-28/server · versioning: https://modelcontextprotocol.io/specification/versioning. Chapters 7 and 13 describe the 2025 handshake-era protocol. The 2026-07-28 revision moved to stateless requests, per-request version negotiation, a mandatory `server/discover`, and extensions (Tasks, Skills over MCP, MCP Apps).
 - Anthropic (2024). *Building effective agents.* https://www.anthropic.com/engineering/building-effective-agents
-- **[outline §7.1]** Jimenez, C. E., et al. (2023). *SWE-bench: Can Language Models Resolve Real-World GitHub Issues?* ICLR 2024. https://arxiv.org/abs/2310.06770
+- **[§7.1]** Jimenez, C. E., et al. (2023). *SWE-bench: Can Language Models Resolve Real-World GitHub Issues?* ICLR 2024. https://arxiv.org/abs/2310.06770
 
 ## Chapter 8: The Harness Year (2025)
 
@@ -70,9 +70,9 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - OpenAI (2025, Apr). *A practical guide to building agents.* https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
 - gzkit. *Agent Control Surface Matrix.* https://github.com/tvproductions/gzkit/blob/main/docs/design/agent-control-surface-matrix.md
 - gzkit. *Framework Comparison: gzkit vs spec-kit vs BMAD.* https://gzkit.org/examples/comparison-gzkit-speckit-bmad/
-- **[outline §8.3]** A2A Protocol Specification v1.0.0. https://a2a-protocol.org/latest/specification/
-- **[outline §8.3]** AGENTS.md. https://agents.md/
-- **[outline §8.3, newer]** Anthropic (2025, Oct 16). *Equipping agents for the real world with Agent Skills.* https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- **[§8.3]** A2A Protocol Specification v1.0.0. https://a2a-protocol.org/latest/specification/
+- **[§8.3]** AGENTS.md. https://agents.md/
+- **[§8.3, newer]** Anthropic (2025, Oct 16). *Equipping agents for the real world with Agent Skills.* https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
 
 ## Chapter 9: 2026: Harness Engineering
 
@@ -81,9 +81,9 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - gzkit. *AGENTS.md* § Operator Doctrine. https://github.com/tvproductions/gzkit/blob/main/AGENTS.md
 - Babb, J. (2026, Jul 1). *Turn and Face the Change.* https://sprintanddrift.substack.com/p/turn-and-face-the-change
 - Babb, J. (2026, Jun 22). *Newtonian motion.* https://sprintanddrift.substack.com/p/newtonian-motion
-- **[outline §9.1]** Böckeler, B. (2026, Apr 2). *Harness engineering for coding agent users.* martinfowler.com. https://martinfowler.com/articles/harness-engineering.html
-- **[outline §9.1]** Lopopolo, R. (2026, Feb 11). *Harness engineering: leveraging Codex in an agent-first world.* OpenAI. https://openai.com/index/harness-engineering/
-- **[outline §9.4]** gzkit CHANGELOG. https://github.com/tvproductions/gzkit/blob/main/CHANGELOG.md · insights corpus: https://github.com/tvproductions/gzkit/blob/main/.gzkit/insights/agent-insights.jsonl
+- **[§9.1]** Böckeler, B. (2026, Apr 2). *Harness engineering for coding agent users.* martinfowler.com. https://martinfowler.com/articles/harness-engineering.html
+- **[§9.1]** Lopopolo, R. (2026, Feb 11). *Harness engineering: leveraging Codex in an agent-first world.* OpenAI. https://openai.com/index/harness-engineering/
+- **[§9.4]** gzkit CHANGELOG. https://github.com/tvproductions/gzkit/blob/main/CHANGELOG.md · insights corpus: https://github.com/tvproductions/gzkit/blob/main/.gzkit/insights/agent-insights.jsonl
 
 ## Chapter 10: Building the Loop
 
@@ -105,7 +105,7 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - gzkit. *.gzkit/rules/agent-failure-modes.md.* https://github.com/tvproductions/gzkit/blob/main/.gzkit/rules/agent-failure-modes.md
 - gzkit. *CHANGELOG* v0.34.5 (2026-08-23). https://github.com/tvproductions/gzkit/blob/main/CHANGELOG.md#v0345-2026-08-23
 - Babb, J. (2026, Jun 24). *Get the Balance Right.* https://sprintanddrift.substack.com/p/get-the-balance-right
-- **[outline §12.3]** Anthropic. *Claude Code — Hooks reference.* https://code.claude.com/docs/en/hooks (the reference documents 33 hook events)
+- **[§12.3]** Anthropic. *Claude Code — Hooks reference.* https://code.claude.com/docs/en/hooks (the reference documents 33 hook events)
 - **[newer]** Aizawa, K. (2025, Sep 11). *Writing effective tools for agents — with agents.* https://www.anthropic.com/engineering/writing-tools-for-agents
 - **[newer]** Anthropic (2026, Mar 25). *How we built Claude Code auto mode.* https://www.anthropic.com/engineering/claude-code-auto-mode
 
@@ -114,7 +114,7 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - Model Context Protocol. *Specification 2026-07-28.* https://modelcontextprotocol.io/specification/2026-07-28
 - Model Context Protocol. *MCP Python SDK* (v2 line). https://py.sdk.modelcontextprotocol.io/ · https://github.com/modelcontextprotocol/python-sdk
 - Babb, J. (2026, Jun 28). *Stop the presses, hail the autoloom.* https://sprintanddrift.substack.com/p/stop-the-presses-hail-the-autoloom
-- **[outline]** gzkit. *Storage tiers.* https://gzkit.org/governance/storage-tiers/
+- **[section plan]** gzkit. *Storage tiers.* https://gzkit.org/governance/storage-tiers/
 - **[newer]** Anthropic (2025, Nov 4). *Code execution with MCP.* https://www.anthropic.com/engineering/code-execution-with-mcp
 
 ## Chapter 14: Protocols, Security, and Harness Engineering
@@ -123,9 +123,9 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 - gzkit. *AGENTS.md doctrine.* https://gzkit.org/governance/agents-md-doctrine/
 - gzkit. *Agent Control Surface Matrix.* https://github.com/tvproductions/gzkit/blob/main/docs/design/agent-control-surface-matrix.md
 - Babb, J. (2026, Jun 23). *The cost of the wrong abstraction went to zero.* https://sprintanddrift.substack.com/p/the-cost-of-the-wrong-abstraction
-- **[outline §14.2]** gzkit. *Untrusted content doctrine.* https://gzkit.org/governance/untrusted-content/
-- **[outline §14.3]** A2A Protocol Specification v1.0.0. https://a2a-protocol.org/latest/specification/
-- **[outline §14.4]** AGENTS.md. https://agents.md/
+- **[§14.2]** gzkit. *Untrusted content doctrine.* https://gzkit.org/governance/untrusted-content/
+- **[§14.3]** A2A Protocol Specification v1.0.0. https://a2a-protocol.org/latest/specification/
+- **[§14.4]** AGENTS.md. https://agents.md/
 
 ## Chapter 15: Context Engineering
 
@@ -151,7 +151,7 @@ The papers, documentation, and essays each chapter draws on, grouped by chapter.
 
 ## Chapter 18: Multi-Agent Coordination II
 
-- Cemri, M., et al. (2025). *Why Do Multi-Agent LLM Systems Fail?* arXiv v3 (Oct 2025; cite v3, which holds the taxonomy). https://arxiv.org/abs/2503.13657
+- Cemri, M., et al. (2025). *Why Do Multi-Agent LLM Systems Fail?* arXiv v3 (Oct 2025; v3 holds the taxonomy). https://arxiv.org/abs/2503.13657
 - gzkit. *.gzkit/rules/agent-failure-modes.md.* https://github.com/tvproductions/gzkit/blob/main/.gzkit/rules/agent-failure-modes.md
 - gzkit. *Campaign Architecture Review — 2026-08-17.* https://gzkit.org/evals/gzkit-campaign-architecture-review-2026-08-17/
 - Babb, J. (2026). *Newtonian motion.* https://sprintanddrift.substack.com/p/newtonian-motion

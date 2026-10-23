@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>Skill on Demand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* ---------- figure 15 specific ---------- */
+.fig .faint{opacity:.55}
+.fig .el.on .faint{opacity:.8}
+.fig .mono.sm{font-size:9.5px}
+textarea,input[type=text]{font-family:var(--mono); font-size:13.5px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:8px 10px; width:100%; max-width:100%}
+textarea{min-height:5.2em; resize:vertical; line-height:1.45}
+.field{display:grid; gap:4px; font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.04em; min-width:0}
+.field .count{font-family:var(--mono); font-weight:400; font-size:12px; color:var(--ink-2)}
+.match{font-family:var(--mono); font-size:13.5px; line-height:1.6; background:var(--surface-2); border-radius:8px; padding:10px 12px; word-break:break-word}
+.match mark{background:var(--accent-soft); color:var(--accent-ink); border-radius:3px; padding:0 2px; font-weight:500}
+.verdict.big{font-size:22px}
+.log .pass{color:var(--ink); font-weight:500}
+.log .fail{color:var(--accent-ink); font-weight:500}
+.ctrl.stack{display:grid; gap:8px; align-items:center; grid-template-columns:auto minmax(0,1fr) auto}
+.ctrl.stack label{white-space:nowrap}
+.ctrl.stack input[type=range]{max-width:none}
+</style>
+
+<div class="wrap">
+<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Figures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<header>
+  <div class="eyebrow">Figure 15</div>
+  <h1>Skill on Demand</h1>
+  <p class="lede">A skill is a procedure with a name. OpenCode finds it on disk. At the start of a session the model sees only its name and a short description. The full text loads only when the model calls the <code>skill</code> tool. This figure follows one skill, <em>flight-card</em>, from its folder to the turn it runs on, and shows three ways it fails to run.</p>
+</header>
+
+<div class="figwrap">
+  <div class="scroller">
+  <svg class="fig" id="fig" viewBox="0 0 1100 720" role="img" aria-label="Skill pipeline. A SKILL.md file on disk with frontmatter name and description. At session start the harness builds the skill tool description from the name and description only. The user asks for a flight card. The model matches the request to the description and calls the skill tool. A permission gate set to ask shows a prompt. On allow the full body loads into the context window for this turn. The model follows the five steps and stops before committing; the ledger records the call. Three dashed exits show the failures: never called, hidden, and a leftover copy in AGENTS.md.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrOn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mkon" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <text class="lab" x="20" y="40">On disk</text>
+    <text class="lab" x="290" y="40">Session start</text>
+    <text class="lab" x="510" y="40">The turn</text>
+
+    <!-- 1 disk -->
+    <g class="el" data-k="disk">
+      <rect class="box" x="20" y="70" width="250" height="440" rx="8"/>
+      <text class="tt" x="32" y="92">1 · Disk</text>
+      <text class="tag" x="260" y="92" text-anchor="end">L1 · CANON</text>
+      <text class="mono" x="32" y="112">.opencode/skills/flight-card/SKILL.md</text>
+      <rect class="stripe" x="30" y="122" width="230" height="110" rx="4"/>
+      <text class="lab" x="38" y="138">frontmatter</text>
+      <text class="mono" x="38" y="154">name: flight-card</text>
+      <text class="mono" x="38" y="169">description: Produce a flight card</text>
+      <text class="mono" x="38" y="184">  for a sortie in this repository.</text>
+      <text class="mono" x="38" y="199">  Use when asked to write, start,</text>
+      <text class="mono" x="38" y="214">  or file a flight card.</text>
+      <text class="mono" x="38" y="228">---</text>
+      <text class="lab" x="32" y="252">body · 5 steps (illustrative)</text>
+      <text class="ts" x="32" y="270">1 Name the sortie, state the CLAIM</text>
+      <text class="ts" x="32" y="286">2 List the FALSIFIERS</text>
+      <text class="ts" x="32" y="302">3 Fly the sortie; record RESULTS</text>
+      <text class="ts" x="32" y="318">4 Write the LEDGER lines</text>
+      <text class="ts" x="32" y="334">5 Stop before committing</text>
+      <g class="faint">
+        <text class="lab" x="32" y="362">also looked in</text>
+        <text class="mono sm" x="32" y="378">.claude/skills/   .agents/skills/</text>
+        <text class="mono sm" x="32" y="392">~/.config/opencode/skills/  (global)</text>
+      <text class="ts" x="32" y="410">OpenCode looks up to the git root;</text>
+      <text class="ts" x="32" y="426">the name must match the folder</text>
+      </g>
+    </g>
+    <g class="el" data-k="disk f-leftover">
+      <rect class="stripe" x="30" y="444" width="230" height="52" rx="4"/>
+      <text class="ts" x="38" y="462">AGENTS.md · one pointer line:</text>
+      <text class="mono sm" x="38" y="478">Flight cards: call the</text>
+      <text class="mono sm" x="38" y="490">flight-card skill.</text>
+    </g>
+    <g class="el" data-k="disk index"><path class="flow" d="M270,130 L288,130"/></g>
+
+    <!-- 2 index -->
+    <g class="el" data-k="index">
+      <rect class="box" x="290" y="70" width="200" height="120" rx="8"/>
+      <text class="tt" x="302" y="92">2 · List</text>
+      <text class="ts" x="302" y="112">OpenCode reads each SKILL.md</text>
+      <text class="ts" x="302" y="128">and makes a short list: each</text>
+      <text class="ts" x="302" y="144">skill's name and description.</text>
+      <text class="ts" x="302" y="160">The steps stay on disk.</text>
+      <text class="tag" x="480" y="182" text-anchor="end">EVERY TURN</text>
+    </g>
+    <g class="el" data-k="index win">
+      <path class="dash" d="M390,70 L390,52 L1015,52 L1015,68"/>
+      <text class="ts" x="790" y="46" text-anchor="middle">only the name and description go into the window</text>
+    </g>
+
+    <!-- 3 user -->
+    <g class="el" data-k="user"><path class="flow" d="M490,130 L508,130"/></g>
+    <g class="el" data-k="user">
+      <rect class="box" x="510" y="70" width="190" height="120" rx="8"/>
+      <text class="tt" x="522" y="92">3 · User turn</text>
+      <text class="ts" x="522" y="114">"Start a flight card for</text>
+      <text class="ts" x="522" y="130">sortie 7. Stop before</text>
+      <text class="ts" x="522" y="146">committing."</text>
+      <text class="ts" x="522" y="172">AGENTS.md loads too, in full</text>
+    </g>
+
+    <!-- 4 decide -->
+    <g class="el" data-k="user decide"><path class="flow" d="M700,130 L718,130"/></g>
+    <g class="el" data-k="decide">
+      <rect class="modelbox" x="720" y="70" width="210" height="120" rx="8"/>
+      <text class="tt" x="732" y="92">4 · Model decides</text>
+      <text class="ts" x="732" y="112">reads the list: "start" and "flight</text>
+      <text class="ts" x="732" y="128">card" are in the description</text>
+      <text class="mono" x="732" y="150">skill(name="flight-card")</text>
+      <text class="ts" x="732" y="172">the model chooses, not OpenCode</text>
+    </g>
+    <g class="el" data-k="decide win"><path class="flow" d="M930,150 L948,150"/></g>
+    <g class="el" data-k="decide gate">
+      <path class="flow" d="M740,190 L740,210 L605,210 L605,228"/>
+      <text class="ts" x="672" y="204" text-anchor="middle">calls the skill</text>
+    </g>
+
+    <!-- f-never -->
+    <g class="el" data-k="f-never">
+      <path class="dash" d="M825,190 L825,228"/>
+      <text class="ts" x="833" y="212">no call</text>
+      <rect class="kvbox" x="720" y="230" width="210" height="110" rx="8"/>
+      <text class="tt" x="732" y="252">Exit A · never called</text>
+      <text class="ts" x="732" y="272">the description does not use the</text>
+      <text class="ts" x="732" y="288">words the user says, so the model</text>
+      <text class="ts" x="732" y="304">writes the card its own way</text>
+      <text class="tag" x="732" y="328">FIX: USE THE USER'S WORDS</text>
+    </g>
+
+    <!-- 5 gate -->
+    <g class="el" data-k="gate">
+      <rect class="box" x="510" y="230" width="190" height="110" rx="8"/>
+      <text class="tt" x="522" y="252">5 · Permission</text>
+      <text class="mono" x="522" y="272">permission.skill = "ask"</text>
+      <text class="ts" x="522" y="292">prompt on screen: allow this skill?</text>
+      <text class="ts" x="522" y="308">allow → the steps load</text>
+      <text class="ts" x="522" y="324">deny → no steps; model goes on</text>
+    </g>
+    <g class="el" data-k="gate load">
+      <path class="flow" d="M510,285 L492,285"/>
+      <text class="ts" x="500" y="224" text-anchor="middle">allow</text>
+    </g>
+
+    <!-- 6 load -->
+    <g class="el" data-k="load">
+      <rect class="box" x="290" y="230" width="200" height="110" rx="8"/>
+      <text class="tt" x="302" y="252">6 · Load</text>
+      <text class="ts" x="302" y="272">OpenCode reads SKILL.md,</text>
+      <text class="ts" x="302" y="288">hands the model the full text,</text>
+      <text class="ts" x="302" y="304">all five steps</text>
+      <text class="tag" x="302" y="328">THIS TURN ONLY</text>
+    </g>
+    <g class="el" data-k="load win">
+      <path class="flow" d="M470,340 L470,362 L948,362"/>
+      <text class="ts" x="700" y="378" text-anchor="middle">the steps are now in the window</text>
+    </g>
+    <g class="el" data-k="load run"><path class="flow" d="M330,340 L330,398"/><text class="ts" x="338" y="374">steps 1–5</text></g>
+
+    <!-- 7 run -->
+    <g class="el" data-k="run">
+      <rect class="modelbox" x="290" y="400" width="200" height="110" rx="8"/>
+      <text class="tt" x="302" y="422">7 · Model runs it</text>
+      <text class="ts" x="302" y="442">follows steps 1 to 5, writes the card</text>
+      <text class="ts" x="302" y="458">step 5: stop before committing</text>
+      <text class="ts" x="302" y="474">result: the card exists,</text>
+      <text class="ts" x="302" y="490">no commit was made</text>
+    </g>
+    <g class="el" data-k="run ledger"><path class="flow" d="M490,455 L508,455"/></g>
+
+    <!-- 8 ledger -->
+    <g class="el" data-k="ledger">
+      <rect class="kvbox" x="510" y="400" width="420" height="110" rx="8"/>
+      <text class="tt" x="522" y="422">8 · Ledger</text>
+      <text class="tag" x="920" y="422" text-anchor="end">L2 · LEDGER</text>
+      <text class="mono" x="522" y="444">tool: skill · name: flight-card · permission: allow</text>
+      <text class="mono" x="522" y="460">steps loaded: 5 · turn: 3 · commit: none</text>
+      <text class="ts" x="522" y="482">the prompt on screen and this line prove the</text>
+      <text class="ts" x="522" y="498">skill ran; the model saying so does not</text>
+    </g>
+
+    <!-- f-hidden -->
+    <g class="el" data-k="f-hidden">
+      <path class="dash" d="M145,510 L145,558"/>
+      <text class="ts" x="153" y="540">never listed</text>
+      <rect class="kvbox" x="20" y="560" width="250" height="120" rx="8"/>
+      <text class="tt" x="32" y="582">Exit B · hidden</text>
+      <text class="ts" x="32" y="602">the name does not match the folder,</text>
+      <text class="ts" x="32" y="618">has a capital letter or a double</text>
+      <text class="ts" x="32" y="634">hyphen, or the header is broken:</text>
+      <text class="ts" x="32" y="650">OpenCode skips it; it is never listed</text>
+      <text class="tag" x="32" y="672">FIX: THE NAME OR THE HEADER</text>
+    </g>
+
+    <!-- f-leftover -->
+    <g class="el" data-k="f-leftover">
+      <path class="dash" d="M270,470 L280,470 L280,620 L288,620"/>
+      <text class="ts" x="286" y="552">still a copy</text>
+      <rect class="kvbox" x="290" y="560" width="270" height="120" rx="8"/>
+      <text class="tt" x="302" y="582">Exit C · leftover</text>
+      <text class="ts" x="302" y="602">the 5 steps are still in AGENTS.md,</text>
+      <text class="ts" x="302" y="618">which loads every turn; the model</text>
+      <text class="ts" x="302" y="634">follows that copy and never calls</text>
+      <text class="ts" x="302" y="650">the skill, so no prompt appears</text>
+      <text class="tag" x="302" y="672">FIX: DELETE IT, KEEP THE POINTER</text>
+    </g>
+
+    <!-- proof strip -->
+    <g class="el" data-k="gate ledger">
+      <rect class="box" x="580" y="560" width="350" height="120" rx="8"/>
+      <text class="tt" x="592" y="582">What proves each stage</text>
+      <text class="ts" x="592" y="602">disk: ls shows the folder and the file</text>
+      <text class="ts" x="592" y="618">index: the skill is in the skill tool's list</text>
+      <text class="ts" x="592" y="634">call: the prompt on screen, with ask set</text>
+      <text class="ts" x="592" y="650">load: the model quotes a step word for word</text>
+      <text class="ts" x="592" y="666">run: the card exists and nothing was committed</text>
+    </g>
+
+    <!-- context window -->
+    <g class="el" data-k="win">
+      <rect class="box" x="950" y="70" width="130" height="610" rx="8"/>
+      <text class="lab" x="960" y="92">Context window</text>
+      <text class="tag" x="960" y="666">THE BUDGET</text>
+    </g>
+    <g class="el" data-k="win"><rect class="stripe" x="958" y="104" width="114" height="30" rx="4"/><text class="ts" x="1015" y="124" text-anchor="middle">System prompt</text></g>
+    <g class="el" data-k="win user f-leftover">
+      <rect class="stripe" x="958" y="140" width="114" height="44" rx="4"/>
+      <text class="ts" x="1015" y="157" text-anchor="middle">AGENTS.md, full</text>
+      <text class="mono sm" x="1015" y="174" text-anchor="middle">1 pointer line</text>
+    </g>
+    <g class="el" data-k="win index">
+      <rect class="kvbox" x="958" y="190" width="114" height="68" rx="4"/>
+      <text class="ts" x="1015" y="206" text-anchor="middle">skill list</text>
+      <text class="mono sm" x="964" y="222">flight-card:</text>
+      <text class="mono sm" x="964" y="234">Produce a flight</text>
+      <text class="mono sm" x="964" y="246">card for a sortie…</text>
+    </g>
+    <g class="el" data-k="win user"><rect class="stripe" x="958" y="268" width="114" height="30" rx="4"/><text class="ts" x="1015" y="288" text-anchor="middle">User turn</text></g>
+    <g class="el" data-k="win decide"><rect class="stripe" x="958" y="304" width="114" height="42" rx="4"/><text class="ts" x="1015" y="320" text-anchor="middle">Tool call</text><text class="mono sm" x="1015" y="336" text-anchor="middle">skill(flight-card)</text></g>
+    <g class="el" data-k="win load"><rect class="stripe hl" x="958" y="352" width="114" height="44" rx="4"/><text class="ts" x="1015" y="369" text-anchor="middle">SKILL.md body</text><text class="mono sm" x="1015" y="386" text-anchor="middle">5 steps · this turn</text></g>
+    <g class="el" data-k="win run"><rect class="stripe" x="958" y="402" width="114" height="44" rx="4"/><text class="ts" x="1015" y="419" text-anchor="middle">Model output</text><text class="mono sm" x="1015" y="436" text-anchor="middle">card, no commit</text></g>
+    <g class="el" data-k="win">
+      <text class="ts" x="1015" y="500" text-anchor="middle">the next session</text>
+      <text class="ts" x="1015" y="516" text-anchor="middle">starts with only</text>
+      <text class="ts" x="1015" y="532" text-anchor="middle">the list again</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="player" id="player">
+    <div class="cap" aria-live="polite">
+      <div class="stepno" id="stepno">Step 0 of 11</div>
+      <h3 id="captitle"></h3>
+      <p id="captext"></p>
+      <div class="weeks" id="capweeks"></div>
+    </div>
+    <div class="controls">
+      <div class="btnrow">
+        <button id="prev" type="button" aria-label="Previous step">◀ Back</button>
+        <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
+      <p class="vnote">Arrow keys also step.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- ============ trigger ============ -->
+  <section class="panel wide" aria-labelledby="h-trig">
+    <div class="eyebrow">Steps 5 and 9, up close · the description is the trigger · E5</div>
+    <h2 id="h-trig">Will it trigger?</h2>
+    <p class="small">Edit the description or the request, then press Check. The page lowercases both, splits them into words, and counts the description words of four or more letters that also appear in the request ("this" and "repository" are skipped). Matches are highlighted in both strings. This is an illustrative word match, not the model's decision. The model reads the description as text; it has no matcher.</p>
+    <div class="twocol">
+      <label class="field">description (frontmatter)
+        <textarea id="desc" rows="4">Produce a flight card for a sortie in this repository. Use when asked to write, start, or file a flight card.</textarea>
+        <span class="count" id="desclen"></span>
+      </label>
+      <label class="field">user request
+        <input type="text" id="req" value="Start a flight card for sortie 7. Stop before committing.">
+        <span class="count">presets:</span>
+        <div class="btnrow" style="justify-content:flex-start">
+          <button type="button" class="mini preset-req">Start a flight card for sortie 7</button>
+          <button type="button" class="mini preset-req">Note down sortie 7</button>
+          <button type="button" class="mini preset-req">Summarize what happened last week</button>
+        </div>
+      </label>
+    </div>
+    <div class="ctrl"><button type="button" id="check" class="primary">Check</button><span class="verdict big" id="verdict" aria-live="polite"></span></div>
+    <div class="twocol">
+      <div><h3 class="sub">Description</h3><div class="match" id="m-desc"></div></div>
+      <div><h3 class="sub">Request</h3><div class="match" id="m-req"></div></div>
+    </div>
+    <p class="small" id="trignote" aria-live="polite"></p>
+  </section>
+
+  <!-- ============ frontmatter ============ -->
+  <section class="panel" aria-labelledby="h-fm">
+    <div class="eyebrow">Steps 2 and 10, up close · hidden skills · E5</div>
+    <h2 id="h-fm">Frontmatter check</h2>
+    <p class="small">The name must be 1 to 64 characters of lowercase letters and digits with single hyphens, and it must equal the directory name. A skill that fails any rule is never listed.</p>
+    <div class="twocol">
+      <label class="field">name<input type="text" id="fm-name" value="flight-card"></label>
+      <label class="field">directory<input type="text" id="fm-dir" value="flight-card"></label>
+    </div>
+    <div class="btnrow" style="justify-content:flex-start">
+      <button type="button" class="mini preset-fm">flight-card</button>
+      <button type="button" class="mini preset-fm">Flight Card</button>
+      <button type="button" class="mini preset-fm">flight--card</button>
+      <button type="button" class="mini preset-fm">flightcard</button>
+    </div>
+    <pre class="log" id="fm-log" aria-live="polite"></pre>
+  </section>
+
+  <!-- ============ bytes ============ -->
+  <section class="panel" aria-labelledby="h-bytes">
+    <div class="eyebrow">Steps 3 and 7, up close · what the window pays · E5 · Final</div>
+    <h2 id="h-bytes">Where the bytes go</h2>
+    <p class="small">Illustrative. A skill costs its description on every turn and its body only on the turns it is called. The same procedure in AGENTS.md costs its full length on every turn.</p>
+    <div class="ctrl stack">
+      <label for="bN">body N</label><input id="bN" type="range" min="400" max="3000" step="50" value="1200"><output id="bNo" for="bN">1,200</output>
+      <label for="bD">description D</label><input id="bD" type="range" min="40" max="300" step="5" value="110"><output id="bDo" for="bD">110</output>
+      <label for="bT">turns T</label><input id="bT" type="range" min="4" max="20" step="1" value="12"><output id="bTo" for="bT">12</output>
+      <label for="bC">calls C</label><input id="bC" type="range" min="0" max="12" step="1" value="2"><output id="bCo" for="bC">2</output>
+    </div>
+    <div class="stat" id="bytes" aria-live="polite"></div>
+    <svg class="bars" id="bbars" viewBox="0 0 520 96" role="img" aria-label="Two bars comparing characters loaded over the session: the skill path against the AGENTS.md path."></svg>
+  </section>
+</div>
+
+<section class="map" aria-labelledby="h-map">
+  <div class="eyebrow">In your sortie · from the folder to the clean git log</div>
+  <h2 id="h-map">Each stage has an actor, a window, and a proof</h2>
+  <div class="tablewrap">
+  <table class="t">
+    <thead><tr><th>Stage</th><th>Who acts</th><th>What is in the context window</th><th>What proves it</th></tr></thead>
+    <tbody>
+      <tr><td>Disk</td><td>You, by writing <code>.opencode/skills/flight-card/SKILL.md</code></td><td>Nothing yet</td><td class="m">ls .opencode/skills/flight-card</td></tr>
+      <tr><td>Index</td><td>The harness, at session start</td><td>The skill tool's description: name and description for every skill found</td><td>The skill appears in the tool description</td></tr>
+      <tr><td>Call</td><td>The model, on the turn it matches the request to the description</td><td>The user turn, AGENTS.md, the index line, and the tool call</td><td>The permission prompt under <code>permission.skill = "ask"</code></td></tr>
+      <tr><td>Load</td><td>The harness, on allow</td><td>The full SKILL.md body, as a tool result, for this turn</td><td>The model quotes a step verbatim</td></tr>
+      <tr><td>Run</td><td>The model, following steps 1 to 5</td><td>The body plus the model's own output</td><td>The flight card exists and no commit was made</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:10px">A skill keeps a procedure out of the way until it is needed, so the model reads the steps only on the turn it uses them, and follows them better than steps buried in a long instruction file. Under <code>allow</code> the call still happens but no prompt is shown, so the proof moves to the ledger and to the verbatim quote. Under <code>deny</code> the model is told the call was refused and must go on without the body.</p>
+</section>
+
+<div class="notes">
+  <section>
+    <h2>Where this is tested</h2>
+    <ul>
+      <li>10/22 in-class exercise, Probe 2: set <code>permission.skill</code> to <code>ask</code>, make the request, and photograph the prompt. The prompt is the proof that the skill was called.</li>
+      <li>E5 Sprint, "AGENTS.md and skills under budget": the procedure leaves AGENTS.md, one pointer line stays, and the 4,000-character budget holds.</li>
+      <li>Final System: the harness must act on the brief. A skill the model never calls is a procedure the system does not have.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Sources</h2>
+    <ol>
+      <li>OpenCode. <em>Skills</em>. <a href="https://opencode.ai/docs/skills/">https://opencode.ai/docs/skills/</a></li>
+      <li>OpenCode. <em>Permissions</em>. <a href="https://opencode.ai/docs/permissions/">https://opencode.ai/docs/permissions/</a></li>
+      <li>OpenCode. <em>Rules</em>. <a href="https://opencode.ai/docs/rules/">https://opencode.ai/docs/rules/</a></li>
+    </ol>
+  </section>
+</div>
+
+<div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Figures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Figure 15 · Skill on Demand · Fall 2026</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  /* ================= step-through player ================= */
+  const STEPS = [
+    {k:"*", t:"A skill is a procedure with a name", w:["E5","E8","Final"],
+     p:"OpenCode finds skill files on disk when a session starts. The model then sees only each skill's name and a short description. The full steps load on the turn the model calls the skill, and go away with that turn. This figure follows one skill, flight-card, from its folder to the turn it runs on, and ends with three ways it fails."},
+    {k:"disk", t:"A skill lives on disk in a named folder", w:["E5"],
+     p:"The file is .opencode/skills/flight-card/SKILL.md. The folder name is the skill's name. OpenCode also looks in .claude/skills/ and .agents/skills/, and in ~/.config/opencode/skills/ for every project. It looks upward from the working folder to the git root. The file has a short header and a body. The body here is five steps. Step 5 says stop before committing."},
+    {k:"disk", t:"The header is the contract", w:["E5"],
+     p:"The name in the header must match the folder name: lowercase letters, digits, and single hyphens, 1 to 64 characters. The description is 1 to 1,024 characters. These two lines are all the model sees until it calls the skill. So the description must use the words a user would say. Test a name in the Frontmatter check panel below."},
+    {k:"index win", t:"At session start only the list is in context", w:["E5"],
+     p:"OpenCode reads every SKILL.md it finds and makes a short list: each skill's name and description, nothing more. The list is in the context window on every turn, but one line of about 110 characters is cheap. A skill keeps a procedure out of the way until it is needed, so the model reads the steps only on the turn it uses them."},
+    {k:"user win", t:"The user asks", w:["E5","E8"],
+     p:"The user types: Start a flight card for sortie 7. Stop before committing. The request goes into the window as the user turn. AGENTS.md is there too, loaded in full as on every turn. In this repository it holds one pointer line: Flight cards: call the flight-card skill. The model now has the request, the pointer, and the list."},
+    {k:"decide win", t:"The model matches the request to a description and calls the skill", w:["E5","E8"],
+     p:"The model reads the request and the list as plain text. The description says use when asked to write, start, or file a flight card. The request says start a flight card. So the model calls the skill tool with the name flight-card. Nothing in OpenCode makes this choice; the model does. The Will it trigger panel below shows which words help."},
+    {k:"gate", t:"The permission prompt makes the call visible", w:["E5","10/22"],
+     p:"permission.skill in opencode.json can be allow, ask, or deny, per pattern. With ask, a prompt appears on screen naming the skill, and waits. Allow loads the steps. Deny refuses them, and the model carries on without them. The 10/22 exercise sets ask on purpose: the prompt on screen is the proof that the skill was called."},
+    {k:"load win", t:"The steps load for this turn only", w:["E5","E8"],
+     p:"On allow, OpenCode reads SKILL.md and hands the model the full text. The five steps are now in the window next to the request. They stay for the rest of this turn. They are not added to AGENTS.md, so the next session starts again with only the list. The proof that they loaded: the model quotes a step word for word."},
+    {k:"run ledger win", t:"The model follows the steps and stops where the skill says", w:["E8","Final"],
+     p:"The model works through steps 1 to 5. It states the design claim, lists the falsifiers, flies the sortie, records the results, and writes the ledger lines. Step 5 says stop before committing, so nothing is committed. The ledger records the call, the permission answer, and the turn. The proof is a flight card in the repository and a clean git log."},
+    {k:"f-never decide", t:"Failure: never called", w:["E5","Final"],
+     p:"The skill is on disk and in the list, but the model writes the card its own way and never calls it. The usual cause is a description that does not use the words the user says. Use when asked to write, start, or file a flight card names three verbs. Produces flight cards names none. Fix the description, then ask again."},
+    {k:"f-hidden disk index", t:"Failure: hidden", w:["E5"],
+     p:"The skill never makes the list. The name in the header does not match the folder, has a capital letter or a double hyphen, or the header is broken. OpenCode skips the file, so the model cannot call what it cannot see. Check with ls for the folder, and check the skill tool's list for the entry. The panel below runs the name rules."},
+    {k:"f-leftover disk win", t:"Failure: a leftover copy in AGENTS.md", w:["E5","Final"],
+     p:"The five steps still sit in AGENTS.md, which loads on every turn. The model follows that copy and never calls the skill, so no prompt appears. Delete the copy. Leave one pointer line: Flight cards: call the flight-card skill. The pointer costs about 45 characters per turn out of the 4,000 budget. The steps cost their full length only when called."}
+  ];
+
+
+  const fig = $("fig");
+  const els = [...fig.querySelectorAll(".el")];
+  let cur = 0;
+  const dots = $("dots");
+  STEPS.forEach((s,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="dot";
+    b.setAttribute("aria-label","Step "+i+": "+s.t);
+    b.addEventListener("click",()=>go(i));
+    dots.appendChild(b);
+  });
+  function light(keys){
+    fig.classList.toggle("focus", !!keys);
+    els.forEach(e=>{
+      const ek=(e.dataset.k||"").split(" ");
+      e.classList.toggle("on", !!keys && ek.some(x=>keys.includes(x)));
+    });
+  }
+  function render(){
+    const s=STEPS[cur];
+    light(s.k==="*" ? null : s.k.split(" "));
+    $("stepno").textContent="Step "+cur+" of "+(STEPS.length-1);
+    $("captitle").textContent=s.t;
+    $("captext").textContent=s.p;
+    $("capweeks").innerHTML=s.w.map(w=>'<span class="chip">'+w+'</span>').join("");
+    [...dots.children].forEach((d,i)=>{ if(i===cur) d.setAttribute("aria-current","step"); else d.removeAttribute("aria-current"); });
+    $("prev").disabled=cur===0; $("next").disabled=cur===STEPS.length-1;
+  }
+  function go(i){ cur=Math.max(0,Math.min(STEPS.length-1,i)); render(); }
+  $("prev").addEventListener("click",()=>go(cur-1));
+  $("next").addEventListener("click",()=>go(cur+1));
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea")) return;
+    if (e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); }
+  });
+  render();
+
+  /* ================= will it trigger ================= */
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function toks(t){ return (t.toLowerCase().match(/[a-z0-9]+/g)||[]); }
+  function markup(text, hits){
+    return esc(text).replace(/[A-Za-z0-9]+/g, w => hits.has(w.toLowerCase()) ? "<mark>"+w+"</mark>" : w);
+  }
+  function check(){
+    const d=$("desc").value, r=$("req").value;
+    const SKIP=new Set(["this","repository"]);
+    const rset=new Set(toks(r));
+    const hits=new Set(toks(d).filter(w=>w.length>=4 && !SKIP.has(w) && rset.has(w)));
+    const n=hits.size;
+    const v = n>=2 ? "likely called" : n===1 ? "weak" : "unlikely";
+    $("verdict").textContent=v;
+    $("verdict").className="verdict big "+(n>=2?"yes":"no");
+    $("m-desc").innerHTML=markup(d,hits);
+    $("m-req").innerHTML=markup(r,hits);
+    $("trignote").textContent = n+" content word"+(n===1?"":"s")+" of four or more letters shared"+(n?": "+[...hits].join(", "):"")+". This is an illustrative word match, not the model's decision. The model reads the description as text; it has no matcher.";
+    $("desclen").textContent = d.length+" characters (1 to 1,024 allowed)";
+  }
+  $("check").addEventListener("click",check);
+  $("desc").addEventListener("input",()=>{ $("desclen").textContent=$("desc").value.length+" characters (1 to 1,024 allowed)"; });
+  $("req").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } });
+  document.querySelectorAll(".preset-req").forEach(b=>b.addEventListener("click",()=>{ $("req").value=b.textContent; check(); }));
+  check();
+
+  /* ================= frontmatter check ================= */
+  function fm(){
+    const name=$("fm-name").value, dir=$("fm-dir").value;
+    const rules=[
+      ["1 to 64 characters", name.length>=1 && name.length<=64],
+      ["lowercase letters and digits with single hyphens", /^[a-z0-9]+(-[a-z0-9]+)*$/.test(name)],
+      ["equals the directory name", name===dir]
+    ];
+    const ok=rules.every(r=>r[1]);
+    $("fm-log").innerHTML = rules.map(r=>'<span class="'+(r[1]?'pass':'fail')+'">'+(r[1]?'PASS':'FAIL')+'</span>  '+r[0]).join("\n")
+      + "\n" + (ok ? '<span class="pass">listed: the index line reads "'+esc(name)+': …"</span>' : '<span class="fail">hidden: the harness skips '+esc(dir)+'/SKILL.md; no index line</span>');
+  }
+  ["fm-name","fm-dir"].forEach(id=>$(id).addEventListener("input",fm));
+  document.querySelectorAll(".preset-fm").forEach(b=>b.addEventListener("click",()=>{ $("fm-name").value=b.textContent; $("fm-dir").value="flight-card"; fm(); }));
+  fm();
+
+  /* ================= where the bytes go ================= */
+  const fmt=n=>n.toLocaleString("en-US");
+  function bytes(){
+    const N=+$("bN").value, D=+$("bD").value, T=+$("bT").value;
+    $("bC").max=T; if (+$("bC").value>T) $("bC").value=T;
+    const C=+$("bC").value;
+    $("bNo").textContent=fmt(N); $("bDo").textContent=fmt(D); $("bTo").textContent=T; $("bCo").textContent=C;
+    const idx=D*T, body=N*C, skill=idx+body, agents=N*T;
+    $("bytes").innerHTML =
+      'index cost   D × T = '+fmt(D)+' × '+T+' = <b>'+fmt(idx)+'</b> chars\n'+
+      'body cost    N × C = '+fmt(N)+' × '+C+' = <b>'+fmt(body)+'</b> chars\n'+
+      'skill total          = <b>'+fmt(skill)+'</b> chars over the session\n'+
+      'in AGENTS.md N × T = '+fmt(N)+' × '+T+' = <b>'+fmt(agents)+'</b> chars\n'+
+      (skill<agents ? 'the skill saves '+fmt(agents-skill)+' chars ('+Math.round(100*(1-skill/agents))+'%)' : 'no saving: called on '+C+' of '+T+' turns, the body costs as much as AGENTS.md would');
+    $("bytes").style.whiteSpace="pre-wrap";
+    const W=520,L=110,pw=W-L-90, mx=Math.max(skill,agents,1), X=v=>L+(v/mx)*pw;
+    const bar=(y,v,cls,lbl)=>'<text class="lbl" x="'+(L-8)+'" y="'+(y+15)+'" text-anchor="end">'+lbl+'</text><rect class="'+cls+'" x="'+L+'" y="'+y+'" width="'+(X(v)-L).toFixed(1)+'" height="22"><title>'+lbl+': '+fmt(v)+' characters</title></rect><text x="'+(X(v)+5).toFixed(1)+'" y="'+(y+15)+'">'+fmt(v)+'</text>';
+    $("bbars").innerHTML = bar(14,skill,"ba","skill") + bar(52,agents,"bb","AGENTS.md") + '<text x="'+(L+pw/2)+'" y="92" text-anchor="middle">characters loaded into the window over T turns (illustrative)</text>';
+  }
+  ["bN","bD","bT","bC"].forEach(id=>$(id).addEventListener("input",bytes));
+  bytes();
+})();
+</script>
+
+</body></html>

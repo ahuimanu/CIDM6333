@@ -196,7 +196,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-chart">
     <div class="eyebrow">The counts, to scale · E4 slide 3</div>
     <h2 id="h-chart">What each new tool costs</h2>
-    <p class="small">For the current N, the chart plots the integration code the field maintains as the number of tools grows. The counts follow the deck's rule exactly. Each line counts as one unit of work, although real adapters differ in size.</p>
+    <p class="small">For the current N, the chart plots the integration code the field maintains as the number of tools grows. The counts follow N×M and N+M exactly. Each line counts as one unit of work, although real adapters differ in size.</p>
     <svg class="chart" id="chart" viewBox="0 0 520 280" role="img" aria-label="Line chart of pieces of integration code against the number of tools M, for direct integrations (N times M) and for MCP (N plus M)."></svg>
     <div class="legend"><span><i class="sw" style="background:var(--s-a)"></i>direct, N×M adapters</span><span><i class="sw" style="background:var(--s-b)"></i>MCP, N+M clients and servers</span></div>
     <div class="stat" id="chartstat"></div>
@@ -211,14 +211,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Transport independence.</b> The same server runs over a pipe on your laptop and over HTTP on a host you do not control.</li>
     </ul>
     <p>Your E3 tool had a schema and a permission gate. It had none of these three, because nothing outside your process could ask it anything.</p>
-    <blockquote>A protocol is a contract that strangers can discover.<cite>E4 deck, slide 13</cite></blockquote>
+    <blockquote>A protocol is a contract that strangers can discover.<cite>E4 lecture, slide 13</cite></blockquote>
   </section>
 </div>
 
 <section class="panel wide" style="margin-top:28px" aria-labelledby="h-arch">
   <div class="eyebrow">Hosts, clients, servers · E4 slide 4</div>
   <h2 id="h-arch">Who controls each primitive</h2>
-  <p class="small">The deck sorts the three server primitives by who controls them. Pick a primitive to trace its path from its controller to the server, or pick Sortie 4 to see one server called by two clients.</p>
+  <p class="small">The E4 lecture sorts the three server primitives by who controls them. Pick a primitive to trace its path from its controller to the server, or pick Sortie 4 to see one server called by two clients.</p>
   <div class="pick" role="group" aria-label="Highlight" id="archpick">
     <button type="button" data-mode="all" aria-pressed="true">All</button>
     <button type="button" data-mode="t" aria-pressed="false">Tools</button>
@@ -271,7 +271,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <section class="map" aria-labelledby="h-wire">
   <div class="eyebrow">The wire after 2026-07-28 · E4 slide 5</div>
   <h2 id="h-wire">A stateless core</h2>
-  <p class="small" style="max-width:80ch">The revision that went to general availability on July 28, 2026 rewrote the wire, and its headline is statelessness. The deck gives the rationale as infrastructure: any request can land on any instance behind a round-robin balancer. The table is the deck's.</p>
+  <p class="small" style="max-width:80ch">The revision that went to general availability on July 28, 2026 rewrote the wire, and its headline is statelessness. The rationale is infrastructure: any request can land on any instance behind a round-robin balancer.</p>
   <div class="tablewrap">
   <table>
     <thead><tr><th>Before (2025-11-25)</th><th>After (2026-07-28)</th><th>Consequence for your server</th></tr></thead>
@@ -302,12 +302,12 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
           <li>If <code>resultType</code> is <code>input_required</code>, the client retries the same request with <code>inputResponses</code></li>
         </ol></div>
       </div>
-      <p class="small">The sequences are this figure's arrangement of the deck's table. The deck marks the protocol revision of the lab's Python SDK for verification; record yours on the card's SUBSTRATE line.</p>
+      <p class="small">The protocol revision of the lab's Python SDK is not confirmed; record yours on the card's SUBSTRATE line.</p>
     </section>
     <section class="panel" aria-labelledby="h-dep">
       <h2 id="h-dep" style="font-size:22px">Deprecated, and beyond the core</h2>
       <p><b>Deprecated in 2026-07-28.</b> Roots, sampling, and logging are deprecated with a twelve-month window. Pass paths as tool arguments, call the model API directly, and log to stderr or OpenTelemetry. The HTTP+SSE transport is deprecated; use Streamable HTTP. Do not build a new server on a deprecated feature, even when a 2025 tutorial teaches it.</p>
-      <p><b>Extensions and tasks.</b> Both capability sets carry an <code>extensions</code> field. Long-running work moved to the official tasks extension (<code>tasks/get</code> polling, <code>tasks/update</code> for input). The deck's advice is to adopt an extension only when the core cannot express the need.</p>
+      <p><b>Extensions and tasks.</b> Both capability sets carry an <code>extensions</code> field. Long-running work moved to the official tasks extension (<code>tasks/get</code> polling, <code>tasks/update</code> for input). Adopt an extension only when the core cannot express the need.</p>
     </section>
   </div>
 </section>
@@ -337,11 +337,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <li><b>Dec 2025</b> Donated to the Agentic AI Foundation (Linux Foundation).</li>
         <li><b>Jul 2026</b> 2026-07-28 GA: stateless core, MRTR, deprecation policy.</li>
       </ul>
-      <p class="small">A healthy protocol ecosystem needs, in the deck's list, a versioning and deprecation policy, independent SDKs (TypeScript, Python, Go, C#; Rust in beta), a server registry with provenance, and governance that no single vendor holds. A registry without provenance is a supply chain, which E5 takes up with SmartLoader.</p>
+      <p class="small">A healthy protocol ecosystem needs a versioning and deprecation policy, independent SDKs (TypeScript, Python, Go, C#; Rust in beta), a server registry with provenance, and governance that no single vendor holds. A registry without provenance is a supply chain, which E5 takes up with SmartLoader.</p>
     </section>
     <section class="panel" aria-labelledby="h-human">
       <h2 id="h-human" style="font-size:22px">Where is the human?</h2>
-      <blockquote>In the host, and only in the host. The protocol puts consent in the host: the client must get the human's approval before a tool runs, and the server must never assume it. The wire carries requests, not permissions.<cite>E4 deck, slide 8</cite></blockquote>
+      <blockquote>In the host, and only in the host. The protocol puts consent in the host: the client must get the human's approval before a tool runs, and the server must never assume it. The wire carries requests, not permissions.<cite>E4 lecture, slide 8</cite></blockquote>
       <p>Read as a Design Analysis, MCP answers the N×M problem with a client–server protocol over JSON-RPC, three server primitives, and negotiated capabilities. The alternatives were a plugin store, per-vendor function-calling formats, or a library. The consequences are adoption across hosts and a security surface that did not exist while tools stayed in-process. MCP places the human outside the wire, and E5 studies what happens when the host's trust is misplaced.</p>
     </section>
   </div>
@@ -366,7 +366,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-ref">
     <div class="eyebrow">Reference design · gzkit · E4 slides 9–10</div>
     <h2 id="h-ref">Why gzkit refused MCP, and the server one tier up</h2>
-    <blockquote>No external protocol may become a prerequisite for core governance operations.<cite>gzkit, docs/governance/storage-tiers.md, as quoted in the E4 deck</cite></blockquote>
+    <blockquote>No external protocol may become a prerequisite for core governance operations.<cite>gzkit, docs/governance/storage-tiers.md, as quoted in the E4 lecture</cite></blockquote>
     <p class="small">gzkit's governance verbs (<code>gz status</code>, <code>gz validate</code>, the ledger, receipts) run on the standard library over files. A kit that needed a running server to say what is attested would make attestation depend on availability, so the ledger must stay readable with <code>cat</code>. The campaign review still scored MCP as absent and un-designed; a refusal counts as a decision only when someone writes it down with its alternatives.</p>
     <p class="small">The student project adds a governance server above the core. Tools: <code>gz_status()</code> and <code>gz_validate(scope)</code>, read-class only. Resources: <code>ledger://events?tail=N</code>, <code>attest://&lt;artifact&gt;</code>, <code>receipts://&lt;id&gt;</code>. Prompt: <code>/what-is-attested</code>. The tier boundary has its own falsifier: kill the server and run <code>gz validate</code>. If validation fails, the server became a prerequisite and the doctrine is broken.</p>
   </section>
@@ -380,7 +380,6 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>A host opens one client per server at run time, so live connections can still number N×M. The count that falls to N+M is the code someone writes and maintains.</li>
       <li>The figure does not count the specification or the SDKs, which every host and server shares.</li>
       <li>Authentication, scope, and least privilege belong to E5, along with tool poisoning, resource injection, and the confused deputy.</li>
-      <li>The deck marks the storage-tiers quotation for verification against the repository.</li>
     </ul>
   </section>
   <section>
@@ -422,9 +421,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"lh0 le-h0", t:"One host writes one adapter per tool", w:["E4"],
      p:"Before November 2024, a host that wanted a tool wrote its own adapter for it. The first host on the left draws M lines, one per tool. Each line is code that a team writes, tests, and maintains."},
     {k:"lt0 le-t0", t:"One tool sits at the end of N adapters", w:["E4"],
-     p:"The first tool on the left sits at the end of N lines, one for each host that wanted it. The deck says the tools wrote adapters too, one per host. Either way, every host and tool pair needed its own integration."},
+     p:"The first tool on the left sits at the end of N lines, one for each host that wanted it. The E4 lecture adds that the tools wrote adapters too, one per host. Either way, every host and tool pair needed its own integration."},
     {k:"le lh lt lcount", t:"N×M: the cost is a product", w:["E4"],
-     p:"With N hosts and M tools, the field maintained N×M adapters. Add one host with the slider and the left graph gains M lines. In the deck's words, the problem was combinatorial before it was technical."},
+     p:"With N hosts and M tools, the field maintained N×M adapters. Add one host with the slider and the left graph gains M lines. In the E4 lecture's words, the problem was combinatorial before it was technical."},
     {k:"rh rc bar", t:"Each host writes one client", w:["E4"],
      p:"With a protocol, each host implements one client, the connector inside the host that speaks MCP. At run time the host opens one client per server it uses, but the team writes the client code once. N hosts cost N pieces of code."},
     {k:"rs rsn bar", t:"Each tool is served once", w:["E4"],
@@ -531,7 +530,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   /* ---------- architecture ---------- */
   const arch=$("arch"), archEls=[...arch.querySelectorAll(".el")];
   const ARCH = {
-    all:"The human, the model, and the host application all sit in the host. Each host runs one client per server, and the client speaks JSON-RPC 2.0 to the server. The server declares three primitives, and the deck sorts them by who controls each one. The human sits in the host, and the server never sees the human.",
+    all:"The human, the model, and the host application all sit in the host. Each host runs one client per server, and the client speaks JSON-RPC 2.0 to the server. The server declares three primitives, sorted by who controls each one. The human sits in the host, and the server never sees the human.",
     t:"Tools are model-controlled. The model chooses to call read_note, the host may gate the call first, and the client sends tools/call. A tool is declared with a name, a description, a JSON Schema for input, and optionally one for output. This is E3's contract on the wire, and the server logs every call.",
     r:"Resources are application-controlled. The server exposes data by URI, here ledger://events, the last fifty ledger events. The host application decides which resources enter the model's context and when. A resource is content, so E5 treats a resource that carries an instruction as an attack.",
     p:"Prompts are user-controlled. The server offers a reusable template with arguments, and the host surfaces it as a slash command or a menu item. The human picks it. The e3-tools server in this Evolution offers no prompt; /what-is-attested comes from the governance-server project.",

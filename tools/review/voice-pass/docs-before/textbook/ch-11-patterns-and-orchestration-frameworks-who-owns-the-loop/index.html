@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>11. Patterns and Orchestration Frameworks: Who Owns the Loop?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Chapter 11</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>11. Patterns and Orchestration Frameworks: Who Owns the Loop?</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e2-patterns-frameworks/">E2</a> <span class="small">(build)</span></p><p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-11">this chapter's entries in the reading list</a></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E2. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Implement the five workflow patterns and the agent pattern.</li>
+<li>Choose an orchestration framework and record the decision as an ADR with alternatives and consequences.</li>
+<li>Explain each framework's theory of control.</li>
+</ul>
+<h2>Outline</h2>
+<h3>11.1 The patterns</h3>
+<ul>
+<li>Prompt chaining; routing; parallelization (sectioning, voting); orchestrator–workers; evaluator–optimizer; the agent. When each applies; the "keep it simple" advice.</li>
+</ul>
+<h3>11.2 Frameworks as theories of control</h3>
+<ul>
+<li>Claude Agent SDK (vendor owns the loop); OpenAI Agents SDK (handoffs, guardrails); ADK (hierarchy, A2A); Pydantic AI (types as governance); LangGraph (you own every edge); none/stdlib (the reference design's posture).</li>
+</ul>
+<h3>11.3 Writing ADR-1</h3>
+<ul>
+<li>Intent, decision, consequences (positive and negative), alternatives, decomposition scorecard, feature checklist. ADRs before code; after is post-hoc rationalization.</li>
+</ul>
+<h3>11.4 Refactoring the loop into a pattern</h3>
+<ul>
+<li>Worked: turn the E1 loop into orchestrator–workers or evaluator–optimizer without changing the tool layer.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LangChain → LangGraph</td>
+<td>2022→24</td>
+<td>Chains became graphs with state</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>Pydantic AI</td>
+<td>2024–25</td>
+<td>Typed outputs</td>
+<td>Tools</td>
+</tr>
+<tr>
+<td>AutoGen / CrewAI / MetaGPT</td>
+<td>2023</td>
+<td>Role orchestration</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>OpenAI Agents SDK / Claude Agent SDK / ADK</td>
+<td>2025</td>
+<td>Vendor SDKs</td>
+<td>Runtime</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p><code>gz plan create --kind feature --semver --lane</code>, the decomposition scorecard, forcing functions (pre-mortem, WWHTBT, constraint archaeology). ADR-0.0.2 (argparse over click; "popularity is not rationale") as the model ADR.</p>
+<h2>Readings</h2>
+<ul>
+<li>OpenAI, "A Practical Guide to Building Agents."</li>
+<li>gzkit <code>docs/examples/guide-adr.md</code>; ADR-0.0.2.</li>
+<li>Sprint and Drift, "Enthusiasm Is All You Need."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 2 (center) — DESIGN CLAIM: the same task runs under two patterns with identical tool traces and a measurable difference in cost or quality that the ADR predicted. FALSIFIER: the ADR's predicted consequence does not appear in the evidence.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Write ADR-1. Have a peer red-team it with the ten challenges (So what? Scope, Alternative, Dependency, Gold standard, Timeline, Evidence, Consumer, Regression, Parity).</li>
+</ol><hr><p><a href="../ch-10-building-the-loop-perceive-reason-act-halt/">◀ 10. Building the Loop: Perceive, Reason, Act, Halt</a> &nbsp;·&nbsp; <a href="../ch-12-tools-as-contracts-schemas-permissions-hooks-recovery/">12. Tools as Contracts: Schemas, Permissions, Hooks, Recovery ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

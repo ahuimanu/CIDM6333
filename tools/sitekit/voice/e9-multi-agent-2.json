@@ -161,7 +161,7 @@
  "RouteLLM (Ong et al., 2024): 85% lower cost on MT Bench at 95% of GPT-4's quality. FrugalGPT (Chen, Zaharia, & Zou, 2023): up to 98% lower cost. Your route table is the small version.": "RouteLLM (Ong et al., 2024): 85% lower cost on MT Bench at 95% of GPT-4's quality. FrugalGPT (Chen, Zaharia, & Zou, 2023): up to 98% lower cost. Your route table is the small version.",
  "Task class": "Task class",
  "Tier": "Tier",
- "Example model (verify)": "Example model (verify)",
+ "Example model (verify)": "Example model",
  "Listed price in / out per 1M tokens": "Listed price in / out per 1M tokens",
  "Why this tier": "Why this tier",
  "Classify, extract, format": "Classify, extract, format",

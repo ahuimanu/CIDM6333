@@ -387,7 +387,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel wide" aria-labelledby="h-sim">
     <div class="eyebrow">Steps 5–7, up close · Flight Card 6, test points 1–2</div>
     <h2 id="h-sim">Fourteen turns, one budget line, four moves</h2>
-    <p class="small">Each bar is one call: what the window held on that turn, by category. The loop logs a budget record after every call, and when a turn's total (in + out) crosses 80% of the declared budget, it compacts before the next turn. Apply the deck's four moves in order, cheapest first. The dashed outline is the same session with no compaction. <b>All token figures are illustrative</b>; one session's real counts come from your provider's usage fields.</p>
+    <p class="small">Each bar is one call: what the window held on that turn, by category. The loop logs a budget record after every call, and when a turn's total (in + out) crosses 80% of the declared budget, it compacts before the next turn. Apply the four moves in order, cheapest first. The dashed outline is the same session with no compaction. <b>All token figures are illustrative</b>; one session's real counts come from your provider's usage fields.</p>
     <div class="ctrl"><span>Compaction moves applied</span>
       <div class="seg" role="group" aria-label="Compaction moves applied" id="lvl">
         <button type="button" data-l="0" aria-pressed="true">None</button>
@@ -418,15 +418,15 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="eyebrow">Reference design · gzkit · the 258K exhaustion (E5, revisited in E6)</div>
     <h2 id="h-258">The instruction surface grew without a budget</h2>
     <div class="big">
-      <div><b>~258K</b><span>tokens consumed before the first user turn (Codex session) [verify]</span></div>
-      <div><b>4,000</b><span>characters: the budget your 09/17 AGENTS.md was written under</span></div>
+      <div><b>~258K</b><span>tokens consumed before the first user turn (Codex session)</span></div>
+      <div><b>4,000</b><span>characters: the budget your earlier AGENTS.md was written under</span></div>
       <div><b>~100</b><span>lines: OpenAI's AGENTS.md, Feb 2026, for comparison</span></div>
     </div>
     <div class="scroller"><svg class="hbar" id="hbar" viewBox="0 0 640 150" role="img" aria-label="Horizontal bars drawn to scale: about 258 thousand tokens of startup context against about one thousand tokens for a 4,000-character AGENTS.md."></svg></div>
-    <p class="small">Drawn to scale. The second bar converts 4,000 characters to tokens with the deck's characters ÷ 4 rule, so it is an estimate, about 1,000 tokens. OpenAI's ~100 lines has no token count in the deck and is not drawn.</p>
+    <p class="small">Drawn to scale. The second bar converts 4,000 characters to tokens with the characters ÷ 4 rule, so it is an estimate, about 1,000 tokens. OpenAI's ~100 lines has no token count and is not drawn.</p>
     <p><b>The incident.</b> The rendered instruction surface, AGENTS.md plus imported doctrine, grew until a Codex session's startup context was on the order of 258K tokens before the first user turn. The symptoms were compaction on turn one, rules near the end of the file ignored, and a harness that could not hold the task and the rules at once. The file had become an encyclopedia, which is the shape ADR-0.0.54 rejects.</p>
     <p><b>The rule that replaced it.</b> Map, not encyclopedia (ADR-0.0.54). The file states where each kind of truth lives and what must hold on every turn. The repository declares a budget and validates it (<code>gz validate --instructions-files-budget</code>). Procedures move to skills, enforcement moves to hooks, and derivable facts are deleted. The budget is measured by what the harness loads at startup, not by the file's length on disk.</p>
-    <p class="small">The deck flags this case for checking: verify the figure, the harness, and the date against the insights corpus. OpenAI's team reached the same rule from the other direction, about a hundred lines used as a map. Your E5 Sprint re-measured the 09/17 file the same way, by what the harness loaded.</p>
+    <p class="small">OpenAI's team reached the same rule from the other direction, about a hundred lines used as a map. Your E5 Sprint re-measured that file the same way, by what the harness loaded.</p>
   </section>
 
   <!-- ===== progressive disclosure ===== -->
@@ -467,8 +467,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>L3 derived</td><td>Views computed from L1 and L2: status pages, summaries, frontmatter, markers, on-screen counters</td><td><code>status.md</code> · the compaction summary · a drafted handoff · the TUI's token counter</td><td>Regenerable; can never block a gate</td></tr>
       </tbody>
     </table></div>
-    <blockquote>Frontmatter can lie; the ledger is the truth.<cite>gzkit state doctrine, docs/governance/state-doctrine.md (ADR-0.0.9) [verify path and ADR number]</cite></blockquote>
-    <p class="small">Precedence runs L2 &gt; L1 &gt; L3. A compaction summary is L3, so it may inform the next turn and it may not overrule the ledger. A handoff your agent drafted is L3 until you check it against the ledger. OpenCode's session totals add every turn's cache reads (issue #30649), so its counter may be a lifetime sum, while the window is one call's input [verify on your version].</p>
+    <blockquote>Frontmatter can lie; the ledger is the truth.<cite>gzkit state doctrine, docs/governance/state-doctrine.md (ADR-0.0.9)</cite></blockquote>
+    <p class="small">Precedence runs L2 &gt; L1 &gt; L3. A compaction summary is L3, so it may inform the next turn and it may not overrule the ledger. A handoff your agent drafted is L3 until you check it against the ledger. OpenCode's session totals add every turn's cache reads (issue #30649), so its counter may be a lifetime sum, while the window is one call's input. Check this on your version.</p>
   </section>
 </div>
 
@@ -499,7 +499,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2>What the figure leaves out</h2>
     <ul>
       <li>Prompt caching. A stable prefix is cheaper to resend, and a compaction rebuilds the cache; Figure 01 covers the bill.</li>
-      <li>Codex's server-side compaction, which returns an encrypted item the client cannot read, and Cursor's dynamic context discovery, which moves long outputs to files. Both are in the deck's teardowns.</li>
+      <li>Codex's server-side compaction, which returns an encrypted item the client cannot read, and Cursor's dynamic context discovery, which moves long outputs to files. Both are in the lecture's teardowns.</li>
       <li>The simulation folds the skill listing into the instruction-files segment, counts the keep list with history, and counts the re-seeded ledger tail with retrieved notes. Real summaries vary in size; this one is fixed.</li>
       <li>Field names differ by provider. OpenAI-compatible endpoints return prompt_tokens and completion_tokens; Anthropic's API returns input_tokens and output_tokens with cache fields counted separately, so a naive sum undercounts.</li>
       <li>Why long windows degrade: Chroma tested 18 models in July 2025 and all grew less reliable as input grew, and Liu et al. (2024) found accuracy lowest in the middle of a long input.</li>
@@ -548,7 +548,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"you skills", t:"You write the instruction files and the skills", w:["E5","E6"],
      p:"AGENTS.md, CLAUDE.md, and rules grow with every line you add, and imports load in full. They reload from disk after compaction. Skill descriptions sit in the window while a skill's body waits until it is invoked. After /compact, Claude Code does not reload the skill listing, and it re-injects invoked skill bodies at 5,000 tokens each at most."},
     {k:"hist", t:"You and the model write the history", w:["E1","E6"],
-     p:"Every turn adds your message and the model's reply. History is the row that compaction replaces with one structured summary. A rule you typed in chat on turn three becomes whatever the summarizer chose to write about it. The deck calls this mistake the chat is the memory, failure mode #5, correction fails."},
+     p:"Every turn adds your message and the model's reply. History is the row that compaction replaces with one structured summary. A rule you typed in chat on turn three becomes whatever the summarizer chose to write about it. The lecture calls this mistake the chat is the memory, failure mode #5, correction fails."},
     {k:"tools ret", t:"The tools and your code fill the rest", w:["E3","E6","E7"],
      p:"Tool results grow with every call, and one log file can be tens of thousands of tokens. After /compact in Claude Code the full outputs are gone, and up to five recently modified files are re-read. Retrieved memory and notes are whatever your code chose to load, and only your code reloads them. Codex and OpenCode publish no such list, so the lab measures theirs."},
     {k:"call rec ledger", t:"One budget record per turn", w:["E6","E11"],
@@ -752,8 +752,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       s+='<line class="'+(v?'grid':'axis')+'" x1="'+x(v).toFixed(1)+'" x2="'+x(v).toFixed(1)+'" y1="'+T+'" y2="118"/>';
       s+='<text x="'+x(v).toFixed(1)+'" y="132" text-anchor="middle">'+(v? (v/1000)+'K':'0')+'</text>';
     }
-    s+='<rect x="'+L+'" y="24" width="'+(x(258000)-L).toFixed(1)+'" height="26" rx="3" style="fill:var(--s-b)"><title>~258,000 tokens before the first user turn (Codex session) [verify]</title></rect>';
-    s+='<text class="lbl" x="'+(L+8)+'" y="66">~258K tokens: startup context of one Codex session, before turn one [verify]</text>';
+    s+='<rect x="'+L+'" y="24" width="'+(x(258000)-L).toFixed(1)+'" height="26" rx="3" style="fill:var(--s-b)"><title>~258,000 tokens before the first user turn (Codex session)</title></rect>';
+    s+='<text class="lbl" x="'+(L+8)+'" y="66">~258K tokens: startup context of one Codex session, before turn one</text>';
     s+='<rect x="'+L+'" y="76" width="'+Math.max(2,x(1000)-L).toFixed(1)+'" height="26" rx="1" style="fill:var(--s-a)"><title>4,000 characters ≈ 1,000 tokens (characters ÷ 4 estimate)</title></rect>';
     s+='<text class="lbl" x="'+(L+10)+'" y="94">≈1K tokens: a 4,000-character AGENTS.md (÷ 4 estimate)</text>';
     s+='<text x="'+(L+pw/2)+'" y="148" text-anchor="middle">tokens loaded before the first user turn</text>';

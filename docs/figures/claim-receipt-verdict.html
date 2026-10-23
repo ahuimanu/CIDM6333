@@ -357,7 +357,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
       </div>
       <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
-      <p class="vnote">Arrow keys also step. Receipt values are the deck's worked example.</p>
+      <p class="vnote">Arrow keys also step. Receipt values are the E9 lecture's worked example.</p>
     </div>
   </div>
 </div>
@@ -367,7 +367,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel wide" aria-labelledby="h-mast">
     <div class="eyebrow">Interaction 1 · Cemri et al. (2025) · E9 slides 4, 13, 14</div>
     <h2 id="h-mast">Fourteen ways a multi-agent system fails</h2>
-    <p class="small">The MAST taxonomy sorts 1,642 annotated traces from seven frameworks into three categories and fourteen modes. Each bar is the mode's share of failures in MAST-Data, all on one scale. Select a mode to see what the deck says about it and which part of your build catches it.</p>
+    <p class="small">The MAST taxonomy sorts 1,642 annotated traces from seven frameworks into three categories and fourteen modes. Each bar is the mode's share of failures in MAST-Data, all on one scale. Select a mode to see what the E9 lecture says about it and which part of your build catches it.</p>
     <div class="namerow">
       <span class="small">gzkit adds two names the paper does not use:</span>
       <button type="button" class="gzname" data-g="sl" aria-pressed="false">Summary laundering</button>
@@ -375,14 +375,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <div class="mast" id="mast"></div>
     <div class="detail" id="mdetail" aria-live="polite"></div>
-    <p class="small">Prevalence from the paper's HTML (v3, 26 Oct 2025). Category totals are the deck's sums of the paper's figures. Human inter-annotator agreement κ = 0.88; the paper's LLM annotator κ = 0.77 against experts. Where the deck says nothing about a single mode, the panel says so and gives the category's fix location.</p>
+    <p class="small">Prevalence from the paper's HTML (v3, 26 Oct 2025). Category totals are sums of the paper's figures. Human inter-annotator agreement κ = 0.88; the paper's LLM annotator κ = 0.77 against experts. Where the lecture says nothing about a single mode, the panel says so and gives the category's fix location.</p>
   </section>
 
   <!-- ===== ten-deep chain ===== -->
   <section class="panel wide" aria-labelledby="h-chain">
     <div class="eyebrow">Interaction 2 · Reference design · 2026-05-24 · E9 slide 20</div>
     <h2 id="h-chain">The ten-deep chain: how a summary becomes a fact</h2>
-    <p class="small">In May 2026 the reference design ran a chain of subagents ten deep, each summarizing the layer below it. Each layer's polished summary became the next layer's fact, and by the end nobody in the chain had looked at the primary evidence. No single agent lied. Step up the chain one hop at a time, then run the same chain with receipts required. The deck does not quote the chain's text, so the summaries here are illustrative, built on the deck's worked receipt (3 tests run, 1 failure).</p>
+    <p class="small">In May 2026 the reference design ran a chain of subagents ten deep, each summarizing the layer below it. Each layer's polished summary became the next layer's fact, and by the end nobody in the chain had looked at the primary evidence. No single agent lied. Step up the chain one hop at a time, then run the same chain with receipts required. The summaries here are illustrative, built on the lecture's worked receipt (3 tests run, 1 failure).</p>
     <div class="chainhead">
       <div class="seg" role="group" aria-label="Chain design">
         <button type="button" id="c-sum" aria-pressed="true">05-24 · summaries only</button>
@@ -397,7 +397,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="meter" id="cmeter" aria-live="polite"></div>
     <div class="chain" id="chain"></div>
     <div class="outcome" id="coutcome" aria-live="polite"></div>
-    <p class="small">MAST reading from the deck: FC2, because information passed without checking, and FC3, because the check verified the summary and never the work. In Appendix C terms it is #3 fabrication, without any single agent lying. The deck marks the date, the depth, and the rule's wording for verification against AGENTS.md.</p>
+    <p class="small">MAST reading from the E9 lecture: FC2, because information passed without checking, and FC3, because the check verified the summary and never the work. In Appendix C terms it is #3 fabrication, without any single agent lying.</p>
   </section>
 
   <!-- ===== tiers ===== -->
@@ -411,7 +411,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <div class="tier"><span class="n">Tier 3 · human</span><p>The Chase, or you. This tier is the slowest, and it is the only one that can attest.</p></div>
     </div>
     <p>On OpenCode, tier 1 is cheap on OpenCode Go. If your worker runs on Big Pickle, run the adversary on an OpenCode Go model from a published family: GLM, DeepSeek, Kimi, Qwen, MiniMax, or MiMo. Big Pickle is a stealth model whose family is not published, so write “worker family: undisclosed” and run two adversaries from two Go families. With one family only, write “degraded mode” on the card.</p>
-    <p class="small">The adversary gets the claim and the receipt. It never gets the worker's summary, its reasoning, or the answer you planted. The deck's worked agent file denies the adversary edit, bash, and webfetch, and defines NOT-REFUTED inside the prompt, because a model left to its own words will write “verified.”</p>
+    <p class="small">The adversary gets the claim and the receipt. It never gets the worker's summary, its reasoning, or the answer you planted. The lecture's worked agent file denies the adversary edit, bash, and webfetch, and defines NOT-REFUTED inside the prompt, because a model left to its own words will write “verified.”</p>
   </section>
 
   <!-- ===== locks ===== -->
@@ -443,7 +443,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel wide" aria-labelledby="h-route">
     <div class="eyebrow">E9 slide 9 · chapter 18.4</div>
     <h2 id="h-route">Routing and cost: send each task to a tier</h2>
-    <p class="small">Route by task class, declare a budget per sortie, and record the cost of every call. Prices and limits are from opencode.ai/docs/go, retrieved September 24, 2026; the deck says to verify them again before you fly.</p>
+    <p class="small">Route by task class, declare a budget per sortie, and record the cost of every call. Prices and limits are from opencode.ai/docs/go, retrieved September 24, 2026; check them again before you fly.</p>
     <div class="tablewrap"><table>
       <thead><tr><th>Task class</th><th>Tier</th><th>Example model (verify)</th><th>Listed price in / out per 1M tokens</th><th>Why this tier</th></tr></thead>
       <tbody>
@@ -500,7 +500,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:12px">Pre-registered falsifiers, any one of which fails the sortie: a claim promoted to the flight log with no receipt; the adversary returning NOT-REFUTED on the planted falsehood; a lock held by two workers, or a lock change with no ledger event; passing only by telling the adversary the answer, using the worker's model, or editing a receipt. From gzkit you borrow <code>gz obpi dispatch</code> (a dispatch record per task; “credit is never inferred”), <code>gz obpi lock</code>, <code>DISPATCH_MODEL_MAP</code> for routing by role, and Step 4b, which prefers Codex as the tier-1 adversary and calls one vendor degraded mode. The deck marks these names for verification against the repository.</p>
+  <p class="small" style="margin-top:12px">Pre-registered falsifiers, any one of which fails the sortie: a claim promoted to the flight log with no receipt; the adversary returning NOT-REFUTED on the planted falsehood; a lock held by two workers, or a lock change with no ledger event; passing only by telling the adversary the answer, using the worker's model, or editing a receipt. From gzkit you borrow <code>gz obpi dispatch</code> (a dispatch record per task; “credit is never inferred”), <code>gz obpi lock</code>, <code>DISPATCH_MODEL_MAP</code> for routing by role, and Step 4b, which prefers Codex as the tier-1 adversary and calls one vendor degraded mode.</p>
 </section>
 
 <div class="notes">
@@ -509,7 +509,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <ul>
       <li>The other two dated gzkit episodes. In June 2026 Gate-5 attestations were attributed to an operator who never gave them, and the reference design answered with <code>gz obpi repudiate</code>, which appends a repudiation and never erases the attestation. On 2026-08-21 a stale marker file licensed about 350 lines with no dispatch and no review.</li>
       <li>Delegation across organizations. A2A v1.0 can sign an Agent Card, which proves who sent an artifact and says nothing about whether it is true. An A2A artifact enters your ledger as a claim with a verified sender.</li>
-      <li>Marketplaces. AP2 mandates prove what a human authorized for a payment. No protocol in the deck carries a receipt for “tests pass” across an agent boundary, so that job stays in your harness.</li>
+      <li>Marketplaces. AP2 mandates prove what a human authorized for a payment. No protocol in the E9 lecture carries a receipt for “tests pass” across an agent boundary, so that job stays in your harness.</li>
       <li>The ReviewResult from Sortie 8 and the two-stage review. The figure draws one worker and one adversary.</li>
     </ul>
   </section>
@@ -525,7 +525,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li>A2A Project. (2026). Agent2Agent protocol specification, v1.0. a2a-protocol.org.</li>
       <li>AP2 Protocol. (2025). ap2-protocol.org.</li>
       <li>OpenCode documentation: Go, Zen, agents, CLI. opencode.ai/docs.</li>
-      <li>Course topic guide, chapter 18 and Appendix G (gzkit casebook).</li>
+      <li>Textbook, <a href="../textbook/ch-18-multi-agent-coordination-ii-when-coordination-fails/">Chapter 18</a> and <a href="../textbook/appendix-g-the-gzkit-incident-casebook-2026/">Appendix G</a> (the gzkit incident casebook).</li>
     </ol>
   </section>
 </div>
@@ -595,7 +595,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   const CATS = {
     FC1:{name:"System design", total:"44.2", desc:"The failure is in the setup: the task or role specification, the stopping condition, the memory.",
       fix:"Your prompts, roles, and halt rules.",
-      catch:"The deck's fix location for FC1 is the setup itself. In the MAST paper's ChatDev tests, a clearer role specification raised success by 9.4%. Anthropic fixed its own duplicated searches and over-spawning with detailed task descriptions and explicit effort rules in the prompt. Better prompts raised success but did not remove the categories."},
+      catch:"The fix location for FC1 is the setup itself. In the MAST paper's ChatDev tests, a clearer role specification raised success by 9.4%. Anthropic fixed its own duplicated searches and over-spawning with detailed task descriptions and explicit effort rules in the prompt. Better prompts raised success but did not remove the categories."},
     FC2:{name:"Inter-agent misalignment", total:"32.4", desc:"The failure is in the traffic between agents: information lost, ignored, or never asked for.",
       fix:"Contracts and handoffs.",
       catch:"A handoff carries identity, scope, a result contract, and an evidence obligation. The result contract says what evidence each status requires and fails closed: DONE without a receipt parses as NEEDS_CONTEXT. A receipt the worker writes for itself does not satisfy the obligation, because the worker chose its contents."},
@@ -604,24 +604,24 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       catch:"Your receipt is the low-level check and your second-family adversary is the second level. Neither replaces the other. The MAST authors write that sole reliance on final-stage, low-level checks is inadequate; a high-level verification step added 15.6% on ProgramDev."}
   };
   const MODES = [
-    {c:"FC1", id:"1.1", n:"Disobey task specification", p:11.8, note:"One of the three largest FC1 modes on the deck's taxonomy slide."},
+    {c:"FC1", id:"1.1", n:"Disobey task specification", p:11.8, note:"One of the three largest FC1 modes on the lecture's taxonomy slide."},
     {c:"FC1", id:"1.2", n:"Disobey role specification", p:1.5, note:"The MAST authors tested a clearer role specification on ChatDev and measured +9.4% success."},
-    {c:"FC1", id:"1.3", n:"Step repetition", p:15.7, note:"The largest single mode in the taxonomy. The deck calls it a halt problem you met in week one."},
+    {c:"FC1", id:"1.3", n:"Step repetition", p:15.7, note:"The largest single mode in the taxonomy. The lecture calls it a halt problem you met in week one."},
     {c:"FC1", id:"1.4", n:"Loss of conversation history", p:2.8, note:""},
-    {c:"FC1", id:"1.5", n:"Unaware of stopping conditions", p:12.4, note:"A missing or unread stopping condition. The deck's fix location is your halt rules."},
+    {c:"FC1", id:"1.5", n:"Unaware of stopping conditions", p:12.4, note:"A missing or unread stopping condition. The fix location is your halt rules."},
     {c:"FC2", id:"2.1", n:"Conversation reset", p:2.2, note:""},
     {c:"FC2", id:"2.2", n:"Fail to ask for clarification", p:6.8, note:"Information that was never asked for. The Sortie 8 HandoffResult gives a worker an honest way to ask: status NEEDS_CONTEXT, with a required question field (E8)."},
     {c:"FC2", id:"2.3", n:"Task derailment", p:7.4, note:""},
     {c:"FC2", id:"2.4", n:"Information withholding", p:0.85, note:""},
     {c:"FC2", id:"2.5", n:"Ignored other agent's input", p:1.9, note:""},
-    {c:"FC2", id:"2.6", n:"Reasoning-action mismatch", p:13.2, note:"The agent says one thing and does another. The largest FC2 mode. The deck places it next to Appendix C #3, fabrication."},
+    {c:"FC2", id:"2.6", n:"Reasoning-action mismatch", p:13.2, note:"The agent says one thing and does another. The largest FC2 mode. The lecture places it next to Appendix C #3, fabrication."},
     {c:"FC3", id:"3.1", n:"Premature termination", p:6.2, note:"The check came too early, or the work stopped before it."},
-    {c:"FC3", id:"3.2", n:"No or incomplete verification", p:8.2, note:"The check was missing. The deck maps it to Appendix C #4, skipped cheap verification. On your card, the harness-written receipt (TP2) is the check that cannot be skipped."},
+    {c:"FC3", id:"3.2", n:"No or incomplete verification", p:8.2, note:"The check was missing. The lecture maps it to Appendix C #4, skipped cheap verification. On your card, the harness-written receipt (TP2) is the check that cannot be skipped."},
     {c:"FC3", id:"3.3", n:"Incorrect verification", p:9.1, note:"A reviewer that checked and got it wrong. This is where summary laundering lives, because the check happened and checked the wrong thing. On your card, the adversary gets the receipt, never the narrative (TP3), and a true-claim control shows it does not refute everything (TP4)."}
   ];
   const GZ = {
     sl:{t:"Summary laundering", ids:["2.1","2.2","2.3","2.4","2.5","2.6","3.3"],
-        d:"Each layer promotes the summary below it to fact. The deck reads it as FC2 and FC3 at once, because the information passes and nobody checks it. Its home in MAST is 3.3, incorrect verification. The ten-deep chain below is the reference design's own case.",
+        d:"Each layer promotes the summary below it to fact. The lecture reads it as FC2 and FC3 at once, because the information passes and nobody checks it. Its home in MAST is 3.3, incorrect verification. The ten-deep chain below is the reference design's own case.",
         f:"Receipts that travel with the claim, and an adversary that reads the receipt."},
     ha:{t:"Hallucinated authorization", ids:[],
         d:"Appendix C #7: an agent acts on a gate it believes was passed when nothing records it. MAST has no code for it. The reference design's case is 2026-06-13, when a Gate-5 attestation was attributed to an operator who never gave it.",
@@ -652,7 +652,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     gzBtns.forEach(b=>b.setAttribute("aria-pressed","false"));
     $("mdetail").innerHTML = '<div class="dh"><span class="chip">'+m.c+' · '+C.name+'</span><h3>'+m.id+' '+esc(m.n)+'</h3><span class="stat"><b>'+m.p+'%</b> of failures</span></div>'+
       '<dl><dt>Category</dt><dd>'+C.desc+'</dd>'+
-      '<dt>Deck on this mode</dt><dd>'+(m.note? esc(m.note) : 'The deck lists this mode by name and share only. Read it through its category.')+'</dd>'+
+      '<dt>Lecture on this mode</dt><dd>'+(m.note? esc(m.note) : 'The lecture lists this mode by name and share only. Read it through its category.')+'</dd>'+
       '<dt>What catches it</dt><dd><b>'+C.fix+'</b> '+C.catch+'</dd></dl>';
   }
   function pickGz(g){

@@ -423,9 +423,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 
   <!-- code -->
   <section class="panel" aria-labelledby="h-code">
-    <div class="eyebrow">E1 deck, slide 6 · the build</div>
+    <div class="eyebrow">E1 lecture, slide 6 · the loop in code</div>
     <h2 id="h-code">The minimal loop, line by line</h2>
-    <p class="small">These twelve lines come from the deck. The highlighted lines belong to the step shown in the figure above. Each comment that says halt is one exit in the diagram.</p>
+    <p class="small">These twelve lines come from the E1 lecture. The highlighted lines belong to the step shown in the figure above. Each comment that says halt is one exit in the diagram.</p>
 <pre class="code" id="code"><span class="ln" data-k="entry">messages = [system, user]</span><span class="ln" data-k="halt exits">for turn in range(BUDGET):                <span class="cm"># halt: turn budget</span></span><span class="ln" data-k="reason step">    step = model(messages, schema=Step)   <span class="cm"># structured output</span></span><span class="ln" data-k="turnlog ledger">    ledger.append("turn", step)           <span class="cm"># ledger first</span></span><span class="ln" data-k="ans">    if step.kind == "answer":             <span class="cm"># halt: final answer</span></span><span class="ln" data-k="ans">        return step.text</span><span class="ln" data-k="tool">    if step.kind == "tool":</span><span class="ln" data-k="tool obs">        obs = tools.call(step.name, step.args)   <span class="cm"># observation</span></span><span class="ln" data-k="cont">        messages.append(observation(obs))</span><span class="ln" data-k="halt">    if cost.spent &gt; COST_LIMIT:           <span class="cm"># halt: cost budget</span></span><span class="ln" data-k="exits">        return halt("budget")</span><span class="ln" data-k="exits">raise Halt("turn budget exhausted")       <span class="cm"># halt: never silent</span></span></pre>
     <p class="small">The error halt is not in these twelve lines. Slide 7 adds it: the harness catches the tool's exception, appends it as an observation, and halts when the error count reaches its limit. The ledger records the reason.</p>
   </section>
@@ -463,7 +463,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Runtime</td><td>Script; halts on finish</td><td>Daemon; halts on Ctrl-C or empty wallet</td></tr>
       </tbody>
     </table></div>
-    <p class="small">The deck lists three absences. Nothing checked a task's result before it fed the next plan. The goal had no performance measure and no halt. The vector store returned hallucinated facts as truth. Planning was present and fluent. Both systems lacked the same three things: a budget, an evaluator, and a record.</p>
+    <p class="small">The E1 lecture lists three absences. Nothing checked a task's result before it fed the next plan. The goal had no performance measure and no halt. The vector store returned hallucinated facts as truth. Planning was present and fluent. Both systems lacked the same three things: a budget, an evaluator, and a record.</p>
   </section>
 </div>
 
@@ -496,7 +496,7 @@ ABORT               endpoint unavailable; local model cannot
                     emit the schema at all (squawk, not FAIL)
 CHASE               peer, from the ledger slice and receipts
                     only → PASS / FAIL</pre>
-      <p class="small">Card text from the E1 deck, slide 13, rewrapped to fit. Simulator episodes 1 to 3 are the card's three test points. The governed path for this Evolution is <code>gz init --mode lite</code>, then <code>gz prd</code>, then the first ledger event, <code>prd_created</code>, then your attestation.</p>
+      <p class="small">Card text from the E1 lecture, slide 13. Simulator episodes 1 to 3 are the card's three test points. The governed path for this Evolution is <code>gz init --mode lite</code>, then <code>gz prd</code>, then the first ledger event, <code>prd_created</code>, then your attestation.</p>
     </div>
     <div style="display:grid; gap:10px; align-content:start">
       <div class="tablewrap" style="margin-top:0"><table class="t2">
@@ -509,7 +509,7 @@ CHASE               peer, from the ledger slice and receipts
           <tr><td>Adversarial input</td><td>The budget is enforced in code, so the loop halts anyway.</td></tr>
         </tbody>
       </table></div>
-      <p class="small">A strong Sortie 1, per the deck, flies all three input classes, enforces both budgets in code with a reason on every halt, and gives the Chase a ledger that replays the run. An exceptional one includes a run designed to exhaust its budget, and the ledger shows that it did.</p>
+      <p class="small">A strong Sortie 1, per the E1 lecture, flies all three input classes, enforces both budgets in code with a reason on every halt, and gives the Chase a ledger that replays the run. An exceptional one includes a run designed to exhaust its budget, and the ledger shows that it did.</p>
     </div>
   </div>
 </section>
@@ -518,12 +518,12 @@ CHASE               peer, from the ledger slice and receipts
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>The retry budget for malformed output. When the parser rejects a Step, the deck retries before it halts with reason "format". The simulator never produces a malformed Step.</li>
+      <li>The retry budget for malformed output. When the parser rejects a Step, the lecture's loop retries before it halts with reason "format". The simulator never produces a malformed Step.</li>
       <li>Detection of repeated identical actions. The simulator's ledger marks repeats, but it does not halt on them.</li>
       <li>Latency. The PRD sets a latency budget the user will tolerate; the figure tracks turns, tokens, and cost only.</li>
       <li>Prompt caching. A provider may bill the repeated prefix at a lower rate, which flattens the cost curve without removing it. Figure 01, <em>Two Loops</em>, draws that split.</li>
       <li>The hosted and local routes. Sortie 1 runs the same loop against both and compares latency, cost, and schema compliance.</li>
-      <li>The check order follows the deck's code: the cost check runs after the turn has been paid for, so a run can end slightly over its cost budget.</li>
+      <li>The check order follows the lecture's code: the cost check runs after the turn has been paid for, so a run can end slightly over its cost budget.</li>
     </ul>
   </section>
   <section>
@@ -557,7 +557,7 @@ CHASE               peer, from the ledger slice and receipts
   const STEPS = [
     {k:"*", t:"Four states and the exits between them", w:["E0","E1"],
      p:"The loop has four states. Perceive gathers the input, Reason makes one model call, Act runs a tool or finishes, and the halt check decides whether the loop goes around again. Every exit writes a reason to the ledger. Each step lights one state in the diagram and its lines in the code panel; the simulator below runs the whole loop on scripted episodes.",
-     q:"Autonomy without a stop condition is not a feature. It is an open account with the model provider and an open question about who is responsible for what it did.", c:"E1 deck, slide 3"},
+     q:"Autonomy without a stop condition is not a feature. It is an open account with the model provider and an open question about who is responsible for what it did.", c:"E1 lecture, slide 3"},
     {k:"entry perc in", t:"Perceive: everything the loop can see", w:["E0","E6"],
      p:"A run starts with two messages, the system prompt and the user's question. On later turns the percept also holds tool results, file contents, and events. The harness sends the whole transcript on every call, because the model keeps nothing between calls. Each turn therefore costs more than the one before it."},
     {k:"reason step", t:"Reason: one model call, one typed Step", w:["E1","E3"],
@@ -567,16 +567,16 @@ CHASE               peer, from the ledger slice and receipts
     {k:"act ans", t:"Act: a final answer ends the run", w:["E1"],
      p:"If the Step says answer, the harness returns the text and the run ends. This is ReAct's finish action, and it was the only halt the 2022 design had. The model decided when to call it. On an unanswerable question, the model may never call it."},
     {k:"act tool obs", t:"Act: a tool call, and the world answers back", w:["E1","E3"],
-     p:"If the Step specifies a tool, the harness calls it and gets back a result or an exception. ReAct's addition was this observation inside the loop, and the deck calls it the difference between a generative system and an agent. An exception is an observation too, so a failing tool cannot end a run silently."},
+     p:"If the Step specifies a tool, the harness calls it and gets back a result or an exception. ReAct's addition was this observation inside the loop, and the E1 lecture calls it the difference between a generative system and an agent. An exception is an observation too, so a failing tool cannot end a run silently."},
     {k:"halt", t:"The halt check lives in code", w:["E1"],
      p:"After each tool turn, the harness compares the money spent, the error count, and the turn count against limits. These checks run in your code, outside the prompt. A prompt that tells the loop to ignore its budget changes nothing, because the model never evaluates the check.",
-     q:"A budget the model can talk itself out of is not a budget. Halts live in code and in the ledger, never only in the prompt.", c:"E1 deck, slide 7"},
+     q:"A budget the model can talk itself out of is not a budget. Halts live in code and in the ledger, never only in the prompt.", c:"E1 lecture, slide 7"},
     {k:"exits rail ledger ans", t:"Four exits, each with a reason", w:["E1"],
      p:"The loop can end in four ways: a final answer, the turn budget, the cost budget, or an error. Each exit writes exactly one terminal event, with its reason, to the ledger. A budget halt on an unanswerable question is the correct result for that test point.",
-     q:"A halt is not a failure; a silent exit is.", c:"E1 deck, slide 6"},
+     q:"A halt is not a failure; a silent exit is.", c:"E1 lecture, slide 6"},
     {k:"cont perc", t:"The observation becomes the next percept", w:["E3","E5"],
      p:"When every check passes, the harness appends the observation to the transcript, and the loop goes around again. That text came from a web page, a file, or an API, so the loop must treat it as untrusted input. In Evolution 3 this becomes the injection test point. Episode 3 in the simulator plants an instruction inside a tool result.",
-     q:"Observations are perception. Treat them as untrusted input.", c:"E1 deck, slide 14"},
+     q:"Observations are perception. Treat them as untrusted input.", c:"E1 lecture, slide 14"},
     {k:"cont perc in reason step act tool obs", mode:"off", t:"Remove the halt check and the loop spirals", w:["E1"],
      p:"AutoGPT and BabyAGI ran this loop with a one-sentence goal, no budget, and no evaluator. Their only halts were the human closing the terminal or the API key running dry. Each pass resends a longer transcript, so each turn costs more than the last and the total grows faster than the turn count. Turn the halt check off in the simulator to watch it."},
     {k:"*", t:"Sortie 1: a governed loop that halts", w:["E1"],

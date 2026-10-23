@@ -323,7 +323,7 @@
  "Open-source harness; public leaderboard; τ³ v1.0.1 (Jul 2026) regraded after 75+ task fixes.": "Open-source harness; public leaderboard; τ³ v1.0.1 (Jul 2026) regraded after 75+ task fixes.",
  "Teardown: gzkit eval runner and flight-test program": "Teardown: gzkit eval runner and flight-test program",
  "1:26–1:30": "1:26–1:30",
- "The reference design's evaluation surfaces, read for mechanism; paths from the course topic guide": "The reference design's evaluation surfaces, read for mechanism; paths from the course topic guide",
+ "The reference design's evaluation surfaces, read for mechanism; paths from the course topic guide": "The reference design's evaluation surfaces, read for mechanism",
  "19": "19",
  "Eval runner and datasets": "Eval runner and datasets",
  "Code in src/gzkit/eval/; goldens in data/eval/*.json; delta via eval_regression_delta; gz adr evaluate --red-team.": "Code in src/gzkit/eval/; goldens in data/eval/*.json; delta via eval_regression_delta; gz adr evaluate --red-team.",

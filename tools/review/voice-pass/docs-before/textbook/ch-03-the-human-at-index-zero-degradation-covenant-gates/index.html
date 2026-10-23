@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>3. The Human at Index Zero: Degradation, Covenant, Gates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Chapter 3</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>3. The Human at Index Zero: Degradation, Covenant, Gates</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e0-index-zero/">E0</a> <span class="small">(survey)</span></p><p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-3">this chapter's entries in the reading list</a></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E0 Orientation; revisited E5, E9, E11. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Describe the Degradation Pattern and recognize it in your own practice.</li>
+<li>State the covenant and the Zero Doctrine and explain the two-sided obligation.</li>
+<li>Explain the five gates, the two lanes, and why human attestation cannot be automated.</li>
+<li>Situate the engineering posture against the AI-governance literature.</li>
+</ul>
+<h2>Outline</h2>
+<h3>3.1 The Degradation Pattern</h3>
+<ul>
+<li>Week 1 to week 4: careful review → skimming → batch approvals → rubber stamp. "You didn't lose control in one dramatic moment."</li>
+<li>Cognitive surrender, mediated observation, governance theater: three names for the same failure.</li>
+</ul>
+<h3>3.2 The Zero Doctrine</h3>
+<ul>
+<li>The human is index zero: first in priority, final in authority, cannot be automated away. Evolution of "zero": zero overhead → zero drift → index zero.</li>
+<li>Two sides of the covenant: gates constrain agents; humans must engage. Read everything; insist on Q&amp;A.</li>
+</ul>
+<h3>3.3 The covenant and the three concerns</h3>
+<ul>
+<li>Specification (agent-native), methodology (process-native), governance (human-native). "Specification without governance drifts; governance without methodology is theater; methodology without specification is arbitrary."</li>
+<li>Legislature / executive / judiciary as a constitutional metaphor.</li>
+</ul>
+<h3>3.4 Five gates, two lanes</h3>
+<ul>
+<li>ADR, TDD, Docs, BDD, Human. Lite = 1–2; Heavy = 1–5. Ceremony must earn its place. Closed attestation vocabulary.</li>
+<li>Why Gate 5 is universal at the brief level and why there is no self-close path (ADR-0.0.36).</li>
+</ul>
+<h3>3.5 Command doctrine</h3>
+<ul>
+<li>Aviation's Four P's (Degani &amp; Wiener) as the model: philosophy → policies → procedures → practices. Accountability is non-transferable; authority must be instrumented, not asserted; the model is a crew resource, not a crew member; evidence is artifacts, not narration.</li>
+</ul>
+<h3>3.6 Against the governance literature</h3>
+<ul>
+<li>NIST AI RMF, EU AI Act, ISO 42001, frontier-lab safety frameworks and system cards; the accountability gap the practitioner literature (Raji et al.; "Auditing Work") identifies; where an engineering covenant fits and where it does not.</li>
+</ul>
+<h2>Reference design: gzkit</h2>
+<p>This chapter <em>is</em> the reference design's doctrine: charter, lineage, genesis, command doctrine. The genesis conversation (2026-01-12) records the model saying that "for maximizing Claudishness, only specification matters" and the operator insisting on all three concerns; that exchange is the book's founding episode.</p>
+<h2>Readings</h2>
+<ul>
+<li>gzkit <code>docs/user/reference/charter.md</code>, <code>lineage.md</code>, <code>genesis.md</code>; <code>docs/governance/GovZero/command-doctrine.md</code>; <code>docs/governance/ai-governance-brief.md</code> (§§5, 7, 8).</li>
+<li>Degani &amp; Wiener (1997), "Philosophy, policies, procedures and practices."</li>
+<li>Sprint and Drift, "Who answers for the code"; "Code ergo sum."</li>
+</ul>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Keep a one-week log of your own review behavior on AI-generated output. Where on the four-week curve are you?</li>
+<li>Rewrite the covenant's five clauses for your own system: who defines intent, what constrains the agent, what verifies, who attests, what survives the session.</li>
+</ol><hr><p><a href="../ch-02-what-is-an-agent-from-peas-to-the-nine-components/">◀ 2. What Is an Agent? From PEAS to the Nine Components</a> &nbsp;·&nbsp; <a href="../ch-04-before-language-models-symbolic-bdi-multi-agent-and-reinforc/">4. Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

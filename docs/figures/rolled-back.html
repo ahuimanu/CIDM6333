@@ -381,7 +381,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <button id="next" class="primary" type="button" aria-label="Next step">Next ▶</button>
       </div>
       <div class="dots" id="dots" role="group" aria-label="Jump to step"></div>
-      <p class="vnote">Arrow keys also step. The two hashes and the 0.1 s come from the deck's lab run of 09/24.</p>
+      <p class="vnote">Arrow keys also step. The two hashes and the 0.1 s come from a lab run.</p>
     </div>
   </div>
 </div>
@@ -459,7 +459,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <ol class="log" id="log" reversed></ol>
       </div>
     </div>
-    <p class="small">Try two runs. First, turn the breaker off and make five calls to a failing provider: every call waits the full timeout. Then turn on <em>retry at once</em>: each timeout doubles the wait, which is what Nygard warns against, because the fault is probably still there. The <code>breaker</code> field in the /health line is the deck's advice to expose the breaker's state; its name is illustrative.</p>
+    <p class="small">Try two runs. First, turn the breaker off and make five calls to a failing provider: every call waits the full timeout. Then turn on <em>retry at once</em>: each timeout doubles the wait, which is what Nygard warns against, because the fault is probably still there. The <code>breaker</code> field in the /health line exposes the breaker's state; its name is illustrative.</p>
     <div class="cards6">
       <div class="c6"><b>Timeouts</b>Every model call and tool call has one. Do not retry at once after a timeout. Queue or halt.</div>
       <div class="c6 hl"><b>Circuit Breaker</b>After N failures from a provider or tool, stop calling it for a period and fail the run with a reason. Expose its state in /health.</div>
@@ -483,7 +483,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <div class="scroller"><svg class="ship" id="ship" viewBox="0 0 1000 330" role="img" aria-label="Timeline of six steps for shipping one release, with a pointer diagram showing what a version name points at."></svg></div>
     <p class="small" id="s-note"></p>
-    <p class="small">The deck's strip under both columns: a version number is a name. The hash is the release. Record the hash when you release and check it when you roll back.</p>
+    <p class="small">A version number is a name. The hash is the release. Record the hash when you release and check it when you roll back.</p>
   </section>
 
   <!-- service or job -->
@@ -504,7 +504,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <li>The result must say what it did</li>
         <li>Exit code is the only status the scheduler sees</li></ul></div>
     </div>
-    <p class="small">Pick one in an ADR and state the lifecycle. The deck's mistake is a service with job semantics: a POST that starts a ten-minute loop, a client that times out at 60 seconds and retries, and three agents doing the same work with your key. A request that outlives its caller becomes an orphan, so decide who owns the halt.</p>
+    <p class="small">Pick one in an ADR and state the lifecycle. The mistake to avoid is a service with job semantics: a POST that starts a ten-minute loop, a client that times out at 60 seconds and retries, and three agents doing the same work with your key. A request that outlives its caller becomes an orphan, so decide who owns the halt.</p>
   </section>
 
   <!-- unattended -->
@@ -598,11 +598,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>The two hash prefixes and the 0.1 s rollback time come from the deck's lab run of relcheck 0.1.0 on 09/24/2026. The figure reuses them for one release. Every number in the circuit-breaker simulation is illustrative.</li>
-      <li>The deck states the breaker rule as “after N failures, stop calling for a period and fail the run with a reason.” The half-open trial call is the standard form of the pattern in Nygard's book; the figure draws it, and the simulation counts timeouts as failures.</li>
+      <li>The two hash prefixes and the 0.1 s rollback time come from a lab run of relcheck 0.1.0. Every number in the circuit-breaker simulation is illustrative.</li>
+      <li>The E12 lecture states the breaker rule as “after N failures, stop calling for a period and fail the run with a reason.” The half-open trial call is the standard form of the pattern in Nygard's book; the figure draws it, and the simulation counts timeouts as failures.</li>
       <li>Ledger lines use the flight card's shorthand. Your release-ledger.jsonl will hold the same facts as JSON fields.</li>
-      <li>The figure draws one deploy environment. A registry, a TLS proxy (FastAPI's <code>--proxy-headers</code>), streaming, and the idempotency store are on the deck's slides but not in the diagram.</li>
-      <li>gzkit items carry the deck's verify markers: the distribution invariant's exact wording, what #830 backfilled, and ADR-0.0.74's text.</li>
+      <li>The figure draws one deploy environment. A registry, a TLS proxy (FastAPI's <code>--proxy-headers</code>), streaming, and the idempotency store are in the E12 lecture but not in the diagram.</li>
     </ul>
   </section>
   <section>
@@ -648,9 +647,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 
   const STEPS = [
     {k:"*", m:"rd", t:"Release, break, roll back", w:["E12"],
-     p:"The top row draws the release path, from a clean commit through a build to an artifact with a hash, a release event, and a deploy environment that serves it. Below it sit the released artifacts and the ledger. Step through one good release, one broken release, and two ways back. The deck argues that you have not released it until you have rolled it back."},
+     p:"The top row draws the release path, from a clean commit through a build to an artifact with a hash, a release event, and a deploy environment that serves it. Below it sit the released artifacts and the ledger. Step through one good release, one broken release, and two ways back. The E12 lecture argues that you have not released it until you have rolled it back."},
     {k:"commit build", m:"rd", t:"Build from a clean commit", w:["E12"],
-     p:"You build the release from a clean commit with uv build, or with docker build if your laptop runs a container engine. A dirty tree or an image tagged latest leaves no way to trace the artifact back to its source. The deck lists both as the wrong place for an artifact to come from."},
+     p:"You build the release from a clean commit with uv build, or with docker build if your laptop runs a container engine. A dirty tree or an image tagged latest leaves no way to trace the artifact back to its source. Both are the wrong place for an artifact to come from."},
     {k:"artifact", m:"rd", t:"The hash is the release", w:["E12"],
      p:"The build produces bytes: a wheel or an image. The version number is a name for them. The wheel's SHA-256, or the image ID or registry digest, identifies the bytes themselves. A Docker tag is a pointer, and the next build with the same tag moves it to a different image."},
     {k:"release l1 l4", m:"rd", t:"The release is an event in the ledger", w:["E10","E12"],
@@ -662,7 +661,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"store rollback l3 serve", m:"rd", t:"Rollback redeploys the prior artifact", w:["E12"],
      p:"One command takes the 0.1.0 wheel listed in the release record, checks its SHA-256 against the release event, and reinstalls it. The lab script did this in 0.1 s. The rollback line in the ledger carries the same hash as the release it restores, and /health reports 0.1.0 again."},
     {k:"rebuild", m:"rb", t:"The common mistake: rollback by rebuild", w:["E12"],
-     p:"Here the version is set back to 0.1.0 and uv build runs again. The new wheel has the same file name and different bytes, and it overwrites the released file at the same path. In the deck's run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of the same relcheck 0.1.0."},
+     p:"Here the version is set back to 0.1.0 and uv build runs again. The new wheel has the same file name and different bytes, and it overwrites the released file at the same path. In a lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of the same relcheck 0.1.0."},
     {k:"l3 serve store", m:"rb", t:"Only the hash shows the difference", w:["E12"],
      p:"The rollback installs the rebuilt wheel. The version string is right, the file name is right, and /health reports 0.1.0. The ledger records a rollback to 0.1.0 with a hash that does not match the release it claims to restore. Test point 4 of your flight card flies exactly this trap."},
     {k:"rollback store", m:"rd", t:"Make the rollback refuse a mismatch", w:["E12"],
@@ -834,7 +833,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       ], key:2,
       ptr:{name:"dist/myagent-0.1.1-py3-none-any.whl", a:"wheel bytes A · sha256 recorded", b:"wheel bytes B · new sha256", aGone:"bytes A overwritten unless kept apart", lab:"a file name points at bytes"},
       note:"Works on a laptop with no container engine, because it needs no daemon and no admin rights.",
-      rb:"Built again under the same version, the file at the same path holds new bytes. The release record still records hash A, so a rollback that checks the hash refuses the new file. In the deck's lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of one version."
+      rb:"Built again under the same version, the file at the same path holds new bytes. The release record still records hash A, so a rollback that checks the hash refuses the new file. In a lab run, 21cb6c3d… and 4aefd5f6… were the hashes of two builds of one version."
     },
     c:{ st:[
         ["Build", ["docker build -t","myagent:0.1.1 ."], ["or podman build"]],

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>18. Multi-Agent Coordination II: When Coordination Fails</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Chapter 18</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>18. Multi-Agent Coordination II: When Coordination Fails</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e9-multi-agent-2/">E9</a> <span class="small">(build)</span></p><p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-18">this chapter's entries in the reading list</a></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E9. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Name the multi-agent failure taxonomy and recognize each mode in a trace.</li>
+<li>Implement cross-vendor adversarial validation, locks, and cost-aware routing.</li>
+<li>Explain delegation and handoff protocols, agent marketplaces and contracts, and cost and resource management.</li>
+</ul>
+<h2>Outline</h2>
+<h3>18.1 The taxonomy</h3>
+<ul>
+<li>Specification/design, inter-agent misalignment, verification failures (Cemri et al.); gzkit's nine agent failure modes; summary laundering; hallucinated authorization.</li>
+</ul>
+<h3>18.2 Adversarial validation</h3>
+<ul>
+<li>Tier 1 cross-vendor (different model family); tier 2 independent subagent; tier 3 human. REFUTED / NOT-REFUTED. A subagent's claim is not evidence; receipts are.</li>
+</ul>
+<h3>18.3 Locks and mutual exclusion</h3>
+<ul>
+<li>Token-block locks with TTL; who may work on what; the ledger as lock witness.</li>
+</ul>
+<h3>18.4 Routing and cost</h3>
+<ul>
+<li>Model tiers by task complexity; local vs. hosted; budgets per sortie; cost as a first-class metric.</li>
+</ul>
+<h3>18.5 Delegation, handoff, marketplaces</h3>
+<ul>
+<li>A2A tasks and artifacts; contracts between agents; what an agent marketplace would need (identity, attestation, liability).</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cemri et al. taxonomy</td>
+<td>2025</td>
+<td>Why MAS fail</td>
+<td>Evaluation</td>
+</tr>
+<tr>
+<td>A2A delegation</td>
+<td>2025</td>
+<td>Handoff protocol</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>gzkit Step 4b / locks / repudiation</td>
+<td>2026</td>
+<td>Fail-closed coordination</td>
+<td>Coordination, governance</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>The 2026-05-24 ten-deep summary-laundering chain; the seven Gate-5 repudiations (June 2026); the 2026-08-21 undispatched Stage 2; <code>gz obpi dispatch</code>, <code>gz obpi lock</code>, <code>gz obpi repudiate</code>; <code>DISPATCH_MODEL_MAP</code>.</p>
+<h2>Readings</h2>
+<ul>
+<li>Cemri et al., "Why Do Multi-Agent LLM Systems Fail?" (2025).</li>
+<li>gzkit <code>.gzkit/rules/agent-failure-modes.md</code>; <code>docs/evals/gzkit-campaign-architecture-review-2026-08-17.md</code>.</li>
+<li>Sprint and Drift, "Newtonian motion."</li>
+</ul>
+<h2>Flight card supported</h2>
+<p>Sortie 9 (corner) — DESIGN CLAIM: a subagent's claim never becomes evidence without a receipt, and a second-family adversary can refute a false claim. FALSIFIERS: a claim promoted to the flight log with no receipt; the adversary agreeing with a planted falsehood; a lock violated without a ledger event.</p>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Plant a false "tests pass" claim in a worker's output. Show the pipeline catching it, then show the version that would not.</li>
+</ol><hr><p><a href="../ch-17-multi-agent-coordination-i-controller-worker-reviewer/">◀ 17. Multi-Agent Coordination I: Controller, Worker, Reviewer</a> &nbsp;·&nbsp; <a href="../ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">19. Evaluation as Gates: Golden Sets, Regression Deltas, Judges, and RED Witnesses ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

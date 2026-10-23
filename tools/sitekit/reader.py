@@ -112,8 +112,11 @@ def split_notes(t):
     cuts = [c for c in cuts if c and len(c) > 2]
     return paras, cuts
 
+PACE = re.compile(r"\s*\[~?\d+(?:[–-]\d+)? min\]")
+
 def para_html(paras):
-    return "".join("<p>%s</p>" % html.escape(p) for p in paras) or "<p class=\"small\">No notes for this slide.</p>"
+    paras = [PACE.sub("", p) for p in paras]
+    return "".join("<p>%s</p>" % html.escape(p) for p in paras if p.strip()) or "<p class=\"small\">No notes for this slide.</p>"
 
 def process(path, slug):
     s = open(path, encoding="utf-8").read()

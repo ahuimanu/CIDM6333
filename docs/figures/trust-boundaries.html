@@ -496,7 +496,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         </div>
         <div class="fieldlab">What gets hashed (canonical JSON)</div>
         <div class="mono" id="canon"></div>
-        <p class="small">The canary is the deck's harmless example, wrapped in the <code>&lt;IMPORTANT&gt;</code> tag that Invariant Labs used in April 2025. In the lab, if the model complies, <code>notes/canary.md</code> appears and <code>calls.log</code> shows a write nobody asked for.</p>
+        <p class="small">The canary is the E5 lecture's harmless example, wrapped in the <code>&lt;IMPORTANT&gt;</code> tag that Invariant Labs used in April 2025. In the lab, if the model complies, <code>notes/canary.md</code> appears and <code>calls.log</code> shows a write nobody asked for.</p>
       </div>
       <div>
         <div class="fieldlab">tool-pins.json against this start</div>
@@ -516,14 +516,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <p class="small" id="repinnote">A pin tells you the description changed since a human approved it. It catches the rug pull. It cannot catch a description that was already poisoned when you pinned it, so a human reads every description in full before the first pin. If you re-pin the canary, the poison becomes the baseline.</p>
       </div>
     </div>
-    <p class="small">The deck divides the labor between two controls. A permission rule limits what a poisoned description can make happen, and a pinned hash tells you the description changed, so the sortie needs both controls. None of the three harnesses the deck checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
+    <p class="small">The E5 lecture divides the labor between two controls. A permission rule limits what a poisoned description can make happen, and a pinned hash tells you the description changed, so the sortie needs both controls. None of the three harnesses checked (Claude Code, Codex, OpenCode 1.18.32) documents description pinning, so your sortie supplies it.</p>
   </section>
 
   <!-- ===== scope gate ===== -->
   <section class="panel" aria-labelledby="h-gate">
     <div class="eyebrow">Step 5, up close · test points 1–3</div>
     <h2 id="h-gate">The server's checks, run in order</h2>
-    <p class="small">This follows the deck's <code>scope_gate.py</code> sketch: one <code>SCOPES</code> table maps <code>read_note</code> to <code>notes:read</code> and <code>write_note</code> to <code>notes:write</code>. Set the token, pick a tool, and add a forged claim. The forged claim never changes the result.</p>
+    <p class="small">This follows the lecture's <code>scope_gate.py</code> sketch: one <code>SCOPES</code> table maps <code>read_note</code> to <code>notes:read</code> and <code>write_note</code> to <code>notes:write</code>. Set the token, pick a tool, and add a forged claim. The forged claim never changes the result.</p>
     <div class="ctrl"><label class="cb"><input type="checkbox" id="g-sig" checked> Signature, expiry, issuer verify</label></div>
     <div class="ctrl"><label for="g-aud">Token audience</label><select id="g-aud"><option value="this">this server (SERVER_URI)</option><option value="other">a token issued for another server</option></select></div>
     <div class="ctrl"><label for="g-scope">Token scope</label><select id="g-scope"><option value="notes:read">notes:read</option><option value="notes:read notes:write">notes:read notes:write</option></select></div>
@@ -538,7 +538,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </select></div>
     <ol class="trace" id="trace"></ol>
     <div class="stat" id="gres"></div>
-    <p class="small">Five things never count as authority: a scope field in the body or arguments, a header the client wrote, a token issued for another server, a state handle, and the model's statement that the user approved. The deck's sketch gives no status for a failed verification, so this panel shows 401, the answer RFC 6750 gives for an invalid bearer token.</p>
+    <p class="small">Five things never count as authority: a scope field in the body or arguments, a header the client wrote, a token issued for another server, a state handle, and the model's statement that the user approved. The sketch gives no status for a failed verification, so this panel shows 401, the answer RFC 6750 gives for an invalid bearer token.</p>
   </section>
 
   <!-- ===== doctrine + matrix ===== -->
@@ -548,14 +548,14 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2 id="h-mx">The control-surface matrix</h2>
     <p class="small">gzkit's <code>agent-control-surface-matrix.md</code> treats each harness as a set of surfaces (instruction file, hooks, permissions, skills, subagents) and records, per harness, which of the canon's rules it can render into which surface. Where a harness has no hook, the rule falls back to prose, and the matrix says so.</p>
     <div class="tablewrap"><table style="min-width:0">
-      <thead><tr><th>Harness</th><th>Hooks recorded</th><th>What the deck says about it</th></tr></thead>
+      <thead><tr><th>Harness</th><th>Hooks recorded</th><th>What the lecture says about it</th></tr></thead>
       <tbody>
         <tr><td>Claude Code</td><td>17</td><td>The same rule can be enforced here and merely requested elsewhere.</td></tr>
-        <tr><td>Codex</td><td>2</td><td>Counted before Codex hooks became general; may be out of date. [verify]</td></tr>
+        <tr><td>Codex</td><td>2</td><td>Counted before Codex hooks became general; may be out of date.</td></tr>
         <tr><td>Copilot</td><td>1</td><td>Rules without a hook fall back to prose.</td></tr>
       </tbody>
     </table></div>
-    <p class="small">The Design Analysis question for your system: which of your rules are enforced in your harness, and which are only asked for? The deck's own flag stands: verify the ADR numbers, flags, and the Codex count against the repository.</p>
+    <p class="small">The Design Analysis question for your system: which of your rules are enforced in your harness, and which are only asked for?</p>
   </section>
 
   <section class="panel wide" aria-labelledby="h-cs">
@@ -568,7 +568,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <tr><td>Per-tool permission</td><td>allow / ask / deny; deny, then ask, then allow; <code>mcp__server__tool</code></td><td>Sandbox (read-only, workspace-write, danger-full-access) + approval (on-request, never)</td><td>allow / ask / deny per tool; last match wins; <code>server_tool</code> names</td></tr>
         <tr><td>MCP write</td><td>Rule by name, e.g. deny <code>mcp__notes__write_note</code></td><td>Approval required when the tool is annotated destructive</td><td>Rule by name, e.g. <code>"notes_write_note": "ask"</code></td></tr>
         <tr><td>Enforcing code</td><td>Hooks: PreToolUse can block (exit 2), before allow rules</td><td>Hooks on by default: PreToolUse, PermissionRequest …</td><td>Plugins: <code>tool.execute.before</code> can throw</td></tr>
-        <tr><td>Description pinning</td><td>Not documented [verify]</td><td>Not documented [verify]</td><td>None (as of 1.18.32)</td></tr>
+        <tr><td>Description pinning</td><td>Not documented</td><td>Not documented</td><td>None (as of 1.18.32)</td></tr>
       </tbody>
     </table></div>
     <p class="small">All three can enforce a rule on your write tool. None of the three will tell you by default that a server's description changed, which is the gap the pin panel above fills.</p>
@@ -599,12 +599,12 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>Cross-server shadowing, the deck's fourth mechanism: one server's description rewrites how the model uses another server's tools. The defense scopes descriptions to their own server and keeps the fewest servers per session.</li>
+      <li>Cross-server shadowing, the lecture's fourth mechanism: one server's description rewrites how the model uses another server's tools. The defense scopes descriptions to their own server and keeps the fewest servers per session.</li>
       <li>The stdio transport. There the trust boundary is the operating system, and the spec says stdio servers SHOULD NOT use the OAuth flow.</li>
       <li>Supply-chain attacks such as postmark-mcp (Sep 2025). A description pin does nothing against a server that is honest to the model and lies to you; pin the package version and hash too.</li>
       <li>A2A. A peer returns an assertion, and authority does not cross to it.</li>
-      <li>Token refresh, expiry handling, and the exact HTTP shapes of each request. The sequence keeps the five steps the deck lists.</li>
-      <li>The page's hash uses the deck's canonical form. A real <code>pin.py</code> may differ in detail, as long as install and start hash the same way.</li>
+      <li>Token refresh, expiry handling, and the exact HTTP shapes of each request. The sequence keeps the five steps the lecture lists.</li>
+      <li>The demo's hash uses the lecture's canonical form. A real <code>pin.py</code> may differ in detail, as long as install and start hash the same way.</li>
     </ul>
   </section>
   <section>
@@ -641,7 +641,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   /* ---------- player ---------- */
   const STEPS = [
     {v:"A", k:"*", t:"Two crossings: authority and text", w:["E4","E5"],
-     p:"Authority crosses into an MCP system as a token, and text crosses in tool descriptions, resources, and results. Part A works the authorization flow from the 2026-07-28 revision of the MCP spec in the deck's five steps, and the bottom row shows who holds which token after each step. Part B draws the threat model as the paths untrusted text takes."},
+     p:"Authority crosses into an MCP system as a token, and text crosses in tool descriptions, resources, and results. Part A works the authorization flow from the 2026-07-28 revision of the MCP spec in the E5 lecture's five steps, and the bottom row shows who holds which token after each step. Part B draws the threat model as the paths untrusted text takes."},
     {v:"A", k:"s1", t:"Step 1 · 401 and discovery", w:["E5"],
      p:"The client calls a tool with no token. The server answers 401, and its WWW-Authenticate header carries the resource_metadata URL and the scope it needs, notes:read. The client reads the Protected Resource Metadata (RFC 9728), which identifies the authorization server, and then reads that server's metadata. Nobody has to guess where to log in."},
     {v:"A", k:"s2", t:"Step 2 · Register", w:["E5"],
@@ -653,9 +653,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {v:"A", k:"s5 chk", t:"Step 5 · Call and step up: your checks", w:["E5"],
      p:"The client sends the bearer token on every request. Your server verifies the signature, expiry, and issuer, then checks that the audience is this server and that the token carries the scope the tool needs, all from one SCOPES table. A read token on write_note gets 403 insufficient_scope with scope=\"notes:write\", the refusal goes in the log, and the client re-authorizes. Step 5 is the part of the flow your sortie owns."},
     {v:"B", k:"*", t:"The threat model: one root cause", w:["E5"],
-     p:"The view switches to trust boundaries. Boundary 1 is where strangers' text enters the host, and Boundary 2 is where a call needs authority from a token. The deck gives one root cause for every mechanism: content that was allowed to act, or authority spent by a component that could not tell whose it was. Each lit path below is one way untrusted text crosses."},
+     p:"The view switches to trust boundaries. Boundary 1 is where strangers' text enters the host, and Boundary 2 is where a call needs authority from a token. The E5 lecture gives one root cause for every mechanism: content that was allowed to act, or authority spent by a component that could not tell whose it was. Each lit path below is one way untrusted text crosses."},
     {v:"B", k:"poison gate", t:"Tool poisoning", w:["E4","E5"],
-     p:"A tool description reaches the model verbatim in its tool list, and nothing in the protocol marks it as untrusted. A poisoned description carries an instruction the model reads and the human rarely sees, such as calling write_note after every read. OpenCode's default agent allows every tool it is not told about, so an MCP write then runs with no prompt. The deck files this under failure mode #2, reckless action."},
+     p:"A tool description reaches the model verbatim in its tool list, and nothing in the protocol marks it as untrusted. A poisoned description carries an instruction the model reads and the human rarely sees, such as calling write_note after every read. OpenCode's default agent allows every tool it is not told about, so an MCP write then runs with no prompt. The lecture files this under failure mode #2, reckless action."},
     {v:"B", k:"pin poison", t:"The pin, and the rug pull", w:["E5"],
      p:"A rug pull changes a description after a human approved it. The defense hashes the name, description, and input schema at install, keeps tool-pins.json in the repo, and compares on every start. A changed hash is a new tool: the harness refuses to start it until a human re-approves and re-pins. Try it in the panel below the figure."},
     {v:"B", k:"inject gate", t:"Resource injection", w:["E5","E11"],
@@ -663,7 +663,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {v:"B", k:"deputy", t:"Confused deputy", w:["E5"],
      p:"A proxy MCP server holds one static client ID at an upstream authorization server and registers its own clients dynamically, and the user's browser holds a consent cookie. With no per-client consent at the proxy, a crafted link spends that consent on the attacker's redirect URI. The spec's security page needs all four conditions, so breaking any one stops it. Audience-bound tokens and the client-side iss check close the rest."},
     {v:"B", k:"inject deputy gate", t:"Data, and authority", w:["E5"],
-     p:"The E5 trace of the GitHub MCP server exploit (Invariant Labs, May 2025) was two of these rows at once: a stranger's issue, which is content, spent the user's token, which is authority. Both of the deck's rules apply on every call. Every observation is data. Authority is a token the server checked itself."}
+     p:"The E5 trace of the GitHub MCP server exploit (Invariant Labs, May 2025) was two of these rows at once: a stranger's issue, which is content, spent the user's token, which is authority. Both of the lecture's rules apply on every call. Every observation is data. Authority is a token the server checked itself."}
   ];
 
   const HOLD = [
@@ -802,7 +802,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     if (!(window.crypto && crypto.subtle)) return;
     pinned = await sha256(canonical(desc.value)); pinnedText = desc.value;
     $("repinnote").textContent = desc.value.includes("<IMPORTANT>")
-      ? "You re-pinned the canary. The check now passes, and the poisoned text is the approved baseline. This is the case the deck warns about: a pin cannot catch a description that was poisoned before you pinned it."
+      ? "You re-pinned the canary. The check now passes, and the poisoned text is the approved baseline. This is the case the lecture warns about: a pin cannot catch a description that was poisoned before you pinned it."
       : "Re-pinned. A pin tells you the description changed since a human approved it. It cannot catch a description that was already poisoned when you pinned it.";
     check();
   });

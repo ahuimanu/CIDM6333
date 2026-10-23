@@ -180,7 +180,7 @@
  "Decision: gzkit's CLI on argparse, not click.": "Decision: gzkit's CLI on argparse, not click.",
  "Alternatives: click, typer, argparse, with consequences, not adjectives.": "Alternatives: click, typer, argparse, each with its consequences stated.",
  "Popularity was rejected as a reason. What counted: zero external dependencies, a smaller attack and upgrade surface, stdlib-first posture.": "The ADR rejected popularity as a reason. It counted zero external dependencies, a smaller attack and upgrade surface, and a stdlib-first posture.",
- "[Summarized from the ADR title; verify against the ADR text.]": "[Summarized from the ADR title; verify against the ADR text.]",
+ "[Summarized from the ADR title; verify against the ADR text.]": "",
  "The shape of ADR-1": "The shape of ADR-1",
  "1. Intent (from the PRD)": "1. Intent (from the PRD)",
  "2. Decision: pattern + framework, one sentence": "2. Decision: pattern + framework, one sentence",

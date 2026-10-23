@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Steer the Middle · mini lecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+html,body{height:100%}
+.wrap{max-width:1180px; margin:0 auto; padding:20px 20px 48px}
+h1.deck{font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56px); line-height:1; margin:4px 0 14px}
+.stage{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.slides{position:relative; aspect-ratio:16/9; width:100%}
+.slide{position:absolute; inset:0; padding:clamp(18px,3.2vw,44px) clamp(20px,3.6vw,52px); display:none; grid-template-rows:auto auto 1fr auto; gap:10px; overflow:hidden}
+.slide.cur{display:grid}
+.slide .kick{font-family:var(--display); font-weight:600; letter-spacing:.12em; text-transform:uppercase; font-size:clamp(11px,1.1vw,14px); color:var(--accent-ink)}
+.slide h2{font-family:var(--display); font-weight:700; font-size:clamp(26px,3.4vw,46px); line-height:1; margin:2px 0 0; letter-spacing:-.01em; text-wrap:balance}
+.slide h2 small{display:block; font-weight:500; font-size:clamp(14px,1.5vw,20px); color:var(--ink-2); margin-top:6px; letter-spacing:0}
+.slide .body{min-height:0; font-size:clamp(14px,1.55vw,21px); line-height:1.4; display:grid; align-content:start; gap:8px}
+.slide .body p{margin:0}
+.slide .body ul,.slide .body ol{margin:0; padding-left:1.1em; display:grid; gap:5px}
+.slide .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr)); gap:22px; align-items:start}
+.slide .foot{font-family:var(--display); font-weight:500; font-size:clamp(11px,1.05vw,13.5px); color:var(--ink-2); letter-spacing:.04em; display:flex; justify-content:space-between; gap:12px}
+.slide code{font-family:var(--mono); font-size:.86em; background:var(--surface-2); padding:1px 5px; border-radius:4px}
+.slide pre{margin:0; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:clamp(11px,1.15vw,15px); line-height:1.4; overflow:hidden; white-space:pre}
+.slide pre code{background:none; padding:0; font-size:inherit}
+.slide table{border-collapse:collapse; width:100%; font-size:clamp(12px,1.3vw,17px)}
+.slide th{font-family:var(--display); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:.78em; color:var(--ink-2); text-align:left; padding:5px 8px; border-bottom:1.5px solid var(--ink-2)}
+.slide td{padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top}
+.slide td.m{font-family:var(--mono); font-size:.9em}
+.slide .big{font-family:var(--display); font-weight:700; font-size:clamp(40px,7vw,96px); line-height:.95; color:var(--accent-ink)}
+.slide .callout{background:var(--accent-soft); border-left:4px solid var(--accent); padding:8px 12px; border-radius:0 8px 8px 0}
+.slide .rings{display:grid; place-items:center}
+.slide iframe{width:100%; height:100%; border:0; border-radius:8px; background:var(--bg)}
+.slide.embed{grid-template-rows:auto 1fr}
+.slide.title{align-content:center; text-align:left}
+.slide.title h2{font-size:clamp(40px,6.5vw,88px)}
+.slide.title .body{font-size:clamp(16px,2vw,26px)}
+.bar{display:grid; grid-template-columns:4fr 1.6fr 4fr; gap:6px; margin-top:6px}
+.bar div{border:1.5px solid var(--line); border-radius:8px; padding:8px 10px; font-family:var(--display); font-weight:600; font-size:clamp(12px,1.4vw,18px); background:var(--surface-2)}
+.bar div.mid{background:var(--model); border-color:var(--model-line); text-align:center}
+.bar div span{display:block; font-family:var(--body); font-weight:400; font-size:.8em; color:var(--ink-2); margin-top:2px}
+.ctrls{border-top:1px solid var(--line); display:flex; gap:10px; align-items:center; padding:12px 18px; flex-wrap:wrap}
+.count{font-family:var(--mono); font-size:13.5px; color:var(--ink-2); margin-left:auto}
+.hint{font-size:13px; color:var(--ink-2); font-family:var(--display); letter-spacing:.04em}
+.toc{margin-top:26px}
+.toc h3{font-family:var(--display); font-weight:600; font-size:22px; margin:0 0 8px}
+.toc ol{margin:0; padding-left:22px; columns:2; column-gap:28px; font-size:16px}
+.toc li{break-inside:avoid; margin:0 0 4px}
+.toc a{color:var(--accent-ink); text-decoration:none; border-bottom:1px dotted var(--accent)}
+:fullscreen .stage{border:0; border-radius:0; height:100vh; display:grid; grid-template-rows:1fr auto}
+:fullscreen .slides{aspect-ratio:auto; height:100%}
+@media (max-width:760px){
+  .slides{aspect-ratio:auto}
+  .slide{position:relative; min-height:0; overflow:visible; grid-template-rows:auto auto auto auto}
+  .slide.embed{min-height:70vh}
+  .slide.embed iframe{min-height:70vh}
+}
+@media print{
+  body{background:#fff; color:#000}
+  .wrap{max-width:none; padding:0}
+  nav,.ctrls,.toc,footer,h1.deck,.eyebrow{display:none}
+  .stage{border:0}
+  .slides{aspect-ratio:auto}
+  .slide{display:grid!important; position:relative; page-break-after:always; height:7.5in; border-bottom:1px solid #ccc}
+  .slide.embed iframe{display:none}
+}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<div class="wrap">
+<div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Lectures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Lectures</a> · Mini lecture</nav>
+<div class="eyebrow">Mini lecture · before the Steer the Middle exercise</div>
+<h1 class="deck">Steer the Middle: three rings, one bar, E0 to E8</h1>
+
+<div class="stage" id="stage">
+<div class="slides" id="slides" tabindex="0" aria-label="Slides; use the arrow keys">
+
+<section class="slide title">
+  <div class="kick">Mini lecture · Evolution 8 · follow-along night</div>
+  <h2>Steer the middle<small>Three rings, one bar, and every file you have written since E0</small></h2>
+  <div class="body">
+    <p>The model is inside. OpenCode is the middle. Your harness is the outer ring, and it is mostly your version of what OpenCode already does by default.</p>
+    <p>One hour of this. Then one hour at the keyboard, each of you in your own repository, following the screen.</p>
+  </div>
+  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>Figure 17 · the exercise page</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">Run of show</div>
+  <h2>Two hours, two halves</h2>
+  <div class="body cols">
+    <div>
+      <p><strong>Hour one · lecture</strong></p>
+      <ul>
+        <li>This deck: the rings, the bar, and the table of pairs</li>
+        <li>Figure 17, from the inside out, then E0 to E8</li>
+        <li>The E8 deck, out of order: slides 3, 6, 7, 10, 11, 12</li>
+      </ul>
+    </div>
+    <div>
+      <p><strong>Hour two · at the keyboard</strong></p>
+      <ul>
+        <li>Follow the screen, your own repository, one step at a time</li>
+        <li>Each step: do, see, record</li>
+        <li>Ends with a reviewer agent that cannot edit, and a verdict on a diff</li>
+        <li>Push before you leave; the repository is the submission</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Nothing is printed. The exercise page stays open beside OpenCode.</span><span>2</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">The model · inner ring</div>
+  <h2>One window in, one answer out, nothing kept</h2>
+  <div class="body cols">
+    <div>
+      <p><code>opencode/big-pickle</code> (or any OpenCode Go model) reads a window of text and writes a reply, one token per pass.</p>
+      <p>It keeps nothing between calls. The next turn starts from a window the harness builds again.</p>
+      <p class="callout">You cannot change this ring. You can only change what goes into the window and what happens to what comes out.</p>
+    </div>
+    <div>
+      <p>What the window holds on a turn (E6):</p>
+      <ul>
+        <li>a system prompt, and <code>AGENTS.md</code> in full</li>
+        <li>the tool list: name, description, schema for each</li>
+        <li>each skill's name and description, inside the skill tool</li>
+        <li>the turn history, compacted when it gets long</li>
+        <li>whatever memory's retriever scored above the threshold</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Figures 01, 07</span><span>3</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">OpenCode · middle ring</div>
+  <h2>The loop you did not write</h2>
+  <div class="body cols">
+    <div>
+      <p>OpenCode builds the window, calls the model, parses the tool call, checks the permission, runs the tool, and loops. E1's loop, shipped.</p>
+      <p>It ships with defaults for everything you will steer:</p>
+      <ul>
+        <li>built-in tools: <code>read</code>, <code>edit</code>, <code>shell</code>, <code>webfetch</code>, <code>glob</code>, <code>grep</code></li>
+        <li>built-in agents: <code>build</code>, <code>plan</code>, <code>general</code>, <code>explore</code>, <code>scout</code></li>
+        <li>built-in commands: <code>/init</code>, <code>/undo</code>, <code>/redo</code>, <code>/help</code></li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li>a default system prompt</li>
+        <li>default permissions: most <code>allow</code>; <code>.env</code> denied; <code>doom_loop</code> and <code>external_directory</code> ask</li>
+        <li>the <code>skill</code> tool, empty until you fill it</li>
+        <li>compaction: a summary the model writes when the window fills</li>
+        <li>an event bus that plugins can hook</li>
+      </ul>
+      <p class="callout">Its trace is its own: the agent name in the TUI, the tool-call line, the permission prompt.</p>
+    </div>
+  </div>
+  <div class="foot"><span>OpenCode docs, checked 10/22/2026</span><span>4</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">Your harness · outer ring</div>
+  <h2>One file per thing you steer</h2>
+  <div class="body">
+    <table>
+      <thead><tr><th>OpenCode has</th><th>You write</th><th>Evo</th></tr></thead>
+      <tbody>
+        <tr><td>a default prompt</td><td class="m">AGENTS.md</td><td>E5</td></tr>
+        <tr><td>built-in tools</td><td class="m">.opencode/tools/&lt;name&gt;.ts, a shim that calls your Python · a Python MCP server (opencode.json → mcp)</td><td>E3 · E4</td></tr>
+        <tr><td>default permissions</td><td class="m">opencode.json → permission</td><td>E3</td></tr>
+        <tr><td>the skill tool, empty</td><td class="m">.opencode/skills/&lt;name&gt;/SKILL.md</td><td>E5</td></tr>
+        <tr><td>built-in commands</td><td class="m">.opencode/commands/&lt;name&gt;.md</td><td>E2</td></tr>
+        <tr><td>built-in agents</td><td class="m">.opencode/agents/&lt;name&gt;.md</td><td>E2 · E8</td></tr>
+        <tr><td>compaction</td><td class="m">handoff.md · opencode.json → instructions, references</td><td>E6</td></tr>
+        <tr><td>nothing: no store between sessions</td><td class="m">recall.py · memory.jsonl <em>(an addition)</em></td><td>E7</td></tr>
+        <tr><td>an event bus</td><td class="m">.opencode/plugins/&lt;name&gt;.ts, a hook that calls your Python <em>(an addition; not tonight)</em></td><td>E10</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>Each outer item sits radially outside the thing it steers</span><span>5</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">The bar</div>
+  <h2>The widths are where the human's work is</h2>
+  <div class="body">
+    <div class="bar">
+      <div>Specs and planning<span>what is wanted, written before the loop runs: pitch, brief, PRD, AGENTS.md, plan, handoff</span></div>
+      <div class="mid">Execution<span>the three rings</span></div>
+      <div>Evaluation, validation, verification<span>what checks the output: tests, reviewer, the Chase, ledger, the gate</span></div>
+    </div>
+    <p>All three rings sit inside the narrow band. The model's part of the work is the thin part; the human owns both wide ends.</p>
+    <p class="callout">This is E0's Degradation Pattern drawn as a shape. When the wide ends shrink, the system stops being answerable, and nothing in the rings notices.</p>
+    <p>Tonight's exercise walks the figure left to right, and ends with you in the right band, reading a reviewer's verdict against a diff.</p>
+  </div>
+  <div class="foot"><span>E0 · index zero</span><span>6</span></div>
+</section>
+
+<section class="slide embed">
+  <div class="kick">Figure 17 · step through it here, or <a href="../../figures/steer-the-middle.html" target="_blank" style="color:inherit">open it full size</a></div>
+  <iframe src="../../figures/steer-the-middle.html?embed=1" title="Figure 17, Steer the Middle" loading="lazy"></iframe>
+</section>
+
+<section class="slide">
+  <div class="kick">E0 · E1 · E2</div>
+  <h2>Human, loop, and two agents</h2>
+  <div class="body cols">
+    <div>
+      <p><strong>E0.</strong> A human writes what is wanted before the loop runs, and a human judges what came back. Nothing in the rings yet.</p>
+      <p><strong>E1.</strong> The loop is the middle ring. Its one visible trace is the tool-call line: <code>glob</code>, <code>read</code>, <code>read</code>, then an answer. The model did not read the files; the loop did, and put the text in the next window.</p>
+    </div>
+    <div>
+      <p><strong>E2.</strong> Who owns the loop? OpenCode answers with two primary agents. <code>build</code> can edit. <code>plan</code> denies edits outside <code>~/.opencode/plan/</code>. <strong>Tab</strong> switches. The pattern you drew in E2 is now a permission difference between two agent definitions.</p>
+      <p class="callout">Tonight: count the tool calls on one question; plan hex in <code>plan</code>, then build it in <code>build</code>.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Figures 02, 03</span><span>8</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">E3 · E4</div>
+  <h2>A tool is a schema plus a gate</h2>
+  <div class="body cols">
+    <div>
+      <p><strong>E3.</strong> A tool is a contract: arguments, a result, exit codes. Tonight the contract is <code>codec.py</code>'s CLI: arguments, exit 0 or 2, <code>--selftest</code> as evidence. A custom tool is a ten-line <code>.ts</code> shim in <code>.opencode/tools/</code> that declares the schema and calls the Python; all logic stays in Python.</p>
+      <pre><code>"permission": {
+  "edit": "ask",
+  "shell": { "*": "ask",
+             "git diff*": "allow",
+             "python3 …/codec.py --selftest": "allow" },
+  "skill": { "*": "ask" }
+}</code></pre>
+      <p>The gate is <code>opencode.json → permission</code>: allow, ask, or deny per tool and per pattern; the last matching rule wins.</p>
+    </div>
+    <div>
+      <p><strong>E4.</strong> An MCP server's tools reach the model the same way: name, description, schema in the window; the permission engine at call time.</p>
+      <p>The difference is the trust boundary (Figure 06): the server's descriptions are someone else's text. Tonight you only locate the <code>mcp</code> block and record what it exposes.</p>
+      <p class="callout">The permission prompt is the trace that the gate held. Tonight most things ask, on purpose, so the room sees it.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Figures 04, 05, 06</span><span>9</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">E5 · E6 · the three drawers, revisited</div>
+  <h2>What rides every turn, what loads on call, what gets squeezed</h2>
+  <div class="body">
+    <table>
+      <thead><tr><th>Item</th><th>When the model sees it</th><th>Tonight's trace</th></tr></thead>
+      <tbody>
+        <tr><td class="m">AGENTS.md</td><td>every turn, in full (budget 4,000 characters)</td><td>a fresh session answers the standing-intent question and names the file</td></tr>
+        <tr><td class="m">opencode.json → instructions</td><td>every turn, joined to AGENTS.md</td><td>the spec answered with no <code>read</code> call</td></tr>
+        <tr><td class="m">.opencode/skills/codec-check/SKILL.md</td><td>name and description every turn; body when the model calls the skill tool</td><td>the skill permission prompt</td></tr>
+        <tr><td class="m">handoff.md</td><td>once, when the next session is told to read it</td><td>the <code>read</code> call</td></tr>
+        <tr><td>compaction</td><td>the model's own summary when the window fills</td><td>the compaction notice; you did not write it</td></tr>
+      </tbody>
+    </table>
+    <p class="callout">Two of last week's three drawers are on this slide. The third is memory, next.</p>
+  </div>
+  <div class="foot"><span>Figures 07, 14, 15</span><span>10</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">E7</div>
+  <h2>Memory is a claim with a date</h2>
+  <div class="body cols">
+    <div>
+      <p>OpenCode keeps no store between sessions. <code>recall.py</code> and <code>memory.jsonl</code> are an addition with no counterpart on the middle ring.</p>
+      <p>A record enters the window only when the retriever scores it above the threshold. The model reads it as fact.</p>
+    </div>
+    <div>
+      <p>Tonight you file one record at 35 minutes:</p>
+      <pre><code>As of 2026-10-22 the codec supports
+rot13 and base64. Hex is not implemented.</code></pre>
+      <p>At 55 minutes hex exists and the record is wrong. Nothing in the loop knows. The retention date and <code>evict</code> are the mechanism; the sentence "data, not instructions" is a request.</p>
+      <p class="callout">The drawer does not open itself, and it does not close itself either.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Figures 08, 14, 16</span><span>11</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">E8 · the thing you build tonight</div>
+  <h2>A reviewer that cannot edit</h2>
+  <div class="body cols">
+    <div>
+      <pre><code>---
+description: Reviews one diff against one spec.
+  Returns one ReviewResult JSON. Never edits.
+mode: subagent
+temperature: 0.1
+permission:
+  edit: deny
+  webfetch: deny
+  shell:
+    "*": deny
+    "git diff*": allow
+    "git log*": allow
+    "python3 …/codec.py --selftest": allow
+---
+Role: reviewer. Traits … Anti-traits …
+Why … Return exactly one ReviewResult.</code></pre>
+    </div>
+    <div>
+      <p><code>.opencode/agents/reviewer.md</code> is your version of a built-in agent, placed radially outside <code>build</code> and <code>plan</code>.</p>
+      <ul>
+        <li>The <strong>deny</strong> enforces. The <strong>anti-trait</strong> explains. Both, in that order.</li>
+        <li><code>build</code> invokes it through the task tool, or you call it with <code>@reviewer</code>. It runs in its own window and returns one message.</li>
+        <li>The message is a typed claim: <code>verdict</code>, <code>findings</code> with a location, <code>checked</code>.</li>
+      </ul>
+      <p class="callout">The test: ask it to fix the bug. Refused by persona, or denied by permission. An edit that goes through is the finding of the night.</p>
+    </div>
+  </div>
+  <div class="foot"><span>E8 deck slides 6, 7, 10, 11 · Figure 09 · docs use <code>shell</code>, not <code>bash</code></span><span>12</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">E9 · E10 · greyed on the figure</div>
+  <h2>Not tonight: the mechanisms in the loop</h2>
+  <div class="body cols">
+    <div>
+      <p><strong>E9.</strong> What happens when the reviewer and the worker disagree, and a second reviewer with a different question. The controller routes FAIL back with a bound on rounds, then BLOCKED to the human.</p>
+    </div>
+    <div>
+      <p><strong>E10.</strong> Your code inside the loop for the first time:</p>
+      <ul>
+        <li><code>.opencode/plugins/</code>: a hook on <code>tool.execute.before</code> that calls a Python checker and refuses a write without a passing run</li>
+        <li><code>.opencode/commands/test.md</code> with <code>!`pytest -q`</code>: the test output injected into the prompt</li>
+        <li><code>permission.doom_loop</code>: the same call three times stops the loop</li>
+      </ul>
+      <p class="callout">These are the answers to last week's Probe 3 question: a mechanism in the loop, not a sentence in the prompt.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Figures 10, 11</span><span>13</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">Hour two</div>
+  <h2>Sixty minutes, ten steps, your own repository</h2>
+  <div class="body cols">
+    <div>
+      <ol>
+        <li>0–5 · set up: spec, worksheet, codec with <code>--selftest</code></li>
+        <li>5–9 · E1: one question, count the tool calls</li>
+        <li>9–13 · E2: Tab to <code>plan</code>, plan hex, Tab back</li>
+        <li>13–20 · E3: <code>permission</code>; the self-test runs without asking</li>
+        <li>20–23 · E4: locate the <code>mcp</code> block, or record none</li>
+      </ol>
+    </div>
+    <div>
+      <ol start="6">
+        <li>23–31 · E5: the codec line in <code>AGENTS.md</code>; the <code>codec-check</code> skill; the skill prompt</li>
+        <li>31–35 · E6: the spec as an instruction; answered with no read</li>
+        <li>35–39 · E7: one dated record</li>
+        <li>39–55 · E8: the reviewer; build adds hex; <code>@reviewer</code>; "fix it"</li>
+        <li>55–60 · evict the stale record; worksheet; commit; push</li>
+      </ol>
+    </div>
+  </div>
+  <div class="foot"><span>Each step: do · see · record. The exercise page has the exact text to type.</span><span>14</span></div>
+</section>
+
+<section class="slide">
+  <div class="kick">Exit ticket · in your repository, pushed</div>
+  <h2>The inventory, and one finding</h2>
+  <div class="body cols">
+    <div>
+      <ul>
+        <li><code>opencode.json</code> with <code>permission</code> and <code>instructions</code></li>
+        <li><code>AGENTS.md</code> with the codec line, under 4,000 characters</li>
+        <li><code>.opencode/skills/codec-check/SKILL.md</code> · <code>.opencode/agents/reviewer.md</code></li>
+        <li><code>evolution-08/exercise/</code>: <code>codec.py</code> with hex and a passing self-test, the spec, the worksheet, the record, <code>review.json</code></li>
+      </ul>
+    </div>
+    <div>
+      <p>The worksheet's last column: was each file in your repository before tonight? A row you filled tonight for the first time is the thing to commit. A row with no trace is the finding.</p>
+      <p class="callout">For the Final System: the harness that builds your MVP is the outer ring. Your V&amp;V shows, for every file on it, what reads it, when, and the trace.</p>
+    </div>
+  </div>
+  <div class="foot"><span>CIDM 6333 · Fall 2026</span><span>15</span></div>
+</section>
+
+</div>
+<div class="ctrls">
+  <button id="prev" type="button">◀ Back</button>
+  <button id="next" class="primary" type="button">Next ▶</button>
+  <button id="fs" type="button">Full screen</button>
+  <span class="hint">Arrow keys step · F for full screen · Home and End jump</span>
+  <span class="count" id="count" role="status">1 / 15</span>
+</div>
+</div>
+
+<div class="toc">
+  <h3>Slides</h3>
+  <ol id="toc"></ol>
+</div>
+<div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Lectures" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Mini lecture · Steer the Middle · Fall 2026</footer>
+</div>
+<script>
+(function(){
+  const slides=[...document.querySelectorAll(".slide")], n=slides.length;
+  let cur=0;
+  const toc=document.getElementById("toc");
+  slides.forEach((s,i)=>{ const h=s.querySelector("h2"); const t=h?h.childNodes[0].textContent.trim():(s.querySelector(".kick")||{}).textContent||("Slide "+(i+1)); const li=document.createElement("li"); const a=document.createElement("a"); a.href="#"+(i+1); a.textContent=t; a.addEventListener("click",e=>{e.preventDefault();go(i);}); li.appendChild(a); toc.appendChild(li); });
+  function go(i){ cur=Math.max(0,Math.min(n-1,i)); slides.forEach((s,j)=>s.classList.toggle("cur",j===cur)); document.getElementById("count").textContent=(cur+1)+" / "+n; const pv=document.getElementById("prev"), nx=document.getElementById("next"); pv.disabled=cur===0; nx.disabled=cur===n-1; if(document.activeElement===nx&&nx.disabled) pv.focus(); if(document.activeElement===pv&&pv.disabled) nx.focus(); history.replaceState(null,"","#"+(cur+1)); }
+  document.getElementById("prev").addEventListener("click",()=>go(cur-1));
+  document.getElementById("next").addEventListener("click",()=>go(cur+1));
+  document.getElementById("fs").addEventListener("click",()=>{ const st=document.getElementById("stage"); if(document.fullscreenElement) document.exitFullscreen(); else st.requestFullscreen&&st.requestFullscreen(); });
+  function stageActive(){ const st=document.getElementById("stage"); const r=st.getBoundingClientRect(); return st.contains(document.activeElement) || (r.top<window.innerHeight*0.6 && r.bottom>window.innerHeight*0.4); }
+  document.addEventListener("keydown",e=>{
+    if (e.target.matches("input,select,textarea,iframe")) return;
+    if (!stageActive()) return;
+    if (e.key==="ArrowRight"||e.key===" "||e.key==="PageDown"){ go(cur+1); e.preventDefault(); }
+    if (e.key==="ArrowLeft"||e.key==="PageUp"){ go(cur-1); e.preventDefault(); }
+    if (e.key==="Home"){ go(0); e.preventDefault(); }
+    if (e.key==="End"){ go(n-1); e.preventDefault(); }
+    if (e.key==="f"||e.key==="F"){ document.getElementById("fs").click(); }
+  });
+  const h=parseInt(location.hash.slice(1),10); go(isNaN(h)?0:h-1);
+})();
+</script>
+</body></html>

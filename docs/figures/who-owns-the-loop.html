@@ -407,7 +407,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <div class="lanes" id="lanes"></div>
     <div class="ndrow" id="ndrow"></div>
     <div class="tablewrap" style="margin-top:0"><table class="det" id="det"></table></div>
-    <p class="small">Pick a framework to load it. Each owner comes from the deck's tables and speaker notes. "You" means code, types, hooks, prompts, or approvals that you or your human supply. Where the deck says nothing about a part, the figure lists it as not stated and makes no guess. The vendor SDK rows are the deck's view as of early 2026, and the deck flags them to verify, because these SDKs change monthly. The deck adds that none of the three vendor SDKs records what the human attested.</p>
+    <p class="small">Pick a framework to load it. Each owner comes from the E2 lecture's tables. "You" means code, types, hooks, prompts, or approvals that you or your human supply. Where the lecture says nothing about a part, the part is listed as not stated. The vendor SDK rows describe early 2026; check them against current docs, because these SDKs change monthly. None of the three vendor SDKs records what the human attested.</p>
   </section>
 
   <section class="panel wide" aria-labelledby="h-mx">
@@ -421,7 +421,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-lad">
     <div class="eyebrow">E2 slide 6 · When to keep it simple</div>
     <h2 id="h-lad">The ladder from a single call to a framework</h2>
-    <p class="small">The deck turns the source's advice into a ladder, and each rung becomes a row in ADR-1. Each rung is justified only by the evidence the rung below produced. Check what is true of your system.</p>
+    <p class="small">The E2 lecture turns the catalog's advice into a ladder, and each rung becomes a row in ADR-1. Each rung is justified only by the evidence the rung below produced. Check what is true of your system.</p>
     <div class="qs" id="qs">
       <label><input type="checkbox" id="q1"><span>I measured a single model call with retrieval and in-context examples.</span></label>
       <label><input type="checkbox" id="q2"><span>The task decomposes cleanly, and I can measure the gain.</span></label>
@@ -436,7 +436,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <div class="rung" id="r3"><div class="rn">Add a framework<small>above the figure</small></div><div class="rd">Only when it buys something your stdlib loop cannot: checkpoints, tracing, typed handoffs.<i>ADR-1: "None / stdlib" is a legitimate alternative and must appear.</i></div></div>
     </div>
     <p class="result" id="ladres" aria-live="polite"></p>
-    <blockquote>If you cannot explain what the framework did on turn three, you do not own the loop; it owns you.<cite>E2 deck, slide 6 · the abstraction tax</cite></blockquote>
+    <blockquote>If you cannot explain what the framework did on turn three, you do not own the loop; it owns you.<cite>E2 lecture, slide 6 · the abstraction tax</cite></blockquote>
   </section>
 
   <!-- ADR -->
@@ -449,7 +449,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <dt>Rejected reason</dt><dd>Click's popularity.</dd>
       <dt>Reasons that counted</dt><dd>Zero external dependencies for a governance kit; a smaller attack and upgrade surface; the stdlib-first posture that later became doctrine.</dd>
     </dl>
-    <p class="small">The deck summarizes this ADR from its title and the book's outline, and flags its alternatives and consequences for checking against the ADR text. The stakes are low and the reasoning is clean, which is why the deck uses it as the model.</p>
+    <p class="small">The stakes are low and the reasoning is clean, which is why the E2 lecture uses it as the model.</p>
     <div class="eyebrow">The shape of ADR-1</div>
     <ol class="shape">
       <li><b>Intent.</b> What the loop must do, from the PRD.</li>
@@ -459,7 +459,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Decomposition scorecard.</b> The decision scored against the alternatives on the criteria you chose.</li>
       <li><b>Feature checklist.</b> What the choice must support by E12: tools, MCP, memory, multi-agent, evals, serving.</li>
     </ol>
-    <blockquote>ADRs before code. After is post-hoc rationalization.<cite>E2 deck, slide 10</cite></blockquote>
+    <blockquote>ADRs before code. After is post-hoc rationalization.<cite>E2 lecture, slide 10</cite></blockquote>
     <p class="small">Before you record the decision, run the reference design's three forcing functions. A pre-mortem writes the story of the choice failing by E12. WWHTBT asks what would have to be true for the rejected alternative to have been right. Constraint archaeology traces each constraint to the PRD, the syllabus, or habit, and habit does not count.</p>
   </section>
 </div>
@@ -492,7 +492,7 @@ ABORT               framework install/runtime failure unrelated
                     to the pattern (squawk)
 CHASE               peer, from the two ledger slices and the
                     ADR only → PASS / FAIL</pre>
-      <p class="small">Card text from the E2 deck, slide 13, rewrapped to fit. The last falsifier is a condition on the record rather than on the run: an ADR dated after the refactor commit fails the sortie, because its prediction was written after the fact.</p>
+      <p class="small">The last falsifier is a condition on the record rather than on the run: an ADR dated after the refactor commit fails the sortie, because its prediction was written after the fact.</p>
     </div>
     <div style="display:grid; gap:12px; align-content:start">
       <div class="eyebrow">Refactor the E1 loop, keep the trace (E2 slide 5)</div>
@@ -527,7 +527,6 @@ CHASE               peer, from the two ledger slices and the
       <li>Ownership here is coarse. "You" covers very different work: drawing a graph edge, writing a Pydantic type, writing a hook, or pressing allow on a permission prompt.</li>
       <li>The figure carries no cost or quality numbers. Sortie 2 produces them, from your own two runs.</li>
       <li>E8 returns to the role-based frameworks with FIPA and BDI, and to orchestrator–workers with subagents. E10 returns to evaluator–optimizer as evaluation as a gate.</li>
-      <li>The deck's ADR-0.0.2 summary and its vendor SDK table both carry verify-before-class flags. The figure repeats them as the deck states them.</li>
     </ul>
   </section>
   <section>
@@ -560,8 +559,8 @@ CHASE               peer, from the two ledger slices and the
   const $ = id => document.getElementById(id);
   const STEPS = [
     {k:"*", t:"Every framework is a theory of who owns the loop", w:["E0","E2"],
-     p:"Each panel draws one pattern from Anthropic's catalog, the one the deck uses. Tinted boxes are model calls. Solid edges are fixed by your code before the run; dashed edges are chosen by the model during it. Read each panel for one question: who decides the next step?",
-     q:"Workflow: the model is called along code paths you wrote. Agent: the model directs its own control flow.", c:"E2 deck, slide 3"},
+     p:"Each panel draws one pattern from Anthropic's catalog. Tinted boxes are model calls. Solid edges are fixed by your code before the run; dashed edges are chosen by the model during it. Read each panel for one question: who decides the next step?",
+     q:"Workflow: the model is called along code paths you wrote. Agent: the model directs its own control flow.", c:"E2 lecture, slide 3"},
     {k:"c1", tab:0, t:"Prompt chaining", w:["E2"], ctl:"Your code owns every edge.",
      p:"Your code calls the model in a fixed sequence, and each step's output becomes the next step's input. A gate between steps is a check in code that can end the chain early. Choose it when the task decomposes and accuracy matters more than latency."},
     {k:"c2", tab:1, t:"Routing", w:["E2"], ctl:"The model picks the class. Your code owns the set of paths.",
@@ -577,10 +576,10 @@ CHASE               peer, from the two ledger slices and the
     {k:"c6 c4 c5", t:"Refactor the E1 loop and keep the trace", w:["E2"], ctl:"Only control moves. The tool layer stays fixed.",
      p:"Sortie 2 moves your E1 loop into one of the catalog's patterns without touching the tool layer. As orchestrator–workers, a planner splits the task and bounded workers call the same tools in the same order. As evaluator–optimizer, a critic gates the halt and adds evaluator turns you can count. If the tool trace changes, the comparison measures nothing."},
     {k:"c1 c2 c3 c4 c5", t:"Keep it simple", w:["E0","E2"], ctl:"Start with the simplest pattern that works.",
-     p:"The source advises you to start with the simplest pattern that works and add complexity only when it measurably helps. The deck adds that most production agents are workflows, and should be, because workflows are predictable, cheap, and testable. That advice is ADR-1's null hypothesis. The ladder below the figure walks the rungs."},
+     p:"The source advises you to start with the simplest pattern that works and add complexity only when it measurably helps. The E2 lecture adds that most production agents are workflows, and should be, because workflows are predictable, cheap, and testable. That advice is ADR-1's null hypothesis. The ladder below the figure walks the rungs."},
     {k:"*", t:"From patterns to frameworks", w:["E2"],
      p:"A pattern places control for one task, and a framework places control for every task you build with it. LangGraph assumes you own every edge. The Claude Agent SDK assumes the vendor owns the loop. CrewAI assumes control is a conversation among roles. The panel below the figure shows, for each framework, what it takes from you.",
-     q:"A framework is a theory of who owns the loop. Choose one on evidence, write down what you gave up, and be ready to be wrong in the ledger.", c:"E2 deck, slide 14"}
+     q:"A framework is a theory of who owns the loop. Choose one on evidence, write down what you gave up, and be ready to be wrong in the ledger.", c:"E2 lecture, slide 14"}
   ];
   const TABS=["Chaining","Routing","Parallelization","Orchestrator–workers","Evaluator–optimizer","Agent"];
 
@@ -619,11 +618,11 @@ CHASE               peer, from the two ledger slices and the
   /* ---------- who owns the loop ---------- */
   const PARTS=[["loop","The loop"],["plan","Planning"],["tools","Tools"],["mem","Memory & context"],["coord","Coordination"],["eval","Evaluation"],["gov","Governance & human"],["run","Runtime"]];
   const OWN={Y:"You",F:"Framework",M:"Model",N:"No one"};
-  const VENDOR_COST="Cost, per the deck: these SDKs change monthly, which is itself the lesson, and none of the three records what was attested.";
+  const VENDOR_COST="Cost: these SDKs change monthly, which is itself the lesson, and none of the three records what was attested.";
   const FW=[
     {id:"std", name:"None / stdlib", meta:"Your E1 loop · the reference design's posture · E1 slide 6, E2 slides 5–6",
      theory:"You write the loop. The model decides each step inside budgets your code enforces.",
-     cost:"Cost: you build what a framework would buy, such as checkpoints, tracing, and typed handoffs. The deck says none / stdlib is a legitimate alternative and must appear in ADR-1.",
+     cost:"Cost: you build what a framework would buy, such as checkpoints, tracing, and typed handoffs. None / stdlib is a legitimate alternative and must appear in ADR-1.",
      parts:{loop:["Y","for turn in range(BUDGET): a loop you wrote and can read line by line."],
             plan:["M","Each turn the model chooses a tool or an answer. Control sits with the model, bounded by code."],
             tools:["Y","tools.call(step.name, step.args) calls your own tool layer."],
@@ -715,8 +714,8 @@ CHASE               peer, from the two ledger slices and the
     });
     $("lanes").innerHTML=h;
     const nd=PARTS.filter(([pk])=>!f.parts[pk]);
-    $("ndrow").innerHTML = nd.length ? '<span>The deck does not say:</span>'+nd.map(([,pn])=>'<span class="nd">'+pn+'</span>').join("") : '<span>The deck states an owner for all eight parts.</span>';
-    let t='<thead><tr><th>Part</th><th>Owner</th><th>What the deck says</th></tr></thead><tbody>';
+    $("ndrow").innerHTML = nd.length ? '<span>Not stated:</span>'+nd.map(([,pn])=>'<span class="nd">'+pn+'</span>').join("") : '<span>An owner is stated for all eight parts.</span>';
+    let t='<thead><tr><th>Part</th><th>Owner</th><th>Details</th></tr></thead><tbody>';
     PARTS.forEach(([pk,pn])=>{ const v=f.parts[pk]; if (v) t+='<tr><td>'+pn+'</td><td>'+ownLabel(v[0])+'</td><td>'+esc(v[1])+'</td></tr>'; });
     $("det").innerHTML=t+'</tbody>';
     [...$("mx").querySelectorAll("tbody tr")].forEach((r,j)=>r.classList.toggle("hl", j===i));

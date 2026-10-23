@@ -319,7 +319,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         <li>Personal data about any person, including you</li>
         <li>Raw exports that carry any of the above</li></ul></div>
     </div>
-    <p class="small">A canary string stands in for a secret in your tests. If the canary appears in a committed file, that is a leak. The deck's warning: an attacker who can make the agent print a secret wins twice if your logger then writes it to disk. The trace in the figure holds metadata only, and the metadata was enough to catch the false claim.</p>
+    <p class="small">A canary string stands in for a secret in your tests. If the canary appears in a committed file, that is a leak. An attacker who can make the agent print a secret wins twice if your logger then writes it to disk. The trace in the figure holds metadata only, and the metadata was enough to catch the false claim.</p>
   </section>
 
   <section class="panel wide" aria-labelledby="h-modes">
@@ -331,7 +331,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <tbody></tbody>
     </table>
     </div>
-    <p class="small">The OWASP column is the instructor's mapping for discussion, not OWASP's. Lists: OWASP Top 10 for LLM Applications 2025; OWASP Top 10 for Agentic Applications 2026 (Dec 2025). The table lists no prompt-injection mode, because prompt injection is a delivery method that can carry any of the nine objectives. Modes 5 and 6 need more than one turn. Your five attacks must cover at least four different modes.</p>
+    <p class="small">The OWASP column is a mapping for discussion, not one that OWASP publishes. Lists: OWASP Top 10 for LLM Applications 2025; OWASP Top 10 for Agentic Applications 2026 (Dec 2025). The table lists no prompt-injection mode, because prompt injection is a delivery method that can carry any of the nine objectives. Modes 5 and 6 need more than one turn. Your five attacks must cover at least four different modes.</p>
   </section>
 
   <section class="panel" aria-labelledby="h-card">
@@ -361,7 +361,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <label><input type="radio" name="obs" value="d"> The objective was achieved</label>
     </div>
     <div class="verdict" id="verdict"></div>
-    <p class="small">The common mistake, in the deck's words: “All five attacks failed,” written from the model's final message and a clean file. In that log, two payloads were never read, and a third was refused by the model before any tool ran. The permission deny that the card claimed had no refusal span at all.</p>
+    <p class="small">The common mistake, in the words of the E11 lecture: “All five attacks failed,” written from the model's final message and a clean file. In that log, two payloads were never read, and a third was refused by the model before any tool ran. The permission deny that the card claimed had no refusal span at all.</p>
   </section>
 </div>
 
@@ -389,11 +389,11 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section>
     <h2>What the figure leaves out</h2>
     <ul>
-      <li>The first five span lines and their token counts follow the deck's example span tree. The retrieval span, the third model call, all timings, the narrative text, and the cost figures are illustrative. Costs use the deck's opencode-go/glm-5.3-flash list prices ($0.15/M input, $0.50/M output, as of 09/24). On Big Pickle the model bill is $0.00.</li>
-      <li>The deck lists no separate span name for retrieval, so the figure draws retrieval as an <code>execute_tool</code> span for a search tool.</li>
-      <li>Fields such as start, end, cost, git commit, and the guardrail's rule id are the deck's “always log” list. They are your own fields, not names from the GenAI conventions.</li>
+      <li>The first five span lines and their token counts follow the example span tree in the E11 lecture. The retrieval span, the third model call, all timings, the narrative text, and the cost figures are illustrative. Costs use the opencode-go/glm-5.3-flash list prices ($0.15/M input, $0.50/M output, as of 09/24). On Big Pickle the model bill is $0.00.</li>
+      <li>The E11 lecture gives no separate span name for retrieval, so the figure draws retrieval as an <code>execute_tool</code> span for a search tool.</li>
+      <li>Fields such as start, end, cost, git commit, and the guardrail's rule id are on the “always log” list from the E11 lecture. They are your own fields, not names from the GenAI conventions.</li>
       <li>The conventions also define metrics (<code>gen_ai.client.operation.duration</code> and token-usage histograms) and an evaluation event (<code>gen_ai.evaluation.result</code>). The figure draws spans only. The conventions have status Development, so names can still change.</li>
-      <li>The trace shows the model bill. The supervision cost does not appear in it. The deck's worked example puts one sortie at $0.19 of model cost against $37.50 of your attention.</li>
+      <li>The trace shows the model bill. The supervision cost does not appear in it. The worked example in the E11 lecture puts one sortie at $0.19 of model cost against $37.50 of your attention.</li>
     </ul>
   </section>
   <section>
@@ -596,9 +596,9 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     {k:"write", sel:5, t:"The refusal is a span with a status", w:["E3","E5","E11"],
      p:"The harness checked the write against its permission rules, and a deny rule refused it. The span ends with status ERROR and error.type permission_denied. The Chase looks for this line. It shows that the attack reached the write tool and that a guardrail at an enforcement locus refused it."},
     {k:"chat3", sel:6, t:"The final reply is a transcript", w:["E11"],
-     p:"The third model call wrote the reply the user reads, and that reply includes the model's account of its own actions. In the deck's four kinds of record, that account is a transcript. As evidence it shows only what the model said, and whether the model did what it describes is answered by the spans and the receipts."},
+     p:"The third model call wrote the reply the user reads, and that reply includes the model's account of its own actions. Among the four kinds of record, that account is a transcript. As evidence it shows only what the model said, and whether the model did what it describes is answered by the spans and the receipts."},
     {k:"root read search write chat3", mode:"said", sel:5, t:"What the agent said it did", w:["E11"],
-     p:"This view replaces the bars with the claims in the final reply. The narrative has no times, no status, no token counts, and no call ids. It says the model declined to write. A student who stops here writes the attack down as refused by the model, which is the common mistake on slide 11."},
+     p:"This view replaces the bars with the claims in the final reply. The narrative has no times, no status, no token counts, and no call ids. It says the model declined to write. A student who stops here writes the attack down as refused by the model, which is the common mistake on slide 11 of the E11 lecture."},
     {k:"write caught", mode:"trace", sel:5, t:"The trace catches the claim", w:["E11"],
      p:"Back in the trace view, the write_note span contradicts the reply. The model called the tool, and the permission deny stopped it. The lab worksheet records this run as blocked by guardrail. A model that had really declined would have left no write span at all."},
     {k:"chat1 chat2 chat3 read search", sel:2, t:"Content stays out by default", w:["E5","E11"],

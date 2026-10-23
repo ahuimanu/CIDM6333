@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>4. Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Chapter 4</nav><div class="eyebrow">Answerable Systems · Chapter</div><article><h1>4. Before Language Models: Symbolic, BDI, Multi-Agent, and Reinforcement-Learning Agents</h1><p class="small"><strong>Lectures that use this chapter:</strong> <a href="../../lectures/e8-multi-agent-1/">E8</a> <span class="small">(survey)</span></p><p class="small"><strong>Readings:</strong> <a href="../readings/#chapter-4">this chapter's entries in the reading list</a></p><blockquote>
+<p><strong>Course use.</strong> CIDM 6333 · E0 background; E8 survey. Status: <strong>outline</strong>.</p>
+</blockquote>
+<h2>Learning outcomes</h2>
+<p>After this chapter you can:</p>
+<ul>
+<li>Summarize the pre-LLM agent traditions and what each contributed.</li>
+<li>Recognize classical coordination vocabulary (FIPA, contract net, BDI) in modern multi-agent frameworks.</li>
+<li>Explain what reinforcement-learning agents got right about environments and reward that LLM agents lost.</li>
+</ul>
+<h2>Outline</h2>
+<h3>4.1 Symbolic agents and expert systems</h3>
+<ul>
+<li>Production rules, knowledge representation, planning (STRIPS); why brittleness ended the era and why the ideas returned as "planning" in LLM agents.</li>
+</ul>
+<h3>4.2 BDI and the agent-oriented programming movement</h3>
+<ul>
+<li>Beliefs, desires, intentions; commitment and reconsideration. Direct ancestors of "goal decomposition" and "intent preservation."</li>
+</ul>
+<h3>4.3 Multi-agent systems</h3>
+<ul>
+<li>FIPA, JADE, contract-net protocol, blackboard architectures. Message passing, roles, negotiation. Read these before AutoGen and CrewAI; they are the same designs.</li>
+</ul>
+<h3>4.4 Reinforcement-learning agents</h3>
+<ul>
+<li>Environment, reward, policy; sample efficiency and reward hacking. The lesson LLM agents inherit: gaming the gate is not new (failure mode 9).</li>
+</ul>
+<h3>4.5 What carried forward, what was dropped</h3>
+<ul>
+<li>Carried: PEAS, planning, coordination protocols. Dropped, then rediscovered: explicit state, halt conditions, evaluation against an environment.</li>
+</ul>
+<h2>Systems analyzed in this chapter</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Year</th>
+<th>Why it is here</th>
+<th>Component focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STRIPS / expert systems</td>
+<td>1970s–80s</td>
+<td>Planning and rules</td>
+<td>Planning</td>
+</tr>
+<tr>
+<td>BDI / AgentSpeak</td>
+<td>1990s</td>
+<td>Intent as a first-class object</td>
+<td>Planning, governance</td>
+</tr>
+<tr>
+<td>FIPA / JADE / contract net</td>
+<td>1990s–2000s</td>
+<td>Coordination protocols</td>
+<td>Coordination</td>
+</tr>
+<tr>
+<td>RL agents (DQN era)</td>
+<td>2013–</td>
+<td>Environment, reward, gaming</td>
+<td>Evaluation</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Reference design: gzkit</h2>
+<p>gzkit's personas, locks, and structured result contracts are FIPA-shaped. Its "intent preservation across context boundaries" is BDI's commitment problem with a ledger.</p>
+<h2>Readings</h2>
+<ul>
+<li>Russell &amp; Norvig, chs. 2, 11 (planning), and a multi-agent chapter.</li>
+<li>Rao &amp; Georgeff on BDI (1995); Wooldridge, <em>An Introduction to MultiAgent Systems</em> (selected).</li>
+<li>Sutton &amp; Barto, ch. 1.</li>
+</ul>
+<h2>Exercises and Design Analysis prompts</h2>
+<ol>
+<li>Design Analysis: a JADE agent against a CrewAI agent. Which components changed? Which merely got renamed?</li>
+</ol><hr><p><a href="../ch-03-the-human-at-index-zero-degradation-covenant-gates/">◀ 3. The Human at Index Zero: Degradation, Covenant, Gates</a> &nbsp;·&nbsp; <a href="../ch-05-the-loop-chain-of-thought-react-and-the-first-frameworks-202/">5. The Loop: Chain-of-Thought, ReAct, and the First Frameworks (2020–2022) ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

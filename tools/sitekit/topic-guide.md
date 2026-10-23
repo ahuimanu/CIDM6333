@@ -1784,7 +1784,7 @@ Human-side: the Degradation Pattern; governance theater; cognitive surrender; me
 
 # Appendix D: Glossary
 
-*Seed list; grows with the course. Terms marked (gz) are gzkit's; (SD) are Sprint and Drift's.*
+*Terms marked (gz) are gzkit's; (SD) are Sprint and Drift's.*
 
 - **ADR**: an Architecture Decision Record, which states intent, decision, consequences, and alternatives, and is written before code.
 - **Agent**: a system that perceives and acts toward a goal; in this book, one whose reasoner is a language model and whose loop has a halt condition.

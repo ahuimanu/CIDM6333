@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<link rel="stylesheet" href="/CIDM6333/assets/site.css">
+<script src="/CIDM6333/assets/htmx.min.js"></script>
+<script src="/CIDM6333/assets/_hyperscript.min.js"></script>
+<title>Appendix B — Design Analysis Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<div class="wrap"><div class="sitenav" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<nav class="crumbs"><a href="../../">CIDM 6333</a> · <a href="../">Textbook</a> · Appendix B</nav><div class="eyebrow">Answerable Systems · Appendix</div><article><h1>Appendix B — Design Analysis Template</h1><p>One per week, ~150 words, committed to <code>design-analyses/&lt;system&gt;.md</code> and appended as a row to <code>design-analyses/LEDGER.md</code>.</p>
+<pre><code># Design Analysis — &lt;System&gt; (&lt;year&gt;)
+
+Sources read: &lt;paper / docs / code / changelog / incident record&gt;
+
+| Component | Answer |
+|---|---|
+| Foundation | |
+| Perception | |
+| Planning &amp; reasoning | |
+| Tools &amp; orchestration | |
+| Memory &amp; context | |
+| Coordination | |
+| Evaluation &amp; feedback | |
+| Governance &amp; human interface | |
+| Runtime &amp; operations | |
+
+## Why it was built this way, and what it cost
+&lt;one paragraph&gt;
+
+## Judgment loop
+Decision: · Characteristics privileged: · Cost: · Failure mode: · Preservation mechanism:
+</code></pre>
+<p>Ledger row: <code>| &lt;system&gt; | &lt;year&gt; | &lt;analyst&gt; | &lt;one-line why&gt; | &lt;link&gt; |</code></p><hr><p><a href="../appendix-a-flight-card-template-course-edition/">◀ Appendix A — Flight Card Template (course edition)</a> &nbsp;·&nbsp; <a href="../appendix-c-the-nine-agent-failure-modes/">Appendix C — The Nine Agent Failure Modes ▶</a></p></article><div class="sitenav foot" hx-get="/CIDM6333/assets/nav.html" hx-trigger="load" hx-swap="innerHTML" data-section="Textbook" _="on htmx:afterSettle for a in <a[data-sec]/> in me if a@data-sec is my @data-section then set a@aria-current to 'page' end end"><noscript><nav class="site" aria-label="Site">
+<a class="brand" href="/CIDM6333/">CIDM 6333<small>Agentic Systems Design and Development</small></a>
+<a data-sec="Home" href="/CIDM6333/">Home</a>
+<a data-sec="Figures" href="/CIDM6333/#figures">Figures</a>
+<a data-sec="Lectures" href="/CIDM6333/lectures/">Lectures</a>
+<a data-sec="Exercises" href="/CIDM6333/#exercises">Exercises</a>
+<a data-sec="Glossary" href="/CIDM6333/glossary/">Glossary</a>
+<a data-sec="Textbook" href="/CIDM6333/textbook/">Textbook</a>
+</nav></noscript></div>
+<footer>CIDM 6333 · Answerable Systems · Fall 2026</footer></div>
+</body></html>

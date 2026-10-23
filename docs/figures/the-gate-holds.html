@@ -177,7 +177,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
 <header>
   <div class="eyebrow">Figure 04</div>
   <h1>The Gate Holds</h1>
-  <p class="lede">Every tool call in your E3 loop takes the path drawn here, a sequence across six lifelines from the model to the ledger. The deck treats a tool as a contract and the model as an untrusted caller, because the model only writes text that asks for a call, and the harness you wrote parses, validates, gates, runs, and records it. Pick a tool call below and play the sequence.</p>
+  <p class="lede">Every tool call in your E3 loop takes the path drawn here, a sequence across six lifelines from the model to the ledger. The E3 lecture treats a tool as a contract and the model as an untrusted caller, because the model only writes text that asks for a call, and the harness you wrote parses, validates, gates, runs, and records it. Pick a tool call below and play the sequence.</p>
 </header>
 
 <div class="figwrap">
@@ -196,8 +196,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   </div>
   <div class="figbottom">
     <div>
-      <h4>The gate in your loop, as the deck writes it</h4>
-<pre class="code" id="code" aria-label="The gate code from the E3 deck, slide 5. Lines used by the current step are highlighted."></pre>
+      <h4>The gate in your loop, from the E3 lecture</h4>
+<pre class="code" id="code" aria-label="The gate code from the E3 lecture, slide 5. Lines used by the current step are highlighted."></pre>
     </div>
     <div>
       <h4>Ledger so far</h4>
@@ -230,7 +230,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   <section class="panel" aria-labelledby="h-decl">
     <div class="eyebrow">Declaring a tool · E3 slide 4</div>
     <h2 id="h-decl">Four fields, and the one the gate reads</h2>
-    <p class="small">The deck sets one design rule for this Evolution. The side-effect class is a field on the declaration, the gate reads that field, and the gate treats a tool with no class declared as irreversible. Change the class or rename the tool, and watch which change moves the gate's verdict.</p>
+    <p class="small">This Evolution has one design rule. The side-effect class is a field on the declaration, the gate reads that field, and the gate treats a tool with no class declared as irreversible. Change the class or rename the tool, and watch which change moves the gate's verdict.</p>
     <div class="ctrl">
       <label for="dtool">Tool</label>
       <select id="dtool">
@@ -251,7 +251,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </div>
     <dl class="decl" id="decl"></dl>
     <div class="verdict" id="verdict" aria-live="polite"></div>
-    <p class="small">The read_note description comes from the E4 deck's server example. The write_note and delete_note descriptions are written for this figure, following the deck's rule that a description states what the tool does, what it must not do, and what it returns on failure.</p>
+    <p class="small">The read_note description comes from the E4 lecture's server example. The write_note and delete_note descriptions follow the rule that a description states what the tool does, what it must not do, and what it returns on failure.</p>
   </section>
 
   <section class="panel" aria-labelledby="h-props">
@@ -263,8 +263,8 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Source.</b> The human's action in the host emits the confirm, as a keypress or a command. Model output and text the model read never emit one. The <em>Injected write</em> path tests this.</li>
       <li><b>Denial leaves a trace.</b> A denied write is a ledger event and an observation to the model, and the filesystem after the denial is byte-identical to the filesystem before it.</li>
     </ol>
-    <blockquote>The model does not call your function. It emits text that says it wants to.<cite>E3 deck, slide 3</cite></blockquote>
-    <p class="small">The deck requires a local 8B model in this Evolution because a frontier model produces well-formed calls so reliably that you never see the contract enforced. A small model emits malformed JSON, invents arguments, and asks for a write when a read would do, and the deck uses that brittleness to make the contract visible.</p>
+    <blockquote>The model does not call your function. It emits text that says it wants to.<cite>E3 lecture, slide 3</cite></blockquote>
+    <p class="small">E3 requires a local 8B model because a frontier model produces well-formed calls so reliably that you never see the contract enforced. A small model emits malformed JSON, invents arguments, and asks for a write when a read would do, and that brittleness makes the contract visible.</p>
   </section>
 </div>
 
@@ -284,7 +284,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:10px">Table text is the deck's. The deck's sample gate returns the shorter observation <code>DENIED: confirm first</code>, which the figure uses.</p>
+  <p class="small" style="margin-top:10px">The E3 lecture's sample gate returns the shorter observation <code>DENIED: confirm first</code>, and the sequence above shows that form.</p>
 </section>
 
 <div class="panels">
@@ -319,7 +319,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       </div>
       <div class="verdict" id="locusout" aria-live="polite"></div>
     </div>
-    <p class="small">The deck treats the enforcement locus as a design decision. Gate at the call when the schema can see the effect, and gate at the effect (the diff, the ledger) when it cannot. Chapter 12's exercise asks you to build the gate twice, as a hook and as a check in your loop, and show a write one catches and the other misses.</p>
+    <p class="small">The enforcement locus is a design decision. Gate at the call when the schema can see the effect, and gate at the effect (the diff, the ledger) when it cannot. Chapter 12's exercise asks you to build the gate twice, as a hook and as a check in your loop, and show a write one catches and the other misses.</p>
   </section>
 </div>
 
@@ -328,10 +328,10 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     <h2>What the figure leaves out</h2>
     <ul>
       <li>Tool errors, timeouts, unknown tool names, and budget halts appear in the table, and the sequence does not draw them.</li>
-      <li>The deck's sample gate looks for a confirm event on a write and an attestation on an irreversible tool, the rule the Destructive path draws. The deck does not specify what an attestation record holds.</li>
-      <li>Some harnesses ask the human at the moment of the call (a Claude Code PreToolUse hook can allow, deny, or ask). The deck's sample gate denies first and lets the human confirm afterward. Either design meets the order property if the confirm event lands in the ledger before the call event.</li>
+      <li>The E3 lecture's sample gate looks for a confirm event on a write and an attestation on an irreversible tool, the rule the Destructive path draws. The lecture does not specify what an attestation record holds.</li>
+      <li>Some harnesses ask the human at the moment of the call (a Claude Code PreToolUse hook can allow, deny, or ask). The E3 lecture's sample gate denies first and lets the human confirm afterward. Either design meets the order property if the confirm event lands in the ledger before the call event.</li>
       <li>Hosted APIs return tool calls as structured blocks. The model still produced them as tokens, and the provider's harness parsed them before yours sees them (Figure 01).</li>
-      <li>Computer use collapses the contract to one tool whose every action is write-class. The deck draws the lesson that the more general the tool, the less a schema can protect you, and the more the gate must sit at the effect.</li>
+      <li>Computer use collapses the contract to one tool whose every action is write-class. The lesson: the more general the tool, the less a schema can protect you, and the more the gate must sit at the effect.</li>
     </ul>
   </section>
   <section>
@@ -486,7 +486,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     destr:{ outcome:"Denied · irreversible", tool:"delete_note", hashAfter:null,
       steps:[
         {t:"Destructive: denied for want of an attestation", w:["E3"], ln:[],
-         p:"The model asks to delete a note. The declaration marks delete_note as irreversible, and the deck's rule says an irreversible tool requires an attestation. The ledger holds none, so the gate refuses, records the refusal, and tells the model. The tool never runs."},
+         p:"The model asks to delete a note. The declaration marks delete_note as irreversible, and the E3 rule says an irreversible tool requires an attestation. The ledger holds none, so the gate refuses, records the refusal, and tells the model. The tool never runs."},
         {t:"The model asks for a delete", w:["E3"], ln:[1],
          p:"The model emits a delete_note request. A small model may reach for a destructive tool when a read would do. A model may also give a delete tool a harmless name such as cleanup, which is why the gate ignores names."},
         {t:"Parse and validate pass", w:["E3"], ln:[2,3,4],
@@ -494,7 +494,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
         {t:"The gate reads irreversible", w:["E3"], ln:[5,6],
          p:"The gate reads effect = irreversible. Delete, send, and deploy belong to this class. A tool with no class declared lands here too, because the gate fails closed. Try that in the declaration panel below."},
         {t:"The gate finds no attestation", w:["E3"], ln:[7,8],
-         p:"The gate searches the ledger for an attestation bound to this tool and these arguments and finds none. The deck's sample code asks for an attestation when the class is irreversible, the rule the declaration slide states."},
+         p:"The gate searches the ledger for an attestation bound to this tool and these arguments and finds none. The E3 lecture's sample code asks for an attestation when the class is irreversible, the rule the declaration slide states."},
         {t:"Denied, with a trace and an observation", w:["E3"], ln:[9,10,11,12],
          p:"The gate writes a denied event, and the harness returns a DENIED observation to the model. The model learns why the call failed and can choose another path. The Chase cannot read a failure that leaves no ledger event."},
         {t:"Nothing changed on disk", w:["E3"], ln:[],
@@ -519,13 +519,13 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
     bad:{ outcome:"Schema error → observation", tool:"read_note", hashAfter:null,
       steps:[
         {t:"Malformed arguments: the error becomes an observation", w:["E3"], ln:[],
-         p:"A small local model sends arguments that do not match the schema within a few turns (the deck's figure is ten). Here it sends file where the schema asks for path. The harness rejects the call before it reaches the function, records the rejection, and returns the validation message to the model. The model reads it and retries correctly."},
+         p:"A small local model sends arguments that do not match the schema within a few turns (the E3 lecture puts it at ten). Here it sends file where the schema asks for path. The harness rejects the call before it reaches the function, records the rejection, and returns the validation message to the model. The model reads it and retries correctly."},
         {t:"The model sends the wrong argument", w:["E3"], ln:[1],
-         p:"The model emits read_note with a file argument, and the declared schema requires path. The deck's line is that a small local model breaks the contract in ten turns, which is why E3 requires one."},
+         p:"The model emits read_note with a file argument, and the declared schema requires path. The E3 lecture's point is that a small local model breaks the contract in ten turns, which is why E3 requires one."},
         {t:"Validation fails", w:["E3"], ln:[3,4],
          p:"The harness parses the text and finds read_note in the registry. Schema validation then fails, field by field. The function never runs. Types are the first gate, and this call stopped there."},
         {t:"The ledger records schema_reject", w:["E3"], ln:[4],
-         p:"The harness writes a schema_reject event with the step and the errors. Every failure row in the deck's table ends in a ledger event. A loop that swallows the error leaves the Chase no event to read."},
+         p:"The harness writes a schema_reject event with the step and the errors. Every failure row in the table below ends in a ledger event. A loop that swallows the error leaves the Chase no event to read."},
         {t:"The error returns as an observation", w:["E3"], ln:[4],
          p:"The harness returns the validation message to the model as an observation it can read. The tool lifeline shows no call. Because the error comes back as an observation, the model gets a chance to correct itself."},
         {t:"The model retries with path", w:["E3"], ln:[1],
@@ -734,7 +734,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
   const RULE = {
     read:["Runs freely.","No confirmation event is needed. The ledger still records the call. A read may be retried without harm; on a timeout, a read may retry once."],
     write:["Needs a confirmation event.","The confirm must record this tool and these arguments, come from the human's action in the host, and precede the call in the ledger. A write never retries automatically, because a retried write is a second write."],
-    irreversible:["Needs an attestation.","Delete, send, and deploy sit in this class. The deck says a write never retries automatically; this figure applies the same rule to irreversible tools."],
+    irreversible:["Needs an attestation.","Delete, send, and deploy sit in this class. A write never retries automatically, and the gate here applies the same rule to irreversible tools."],
     none:["Treated as irreversible.","No class is declared, so the gate fails closed and asks for an attestation. Sortie 3's exceptional tier shows a tool with a missing class refused this way."]
   };
   function syncDecl(tool){

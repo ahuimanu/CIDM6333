@@ -192,7 +192,7 @@
  "The founding exchange (2026-01-12)": "The founding exchange (2026-01-12)",
  "The model: for maximizing 'Claudishness,' only specification matters.": "The model: for maximizing 'Claudishness,' only specification matters.",
  "The operator: specification, methodology, and governance, all three.": "The operator: specification, methodology, and governance, all three.",
- "[Quote from genesis.md · verify wording against the source before class.]": "[Quote from genesis.md · verify wording against the source before class.]",
+ "[Quote from genesis.md · verify wording against the source before class.]": "",
  "What was added to the loop": "What was added to the loop",
  "Not a better model call. A PRD that says WHAT before HOW; an ADR that records the decision and alternatives; a brief with allowed paths; an append-only ledger of every turn, gate, and attestation. Governance arrived as the missing component.": "The additions were a PRD that says WHAT before HOW, an ADR that records the decision and alternatives, a brief with allowed paths, and an append-only ledger of every turn, gate, and attestation. None of them changed the model call. Governance arrived as the missing component.",
  "This week's governed path": "This Evolution's governed path",

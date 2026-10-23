@@ -426,7 +426,7 @@ footer{margin-top:40px; font-size:13px; color:var(--ink-2); font-family:var(--di
       <li><b>Witness 2, wrong answer planted.</b> Substitute one wrong output. The grader or judge must fail it.</li>
       <li><b>What they catch.</b> A tautological test compares the code with itself, because its expected value came from the function under test. A hollow test passes for any output, such as <code>assert result is not None</code> or a check that accepts every label. Both stay green forever and look like coverage.</li>
     </ul>
-    <p class="small">An evaluator is itself a system, so it needs its own RED witness; without one it is one more check that passes whatever it sees. The deck marks the <code>gz arb red</code> flags for verification against the repository.</p>
+    <p class="small">An evaluator is itself a system, so it needs its own RED witness; without one it is one more check that passes whatever it sees.</p>
   </section>
 
   <!-- ===== pre-registration ===== -->
@@ -545,7 +545,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
     </tbody>
   </table>
   </div>
-  <p class="small" style="margin-top:12px">Pre-registered falsifiers, any one of which fails the sortie: a green gate with the feature removed; a judge that scores the planted error as correct, or flips when the order swaps; a golden case that cannot fail; threshold, cases, or baseline changed after the first run, or passing by editing the golden set. A judge route that is down is an ABORT and is re-flown. From the reference design: gzkit computes the same delta with <code>eval_regression_delta</code> and keeps golden data in <code>data/eval/*.json</code> beside the code. In June 2026 its verification-layer audit, “the antibody,” was itself hollow and was attested Completed (ADR-0.0.73); the answer was <code>@enforces</code> with live negative controls that run every time. Your golden set is your antibody, and TP2, TP4, and TP5 are its negative controls. The deck marks these gzkit names and dates for verification against the repository.</p>
+  <p class="small" style="margin-top:12px">Pre-registered falsifiers, any one of which fails the sortie: a green gate with the feature removed; a judge that scores the planted error as correct, or flips when the order swaps; a golden case that cannot fail; threshold, cases, or baseline changed after the first run, or passing by editing the golden set. A judge route that is down is an ABORT and is re-flown. From the reference design: gzkit computes the same delta with <code>eval_regression_delta</code> and keeps golden data in <code>data/eval/*.json</code> beside the code. In June 2026 its verification-layer audit, “the antibody,” was itself hollow and was attested Completed (ADR-0.0.73); the answer was <code>@enforces</code> with live negative controls that run every time. Your golden set is your antibody, and TP2, TP4, and TP5 are its negative controls.</p>
 </section>
 
 <div class="notes">
@@ -553,7 +553,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
     <h2>What the figure leaves out</h2>
     <ul>
       <li>The simulator scores runs with independent passes at one fixed rate. Real cases differ in difficulty, and trials of one case are not independent, so real noise has a different shape.</li>
-      <li>The simulator gates on the aggregate mean. The deck's gate also compares each case id against the baseline, because an aggregate can hold steady while one requirement breaks and another improves.</li>
+      <li>The simulator gates on the aggregate mean. The Sortie 10 gate also compares each case id against the baseline, because an aggregate can hold steady while one requirement breaks and another improves.</li>
       <li>Transcripts and outcomes. Anthropic's vocabulary separates the transcript (how the agent got there) from the outcome (the state it left behind) and advises grading the outcome where you can.</li>
       <li>The benchmark survey (GAIA, WebArena, AgentBench, τ²-bench and τ³-bench) except where the 2026 breaks touch it, and the live Design Analysis of τ²-bench.</li>
     </ul>
@@ -577,7 +577,7 @@ json.dump(cases, open('golden.json', 'w'))</div>
       <li>Cursor. (2026, June 25). [Blog post on reward hacking in coding benchmarks]. cursor.com/blog/reward-hacking-coding-benchmarks.</li>
       <li>Wang, Mang, Cheung, Sen, &amp; Song. (2026, April 8). How we broke top AI agent benchmarks.</li>
       <li>Zhu et al. (2025). Agentic Benchmark Checklist (ABC). arXiv:2507.02825.</li>
-      <li>gzkit GZK-GOV-007, model review and Gate 5 (this Evolution's reading); course topic guide, chapter 19.</li>
+      <li>gzkit GZK-GOV-007, model review and Gate 5 (this Evolution's reading); textbook, <a href="../textbook/ch-19-evaluation-as-gates-golden-sets-regression-deltas-judges-and/">Chapter 19</a>.</li>
     </ol>
   </section>
 </div>
