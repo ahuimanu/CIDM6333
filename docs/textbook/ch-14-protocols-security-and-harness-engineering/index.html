@@ -273,7 +273,7 @@ a.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 <li>Sprint and Drift, "The cost of the wrong abstraction went to zero."</li>
 </ul>
 <h2>Flight card supported</h2>
-<p>Sortie 5 (corner). DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.</p>
+<p>Sortie 5 (corner). DESIGN CLAIM: a poisoned resource cannot cause a write, and a changed tool description stops the sortie before the model sees it. FALSIFIERS: any write following a resource-borne instruction; a changed description that does not stop the sortie; passing only by disabling a check. The sortie does not test authorization.</p>
 <h2>Exercises and Design Analysis prompts</h2>
 <ol>
 <li>Write the AGENTS.md for your system under a 4,000-character budget. Then measure what your harness actually loads.</li>

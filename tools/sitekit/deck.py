@@ -88,7 +88,7 @@ def extract(pptx_path):
                 continue
             if not sh.has_text_frame:
                 continue
-            paras = sh.text_frame.paragraphs
+            paras = [x for x in sh.text_frame.paragraphs if not (para_text(x).strip() and VOICE.get(para_text(x)) == "")]  # override "" drops the line
             txt = "\n".join(para_text(x) for x in paras).strip()
             fill = shape_fill(sh)
             if not txt:
@@ -328,7 +328,7 @@ def build(docs, slug):
     if not pptx.exists(): pptx = PPTX_DIR / "Fall 2026" / "Orientation" / pptx_name
     load_voice(slug)
     slides = [classify(s) for s in extract(pptx)]
-    miss = [k for k in VOICE if k not in VOICE_HIT and VOICE[k] != k]
+    miss = [k for k in VOICE if k not in VOICE_HIT and VOICE[k] != k and VOICE[k] != ""]
     if miss: print("voice overrides with no matching paragraph (%d):" % len(miss), *[repr(m[:60]) for m in miss], sep="\n  ")
     notes = RD.NOTES[pptx_name]
     pairs = GL.link_terms()

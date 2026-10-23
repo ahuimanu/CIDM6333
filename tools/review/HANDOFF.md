@@ -23,14 +23,13 @@ All 15 pptx decks are built by `deck.py` (DECK_META holds each deck's title and 
 
 ## Small tasks (no ruling needed)
 
-- E5: remove every mention of a local token issuer / local OAuth server (slides 5 and 24 and notes); replacement waits on question 1.
+- Done Oct 23: Sortie 5 no longer tests authorization (Jeffry: drop it). Card keeps the honest read, the poisoned resource, and the pin check; the lecture still teaches the authorization flow as background. `deck.py`: a voice override of "" drops the line.
 - Done Oct 23: E0/E2 workflow paraphrase checked against "Building Effective Agents" (matches: workflows for well-defined tasks, agents where the number of steps cannot be predicted); E8 three-level nesting default confirmed in the Claude Code sub-agents docs (retrieved Oct 23, 2026); glossary chapters fixed (JADE entry 4, 6, 7; ToolBench 6, 12). HumanEval appears in no chapter; its ch=19 stays.
 
 ## Questions for Jeffry (one at a time)
 
 Resolved Oct 22: Raji/Groves citation; E2 workflows line; E10 five rules; E8 falsifier one; E8 BrowseComp; E1 Kojima; submission/LMS references dropped.
 
-1. Sortie 5 authorization with OpenCode and Big Pickle only: stdio with no authorization, or a static bearer token the server checks?
 2. E5 slide 1: "In Evolution 3 you put a tool on the wire; in Evolution 4 you tore down the GitHub MCP server". Is E3 right?
 3. E0 slide 5: "'done' is the most dangerous word in the course." Add a reason after it, or leave it bare?
 4. E0 and E1 slide 2 list minutes per part. Remove them as times?

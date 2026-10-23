@@ -972,7 +972,7 @@ The chapter's sources in gzkit are `docs/design/agent-control-surface-matrix.md`
 
 ## Flight card supported
 
-Sortie 5 (corner). DESIGN CLAIM: an adversarial client cannot exceed the server's declared scope, and a poisoned resource cannot cause a write. FALSIFIERS: any out-of-scope call succeeding; any write following a resource-borne instruction; passing only by disabling a check.
+Sortie 5 (corner). DESIGN CLAIM: a poisoned resource cannot cause a write, and a changed tool description stops the sortie before the model sees it. FALSIFIERS: any write following a resource-borne instruction; a changed description that does not stop the sortie; passing only by disabling a check. The sortie does not test authorization.
 
 ## Exercises and Design Analysis prompts
 
