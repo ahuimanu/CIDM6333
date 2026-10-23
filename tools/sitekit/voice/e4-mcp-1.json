@@ -205,7 +205,7 @@
  "ABORT (halt-not-fail)  SDK/protocol-revision mismatch that prevents discovery; model unavailable": "ABORT (halt-not-fail)  SDK/protocol-revision mismatch that prevents discovery; model unavailable",
  "CHASE               reads the four log entries and the inspector capture; never the flight-log narrative": "CHASE               reads the four log entries and the inspector capture; never the flight-log narrative",
  "12": "12",
- "A protocol is a contract that strangers can discover.": "A protocol is a contract that strangers can discover.",
+ "A protocol is a contract that strangers can discover.": "A protocol is a contract that strangers can discover, negotiate, and reach over any transport.",
  "Put one tool on the wire, let two clients find it, and let the server keep the only log that counts. Consultation: Sortie 3 verdicts and your server's first tool in one sentence.": "Put one tool on the wire, let two clients find it, and let the server keep the log the Chase reads. Consultation: Sortie 3 verdicts and your server's first tool in one sentence.",
  "13": "13"
 }
