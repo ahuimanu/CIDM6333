@@ -24,8 +24,8 @@ SLIDE_W, SLIDE_H = 960, 540  # px at 9525 EMU/px for a 9144000 x 5143500 deck
 # per-deck: figures to attach to slides (slide number -> figure slug), and the deck's own metadata
 DECK_META = {
  "orientation": {"evo": "Orientation", "title": "Course Orientation", "figs": {5: "two-loops", 9: "steer-the-middle"}},
- "e0-index-zero": {"evo": "E0", "title": "The Human Is Index Zero", "figs": {8: "steer-the-middle", 12: "two-loops"}},
- "e1-agent-loop": {"evo": "E1", "title": "The Agent Loop", "figs": {3: "loop-that-halts", 6: "loop-that-halts", 7: "loop-that-halts"}},
+ "e0-index-zero": {"evo": "E0", "title": "The Human Is Index Zero", "figs": {8: "steer-the-middle", 12: "two-loops"}, "cols": {17: 476, 20: 614}},
+ "e1-agent-loop": {"evo": "E1", "title": "The Agent Loop", "figs": {3: "loop-that-halts", 6: "loop-that-halts", 7: "loop-that-halts"}, "cols": {5: 564}},
  "e2-patterns-frameworks": {"evo": "E2", "title": "Patterns and Orchestration Frameworks", "figs": {3: "who-owns-the-loop", 4: "who-owns-the-loop", 9: "who-owns-the-loop"}},
  "e3-tools-as-contracts": {"evo": "E3", "title": "Tools as Contracts", "figs": {3: "the-gate-holds", 5: "the-gate-holds", 6: "the-gate-holds"}},
  "e4-mcp-1": {"evo": "E4", "title": "MCP I: Building a Server", "figs": {3: "n-plus-m", 4: "n-plus-m"}},
@@ -227,21 +227,44 @@ def layout_rows(slide):
         else: out.append(r)
     return out
 
+def row_html(r):
+    tw = sum(c["w"] for c in r) or 1
+    cols = " ".join("%.2ffr" % (c["w"] / tw * len(r)) for c in r)
+    return '<div class="row" style="grid-template-columns:%s">' % cols + "".join('<div class="cell %s">%s</div>' % (c["tone"], c["html"]) for c in r) + "</div>"
+
+def column_body(rows, split):
+    """Two-column reflow for slides whose pptx layout puts a tall panel beside a stack of rows:
+    cells left of `split` stack in the left column, cells right of it in the right column,
+    and cells that straddle the split become full-width rows after the columns."""
+    cells = [c for r in rows for c in r if not (c["t"] > 490 and re.fullmatch(r"\s*\d+\s*", re.sub(r"<[^>]+>", "", c["html"])))]
+    left = [c for c in cells if c["l"] + c["w"] <= split + 4]
+    right = [c for c in cells if c["l"] >= split - 4 and c not in left]
+    wide = [c for c in cells if c not in left and c not in right]
+    def group(cs):
+        out = []
+        for c in sorted(cs, key=lambda c: (c["t"], c["l"])):
+            if out and abs(out[-1][0]["t"] - c["t"]) < 18: out[-1].append(c)
+            else: out.append([c])
+        for r in out: r.sort(key=lambda c: c["l"])
+        return out
+    lw = max((c["l"] + c["w"] for c in left), default=split) - min((c["l"] for c in left), default=0)
+    rw = max((c["l"] + c["w"] for c in right), default=split) - min((c["l"] for c in right), default=split)
+    html_cols = '<div class="row cols" style="grid-template-columns:%.2ffr %.2ffr"><div class="col">%s</div><div class="col">%s</div></div>' % (
+        lw, rw, "".join(row_html(r) for r in group(left)), "".join(row_html(r) for r in group(right)))
+    return [html_cols] + [row_html(r) for r in group(wide)]
+
 def render_slide(slide, n, total, meta, fig, img):
     title = html.escape(" ".join(scrub_paras(slide["title"]["paras"])) if slide["title"] else "")
     sub = html.escape(" ".join(scrub_paras(slide["sub"]["paras"])) if slide["sub"] else "")
     rows = layout_rows(slide)
-    body = []
-    for r in rows:
-        tw = sum(c["w"] for c in r) or 1
-        cols = " ".join("%.2ffr" % (c["w"] / tw * len(r)) for c in r)
-        body.append('<div class="row" style="grid-template-columns:%s">' % cols + "".join('<div class="cell %s">%s</div>' % (c["tone"], c["html"]) for c in r) + "</div>")
+    split = meta.get("cols", {}).get(slide["n"])
+    body = column_body(rows, split) if split else [row_html(r) for r in rows]
     if not body and not title: return ""
     kick = "%s · slide %d of %d" % (meta["evo"] + ("" if meta["evo"] in ("Orientation", "Mini-lecture") else " · Lecture"), n, total)
     figlink = ('<a href="../../figures/%s.html" target="_blank">Figure: %s</a>' % (fig, fig.replace("-", " "))) if fig else ""
-    return ('<section class="slide" data-n="%d" data-img="%s"%s><div class="kick">%s</div><h2>%s%s</h2><div class="body">%s</div>'
+    return ('<section class="slide" data-n="%d"%s><div class="kick">%s</div><h2>%s%s</h2><div class="body">%s</div>'
             '<div class="foot"><span>CIDM 6333 · %s</span><span>%s</span></div></section>') % (
-            n, img, (' data-fig="%s"' % fig) if fig else "", kick, title, ("<small>%s</small>" % sub) if sub else "", "".join(body), meta["evo"], figlink)
+            n, (' data-fig="%s"' % fig) if fig else "", kick, title, ("<small>%s</small>" % sub) if sub else "", "".join(body), meta["evo"], figlink)
 
 def slide_kept(title):
     return not DROP_TITLE.search((title or "").strip())
@@ -256,6 +279,8 @@ CSS = """<style id="deck-css">
 .slide h2 small{display:block; font-weight:500; font-size:clamp(13px,1.35vw,18px); color:var(--ink-2); margin-top:5px; letter-spacing:0}
 .slide .body{min-height:0; display:grid; align-content:start; gap:10px; font-size:clamp(12.5px,1.3vw,17.5px); line-height:1.38; overflow:auto}
 .slide .row{display:grid; gap:12px; align-items:start}
+.slide .row.cols{align-items:start}
+.slide .col{display:grid; gap:10px; align-content:start; min-width:0}
 .slide .cell{min-width:0}
 .slide .cell.rose,.slide .cell.teal,.slide .cell.neutral{border-radius:9px; padding:10px 14px}
 .slide .cell.rose{background:var(--accent-soft)}
@@ -282,9 +307,6 @@ CSS = """<style id="deck-css">
 .slide .chips .chip{font-size:.95em}
 .slide.title{align-content:center}
 .slide.title h2{font-size:clamp(32px,5.2vw,68px)}
-.orig{position:absolute; inset:0; display:none; background:#fff}
-.orig img{width:100%; height:100%; object-fit:contain}
-.slides.show-orig .orig{display:block}
 .figframe{position:absolute; inset:0; display:none; background:var(--bg)}
 .figframe iframe{width:100%; height:100%; border:0}
 .slides.show-fig .figframe{display:block}
@@ -295,9 +317,10 @@ CSS = """<style id="deck-css">
 .ctrls a.dl{font-family:var(--display); font-weight:600; font-size:15px; letter-spacing:.04em; color:var(--accent-ink); background:var(--surface); border:1px solid var(--ink-2); border-radius:8px; padding:7px 14px; text-decoration:none}
 button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
 .strip{display:flex; gap:6px; overflow-x:auto; padding:10px 14px 14px; border-top:1px solid var(--line)}
-.strip button{flex:0 0 auto; width:96px; height:54px; padding:0; border:2px solid var(--line); border-radius:6px; background:#fff; overflow:hidden; cursor:pointer}
+.strip button{flex:0 0 auto; width:150px; height:58px; padding:6px 8px; border:2px solid var(--line); border-radius:6px; background:var(--surface); color:var(--ink); overflow:hidden; cursor:pointer; text-align:left; display:grid; grid-template-columns:auto 1fr; gap:6px; align-items:start; font-family:var(--display); font-weight:500; letter-spacing:0; font-size:12.5px; line-height:1.15}
+.strip .sn{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
+.strip .st{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
 .strip button[aria-current="true"]{border-color:var(--accent)}
-.strip img{width:100%; height:100%; object-fit:cover; display:block}
 :fullscreen .stage{border:0; border-radius:0; height:100vh; display:grid; grid-template-rows:1fr auto}
 :fullscreen .slides{aspect-ratio:auto; height:100%}
 :fullscreen .strip{display:none}
@@ -311,8 +334,8 @@ button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color
 .notecur p:last-child{margin-bottom:0}
 .reader{margin-top:36px}
 .reader h2{font-size:30px;margin-bottom:4px}
-.rslide{display:grid;grid-template-columns:260px minmax(0,1fr);gap:14px 22px;padding:18px 0;border-top:1px solid var(--line);align-items:start}
-.rslide .rthumb{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:6px}
+.rslide{display:grid;grid-template-columns:90px minmax(0,1fr);gap:14px 22px;padding:18px 0;border-top:1px solid var(--line);align-items:start}
+.rslide .rthumb{display:block;padding:4px 8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;border-radius:6px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
 .rslide .rthumb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .rslide img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff;display:block}
 .rslide .n{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
@@ -356,8 +379,8 @@ def build(docs, slug):
     evo_key = RD.DECKS[slug][1]
     chs = TB.chapters_for_evo(evo_key) if evo_key else []; dirs = TB.main_dirs()
     chap = " · ".join('<a href="../../textbook/%s/">Chapter %d</a> <span class="small">(%s)</span>' % (dirs[c], c, r) for c, r in chs if c in dirs)
-    strip = "".join('<button type="button" data-i="%d" aria-label="Slide %d: %s"><img loading="lazy" src="s-%02d.webp" alt=""></button>' % (i, n, html.escape(titles[i]), n) for i, n in enumerate(nums))
-    reader = "".join('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %d in the viewer"><img loading="lazy" src="s-%02d.webp" alt=""></button><div class="n">slide %02d</div></div><div><h3>%s</h3>%s</div></div>' % (n, i, n, n, n, html.escape(titles[i]), N[i]) for i, n in enumerate(nums))
+    strip = "".join('<button type="button" data-i="%d" aria-label="Slide %d: %s" title="%s"><span class="sn">%d</span><span class="st">%s</span></button>' % (i, i + 1, html.escape(titles[i]), html.escape(titles[i]), i + 1, html.escape(titles[i])) for i, n in enumerate(nums))
+    reader = "".join('<div class="rslide" id="r%d"><div><button type="button" class="rthumb" data-i="%d" aria-label="Open slide %d in the viewer">slide %02d</button></div><div><h3>%s</h3>%s</div></div>' % (i + 1, i, i + 1, i + 1, html.escape(titles[i]), N[i]) for i, n in enumerate(nums))
     head = (HERE / "page-head.html").read_text(encoding="utf-8").replace("{{TITLE}}", html.escape(meta["evo"] + " · " + meta["title"]))
     page = head + CSS + '''
 <div class="wrap">
@@ -373,7 +396,6 @@ def build(docs, slug):
 <div class="stage" id="stage">
 <div class="slides" id="slides" tabindex="0" aria-label="Slides; use the arrow keys">
 %(slides)s
-<div class="orig" id="orig"><img id="origimg" src="s-01.webp" alt="The slide as presented"></div>
 <div class="figframe" id="figframe"></div>
 </div>
 <div class="ctrls">
@@ -381,17 +403,16 @@ def build(docs, slug):
   <button id="next" class="primary" type="button" aria-label="Next slide">Next ▶</button>
   <span class="count" id="count" role="status">1 / %(count)d</span>
   <span class="title" id="stitle"></span>
-  <button id="origbtn" type="button" aria-pressed="false" title="Show the slide as it was presented">As presented</button>
   <button id="figbtn" type="button" aria-pressed="false" hidden>Figure</button>
   <button id="full" type="button">Full screen</button>
-  <a class="dl" href="%(slug)s.pdf" download>PDF</a> <a class="dl" href="#read">Read</a>
+  <a class="dl" href="#read">Read</a>
 </div>
 <div class="strip" id="strip" role="group" aria-label="Slides">%(strip)s</div>
 </div>
 </section>
 <div class="notecur" id="notecur" aria-live="polite"><div class="k">The lecture, written out · slide <span id="noteno">1</span></div><div id="notebody"></div></div>
-<p class="small" style="margin-top:10px">Arrow keys step through the slides. "As presented" shows the slide image from the original deck, and "Figure" opens the interactive figure a slide refers to. The panel above is the lecture written out for the slide on screen. <a href="#read">Read this lecture</a>, below, has the whole lecture in slide order. Names that appear without introduction link to the <a href="../../glossary/">glossary</a>.</p>
-<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes follow here slide by slide, each under its slide. Click a slide image to open it in the viewer above.</p>%(reader)s</section>
+<p class="small" style="margin-top:10px">Arrow keys step through the slides, and "Figure" opens the interactive figure a slide refers to. The panel above is the lecture written out for the slide on screen. <a href="#read">Read this lecture</a>, below, has the whole lecture in slide order. Names that appear without introduction link to the <a href="../../glossary/">glossary</a>.</p>
+<section class="reader" id="read" aria-label="Read this lecture"><h2>Read this lecture</h2><p class="lede small">The speaker notes follow here slide by slide. Click a slide number to open that slide in the viewer above.</p>%(reader)s</section>
 <footer>CIDM 6333 · Lecture · %(evo)s</footer>
 </div>
 <script id="reader-js">(function(){const N=%(N)s;const NUMS=%(NUMS)s;const $=i=>document.getElementById(i);
@@ -403,15 +424,14 @@ window.addEventListener("resize",()=>fit(slides[cur])); document.addEventListene
 function go(i){ cur=Math.max(0,Math.min(n-1,i)); slides.forEach((s,j)=>s.classList.toggle("cur",j===cur)); const s=slides[cur];
   $("count").textContent=(cur+1)+" / "+n; const h2=s.querySelector("h2").cloneNode(true); h2.querySelectorAll("small").forEach(e=>e.remove()); $("stitle").textContent=h2.textContent.trim(); fit(s);
   $("noteno").textContent=NUMS[cur]; $("notebody").innerHTML=N[cur]||"";
-  $("origimg").src=s.dataset.img; const f=s.dataset.fig; $("figbtn").hidden=!f; if(!f){ $("slides").classList.remove("show-fig"); $("figbtn").setAttribute("aria-pressed","false"); }
+  const f=s.dataset.fig; $("figbtn").hidden=!f; if(!f){ $("slides").classList.remove("show-fig"); $("figbtn").setAttribute("aria-pressed","false"); }
   else if($("slides").classList.contains("show-fig")){ $("figframe").innerHTML='<iframe src="../../figures/'+f+'.html?embed=1" title="Figure"></iframe>'; }
   const pv=$("prev"), nx=$("next"); pv.disabled=cur===0; nx.disabled=cur===n-1; if(document.activeElement===nx&&nx.disabled) pv.focus(); if(document.activeElement===pv&&pv.disabled) nx.focus();
   btns.forEach((b,j)=>{ if(j===cur) b.setAttribute("aria-current","true"); else b.removeAttribute("aria-current"); }); if(btns[cur]) btns[cur].scrollIntoView({block:"nearest",inline:"nearest"});
   try{ history.replaceState(null,"","#"+(cur+1)); }catch(e){} }
 $("prev").addEventListener("click",()=>go(cur-1)); $("next").addEventListener("click",()=>go(cur+1));
 btns.forEach(b=>b.addEventListener("click",()=>go(+b.dataset.i)));
-$("origbtn").addEventListener("click",()=>{ const on=$("slides").classList.toggle("show-orig"); $("origbtn").setAttribute("aria-pressed",on); if(on){ $("slides").classList.remove("show-fig"); $("figbtn").setAttribute("aria-pressed","false"); } });
-$("figbtn").addEventListener("click",()=>{ const on=$("slides").classList.toggle("show-fig"); $("figbtn").setAttribute("aria-pressed",on); if(on){ $("slides").classList.remove("show-orig"); $("origbtn").setAttribute("aria-pressed","false"); $("figframe").innerHTML='<iframe src="../../figures/'+slides[cur].dataset.fig+'.html?embed=1" title="Figure"></iframe>'; } else $("figframe").innerHTML=""; });
+$("figbtn").addEventListener("click",()=>{ const on=$("slides").classList.toggle("show-fig"); $("figbtn").setAttribute("aria-pressed",on); if(on){ $("figframe").innerHTML='<iframe src="../../figures/'+slides[cur].dataset.fig+'.html?embed=1" title="Figure"></iframe>'; } else $("figframe").innerHTML=""; });
 $("full").addEventListener("click",()=>{ const st=$("stage"); if(document.fullscreenElement) document.exitFullscreen(); else if(st.requestFullscreen) st.requestFullscreen(); });
 document.querySelectorAll(".rslide .rthumb").forEach(im=>im.addEventListener("click",()=>{ go(+im.dataset.i); $("stage").scrollIntoView({behavior:"smooth",block:"start"}); }));
 function stageActive(){ const st=$("stage"); const r=st.getBoundingClientRect(); return st.contains(document.activeElement) || (r.top<window.innerHeight*0.6 && r.bottom>window.innerHeight*0.4); }
