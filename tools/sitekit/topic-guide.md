@@ -1632,7 +1632,7 @@ After this chapter you can:
 
 - Read a personalized brief and scope a governed revision.
 - Deliver the Final System under the Heavy lane.
-- Conduct a closeout ceremony: the student executes, the instructor observes and attests.
+- Conduct a closeout ceremony: the student presents paths and commands, and the instructor executes, observes, and attests.
 
 ## Outline
 
