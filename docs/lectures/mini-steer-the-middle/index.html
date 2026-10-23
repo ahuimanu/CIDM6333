@@ -293,7 +293,7 @@ Why … Return exactly one ReviewResult.</code></pre>
     <div>
       <p><code>.opencode/agents/reviewer.md</code> is your version of a built-in agent, placed radially outside <code>build</code> and <code>plan</code>.</p>
       <ul>
-        <li>Write both lines, in this order: the <strong>deny</strong> line stops an edit at the permission engine, and the <strong>anti-trait</strong> line tells the model the reason.</li>
+        <li>Write both lines: the <strong>deny</strong> line stops an edit at the permission engine, and the <strong>anti-trait</strong> line tells the model the reason.</li>
         <li><code>build</code> invokes the reviewer through the task tool, or you call it with <code>@reviewer</code>. It runs in its own window and returns one message.</li>
         <li>The message is a typed claim with three fields: <code>verdict</code>, <code>findings</code> with a location, and <code>checked</code>.</li>
       </ul>
